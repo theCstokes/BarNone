@@ -33,7 +33,7 @@ gulp.task('scripts', ['styles'], () => {
 
 gulp.task('styles', ['clean-scripts'], () => {
     return gulp
-        .src('src/UEye/Theme/main.less')
+        .src('src/Vee/Theme/main.less')
         .pipe(lessGlob())
         .pipe(less())
         .pipe(gulp.dest('build/Theme'));
