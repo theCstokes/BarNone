@@ -7,6 +7,9 @@ Utils.clone = function (obj) {
 Utils.isNullOrUndefined = function (obj) {
 	return (obj === null || obj === undefined);
 }
+Utils.isNullOrWhitespace = function (obj) {
+	return (obj === null || obj === undefined || obj === "");
+}
 export default {
 	Utils: Utils
 }
