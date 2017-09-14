@@ -5,13 +5,20 @@ declare global {
 }
 
 export default class Vee {
+	public static _base: HTMLElement;
+
 	public static start(): void {
-		console.log("Test");
+		var base = document.getElementById("app");
+		if (base !== null) {
+			Vee._base = base;
+		}
+	}
 
-		var p = "Chris";
-		var p1 = Utils.clone(p);
+	public static get base(): HTMLElement {
+		return this._base;
+	}
 
-		console.log(p);
-		console.log(p1);
+	public static get Button(): string {
+		return "Vee/Elements/Components/Button/Button";
 	}
 }
