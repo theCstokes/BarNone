@@ -4,7 +4,7 @@ require.config({
 		data: "../data",
 		lodash: '../node_modules/lodash/lodash'
 	},
-	urlArgs: "v=" + (new Date()).getTime()
+	// urlArgs: "v=" + (new Date()).getTime()
 });
 
 define(["Vee/Vee", "Vee/Vee.config.d", "Application/App"], function(Vee, Vee_config_d, App) {

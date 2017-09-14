@@ -1,7 +1,7 @@
-import { BaseComponent } from "Vee/Elements/Core/BaseComponent/BaseComponent";
 import Core from "Vee/Elements/Core/Core";
+import { BaseListItem } from "Vee/Elements/Core/BaseListItem/BaseListItem";
 
-export default class ContactListItem extends BaseComponent {
+export default class ContactListItem extends BaseListItem {
     private _nameElement: HTMLElement;
 
     private _name: string;

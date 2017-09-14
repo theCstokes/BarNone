@@ -72,10 +72,7 @@ export default class ViewInflater {
 	}
 
 	private static isContainer(obj: any): boolean {
-		if ("type" in obj && obj.type === "container") {
-			return "getComponentContainerElement" in obj && "getScreenMountingPoints" in obj;
-		}
-		return false;
+		return ("getComponentContainerElement" in obj && "getScreenMountingPoints" in obj);
 	}
 
 	private static isObjectDefinition(obj: any): boolean {
