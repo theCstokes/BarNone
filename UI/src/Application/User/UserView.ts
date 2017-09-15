@@ -18,6 +18,9 @@ export default class UserView extends View {
 									{
 										name: "Christopher Stokes",
 										selected: true
+									},
+									{
+										name: "Bob Bill"
 									}
 								]
 							}
