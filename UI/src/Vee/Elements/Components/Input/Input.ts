@@ -1,5 +1,6 @@
 import Core from "Vee/Elements/Core/Core";
 import { BaseComponent } from "Vee/Elements/Core/BaseComponent/BaseComponent";
+import { OnChangeCallback } from "Vee/Elements/Core/BindTypes";
 
 export default class Input extends BaseComponent {
     private _content: HTMLElement;
@@ -9,6 +10,7 @@ export default class Input extends BaseComponent {
 
     private _hintText: string;
     private _text: string;
+    private _onChangeCallback: OnChangeCallback;
     
     public constructor(parent: HTMLElement) {
         super(parent);
@@ -43,6 +45,13 @@ export default class Input extends BaseComponent {
     public get text(): string {
         return this._text;
     }
+
+    public get onChange(): OnChangeCallback {
+        return this._onChangeCallback;
+    }
+    public set onChange(value: OnChangeCallback) {
+        this._onChangeCallback = value;
+    }
     
     public onModifiedChange(): void {
         if(this.modified) {
@@ -74,9 +83,11 @@ export default class Input extends BaseComponent {
     }
     
     private onInputHandler(): void {
-        // this._text = this._input.value;
-        // this.bind.onChangeAction.trigger(this._text);
-        // this.updateHint();
+        this._text = this._input.value;
+        if (this._onChangeCallback !== undefined) {
+            this._onChangeCallback(this._text);
+        }
+        this.updateHint();
     }
 
     private onFocusHandler(): void {

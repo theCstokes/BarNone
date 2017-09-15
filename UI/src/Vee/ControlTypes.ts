@@ -21,7 +21,9 @@ export default class ControlTypes {
 	public static readonly Column: string = ControlTypeHelper.getContainerPath("Column");
 	public static readonly ColumnLayout: string = ControlTypeHelper.getContainerPath("ColumnLayout");
 	public static readonly Frame: string = ControlTypeHelper.getContainerPath("Frame");
+	public static readonly LoginFrame: string = ControlTypeHelper.getContainerPath("LoginFrame");
 	public static readonly OrderLayout: string = ControlTypeHelper.getContainerPath("OrderLayout");
 	public static readonly Panel: string = ControlTypeHelper.getContainerPath("Panel");
 	public static readonly PartitionLayout: string = ControlTypeHelper.getContainerPath("PartitionLayout");
+	public static readonly Screen: string = ControlTypeHelper.getContainerPath("Screen");
 }

@@ -9,6 +9,7 @@ declare global {
 class ScreenMountPoint {
 	public element: HTMLElement;
 	public isUsed: boolean;
+	public screen: AppScreen;
 }
 
 export default class Vee {
@@ -45,19 +46,33 @@ export default class Vee {
 			}
 		}
 
-		var results = await Core.inflate(parent, screen.view.content);
+		var results = await Core.inflate(parent, screen.screenContent);
 
 		this._screenMounts = this._screenMounts.concat(results.mountingPoints.map(element => {
 			var screenMount = new ScreenMountPoint();
 			screenMount.element = element;
 			screenMount.isUsed = false;
+			screenMount.screen = screen;
 			return screenMount;
 		}));
 
+		for(var key in results.map) {
+			if (!results.map.hasOwnProperty(key)) continue;
+			screen.view[key] = results.map[key];
+		}
+		screen.screenControl = results.map.screenControl;
+
 		Vee._screens.push(screen);
 
-		if ("onShow" in screen) {
-			(screen as any).onShow();
-		}
+		screen.trigger("onShow");
+	}
+
+	public static pop(): void {
+		var lastScreen = Vee._screens.pop();
+		if (lastScreen === undefined) return;
+		this._screenMounts = this._screenMounts.filter((mount) => {
+			return (mount.screen !== lastScreen);
+		});
+		lastScreen.screenControl.destroy();
 	}
 }

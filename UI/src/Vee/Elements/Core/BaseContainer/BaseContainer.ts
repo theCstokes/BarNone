@@ -52,6 +52,7 @@ export abstract class BaseContainer extends BaseElement {
 		if (this.componentContainers.hasOwnProperty(name)) {
 			return this.componentContainers[name].element;
 		}
+		console.warn("Could not find component container with name: " + name);
 		return null;
 	}
 

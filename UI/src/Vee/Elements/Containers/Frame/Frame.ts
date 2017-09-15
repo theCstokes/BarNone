@@ -1,5 +1,6 @@
 import { BaseContainer } from "Vee/Elements/Core/BaseContainer/BaseContainer";
 import Core from "Vee/Elements/Core/Core";
+import { IScreen } from "Vee/Elements/Core/IScreen";
 
 export default class Frame extends BaseContainer {
     private _globalDock: HTMLElement;
