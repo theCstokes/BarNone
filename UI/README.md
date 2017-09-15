@@ -1,5 +1,7 @@
 This is the web UI
 
 
-run npm install to pull down the packages.
-run gulp to build.
+run: 
+	npm install
+	npm install -g gulp
+	gulp
