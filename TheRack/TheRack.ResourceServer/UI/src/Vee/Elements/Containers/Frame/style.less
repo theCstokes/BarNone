@@ -1,0 +1,125 @@
+.UEye-Frame {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+
+    > .Status-Area {
+        position: absolute;
+        display: flex;
+        top: 0;
+        left: 0;
+        height: 80px;
+        width: @NormalNavBarWidth;
+        background-color: @DefaultAccent;
+        justify-content: space-around;
+        align-items: center;
+
+        @media screen and (max-width: @ResizeThreshold) {
+            width: @SmallNavBarWidth;
+        }
+
+        > .Status-Image-Area {
+            width: 80px;
+            background-repeat: no-repeat;
+            background-position: 50%;
+            border-radius: 50%;
+
+            > .Status-Image {
+                width: 80px;
+                background-repeat: no-repeat;
+                background-position: 50%;
+                border-radius: 50%;
+            }
+        }
+
+        > .Status-Image-Area:hover {
+            opacity: 0.3;
+        }
+
+        > .Status-Title {
+            color: white;
+        }
+
+        > .Status-Image-Hover {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+
+            > .Status-Image-Button {
+                background-color: #4CAF50;
+                color: white;
+                font-size: 16px;
+                // width: 80px;
+                // height: 80px;
+                // border-radius: 50%;
+                text-align: center
+            }
+        }
+    }
+
+    // > .Status-Area:hover .Status-Image {
+    //     opacity: 0.3;
+    // }
+
+    // > .Status-Area:hover .Status-Image-Hover {
+    //     opacity: 1;
+    // }
+
+    > .Nav-Dock {
+        position: absolute;
+        top: 80px;
+        bottom: 0;
+        left: 0;
+        width: @NormalNavBarWidth;
+        background-color: @DefaultAccent;
+
+        @media screen and (max-width: @ResizeThreshold) {
+            width: @SmallNavBarWidth;
+        }
+    }
+
+    > .Global-Dock {
+        position: absolute;
+        top: 0;
+        left: @NormalNavBarWidth;
+        right: 0;
+        height: 40px;   
+
+        @media screen and (max-width: @ResizeThreshold) {
+            left: @SmallNavBarWidth;
+        }
+    }
+
+    > .Context-Dock {
+        position: absolute;
+        top: 40px;
+        left: @NormalNavBarWidth;
+        right: 0;
+        height: 40px;
+
+        @media screen and (max-width: @ResizeThreshold) {
+            left: @SmallNavBarWidth;
+        }
+    }
+
+    > .Content {
+        position: absolute;
+        top: @SmallNavBarWidth;
+        bottom: 0;
+        right: 0;
+        left: @NormalNavBarWidth;
+        background: @BackSpace;
+
+        @media screen and (max-width: @ResizeThreshold) {
+            left: @SmallNavBarWidth;
+        }
+    }
+}

@@ -1,0 +1,5 @@
+C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.Core\bin\Debug\SharpSight.Core.dll
+C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.Core\bin\Debug\SharpSight.Core.pdb
+C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.Core\obj\Debug\SharpSight.Core.dll
+C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.Core\obj\Debug\SharpSight.Core.pdb
+C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.Core\obj\Debug\SharpSight.Core.csprojResolveAssemblyReference.cache

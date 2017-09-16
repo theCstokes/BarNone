@@ -1,0 +1,7 @@
+C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.DomainModel\bin\Debug\SharpSight.DomainModel.dll
+C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.DomainModel\bin\Debug\SharpSight.DomainModel.pdb
+C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.DomainModel\bin\Debug\SharpSight.DataModel.dll
+C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.DomainModel\bin\Debug\SharpSight.DataModel.pdb
+C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.DomainModel\obj\Debug\SharpSight.DomainModel.csprojResolveAssemblyReference.cache
+C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.DomainModel\obj\Debug\SharpSight.DomainModel.dll
+C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.DomainModel\obj\Debug\SharpSight.DomainModel.pdb

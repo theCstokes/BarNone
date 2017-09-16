@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/Vee/View/View.ts"],"names":[],"mappings":";;;IAAA;KAIC;IAJD,oBAIC","file":"View.js","sourcesContent":["export abstract class View {\r\n\t[name: string]: any;\r\n\t\r\n\tabstract get content(): any[];\r\n}"]}
