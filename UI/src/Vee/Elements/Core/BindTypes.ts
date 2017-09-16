@@ -1,3 +1,0 @@
-export type OnChangeCallback = (data: any) => void;
-
-export type OnClickCallback = () => void;
