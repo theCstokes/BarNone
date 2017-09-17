@@ -7,13 +7,21 @@ require.config({
 	// urlArgs: "v=" + (new Date()).getTime()
 });
 
-define(["Vee/Vee", "Vee/Vee.config.d", "Application/App"], function(Vee, Vee_config_d, App) {
+define([
+	"Vee/Vee",
+	"Vee/Vee.config.d",
+	"Application/App",
+	"PlayGround/App"
+], function (Vee, Vee_config_d, App, PlayGround) {
 
+	// Flags.
+	var launchPlayGround = false;
+
+	// Start.
 	Vee.default.start();
-	App.default.start();
-
-
-	// UEye.default.app = document.getElementById("app")
-	// UEye.default.start();
-	// App.default.main();
+	if (launchPlayGround) {
+		PlayGround.default.start();
+	} else {
+		App.default.start();
+	}
 });
