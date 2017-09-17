@@ -1,0 +1,12 @@
+# Build output
+[Bb]in
+[Oo]bj
+
+# VS User files
+*.suo
+*.user
+.vs/
+
+# UI files
+UI/node_modules/
+UI/build/
