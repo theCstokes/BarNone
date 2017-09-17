@@ -1,7 +1,7 @@
 import AppScreen from "Vee/Screen/AppScreen";
-import UserEditView from "Application/User/Edit/UserEditView";
+import UserEditView from "PlayGround/User/Edit/UserEditView";
 import ScreenBind from "Vee/Screen/ScreenBind";
-import { StateManager, State } from "Application/User/Edit/StateManager";
+import { StateManager, State } from "PlayGround/User/Edit/StateManager";
 
 export default class UserEditScreen extends AppScreen {
 	private _stateManager: StateManager;

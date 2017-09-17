@@ -1,9 +1,7 @@
 import Vee from "Vee/Vee";
 import Core from "Vee/Elements/Core/Core";
 import ControlTypes from "Vee/ControlTypes";
-import NavScreen from "Application/Nav/NavScreen";
-import UserScreen from "Application/User/UserScreen";
-import LoginScreen from "Application/Login/LoginScreen";
+import LoginScreen from "Application/Screens/Login/LoginScreen";
 
 export default class App {
 	public static async start(): Promise<void> {
