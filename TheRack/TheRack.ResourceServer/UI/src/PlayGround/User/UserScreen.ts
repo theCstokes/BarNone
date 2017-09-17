@@ -1,7 +1,7 @@
 import AppScreen from "Vee/Screen/AppScreen";
-import UserView from "Application/User/UserView";
+import UserView from "PlayGround/User/UserView";
 import Vee from "Vee/Vee";
-import UserEditScreen from "Application/User/Edit/UserEditScreen";
+import UserEditScreen from "PlayGround/User/Edit/UserEditScreen";
 
 export default class UserScreen extends AppScreen {
 	public constructor() {

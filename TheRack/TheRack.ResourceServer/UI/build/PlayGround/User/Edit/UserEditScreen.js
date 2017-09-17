@@ -1,4 +1,4 @@
-define(["require", "exports", "Vee/Screen/AppScreen", "Application/User/Edit/UserEditView", "Vee/Screen/ScreenBind", "Application/User/Edit/StateManager"], function (require, exports, AppScreen_1, UserEditView_1, ScreenBind_1, StateManager_1) {
+define(["require", "exports", "Vee/Screen/AppScreen", "PlayGround/User/Edit/UserEditView", "Vee/Screen/ScreenBind", "PlayGround/User/Edit/StateManager"], function (require, exports, AppScreen_1, UserEditView_1, ScreenBind_1, StateManager_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class UserEditScreen extends AppScreen_1.default {

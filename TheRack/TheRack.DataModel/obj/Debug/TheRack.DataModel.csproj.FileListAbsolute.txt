@@ -7,3 +7,4 @@ C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataModel\bin\Debug\The
 C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataModel\bin\Debug\TheRack.DataModel.pdb
 C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataModel\obj\Debug\TheRack.DataModel.dll
 C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataModel\obj\Debug\TheRack.DataModel.pdb
+C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataModel\obj\Debug\TheRack.DataModel.csprojResolveAssemblyReference.cache

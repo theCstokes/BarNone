@@ -30,7 +30,11 @@ namespace TheRack.Repository
                 Entity = new DataEntity(dataMap),
             };
 
-            request.WhereClauses = WhereClauseBuilder<User>.Execute(where, request);
+            if (where != null)
+            {
+                request.WhereClauses = WhereClauseBuilder<User>.Execute(where, request);
+            }
+            
             var sql = SQLGenerator.Execute(request);
             var result = SQLProcessor.Execute(dc, sql);
 

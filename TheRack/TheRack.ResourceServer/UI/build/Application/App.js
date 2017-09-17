@@ -6,7 +6,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "Vee/Vee", "Application/Login/LoginScreen"], function (require, exports, Vee_1, LoginScreen_1) {
+define(["require", "exports", "Vee/Vee", "Application/Screens/Login/LoginScreen"], function (require, exports, Vee_1, LoginScreen_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class App {

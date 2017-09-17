@@ -7,3 +7,4 @@ C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataTransfer\bin\Debug\
 C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataTransfer\bin\Debug\TheRack.DataTransfer.pdb
 C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataTransfer\obj\Debug\TheRack.DataTransfer.dll
 C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataTransfer\obj\Debug\TheRack.DataTransfer.pdb
+C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataTransfer\obj\Debug\TheRack.DataTransfer.csprojResolveAssemblyReference.cache
