@@ -14,7 +14,7 @@ namespace TheRack.Repository
     public class UserRepository : BaseRepository<UserDTO, User>
     {
 
-        public User Get(Expression<Func<User, bool>> where = null)
+        public List<User> Get(Expression<Func<User, bool>> where = null)
         {
             var dc = new DomainContext();
             var adapter = new UserAdapter();
@@ -36,17 +36,20 @@ namespace TheRack.Repository
             }
             
             var sql = SQLGenerator.Execute(request);
-            var result = SQLProcessor.Execute(dc, sql);
+            var resultList = SQLProcessor.ExecuteAll(dc, sql);
 
-            var user = new User();
-
-            foreach (var pair in result)
-            {
-                adapter.WriteMap[pair.Key](user, pair.Value);
-            }
-            
             dc.Commit();
-            return user;
+
+            return resultList.Select(result =>
+            {
+                var user = new User();
+
+                foreach (var pair in result)
+                {
+                    adapter.WriteMap[pair.Key](user, pair.Value);
+                }
+                return user;
+            }).ToList();
         }
 
         public User Create(UserDTO dto)

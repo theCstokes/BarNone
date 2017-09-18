@@ -1,4 +1,4 @@
-import BaseStateManager from "Vee/StateManager/BaseStateManager";
+import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
 import StateBind from "Vee/StateManager/StateBind";
 import AppScreen from "Vee/Screen/AppScreen";
 
@@ -12,11 +12,15 @@ export class StateManager extends BaseStateManager<State> {
 	}
 
 	public readonly nameChange = StateBind
-		.create(this)
+		.create<State>(this)
 		.onAction((state, data) => {
 			var nextState = Utils.clone(state);
 			nextState.name = data as string;
 
 			return nextState;
 		});
+
+	public init(): void {
+		throw new Error("Method not implemented.");
+	}
 }

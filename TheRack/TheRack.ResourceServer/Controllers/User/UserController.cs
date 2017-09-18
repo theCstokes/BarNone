@@ -22,8 +22,8 @@ namespace TheRack.ResourceServer.Controllers
             using (var dc = new DomainContext(RequestParser.GetParams(Request)))
             {
                 var userRepo = new UserRepository();
-                var user = userRepo.Get();
-                return new Response(HttpStatusCode.OK, user);
+                var userList = userRepo.Get();
+                return new Response(HttpStatusCode.OK, userList);
             }
         }
 

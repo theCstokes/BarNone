@@ -1,9 +1,12 @@
 import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
 import StateBind from "Vee/StateManager/StateBind";
 import AppScreen from "Vee/Screen/AppScreen";
+import DataManager from "Application/Data/DataManager";
+import User from "Application/Data/Models/User/User";
 
 export class State {
-	public name: string = "";
+	public userList: User[]
+	public currentId: number;
 }
 
 export class StateManager extends BaseStateManager<State> {
@@ -11,16 +14,18 @@ export class StateManager extends BaseStateManager<State> {
 		super(screen, new State());
 	}
 
-	public readonly nameChange = StateBind
+	public readonly resetState = StateBind
 		.create<State>(this)
 		.onAction((state, data) => {
 			var nextState = Utils.clone(state);
-			nextState.name = data as string;
+			nextState.userList = data;
+			nextState.currentId = nextState.userList[0].id;
 
 			return nextState;
 		});
 
-	public init(): void {
-		throw new Error("Method not implemented.");
+	public async init(): Promise<void> {
+		var data = await DataManager.Users.load();
+		this.resetState.trigger(data);
 	}
 }

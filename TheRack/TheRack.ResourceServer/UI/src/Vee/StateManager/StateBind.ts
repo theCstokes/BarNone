@@ -1,4 +1,4 @@
-import BaseStateManager from "Vee/StateManager/BaseStateManager";
+import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
 
 type OnActionCallback<TState> = (state: TState, data: any) => any;
 

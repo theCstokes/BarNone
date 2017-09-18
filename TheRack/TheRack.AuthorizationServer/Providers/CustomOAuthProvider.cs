@@ -50,7 +50,10 @@ namespace TheRack.AuthorizationServer.Providers
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
             var userRepo = new UserRepository();
-            var user = userRepo.Get(x => x.UserName == context.UserName);
+            var userList = userRepo.Get(x => x.UserName == context.UserName);
+
+            if (userList.Count == 0) return Task.FromResult<object>(null);
+            var user = userList[0];
 
             //(context.UserName != context.Password)
             //Dummy check here, you need to do your DB checks against membership system http://bit.ly/SPAAuthCode

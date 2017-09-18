@@ -1,9 +1,9 @@
-import BaseStateManager from "Vee/StateManager/BaseStateManager";
+import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
 import AppScreen from "Vee/Screen/AppScreen";
 
 type OnChangeCallback<TState> = (data: any) => void;
 type OnClickCallback<TState> = () => void;
-type OnRenderCallback<TState> = (current: TState, original: TState) => void;
+type OnRenderCallback<TState> = (original: TState, current: TState) => void;
 
 export default class ScreenBind<TState> {
 	private _screen: AppScreen;

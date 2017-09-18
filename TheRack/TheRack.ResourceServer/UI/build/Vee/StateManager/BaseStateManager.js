@@ -20,7 +20,7 @@ define(["require", "exports"], function (require, exports) {
             }
         }
     }
-    exports.default = BaseStateManager;
+    exports.BaseStateManager = BaseStateManager;
 });
 
 //# sourceMappingURL=BaseStateManager.js.map

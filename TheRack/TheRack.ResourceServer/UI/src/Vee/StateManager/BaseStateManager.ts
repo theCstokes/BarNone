@@ -1,6 +1,6 @@
 import AppScreen from "Vee/Screen/AppScreen";
 
-export default class BaseStateManager<TState> {
+export abstract class BaseStateManager<TState> {
 	private _currentState: TState;
 	private _originalState: TState;
 	private _screen: AppScreen;
@@ -25,4 +25,6 @@ export default class BaseStateManager<TState> {
 			this._screen.trigger("onRender", this._originalState, this._currentState);
 		}
 	}
+
+	public abstract init(): void; 
 }

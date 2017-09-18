@@ -7,7 +7,7 @@ define(["require", "exports", "Vee/View/View", "Vee/ControlTypes"], function (re
                 {
                     id: "editPanel",
                     instance: ControlTypes_1.default.Panel,
-                    caption: "User",
+                    caption: "User Edit",
                     content: [
                         {
                             instance: ControlTypes_1.default.Button,
