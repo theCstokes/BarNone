@@ -20,6 +20,8 @@ export abstract class BaseDataManager {
 			"&client_id=" + BaseDataManager.client_id;
 
 		http.open("POST", AUTH_URL, true);
+		// http.setRequestHeader("Access-Control-Allow-Origin", "*");
+    // http.setRequestHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 		var result = new Promise<boolean>((resolve, reject) => {

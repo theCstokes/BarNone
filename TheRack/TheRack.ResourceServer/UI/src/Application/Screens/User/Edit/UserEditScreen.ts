@@ -26,4 +26,9 @@ export default class UserEditScreen extends AppScreen {
 		.onRender((original, current) => {
 			this.view.editPanel.modified = (JSON.stringify(original) !== JSON.stringify(current));
 		});
+
+	public onShow(data: any): void {
+		console.log(data);
+		this._stateManager.resetState.trigger(data);
+	}
 }

@@ -10,6 +10,14 @@ define(["require", "exports", "Vee/StateManager/BaseStateManager", "Vee/StateMan
     class StateManager extends BaseStateManager_1.BaseStateManager {
         constructor(screen) {
             super(screen, new State());
+            this.resetState = StateBind_1.default
+                .create(this, true)
+                .onAction((state, data) => {
+                var nextState = Utils.clone(state);
+                nextState.name = data.name;
+                nextState.age = data.age;
+                return nextState;
+            });
             this.nameChange = StateBind_1.default
                 .create(this)
                 .onAction((state, data) => {

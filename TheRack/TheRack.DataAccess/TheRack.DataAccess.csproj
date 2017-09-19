@@ -52,11 +52,19 @@
     <Compile Include="CreateSQLBuilder.cs" />
     <Compile Include="DataEntity.cs" />
     <Compile Include="DataManager.cs" />
+    <Compile Include="Engine\DataReadRequest.cs" />
     <Compile Include="DataRequest.cs" />
     <Compile Include="DomainContext.cs" />
     <Compile Include="DomainParameters.cs" />
+    <Compile Include="Engine\DataCreateRequest.cs" />
+    <Compile Include="Engine\IDataRequest.cs" />
+    <Compile Include="Engine\SQLCreateEngine.cs" />
+    <Compile Include="Engine\SQLWhereEngine.cs" />
+    <Compile Include="Engine\SQLReturnEngine.cs" />
+    <Compile Include="Engine\SQLReadEngine.cs" />
     <Compile Include="EntityMetaData.cs" />
     <Compile Include="SQLBuilders\SQLReturn.cs" />
+    <Compile Include="Engine\SQLEngine.cs" />
     <Compile Include="UpdateRequest.cs" />
     <Compile Include="WhereClauseBuilder.cs" />
     <Compile Include="WhereOperation.cs" />
@@ -79,9 +87,17 @@
       <Project>{8ebec6b8-e6b5-49b3-ad94-6ede46e019e3}</Project>
       <Name>TheRack.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TheRack.DataAccessAdapter\TheRack.DataAccessAdapter.csproj">
+      <Project>{a9e0e414-ee42-454a-88d3-eea95af051dd}</Project>
+      <Name>TheRack.DataAccessAdapter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TheRack.DataModel\TheRack.DataModel.csproj">
       <Project>{c9a6ea2a-145e-4174-ab03-94271c5cee9b}</Project>
       <Name>TheRack.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TheRack.DomainModel\TheRack.DomainModel.csproj">
+      <Project>{EEE0829B-181D-4D68-B736-4449BE293416}</Project>
+      <Name>TheRack.DomainModel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

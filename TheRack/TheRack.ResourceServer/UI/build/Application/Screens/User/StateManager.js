@@ -16,11 +16,18 @@ define(["require", "exports", "Vee/StateManager/BaseStateManager", "Vee/StateMan
         constructor(screen) {
             super(screen, new State());
             this.resetState = StateBind_1.default
-                .create(this)
+                .create(this, true)
                 .onAction((state, data) => {
                 var nextState = Utils.clone(state);
                 nextState.userList = data;
                 nextState.currentId = nextState.userList[0].id;
+                return nextState;
+            });
+            this.selectionChange = StateBind_1.default
+                .create(this)
+                .onAction((state, data) => {
+                var nextState = Utils.clone(state);
+                nextState.currentId = data.id;
                 return nextState;
             });
         }

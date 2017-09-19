@@ -20,6 +20,8 @@ define(["require", "exports"], function (require, exports) {
                     "&grant_type=" + BaseDataManager.grant_type +
                     "&client_id=" + BaseDataManager.client_id;
                 http.open("POST", exports.AUTH_URL, true);
+                // http.setRequestHeader("Access-Control-Allow-Origin", "*");
+                // http.setRequestHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
                 http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 var result = new Promise((resolve, reject) => {
                     http.onreadystatechange = function () {

@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace TheRack.DomainModel
 {
-    public abstract class BaseDomainModel : BaseModel
+    public abstract class BaseDomainModel<TModel> : BaseModel<TModel>
+        where TModel : class, new()
     {
     }
 }

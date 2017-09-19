@@ -14,20 +14,32 @@ define(["require", "exports", "Vee/Screen/AppScreen", "Vee/Vee", "Application/Sc
             super(UserView_1.default);
             this.userListBind = ScreenBind_1.default
                 .create(this, "userList")
-                .onRender((original, current) => {
+                .onSelect((data) => __awaiter(this, void 0, void 0, function* () {
+                // console.log(data);
+                Vee_1.default.pop();
+                this._stateManager.selectionChange.trigger({
+                    id: data.id
+                });
+            }))
+                .onRender((original, current) => __awaiter(this, void 0, void 0, function* () {
                 this.view.userList.items = current.userList.map(item => {
                     return {
                         selected: (item.id === current.currentId),
+                        id: item.id,
                         name: item.name
                     };
                 });
-            });
+                var userData = current.userList.find(item => {
+                    return (item.id === current.currentId);
+                });
+                yield Vee_1.default.push(UserEditScreen_1.default, userData);
+            }));
             this._stateManager = new StateManager_1.StateManager(this);
         }
         onShow() {
             return __awaiter(this, void 0, void 0, function* () {
                 this._stateManager.init();
-                Vee_1.default.push(UserEditScreen_1.default);
+                // Vee.push(UserEditScreen);
             });
         }
     }

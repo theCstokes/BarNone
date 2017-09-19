@@ -27,6 +27,10 @@ define(["require", "exports"], function (require, exports) {
             this._controlCallbacks["onClick"] = callback;
             return this;
         }
+        onSelect(callback) {
+            this._controlCallbacks["onSelect"] = callback;
+            return this;
+        }
         onRender(callback) {
             this._onRenderCallback = callback;
             return this;

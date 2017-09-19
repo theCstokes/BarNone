@@ -3,6 +3,8 @@ import AppScreen from "Vee/Screen/AppScreen";
 
 type OnChangeCallback<TState> = (data: any) => void;
 type OnClickCallback<TState> = () => void;
+type OnSelectCallback<TState> = (data: any) => void;
+
 type OnRenderCallback<TState> = (original: TState, current: TState) => void;
 
 export default class ScreenBind<TState> {
@@ -36,6 +38,11 @@ export default class ScreenBind<TState> {
 
 	public onClick(callback: OnClickCallback<TState>): ScreenBind<TState> {
 		this._controlCallbacks["onClick"] = callback
+		return this;
+	}
+
+	public onSelect(callback: OnSelectCallback<TState>): ScreenBind<TState> {
+		this._controlCallbacks["onSelect"] = callback
 		return this;
 	}
 

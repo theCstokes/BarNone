@@ -27,26 +27,26 @@ namespace TheRack.ResourceServer.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("User")]
-        public IHttpActionResult Post([FromBody] UserDTO dto)
-        {
+        //[HttpPost]
+        //[Route("User")]
+        //public IHttpActionResult Post([FromBody] UserDTO dto)
+        //{
 
-            var repo = new UserRepository();
-            var user = repo.Create(dto);
+        //    var repo = new UserRepository();
+        //    var user = repo.Create(dto);
 
-            return new Response(HttpStatusCode.OK, user);
-        }
+        //    return new Response(HttpStatusCode.OK, user);
+        //}
 
-        [HttpPut]
-        [Route("User")]
-        public IHttpActionResult Put([FromBody] UserDTO dto)
-        {
+        //[HttpPut]
+        //[Route("User")]
+        //public IHttpActionResult Put([FromBody] UserDTO dto)
+        //{
 
-            var repo = new UserRepository();
-            var user = repo.Update(dto);
+        //    var repo = new UserRepository();
+        //    var user = repo.Update(dto);
 
-            return new Response(HttpStatusCode.OK, user);
-        }
+        //    return new Response(HttpStatusCode.OK, user);
+        //}
     }
 }

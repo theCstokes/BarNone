@@ -20,6 +20,10 @@ define(["require", "exports", "Vee/Screen/AppScreen", "Vee/Screen/ScreenBind", "
             });
             this._stateManager = new StateManager_1.StateManager(this);
         }
+        onShow(data) {
+            console.log(data);
+            this._stateManager.resetState.trigger(data);
+        }
     }
     exports.default = UserEditScreen;
 });

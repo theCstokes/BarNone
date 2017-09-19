@@ -36,7 +36,6 @@ export default class Button extends BaseComponent {
 		// Not needed for button.
 	}
 
-
 	private onClickHandler(): void {
 		if (this._onClickCallback !== undefined) {
 			this._onClickCallback();

@@ -15,11 +15,20 @@ export class StateManager extends BaseStateManager<State> {
 	}
 
 	public readonly resetState = StateBind
-		.create<State>(this)
+		.create<State>(this, true)
 		.onAction((state, data) => {
 			var nextState = Utils.clone(state);
 			nextState.userList = data;
 			nextState.currentId = nextState.userList[0].id;
+
+			return nextState;
+		});
+
+	public readonly selectionChange = StateBind
+		.create<State>(this)
+		.onAction((state, data) => {
+			var nextState = Utils.clone(state);
+			nextState.currentId = data.id;
 
 			return nextState;
 		});
