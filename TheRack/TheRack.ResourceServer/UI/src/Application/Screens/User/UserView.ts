@@ -10,19 +10,21 @@ export default class UserView extends View {
 					{
 						instance: ControlTypes.Panel,
 						id: "mainPanel",
+						caption: "Users",
 						content: [
 							{
 								instance: ControlTypes.List,
-								style: ControlTypes.ContactListItem,
-								items: [
-									{
-										name: "Christopher Stokes",
-										selected: true
-									},
-									{
-										name: "Bob Bill"
-									}
-								]
+								id: "userList",
+								style: ControlTypes.ContactListItem
+								// items: [
+								// 	{
+								// 		name: "Christopher Stokes",
+								// 		selected: true
+								// 	},
+								// 	{
+								// 		name: "Bob Bill"
+								// 	}
+								// ]
 							}
 						]
 					}

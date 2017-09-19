@@ -16,7 +16,7 @@ define(["require", "exports", "Vee/Data/BaseDataManager", "Vee/Data/RequestBuild
         load() {
             return __awaiter(this, void 0, void 0, function* () {
                 var result = yield RequestBuilder_1.default
-                    .GET(BaseDataManager_1.DEFAULT_URL + this._route)
+                    .GET(BaseDataManager_1.BaseDataManager.resourceAddress + this._route)
                     .header("Authorization", "Bearer " + BaseDataManager_1.BaseDataManager.auth.access_token)
                     .execute();
                 var data = JSON.parse(result);

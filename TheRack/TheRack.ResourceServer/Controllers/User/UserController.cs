@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Web.Http;
+using System.Diagnostics;
 
 namespace TheRack.ResourceServer.Controllers
 {
@@ -22,31 +23,31 @@ namespace TheRack.ResourceServer.Controllers
             using (var dc = new DomainContext(RequestParser.GetParams(Request)))
             {
                 var userRepo = new UserRepository();
-                var user = userRepo.Get();
-                return new Response(HttpStatusCode.OK, user);
+                var userList = userRepo.Get();
+                return new Response(HttpStatusCode.OK, userList);
             }
         }
 
-        [HttpPost]
-        [Route("User")]
-        public IHttpActionResult Post([FromBody] UserDTO dto)
-        {
+        //[HttpPost]
+        //[Route("User")]
+        //public IHttpActionResult Post([FromBody] UserDTO dto)
+        //{
 
-            var repo = new UserRepository();
-            var user = repo.Create(dto);
+        //    var repo = new UserRepository();
+        //    var user = repo.Create(dto);
 
-            return new Response(HttpStatusCode.OK, user);
-        }
+        //    return new Response(HttpStatusCode.OK, user);
+        //}
 
-        [HttpPut]
-        [Route("User")]
-        public IHttpActionResult Put([FromBody] UserDTO dto)
-        {
+        //[HttpPut]
+        //[Route("User")]
+        //public IHttpActionResult Put([FromBody] UserDTO dto)
+        //{
 
-            var repo = new UserRepository();
-            var user = repo.Update(dto);
+        //    var repo = new UserRepository();
+        //    var user = repo.Update(dto);
 
-            return new Response(HttpStatusCode.OK, user);
-        }
+        //    return new Response(HttpStatusCode.OK, user);
+        //}
     }
 }

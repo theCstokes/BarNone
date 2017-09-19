@@ -23,7 +23,7 @@ define(["require", "exports", "Vee/Elements/Core/Core"], function (require, expo
         static get base() {
             return this._base;
         }
-        static push(AppScreenType) {
+        static push(AppScreenType, data) {
             return __awaiter(this, void 0, void 0, function* () {
                 var screen = new AppScreenType();
                 var parent = this._base;
@@ -37,6 +37,7 @@ define(["require", "exports", "Vee/Elements/Core/Core"], function (require, expo
                     else {
                         parent = screenMount.element;
                         screenMount.isUsed = true;
+                        screenMount.screen = screen;
                     }
                 }
                 var results = yield Core_1.default.inflate(parent, screen.screenContent);
@@ -44,7 +45,7 @@ define(["require", "exports", "Vee/Elements/Core/Core"], function (require, expo
                     var screenMount = new ScreenMountPoint();
                     screenMount.element = element;
                     screenMount.isUsed = false;
-                    screenMount.screen = screen;
+                    // screenMount.screen = screen;
                     return screenMount;
                 }));
                 for (var key in results.map) {
@@ -54,15 +55,20 @@ define(["require", "exports", "Vee/Elements/Core/Core"], function (require, expo
                 }
                 screen.screenControl = results.map.screenControl;
                 Vee._screens.push(screen);
-                screen.trigger("onShow");
+                screen.trigger("onShow", data);
             });
         }
         static pop() {
             var lastScreen = Vee._screens.pop();
             if (lastScreen === undefined)
                 return;
-            this._screenMounts = this._screenMounts.filter((mount) => {
-                return (mount.screen !== lastScreen);
+            this._screenMounts = this._screenMounts.map((mount) => {
+                if (mount.screen === lastScreen) {
+                    mount.isUsed = false;
+                    mount.screen = undefined;
+                    return mount;
+                }
+                return mount;
             });
             lastScreen.screenControl.destroy();
         }

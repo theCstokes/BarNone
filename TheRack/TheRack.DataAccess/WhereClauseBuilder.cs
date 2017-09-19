@@ -10,12 +10,12 @@ namespace TheRack.DataAccess
 {
     public class WhereClauseBuilder<T>
     {
-        public static List<WhereClause> Execute(Expression<Func<T, bool>> where, DataRequest request)
+        public static List<WhereClause> Execute(Expression<Func<T, bool>> where)
         {
             //Expression<Func<object, bool>> expression = x => where(x);
-            return Execute(where.Body as BinaryExpression, request);
+            return Execute(where.Body as BinaryExpression);
         }
-        private static List<WhereClause> Execute(BinaryExpression obj, DataRequest request)
+        private static List<WhereClause> Execute(BinaryExpression obj)
         {
             var whereClauses = new List<WhereClause>();
             var left = obj.Left;
@@ -24,8 +24,8 @@ namespace TheRack.DataAccess
             if (left is BinaryExpression && right is BinaryExpression)
             {
                 whereClauses = whereClauses
-                    .Concat(Execute(left as BinaryExpression, request).AsEnumerable())
-                    .Concat(Execute(right as BinaryExpression, request).AsEnumerable())
+                    .Concat(Execute(left as BinaryExpression).AsEnumerable())
+                    .Concat(Execute(right as BinaryExpression).AsEnumerable())
                     .ToList();
 
             } else

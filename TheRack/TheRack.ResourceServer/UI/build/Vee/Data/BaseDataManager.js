@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.AUTH_URL = "http://localhost:61761/api/v1/authorize/login";
-    exports.DEFAULT_URL = "http://localhost:63202/api/v1/";
+    const AUTH_URL = "/AuthorizationServer/api/v1/authorize/login";
+    const RESOURCE_URL = "/ResourceServer/api/v1/";
     class BaseDataManager {
         static authorize(username, password) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -19,7 +19,9 @@ define(["require", "exports"], function (require, exports) {
                     "&password=" + password +
                     "&grant_type=" + BaseDataManager.grant_type +
                     "&client_id=" + BaseDataManager.client_id;
-                http.open("POST", exports.AUTH_URL, true);
+                http.open("POST", BaseDataManager.authorizationAddress, true);
+                // http.setRequestHeader("Access-Control-Allow-Origin", "*");
+                // http.setRequestHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
                 http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 var result = new Promise((resolve, reject) => {
                     http.onreadystatechange = function () {
@@ -38,6 +40,12 @@ define(["require", "exports"], function (require, exports) {
         }
         static get auth() {
             return this._auth;
+        }
+        static get authorizationAddress() {
+            return window.location.origin + AUTH_URL;
+        }
+        static get resourceAddress() {
+            return window.location.origin + RESOURCE_URL;
         }
     }
     BaseDataManager.grant_type = "password";

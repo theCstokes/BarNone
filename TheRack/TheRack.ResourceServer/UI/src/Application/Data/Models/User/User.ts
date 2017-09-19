@@ -1,11 +1,11 @@
 export default class User {
-	public ID: number;
+	public id: number;
 	
-	public AccountID: number;
+	public accountID: number;
 	
-	public Name: string;
+	public name: string;
 	
-	public UserName: string;
+	public userName: string;
 	
-	public Password: string;
+	public password: string;
 }

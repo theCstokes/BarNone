@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/Application/Core/EditScreen.ts"],"names":[],"mappings":";;;IAEA,gBAAgC,SAAQ,mBAAS;KAEhD;IAFD,6BAEC","file":"EditScreen.js","sourcesContent":["import AppScreen from \"Vee/Screen/AppScreen\";\r\n\r\nexport default class EditScreen extends AppScreen {\r\n\r\n}"]}

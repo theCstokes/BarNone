@@ -15,7 +15,7 @@ define(["require", "exports", "Vee/ControlTypes"], function (require, exports, C
                 {
                     id: "screenControl",
                     instance: ControlTypes_1.default.Screen,
-                    content: this.view.content
+                    content: this.view.content,
                 }
             ];
         }

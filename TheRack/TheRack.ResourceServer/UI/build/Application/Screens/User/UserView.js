@@ -10,19 +10,21 @@ define(["require", "exports", "Vee/View/View", "Vee/ControlTypes"], function (re
                         {
                             instance: ControlTypes_1.default.Panel,
                             id: "mainPanel",
+                            caption: "Users",
                             content: [
                                 {
                                     instance: ControlTypes_1.default.List,
-                                    style: ControlTypes_1.default.ContactListItem,
-                                    items: [
-                                        {
-                                            name: "Christopher Stokes",
-                                            selected: true
-                                        },
-                                        {
-                                            name: "Bob Bill"
-                                        }
-                                    ]
+                                    id: "userList",
+                                    style: ControlTypes_1.default.ContactListItem
+                                    // items: [
+                                    // 	{
+                                    // 		name: "Christopher Stokes",
+                                    // 		selected: true
+                                    // 	},
+                                    // 	{
+                                    // 		name: "Bob Bill"
+                                    // 	}
+                                    // ]
                                 }
                             ]
                         }

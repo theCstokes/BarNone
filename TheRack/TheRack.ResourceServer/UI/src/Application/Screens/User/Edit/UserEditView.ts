@@ -7,7 +7,7 @@ export default class UserEditView extends View {
 			{
 				id: "editPanel",
 				instance: ControlTypes.Panel,
-				caption: "User",
+				caption: "User Edit",
 				content: [
 					{
 						instance: ControlTypes.Button,

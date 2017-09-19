@@ -233,7 +233,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63202</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:63202/</IISUrl>
+          <IISUrl>http://localhost/ResourceServer</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -4,20 +4,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static TheRack.DataAccessAdapter.DataAccessActions;
 
 namespace TheRack.DataAccessAdapter
 {
-    public abstract class BaseAdapter<TDTO, TDomainModel> where TDomainModel : BaseDomainModel
+    public abstract class BaseAdapter<TDTO, TDomainModel> 
+        where TDomainModel : BaseDomainModel<TDomainModel>, new()
     {
-        public delegate dynamic ReadAction(TDTO dto);
-        public delegate void WriteAction(TDomainModel model, dynamic value);
-        public delegate TDTO MapToDTO(TDomainModel model);
-        public delegate TDomainModel MapToDomainModel(TDTO dto);
+        public abstract MapToDTO<TDomainModel, TDTO> ToDTO { get; }
+        public abstract MapToDomainModel<TDTO, TDomainModel> ToDomainModel { get; }
+        public abstract Dictionary<string, ReadAction<TDTO>> ReadMap { get; }
+        public abstract Dictionary<string, WriteAction<TDomainModel>> WriteMap { get; }
 
-        public abstract MapToDTO ToDTO { get; }
-        public abstract MapToDomainModel ToDomainModel { get; }
-        public abstract Dictionary<string, ReadAction> ReadMap { get; }
-        public abstract Dictionary<string, WriteAction> WriteMap { get; }
+        public WriteAction<TDomainModel> IDWriteAction = (model, value) => model.ID = value;
+
+        public abstract string SchemaName { get; }
+        public abstract string TableName { get; }
+
+        public Dictionary<string, WriteAction<TDomainModel>> FullWriteMap
+        {
+            get
+            {
+                var map = new Dictionary<string, WriteAction<TDomainModel>>(WriteMap);
+                map.Add("ID", IDWriteAction);
+                return map;
+            }
+        }
+
+        public List<string> Properties
+        {
+            get
+            {
+                var properties = new List<string>(WriteMap.Keys);
+                properties.Add("ID");
+                return properties;
+
+            }
+        }
 
         public Dictionary<string, string> CreateReadMap(TDTO dto)
         {
@@ -32,7 +55,7 @@ namespace TheRack.DataAccessAdapter
         public Dictionary<string, string> CreateMapForGet()
         {
             var dataMap = new Dictionary<string, string>();
-            //dataMap["ID"] = null;
+            dataMap["ID"] = null;
             foreach (var pair in ReadMap)
             {
                 dataMap[pair.Key] = null;
@@ -50,13 +73,15 @@ namespace TheRack.DataAccessAdapter
         //    return dataMap;
         //}
 
-        public void Populate(TDomainModel model, IEnumerable<KeyValuePair<string, object>> data)
-        {
-            foreach (var pair in data)
-            {
-                if (!WriteMap.ContainsKey(pair.Key)) continue;
-                WriteMap[pair.Key](model, pair.Value);
-            }
-        }
+        //public List<TResult> BuildResults(List<SqlResult>)
+
+        //public void Populate(TDomainModel model, IEnumerable<KeyValuePair<string, object>> data)
+        //{
+        //    foreach (var pair in data)
+        //    {
+        //        if (!WriteMap.ContainsKey(pair.Key)) continue;
+        //        WriteMap[pair.Key](model, pair.Value);
+        //    }
+        //}
     }
 }

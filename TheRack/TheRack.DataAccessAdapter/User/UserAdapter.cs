@@ -6,12 +6,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static TheRack.DataAccessAdapter.DataAccessActions;
 
 namespace TheRack.DataAccessAdapter
 {
     public class UserAdapter : BaseAdapter<UserDTO, User>
     {
-        public override MapToDomainModel ToDomainModel
+        public override string SchemaName
+        {
+            get
+            {
+                return "public";
+            }
+        }
+
+        public override string TableName
+        {
+            get
+            {
+                return "User";
+            }
+        }
+
+        public override MapToDomainModel<UserDTO, User> ToDomainModel
         {
             get
             {
@@ -30,7 +47,7 @@ namespace TheRack.DataAccessAdapter
             }
         }
 
-        public override MapToDTO ToDTO
+        public override MapToDTO<User, UserDTO> ToDTO
         {
             get
             {
@@ -49,11 +66,11 @@ namespace TheRack.DataAccessAdapter
             }
         }
 
-        public override Dictionary<string, ReadAction> ReadMap
+        public override Dictionary<string, ReadAction<UserDTO>> ReadMap
         {
             get
             {
-                return new Dictionary<string, ReadAction>
+                return new Dictionary<string, ReadAction<UserDTO>>
                 {
                     [UserColumnData.NAME] = dto => dto.Name,
                     [UserColumnData.USER_NAME] = dto => dto.UserName,
@@ -63,11 +80,11 @@ namespace TheRack.DataAccessAdapter
             }
         }
 
-        public override Dictionary<string, WriteAction> WriteMap
+        public override Dictionary<string, WriteAction<User>> WriteMap
         {
             get
             {
-                return new Dictionary<string, WriteAction>
+                return new Dictionary<string, WriteAction<User>>
                 {
                     [UserColumnData.NAME] = (model, value) => model.Name = value,
                     [UserColumnData.USER_NAME] = (model, value) => model.UserName = value,

@@ -7,7 +7,7 @@ define(["require", "exports", "Vee/StateManager/BaseStateManager", "Vee/StateMan
         }
     }
     exports.State = State;
-    class StateManager extends BaseStateManager_1.default {
+    class StateManager extends BaseStateManager_1.BaseStateManager {
         constructor(screen) {
             super(screen, new State());
             this.nameChange = StateBind_1.default
@@ -17,6 +17,9 @@ define(["require", "exports", "Vee/StateManager/BaseStateManager", "Vee/StateMan
                 nextState.name = data;
                 return nextState;
             });
+        }
+        init() {
+            throw new Error("Method not implemented.");
         }
     }
     exports.StateManager = StateManager;

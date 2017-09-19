@@ -23,7 +23,13 @@ export default class AppScreen {
 			{
 				id: "screenControl",
 				instance: ControlTypes.Screen,
-				content: this.view.content
+				content: this.view.content,
+				// bottomDock: [
+				// 	{
+				// 		instance: ControlTypes.Button,
+				// 		text: "Test"
+				// 	}
+				// ]
 			}
 		]
 	}

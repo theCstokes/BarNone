@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace TheRack.DomainModel
 {
     [Model("Public.SharpSight", "User")]
-    public class User : BaseDomainModel
+    public class User : BaseDomainModel<User>
     {
         [Key]
         public override int ID { get; set; }

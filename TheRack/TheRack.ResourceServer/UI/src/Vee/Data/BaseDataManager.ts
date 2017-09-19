@@ -1,7 +1,7 @@
 import Resource from "Vee/Data/Resource";
 
-export const AUTH_URL = "http://localhost:61761/api/v1/authorize/login";
-export const DEFAULT_URL = "http://localhost:63202/api/v1/";
+const AUTH_URL = "/AuthorizationServer/api/v1/authorize/login";
+const RESOURCE_URL = "/ResourceServer/api/v1/";
 
 export abstract class BaseDataManager {
 
@@ -19,7 +19,9 @@ export abstract class BaseDataManager {
 			"&grant_type=" + BaseDataManager.grant_type +
 			"&client_id=" + BaseDataManager.client_id;
 
-		http.open("POST", AUTH_URL, true);
+		http.open("POST", BaseDataManager.authorizationAddress, true);
+		// http.setRequestHeader("Access-Control-Allow-Origin", "*");
+    // http.setRequestHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 		var result = new Promise<boolean>((resolve, reject) => {
@@ -40,6 +42,14 @@ export abstract class BaseDataManager {
 
 	public static get auth(): Auth {
 		return this._auth;
+	}
+
+	public static get authorizationAddress(): string {
+		return window.location.origin + AUTH_URL;
+	}
+
+	public static get resourceAddress(): string {
+		return window.location.origin + RESOURCE_URL;
 	}
 }
 

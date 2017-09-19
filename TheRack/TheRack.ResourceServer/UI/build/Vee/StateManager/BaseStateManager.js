@@ -13,14 +13,20 @@ define(["require", "exports"], function (require, exports) {
         getOriginalState() {
             return this._originalState;
         }
-        updateState(state) {
+        updateState(state, reset = false) {
             if (this._currentState !== state) {
                 this._currentState = Utils.clone(state);
+                if (reset) {
+                    this._originalState = Utils.clone(state);
+                }
                 this._screen.trigger("onRender", this._originalState, this._currentState);
             }
         }
+        get screen() {
+            return this._screen;
+        }
     }
-    exports.default = BaseStateManager;
+    exports.BaseStateManager = BaseStateManager;
 });
 
 //# sourceMappingURL=BaseStateManager.js.map

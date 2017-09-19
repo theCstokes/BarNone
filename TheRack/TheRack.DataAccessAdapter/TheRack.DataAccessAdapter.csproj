@@ -43,11 +43,16 @@
   <ItemGroup>
     <Compile Include="AdapterMap.cs" />
     <Compile Include="BaseAdapter.cs" />
+    <Compile Include="DataAccessActions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User\UserAdapter.cs" />
     <Compile Include="User\UserColumnData.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TheRack.DataModel\TheRack.DataModel.csproj">
+      <Project>{c9a6ea2a-145e-4174-ab03-94271c5cee9b}</Project>
+      <Name>TheRack.DataModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TheRack.DataTransfer\TheRack.DataTransfer.csproj">
       <Project>{339fb41b-4d4a-45e5-90d8-d3c441156751}</Project>
       <Name>TheRack.DataTransfer</Name>
