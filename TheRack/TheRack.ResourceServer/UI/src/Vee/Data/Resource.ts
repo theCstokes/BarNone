@@ -1,4 +1,4 @@
-import { DEFAULT_URL, Auth, BaseDataManager } from "Vee/Data/BaseDataManager";
+import { Auth, BaseDataManager } from "Vee/Data/BaseDataManager";
 import RequestBuilder from "Vee/Data/RequestBuilder";
 
 export default class Resource<TSource> {
@@ -10,7 +10,7 @@ export default class Resource<TSource> {
 
 	public async load(): Promise<TSource[]> {
 		var result = await RequestBuilder
-			.GET(DEFAULT_URL + this._route)
+			.GET(BaseDataManager.resourceAddress + this._route)
 			.header("Authorization", "Bearer " + BaseDataManager.auth.access_token)
 			.execute();
 

@@ -3,12 +3,16 @@ import Core from "Vee/Elements/Core/Core";
 import { IScreen } from "Vee/Elements/Core/IScreen";
 
 export default class Screen extends BaseContainer implements IScreen {
+	private _bottomDockElement: HTMLElement;
 
 	constructor(parent: HTMLElement) {
 		super(parent);
 		Core.addClass(this.element, "Vee-Screen");
 
 		this.linkComponentContainer("content", this.element);
+
+		this._bottomDockElement = Core.create("div", this.element, "Bottom-Dock");
+		this.linkComponentContainer("bottomDock", this._bottomDockElement);
 	}
 
 	public set content(value: any[]) {
@@ -16,6 +20,13 @@ export default class Screen extends BaseContainer implements IScreen {
 	}
 	public get content(): any[] {
 		return this.getScreenContainer("content");
+	}
+
+	public set dockBottom(value: any[]) {
+		this.setComponentContainer("dockBottom", value);
+	}
+	public get dockBottom(): any[] {
+		return this.getComponentContainer("dockBottom");
 	}
 
 	public destroy(): void {

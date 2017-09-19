@@ -6,12 +6,20 @@ define(["require", "exports", "Vee/Elements/Core/BaseContainer/BaseContainer", "
             super(parent);
             Core_1.default.addClass(this.element, "Vee-Screen");
             this.linkComponentContainer("content", this.element);
+            this._bottomDockElement = Core_1.default.create("div", this.element, "Bottom-Dock");
+            this.linkComponentContainer("bottomDock", this._bottomDockElement);
         }
         set content(value) {
             this.setScreenContainer("content", value);
         }
         get content() {
             return this.getScreenContainer("content");
+        }
+        set dockBottom(value) {
+            this.setComponentContainer("dockBottom", value);
+        }
+        get dockBottom() {
+            return this.getComponentContainer("dockBottom");
         }
         destroy() {
             var parentNode = this.element.parentNode;
