@@ -1,1 +1,0 @@
-{"version":3,"sources":["../src/Application/Data/Models/User/User.ts"],"names":[],"mappings":";;;IAAA;KAUC;IAVD,uBAUC","file":"User.js","sourcesContent":["export default class User {\r\n\tpublic id: number;\r\n\t\r\n\tpublic accountID: number;\r\n\t\r\n\tpublic name: string;\r\n\t\r\n\tpublic userName: string;\r\n\t\r\n\tpublic password: string;\r\n}"]}
