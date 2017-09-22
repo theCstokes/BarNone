@@ -1,7 +1,10 @@
 import Resource from "Vee/Data/Resource";
 
-const AUTH_URL = "/AuthorizationServer/api/v1/authorize/login";
-const RESOURCE_URL = "/ResourceServer/api/v1/";
+//const AUTH_URL = "/AuthorizationServer/api/v1/authorize/login";
+//const RESOURCE_URL = "/ResourceServer/api/v1/";
+
+const AUTH_URL = "/api/v1/Authorization";
+const RESOURCE_URL = "/api/v1/";
 
 export abstract class BaseDataManager {
 
@@ -14,10 +17,13 @@ export abstract class BaseDataManager {
 
 		var http = new XMLHttpRequest();
 
-		var args = "username=" + username +
-			"&password=" + password +
-			"&grant_type=" + BaseDataManager.grant_type +
-			"&client_id=" + BaseDataManager.client_id;
+		//var args = "username=" + username +
+		//	"&password=" + password +
+		//	"&grant_type=" + BaseDataManager.grant_type +
+		//	"&client_id=" + BaseDataManager.client_id;
+
+        var args = "userName=" + username +
+            "&password=" + password;
 
 		http.open("POST", BaseDataManager.authorizationAddress, true);
 		// http.setRequestHeader("Access-Control-Allow-Origin", "*");
@@ -45,7 +51,7 @@ export abstract class BaseDataManager {
 	}
 
 	public static get authorizationAddress(): string {
-		return "http://localhost" + AUTH_URL;
+		return window.location.origin + AUTH_URL;
 	}
 
 	public static get resourceAddress(): string {

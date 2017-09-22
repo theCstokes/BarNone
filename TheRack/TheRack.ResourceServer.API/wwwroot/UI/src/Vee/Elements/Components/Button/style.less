@@ -1,0 +1,32 @@
+.Vee-Button {
+	-webkit-border-radius: 4;
+  -moz-border-radius: 4;
+  border-radius: 4px;
+  color: #ffffff;
+  background: @DefaultElementAccent;
+  padding: 5px 10px 5px 10px;
+  height: 20px;
+  width: 100px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+	>.size-small {
+		width: 50px;
+	}
+
+	>.size-normal {
+		width: 75px;
+	}
+
+	>.size-large {
+		width: 100px;
+	}
+}
+
+.Vee-Button:hover {
+	background-color: @DefaultHover;
+	text-decoration: none;
+}
