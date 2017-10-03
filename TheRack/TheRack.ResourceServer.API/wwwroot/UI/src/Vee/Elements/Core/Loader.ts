@@ -7,7 +7,7 @@ export default class Loader {
         require(files, callback);
     }
 
-    public static async sync(files: string[]): Promise<any> {
+    public static async sync(...files: string[]): Promise<any> {
         return await new Promise<any>(function (resolve) {
             Loader.async(files, resolve);
         });

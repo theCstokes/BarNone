@@ -72,6 +72,9 @@ export default class Input extends BaseComponent {
     public onErrorChange(): void {
         throw new Error("Method not implemented.");
     }
+    public onEnabledChange(): void {
+        throw new Error("Method not implemented.");
+    }
 
     // Region Private Member(s).
     private updateHint() {

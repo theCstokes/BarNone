@@ -26,4 +26,7 @@ export default class Label extends BaseComponent {
     public onErrorChange(): void {
         throw new Error("Method not implemented.");
     }
+    public onEnabledChange(): void {
+        throw new Error("Method not implemented.");
+    }
 }

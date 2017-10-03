@@ -1,6 +1,11 @@
 import { Auth, BaseDataManager } from "Vee/Data/BaseDataManager";
 import RequestBuilder from "Vee/Data/RequestBuilder";
 
+class LoadResult<TSource> {
+	public count: number;
+	public entities: TSource[];
+}
+
 export default class Resource<TSource> {
 	private _route: string;
 
@@ -14,8 +19,8 @@ export default class Resource<TSource> {
 			.header("Authorization", "Bearer " + BaseDataManager.auth.access_token)
 			.execute();
 
-		var data: TSource[] = JSON.parse(result);
+		var data: LoadResult<TSource> = JSON.parse(result);
 
-		return data;
+		return data.entities;
 	}
 }

@@ -1,9 +1,9 @@
-import AppScreen from "Vee/Screen/AppScreen";
-import UserEditView from "PlayGround/User/Edit/UserEditView";
+import EditScreen from "Application/Core/EditScreen";
 import ScreenBind from "Vee/Screen/ScreenBind";
-import { StateManager, State } from "PlayGround/User/Edit/StateManager";
+import { StateManager, State } from "Application/Screens/User/Edit/StateManager";
+import UserEditView from "Application/Screens/User/Edit/UserEditView";
 
-export default class UserEditScreen extends AppScreen {
+export default class UserEditScreen extends EditScreen {
 	private _stateManager: StateManager;
 
 	public constructor() {
@@ -26,4 +26,9 @@ export default class UserEditScreen extends AppScreen {
 		.onRender((original, current) => {
 			this.view.editPanel.modified = (JSON.stringify(original) !== JSON.stringify(current));
 		});
+
+	public onShow(data: any): void {
+		console.log(data);
+		this._stateManager.resetState.trigger(data);
+	}
 }

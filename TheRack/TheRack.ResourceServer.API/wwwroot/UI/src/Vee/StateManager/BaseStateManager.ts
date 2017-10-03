@@ -1,4 +1,4 @@
-import AppScreen from "Vee/Screen/AppScreen";
+import { AppScreen } from "Vee/Screen/AppScreen";
 
 export abstract class BaseStateManager<TState> {
 	private _currentState: TState;

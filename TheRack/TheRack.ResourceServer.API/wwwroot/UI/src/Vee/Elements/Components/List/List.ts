@@ -1,8 +1,9 @@
 import { BaseComponent } from "Vee/Elements/Core/BaseComponent/BaseComponent";
 import Core from "Vee/Elements/Core/Core";
-import ViewInflater from "Vee/Elements/Core/ViewInflater";
+// import ViewInflater from "Vee/Elements/Core/ViewInflater";
 import { OnSelectCallback } from "Vee/Elements/Core/BindTypes";
 import { BaseListItem } from "Vee/Elements/Core/BaseListItem/BaseListItem";
+import InflaterPipeline from "Vee/Elements/Core/Inflater/InflaterPipeline";
 
 export default class UEyeList extends BaseComponent {
     private _elementList: HTMLElement;
@@ -52,8 +53,9 @@ export default class UEyeList extends BaseComponent {
         this._listElements = [];
         this._items.forEach(async element => {
             var listElement = Core.create("li", this._elementList, "Element");
-            var instance: BaseListItem = await ViewInflater
-                .InflateByPath(this._style, listElement, element);
+            var pipeline = new InflaterPipeline();
+            var instance: BaseListItem = await pipeline
+                .inflateByPath(this._style, listElement, element);
 
             // if (this._selected !== instance && instance.selected) {
             //     instance.selected = false;
@@ -84,6 +86,9 @@ export default class UEyeList extends BaseComponent {
         throw new Error("Method not implemented.");
     }
     public onErrorChange(): void {
+        throw new Error("Method not implemented.");
+    }
+    public onEnabledChange(): void {
         throw new Error("Method not implemented.");
     }
 

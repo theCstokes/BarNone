@@ -1,5 +1,6 @@
 import { BaseComponent } from "Vee/Elements/Core/BaseComponent/BaseComponent";
 import { OnClickCallback } from "Vee/Elements/Core/BindTypes";
+import Core from "Vee/Elements/Core/Core";
 
 export default class Button extends BaseComponent {
 	private _text: string;
@@ -34,6 +35,13 @@ export default class Button extends BaseComponent {
 	}
 	public onErrorChange(): void {
 		// Not needed for button.
+	}
+	public onEnabledChange(): void {
+		if (this.enabled) {
+			Core.removeClass(this.element, "disabled");
+		} else {
+			Core.addClass(this.element, "disabled");
+		}
 	}
 
 	private onClickHandler(): void {

@@ -1,9 +1,9 @@
-import AppScreen from "Vee/Screen/AppScreen";
+import EditScreen from "Application/Core/EditScreen";
 import ScreenBind from "Vee/Screen/ScreenBind";
 import { StateManager, State } from "Application/Screens/User/Edit/StateManager";
 import UserEditView from "Application/Screens/User/Edit/UserEditView";
 
-export default class UserEditScreen extends AppScreen {
+export default class UserEditScreen extends EditScreen {
 	private _stateManager: StateManager;
 
 	public constructor() {
@@ -24,7 +24,9 @@ export default class UserEditScreen extends AppScreen {
 	public panelBind = ScreenBind
 		.create<State>(this, "editPanel")
 		.onRender((original, current) => {
-			this.view.editPanel.modified = (JSON.stringify(original) !== JSON.stringify(current));
+			var isModified = (JSON.stringify(original) !== JSON.stringify(current));
+			this.view.editPanel.modified = isModified;
+			this.isDirty = isModified;
 		});
 
 	public onShow(data: any): void {

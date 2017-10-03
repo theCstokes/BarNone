@@ -1,5 +1,5 @@
 import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
-import AppScreen from "Vee/Screen/AppScreen";
+import { AppScreen } from "Vee/Screen/AppScreen";
 
 type OnChangeCallback<TState> = (data: any) => void;
 type OnClickCallback<TState> = () => void;

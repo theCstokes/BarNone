@@ -2,9 +2,14 @@
 	-webkit-border-radius: 4;
   -moz-border-radius: 4;
   border-radius: 4px;
-  color: #ffffff;
-  background: @DefaultElementAccent;
-  padding: 5px 10px 5px 10px;
+	color: #ffffff;
+	background: @DefaultElementAccent;
+	// background-color: #337ab7;
+	// border-color: #2e6da4;
+	padding: 5px 10px 5px 10px;
+	margin: 5px;
+	// margin-left: 5px;
+	// margin-bottom: 5px;
   height: 20px;
   width: 100px;
 
@@ -27,6 +32,13 @@
 }
 
 .Vee-Button:hover {
-	background-color: @DefaultHover;
+	background-color: #286090;
+	border-color: #204d74;
+	text-decoration: none;
+}
+
+.Vee-Button.disabled {
+	background-color: #B2B4B6;
+	color: #333333;
 	text-decoration: none;
 }

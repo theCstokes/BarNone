@@ -1,4 +1,6 @@
-import ViewInflater from "Vee/Elements/Core/ViewInflater";
+// import ViewInflater from "Vee/Elements/Core/ViewInflater";
+import InflaterData from "Vee/Elements/Core/Inflater/InflaterData";
+import InflaterPipeline from "Vee/Elements/Core/Inflater/InflaterPipeline";
 
 export default class Core {
 	public static create(type: string, parent: HTMLElement, ...cssClasses: string[]): HTMLElement | HTMLInputElement {
@@ -47,10 +49,8 @@ export default class Core {
 		});
 	}
 
-	public static async inflate(parent: HTMLElement, configList: any[]): Promise<{ map: { [id:string]: any }, mountingPoints: HTMLElement[] }> {
-        var map: { [id:string]: any } = {};
-        var mountingPoints: HTMLElement[] = [];
-        await ViewInflater.inflate(parent, configList, map, mountingPoints);
-        return { map: map, mountingPoints: mountingPoints };
-    }
+	public static async inflate(parent: HTMLElement, configList: any[]): Promise<InflaterData> {
+		var pipeline = new InflaterPipeline();
+		return await pipeline.execute(parent, configList);
+	}
 }

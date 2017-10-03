@@ -2,14 +2,16 @@ import { BaseContainer } from "Vee/Elements/Core/BaseContainer/BaseContainer";
 import Core from "Vee/Elements/Core/Core";
 import { IScreen } from "Vee/Elements/Core/IScreen";
 
-export default class Screen extends BaseContainer implements IScreen {
+export default class Screen extends BaseContainer {
+	private _contentElement: HTMLElement;
 	private _bottomDockElement: HTMLElement;
 
 	constructor(parent: HTMLElement) {
 		super(parent);
 		Core.addClass(this.element, "Vee-Screen");
 
-		this.linkComponentContainer("content", this.element);
+		this._contentElement = Core.create("div", this.element, "Content");
+		this.linkComponentContainer("content", this._contentElement);
 
 		this._bottomDockElement = Core.create("div", this.element, "Bottom-Dock");
 		this.linkComponentContainer("bottomDock", this._bottomDockElement);
@@ -22,18 +24,11 @@ export default class Screen extends BaseContainer implements IScreen {
 		return this.getScreenContainer("content");
 	}
 
-	public set dockBottom(value: any[]) {
-		this.setComponentContainer("dockBottom", value);
+	public set bottomDock(value: any[]) {
+		this.setComponentContainer("bottomDock", value);
 	}
-	public get dockBottom(): any[] {
-		return this.getComponentContainer("dockBottom");
-	}
-
-	public destroy(): void {
-		var parentNode = this.element.parentNode;
-		if (parentNode !== null) {
-			parentNode.removeChild(this.element);
-		}
+	public get bottomDock(): any[] {
+		return this.getComponentContainer("bottomDock");
 	}
 
 	public onModifiedChange(): void {

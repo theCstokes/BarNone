@@ -1,4 +1,4 @@
-import AppScreen from "Vee/Screen/AppScreen";
+import BasicScreen from "Application/Core/BasicScreen";
 import Vee from "Vee/Vee";
 import UserView from "Application/Screens/User/UserView";
 import UserEditScreen from "Application/Screens/User/Edit/UserEditScreen";
@@ -6,7 +6,7 @@ import DataManager from "Application/Data/DataManager";
 import ScreenBind from "Vee/Screen/ScreenBind";
 import { State, StateManager } from "Application/Screens/User/StateManager";
 
-export default class UserScreen extends AppScreen {
+export default class UserScreen extends BasicScreen {
 	private _stateManager: StateManager;
 	
 	public constructor() {

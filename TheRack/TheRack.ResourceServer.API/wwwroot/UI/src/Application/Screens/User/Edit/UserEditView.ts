@@ -10,10 +10,6 @@ export default class UserEditView extends View {
 				caption: "User Edit",
 				content: [
 					{
-						instance: ControlTypes.Button,
-						text: "Test"
-					},
-					{
 						id: "nameInput",
 						instance: ControlTypes.Input,
 						hint: "Name"

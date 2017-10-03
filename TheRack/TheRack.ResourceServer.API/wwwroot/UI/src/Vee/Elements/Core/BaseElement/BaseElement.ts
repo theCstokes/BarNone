@@ -3,6 +3,7 @@ import Core from "Vee/Elements/Core/Core";
 export abstract class BaseElement {
 	private _element: HTMLElement;
 	private _id: string;
+	private _instance: string;
 	private _modified: boolean;
 	private _readonly: boolean;
 	private _error: string;
@@ -20,6 +21,13 @@ export abstract class BaseElement {
 	}
 	public set id(value: string) {
 		this._id = value;
+	}
+
+	public get instance(): string {
+		return this._instance;
+	}
+	public set instance(value: string) {
+		this._instance = value;
 	}
 
 	public get modified(): boolean {
@@ -48,6 +56,13 @@ export abstract class BaseElement {
 
 	public onShow(): void {
 		
+	}
+
+	public destroy(): void {
+		var parentNode = this.element.parentNode;
+		if (parentNode !== null) {
+			parentNode.removeChild(this.element);
+		}
 	}
 
 	public abstract onModifiedChange(): void;

@@ -1,14 +1,14 @@
 import Core from "Vee/Elements/Core/Core";
 import { BaseListItem } from "Vee/Elements/Core/BaseListItem/BaseListItem";
 
-export default class ContactListItem extends BaseListItem {
+export default class NavigationListItem extends BaseListItem {
     private _nameElement: HTMLElement;
 
     private _name: string;
 
     public constructor(parent: HTMLElement) {
         super(parent);
-        Core.addClass(this.element, "UEye-Contact-List-Item");
+        Core.addClass(this.element, "Vee-Navigation-List-Item");
 
         this._nameElement = Core.create("div", this.element, "Name");
 
@@ -30,8 +30,8 @@ export default class ContactListItem extends BaseListItem {
     }
     public onErrorChange(): void {
         throw new Error("Method not implemented.");
-    }    
+    }  
     public onEnabledChange(): void {
         throw new Error("Method not implemented.");
-    }
+    }  
 }

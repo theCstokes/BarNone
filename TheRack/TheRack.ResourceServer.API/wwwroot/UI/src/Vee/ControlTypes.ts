@@ -1,29 +1,42 @@
-class ControlTypeHelper {
-	public static getComponentPath(name: string): string {
-		return "Vee/Elements/Components/" + name + "/" + name;
-	}
-
-	public static getContainerPath(name: string): string {
-		return "Vee/Elements/Containers/" + name + "/" + name;
-	}
-}
-
 export default class ControlTypes {
+	private static componentRegistry: string[] = [];
+	private static containerRegistry: string[] = [];
 
 	// Components.
-	public static readonly Button: string = ControlTypeHelper.getComponentPath("Button");
-	public static readonly ContactListItem: string = ControlTypeHelper.getComponentPath("ContactListItem");
-	public static readonly Input: string = ControlTypeHelper.getComponentPath("Input");
-	public static readonly Label: string = ControlTypeHelper.getComponentPath("Label");
-	public static readonly List: string = ControlTypeHelper.getComponentPath("List");
+	public static readonly Button: string = ControlTypes.getComponentPath("Button");
+	public static readonly ContactListItem: string = ControlTypes.getComponentPath("ContactListItem");
+	public static readonly NavigationListItem: string = ControlTypes.getComponentPath("NavigationListItem");
+	public static readonly Input: string = ControlTypes.getComponentPath("Input");
+	public static readonly Label: string = ControlTypes.getComponentPath("Label");
+	public static readonly List: string = ControlTypes.getComponentPath("List");
 
 	// Containers.
-	public static readonly Column: string = ControlTypeHelper.getContainerPath("Column");
-	public static readonly ColumnLayout: string = ControlTypeHelper.getContainerPath("ColumnLayout");
-	public static readonly Frame: string = ControlTypeHelper.getContainerPath("Frame");
-	public static readonly LoginFrame: string = ControlTypeHelper.getContainerPath("LoginFrame");
-	public static readonly OrderLayout: string = ControlTypeHelper.getContainerPath("OrderLayout");
-	public static readonly Panel: string = ControlTypeHelper.getContainerPath("Panel");
-	public static readonly PartitionLayout: string = ControlTypeHelper.getContainerPath("PartitionLayout");
-	public static readonly Screen: string = ControlTypeHelper.getContainerPath("Screen");
+	public static readonly Column: string = ControlTypes.getContainerPath("Column");
+	public static readonly ColumnLayout: string = ControlTypes.getContainerPath("ColumnLayout");
+	public static readonly Frame: string = ControlTypes.getContainerPath("Frame");
+	public static readonly LoginFrame: string = ControlTypes.getContainerPath("LoginFrame");
+	public static readonly OrderLayout: string = ControlTypes.getContainerPath("OrderLayout");
+	public static readonly Panel: string = ControlTypes.getContainerPath("Panel");
+	public static readonly PartitionLayout: string = ControlTypes.getContainerPath("PartitionLayout");
+	public static readonly Screen: string = ControlTypes.getContainerPath("Screen");
+
+	public static isComponent(path: string): boolean {
+		return (ControlTypes.componentRegistry.indexOf(path) > -1);
+	}
+
+	public static isContainer(path: string): boolean {
+		return (ControlTypes.containerRegistry.indexOf(path) > -1);
+	}
+
+	private static getComponentPath(name: string): string {
+		var path = "Vee/Elements/Components/" + name + "/" + name;
+		ControlTypes.componentRegistry.push(path);
+		return path;
+	}
+
+	private static getContainerPath(name: string): string {
+		var path = "Vee/Elements/Containers/" + name + "/" + name;
+		ControlTypes.containerRegistry.push(path);
+		return path;
+	}
 }

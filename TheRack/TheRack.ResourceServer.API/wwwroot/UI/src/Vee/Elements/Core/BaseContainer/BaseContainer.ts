@@ -48,6 +48,10 @@ export abstract class BaseContainer extends BaseElement {
 		return [];
 	}
 
+	public isComponentContainer(name: string): boolean {
+		return this.componentContainers.hasOwnProperty(name);
+	}
+
 	public getComponentContainerElement(name: string): HTMLElement | null {
 		if (this.componentContainers.hasOwnProperty(name)) {
 			return this.componentContainers[name].element;
