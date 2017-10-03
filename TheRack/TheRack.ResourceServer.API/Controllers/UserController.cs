@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using TheRack.Repository;
 using TheRack.DomainModel;
 using System.Diagnostics;
+using TheRack.ResourceServer.API.Response;
+using TheRack.DataTransfer;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
@@ -15,40 +17,39 @@ namespace TheRack.ResourceServer.API.Controllers
     public class UserController : Controller
     {
         [HttpGet]
-        public IEnumerable<User> Users()
+        public IResponse Users()
         {
-            var t = Stopwatch.StartNew();
-            var result =  UserRepository.Get();
-            Debug.WriteLine($"User Load Time {t.ElapsedMilliseconds}");
-            return result;
+            return EnumerableResponse.Create(UserRepository.Get());
         }
 
-        // GET api/values/5
         [HttpGet("{id}")]
-        public User Get(int id)
+        public IResponse Get(int id)
         {
-            return UserRepository.Get(id);
+            return EntityResponse.Create(UserRepository.Get(id));
         }
 
-        // POST api/values
+        [HttpGet("{id}/Detail")]
+        public IResponse GetWithDetails(int id)
+        {
+            return EntityResponse.Create(UserRepository.GetWithDetails(id));
+        }
+
         [HttpPost]
-        public User Post([FromBody] User value)
+        public IResponse Post([FromBody] UserDTO value)
         {
-            return UserRepository.Create(value);
+            return EntityResponse.Create(UserRepository.Create(value));
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
-        public User Put(int id, [FromBody] User value)
+        public IResponse Put(int id, [FromBody] UserDTO value)
         {
-            return UserRepository.Update(id, value);
+            return EntityResponse.Create(UserRepository.Update(id, value));
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
-        public User Delete(int id)
+        public IResponse Delete(int id)
         {
-            return UserRepository.Remove(id);
+            return EntityResponse.Create(UserRepository.Remove(id));
         }
     }
 }

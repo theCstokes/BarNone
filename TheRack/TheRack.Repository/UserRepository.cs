@@ -1,19 +1,25 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Transactions;
 using TheRack.DataAccess;
+using TheRack.DataAdapter;
+using TheRack.DataTransfer;
 using TheRack.DomainModel;
 
 namespace TheRack.Repository
 {
     public class UserRepository
     {
+        private static UserDataAdapter _adapter = new UserDataAdapter();
+
         public static List<User> Get()
         {
             using (var context = new DomainContext())
             {
-                return context.User.ToList();
+                return context.Users.ToList();
             }
         }
 
@@ -21,7 +27,7 @@ namespace TheRack.Repository
         {
             using (var context = new DomainContext())
             {
-                var result = context.User.Where(c => c.UserName == userName).First();
+                var result = context.Users.Where(c => c.UserName == userName).First();
 
                 if (result == null) return null;
 
@@ -37,7 +43,7 @@ namespace TheRack.Repository
         {
             using (var context = new DomainContext())
             {
-                var result = context.User.Where(c => c.ID == id).First();
+                var result = context.Users.Where(c => c.ID == id).First();
 
                 context.SaveChanges();
 
@@ -45,11 +51,27 @@ namespace TheRack.Repository
             }
         }
 
-        public static User Create(User entity)
+        public static User GetWithDetails(int id)
         {
             using (var context = new DomainContext())
             {
-                var result = context.User.Add(entity);
+                var result = context
+                    .Users
+                    .Include(u => u.Account)
+                    .Where(c => c.ID == id).First();
+
+                context.SaveChanges();
+
+                return result;
+            }
+        }
+
+        public static User Create(UserDTO dto)
+        {
+            using (var context = new DomainContext())
+            {
+                var entity = _adapter.GetDomainModel(dto);
+                var result = context.Users.Add(entity);
 
                 context.SaveChanges();
 
@@ -57,12 +79,13 @@ namespace TheRack.Repository
             }
         }
 
-        public static User Update(int id, User entity)
+        public static User Update(int id, UserDTO dto)
         {
             using (var context = new DomainContext())
             {
+                var entity = _adapter.GetDomainModel(dto);
                 entity.ID = id;
-                var result = context.User.Update(entity);
+                var result = context.Users.Update(entity);
 
                 context.SaveChanges();
 
@@ -74,7 +97,7 @@ namespace TheRack.Repository
         {
             using (var context = new DomainContext())
             {
-                var result = context.User.Remove(new User
+                var result = context.Users.Remove(new User
                 {
                     ID = id
                 });

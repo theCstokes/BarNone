@@ -6,21 +6,17 @@ using System.Text;
 
 namespace TheRack.DomainModel
 {
-    [Table("User", Schema = "public")]
-    public class User : BaseDomainModel<User>
+    [Table("Record", Schema = "public")]
+    public class Record : BaseDomainModel<User>
     {
         [Key]
         public override int ID { get; set; }
 
         public string Name { get; set; }
 
-        public string UserName { get; set; }
+        public int RecordCollectionID { get; set; }
 
-        public string Password { get; set; }
-
-        [ForeignKey("Account")]
-        public int? AccountID { get; set; }
-
-        public Account Account { get; set; }
+        [ForeignKey("RecordCollectionID")]
+        public RecordCollection RecordCollection { get; set; }
     }
 }

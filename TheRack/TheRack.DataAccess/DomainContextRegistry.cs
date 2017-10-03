@@ -8,6 +8,12 @@ namespace TheRack.DataAccess
 {
     public partial class DomainContext
     {
-        public DbSet<User> User { get; set; }
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Account> Accounts { get; set; }
+
+        public DbSet<RecordCollection> RecordCollections { get; set; }
+
+        public DbSet<Record> Records { get; set; }
     }
 }
