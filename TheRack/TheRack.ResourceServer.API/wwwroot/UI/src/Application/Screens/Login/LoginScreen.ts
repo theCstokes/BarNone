@@ -25,4 +25,8 @@ export default class LoginScreen extends BasicScreen<StateManager> {
 				// await Vee.push(UserScreen);
 			}
 		});
+
+	// public onShow(data?: any): void {
+	// 	throw new Error("Method not implemented.");
+	// }
 }

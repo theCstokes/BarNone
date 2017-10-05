@@ -3,6 +3,9 @@ import ControlTypes from "Vee/ControlTypes";
 import { View } from "Vee/View/View";
 
 export default class BasicScreen<TStateManager> extends AppScreen {
+	public onShow(data?: any): void {
+		
+	}
 	private _stateManager: TStateManager;
 
 	public constructor(ViewType: { new(): View },

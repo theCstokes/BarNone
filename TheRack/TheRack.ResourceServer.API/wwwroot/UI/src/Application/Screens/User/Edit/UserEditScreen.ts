@@ -28,7 +28,7 @@ export default class UserEditScreen extends EditScreen<StateManager> {
 
 	public onShow(data: any): void {
 		console.log(data);
-		this.stateManager.resetState.trigger(data);
+		// this.stateManager.resetState.trigger(data);
 	}
 
 	public save(): void {

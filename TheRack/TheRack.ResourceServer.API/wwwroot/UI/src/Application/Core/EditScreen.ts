@@ -5,6 +5,9 @@ import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
 import ScreenBind from "Vee/Screen/ScreenBind";
 
 export default class EditScreen<TStateManager extends BaseStateManager<any>> extends AppScreen {
+	public onShow(data?: any): void {
+		
+	}
 	private _isDirty: boolean;
 	private _stateManager: TStateManager;
 

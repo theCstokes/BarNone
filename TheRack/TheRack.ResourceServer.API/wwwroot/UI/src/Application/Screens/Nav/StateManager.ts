@@ -81,7 +81,7 @@ export class StateManager extends BaseStateManager<State> {
 		this.resetState.trigger();
 	}
 
-	public save(): void {
+	public onSave(): void {
 		throw new Error("Method not implemented.");
 	}
 }

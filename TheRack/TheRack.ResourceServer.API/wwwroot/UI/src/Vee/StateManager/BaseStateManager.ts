@@ -1,14 +1,19 @@
 import { AppScreen } from "Vee/Screen/AppScreen";
+import DataEvent from "Vee/Core/DataEvent/DataEvent";
+import { IDataEvent } from "Vee/Core/DataEvent/IDataEvent";
 
 export abstract class BaseStateManager<TState> {
 	private _currentState: TState;
 	private _originalState: TState;
 	private _screen: AppScreen;
+	private _saveEvent: DataEvent<void>;
 
 	public constructor(screen: AppScreen, state: TState) {
 		this._screen = screen;
 		this._currentState = Utils.clone(state);
 		this._originalState = Utils.clone(state);
+
+		this._saveEvent = new DataEvent();
 	}
 
 	public getCurrentState(): TState {
@@ -25,7 +30,7 @@ export abstract class BaseStateManager<TState> {
 			if (reset) {
 				this._originalState = Utils.clone(state);
 			}
-			this._screen.trigger("onRender", this._originalState, this._currentState);
+			this._screen.render({ original: this._originalState, current: this._currentState });
 		}
 	}
 
@@ -33,7 +38,16 @@ export abstract class BaseStateManager<TState> {
 		return this._screen;
 	}
 
-	public abstract init(): void; 
+	public get saveEvent(): IDataEvent<void> {
+		return this._saveEvent.expose();
+	}
 
-	public abstract save(): void; 
+	public async save(): Promise<void> {
+		await this.onSave();
+		this._saveEvent.trigger();
+	}
+
+	public abstract init(): void;
+
+	public abstract onSave(): void;
 }

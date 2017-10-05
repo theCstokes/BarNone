@@ -47,9 +47,9 @@ export class StateManager extends BaseStateManager<State> {
 		throw new Error("Method not implemented.");
 	}
 
-	public save(): void {
+	public async onSave(): Promise<void> {
 		var currentState = this.getCurrentState();
-		DataManager.Users.update(currentState.id, {
+		await DataManager.Users.update(currentState.id, {
 			id: currentState.id,
 			name: currentState.name,
 			userName: currentState.name,

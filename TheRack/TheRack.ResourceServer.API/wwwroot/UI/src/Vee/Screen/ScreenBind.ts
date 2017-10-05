@@ -18,7 +18,7 @@ export default class ScreenBind<TState> {
 		this._controlName = controlName;
 		this._controlCallbacks = {};
 
-		this._screen.bind("onShow", () => {
+		this._screen.showEvent.on(() => {
 			for(var key in this._controlCallbacks) {
 				if (!this._controlCallbacks.hasOwnProperty(key)) continue;
 				if (this._screen.view[this._controlName] === undefined) continue;
@@ -26,8 +26,8 @@ export default class ScreenBind<TState> {
 			}
 		});
 
-		this._screen.bind("onRender", (original: TState, current: TState) => {
-			this._onRenderCallback(original, current);
+		this._screen.renderEvent.on((data: any) => {
+			this._onRenderCallback(data.original, data.current);
 		});
 	}
 

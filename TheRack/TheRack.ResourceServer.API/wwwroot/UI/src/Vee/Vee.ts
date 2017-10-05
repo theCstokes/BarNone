@@ -70,7 +70,7 @@ export default class Vee {
 		return this._base;
 	}
 
-	public static async push(AppScreenType: { new(): AppScreen }, data?: any): Promise<void> {
+	public static async push(AppScreenType: { new(): AppScreen }, data?: any): Promise<AppScreen> {
 		var screen = new AppScreenType();
 		if (screen.isTrackScreen) {
 			history.pushState(null, document.title, location.href);
@@ -106,7 +106,9 @@ export default class Vee {
 
 		Vee._screens.push(screen);
 
-		screen.trigger("onShow", data);
+		// screen.trigger("onShow", data);
+		screen.show(data);
+		return screen;
 	}
 
 	public static pop(): void {
