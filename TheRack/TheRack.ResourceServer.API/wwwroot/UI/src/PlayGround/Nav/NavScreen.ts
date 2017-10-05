@@ -5,12 +5,10 @@ import { State, StateManager } from "Application/Screens/Nav/StateManager";
 import Vee from "Vee/Vee";
 import Loader from "Vee/Elements/Core/Loader";
 
-export default class NavScreen extends BasicScreen {
-	private _stateManager: StateManager;
+export default class NavScreen extends BasicScreen<StateManager> {
 
 	public constructor() {
-		super(NavView, true);
-		this._stateManager = new StateManager(this);
+		super(NavView, StateManager, true);
 		Vee.onBack.on(() => this._backAction());
 	}
 
@@ -19,7 +17,7 @@ export default class NavScreen extends BasicScreen {
 		.onSelect(async data => {
 			// console.log(data);
 			Vee.popTo(this);
-			this._stateManager.selectionChange.trigger({
+			this.stateManager.selectionChange.trigger({
 				id: data.id
 			});
 		})
@@ -43,10 +41,10 @@ export default class NavScreen extends BasicScreen {
 
 	private _backAction() {
 		Vee.popTo(this);
-		this._stateManager.navigateBack.trigger();
+		this.stateManager.navigateBack.trigger();
 	}
 
 	public onShow() {
-		this._stateManager.init();
+		this.stateManager.init();
 	}
 }

@@ -12,6 +12,7 @@ export default class Core {
 
 	public static addClass(element: HTMLElement, ...cssClasses: string[]): void {
 		cssClasses.forEach(name => {
+			if (name === undefined) return;
 			var items = name.match(/\S+/g) || [];
 			items.forEach(function (item) {
 				var itemName = item + " ";
@@ -25,6 +26,7 @@ export default class Core {
 
 	public static removeClass(element: HTMLElement, ...cssClasses: string[]): void {
 		cssClasses.forEach(name => {
+			if (name === undefined) return;
 			var items = name.match(/\S+/g) || [];
 			items.forEach(function (item) {
 				var itemName = item + " ";

@@ -15,6 +15,14 @@ export default class RequestBuilder {
 		return new RequestBuilder("GET", route);
 	}
 
+	public static PUT(route: string, args: { [key: string]: any } = {}): RequestBuilder {
+		for(var key in args) {
+			var routeKey = "{" + key + "}";
+			route = route.replace(routeKey, args[key]);
+		}
+		return new RequestBuilder("PUT", route);
+	}
+
 	public header(key: string, value: string): RequestBuilder {
 		this._headers[key] =  value;
 		return this;
@@ -46,7 +54,7 @@ export default class RequestBuilder {
 				reject();
 			};
 
-			xhr.send(null);
+			xhr.send(JSON.stringify(data));
 		});
 	}
 }

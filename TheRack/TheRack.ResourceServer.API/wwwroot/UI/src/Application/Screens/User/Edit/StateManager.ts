@@ -2,8 +2,10 @@ import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
 import { AppScreen } from "Vee/Screen/AppScreen";
 import StateBind from "Vee/Core/DataBind/StateBind";
 import { IDataBind } from "Vee/Core/DataBind/IDataBind";
+import DataManager from "Application/Data/DataManager";
 
 export class State {
+	public id: number;
 	public name: string = "";
 	public age: number;
 }
@@ -13,6 +15,7 @@ export class StateManager extends BaseStateManager<State> {
 		.create<State>(this, true)
 		.onAction((state, data) => {
 			var nextState = Utils.clone(state);
+			nextState.id = data.id;
 			nextState.name = data.name;
 			nextState.age = data.age;
 
@@ -42,5 +45,15 @@ export class StateManager extends BaseStateManager<State> {
 
 	public init(): void {
 		throw new Error("Method not implemented.");
+	}
+
+	public save(): void {
+		var currentState = this.getCurrentState();
+		DataManager.Users.update(currentState.id, {
+			id: currentState.id,
+			name: currentState.name,
+			userName: currentState.name,
+			password: ""
+		});
 	}
 }

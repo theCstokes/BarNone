@@ -6,12 +6,10 @@ import DataManager from "Application/Data/DataManager";
 import ScreenBind from "Vee/Screen/ScreenBind";
 import { State, StateManager } from "Application/Screens/User/StateManager";
 
-export default class UserScreen extends BasicScreen {
-	private _stateManager: StateManager;
+export default class UserScreen extends BasicScreen<StateManager> {
 	
 	public constructor() {
-		super(UserView);
-		this._stateManager = new StateManager(this);
+		super(UserView, StateManager);
 	}
 
 	public userListBind = ScreenBind
@@ -19,7 +17,7 @@ export default class UserScreen extends BasicScreen {
 		.onSelect(async data => {
 			// console.log(data);
 			Vee.pop();
-			this._stateManager.selectionChange.trigger({
+			this.stateManager.selectionChange.trigger({
 				id: data.id
 			});
 		})
@@ -39,7 +37,7 @@ export default class UserScreen extends BasicScreen {
 		});
 
 	public async onShow() {
-		this._stateManager.init();
+		this.stateManager.init();
 		// Vee.push(UserEditScreen);
 	}
 }

@@ -5,12 +5,13 @@ import DataManager from "Application/Data/DataManager";
 import LoginView from "Application/Screens/Login/LoginView";
 import NavScreen from "Application/Screens/Nav/NavScreen";
 import UserScreen from "Application/Screens/User/UserScreen";
+import { StateManager } from "Application/Screens/User/Edit/StateManager";
 
-export default class LoginScreen extends BasicScreen {
+export default class LoginScreen extends BasicScreen<StateManager> {
 	// private _stateManager: StateManager;
 
 	public constructor() {
-		super(LoginView);
+		super(LoginView, StateManager);
 		// this._stateManager = new StateManager(this);
 	}
 

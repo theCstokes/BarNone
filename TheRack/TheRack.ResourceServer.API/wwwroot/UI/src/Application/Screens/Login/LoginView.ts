@@ -23,11 +23,13 @@ export default class LoginView extends View {
 						content: [
 							{
 								instance: ControlTypes.Button,
+								icon: "fa-undo",
 								text: "Recover"
 							},
 							{
 								id: "loginButton",
 								instance: ControlTypes.Button,
+								icon: "fa-sign-in",
 								text: "Login"
 							}
 						]

@@ -46,4 +46,8 @@ export class StateManager extends BaseStateManager<State> {
 		var data = await DataManager.Users.load();
 		this.resetState.trigger(data);
 	}
+
+	public save(): void {
+		throw new Error("Method not implemented.");
+	}
 }

@@ -1,7 +1,7 @@
 import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
-import { AppScreen } from "Vee/Screen/AppScreen";
 import StateBind from "Vee/Core/DataBind/StateBind";
 import { IDataBind } from "Vee/Core/DataBind/IDataBind";
+import { AppScreen } from "Vee/Screen/AppScreen";
 
 class NavElement {
 	public id: number;
@@ -79,5 +79,9 @@ export class StateManager extends BaseStateManager<State> {
 
 	public init(): void {
 		this.resetState.trigger();
+	}
+
+	public save(): void {
+		throw new Error("Method not implemented.");
 	}
 }

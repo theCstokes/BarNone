@@ -34,4 +34,6 @@ export abstract class BaseStateManager<TState> {
 	}
 
 	public abstract init(): void; 
+
+	public abstract save(): void; 
 }

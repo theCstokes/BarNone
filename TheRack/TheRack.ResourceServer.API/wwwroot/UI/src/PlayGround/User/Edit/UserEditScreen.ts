@@ -3,18 +3,15 @@ import ScreenBind from "Vee/Screen/ScreenBind";
 import { StateManager, State } from "Application/Screens/User/Edit/StateManager";
 import UserEditView from "Application/Screens/User/Edit/UserEditView";
 
-export default class UserEditScreen extends EditScreen {
-	private _stateManager: StateManager;
-
+export default class UserEditScreen extends EditScreen<StateManager> {
 	public constructor() {
-		super(UserEditView);
-		this._stateManager = new StateManager(this);
+		super(UserEditView, StateManager);
 	}
 
 	public nameBind = ScreenBind
 		.create<State>(this, "nameInput")
 		.onChange(data => {
-			this._stateManager.nameChange.trigger(data);
+			this.stateManager.nameChange.trigger(data);
 		})
 		.onRender((original, current) => {
 			this.view.nameInput.text = current.name;
@@ -24,11 +21,17 @@ export default class UserEditScreen extends EditScreen {
 	public panelBind = ScreenBind
 		.create<State>(this, "editPanel")
 		.onRender((original, current) => {
-			this.view.editPanel.modified = (JSON.stringify(original) !== JSON.stringify(current));
+			var isModified = (JSON.stringify(original) !== JSON.stringify(current));
+			this.view.editPanel.modified = isModified;
+			// this.isDirty = isModified;
 		});
 
 	public onShow(data: any): void {
 		console.log(data);
-		this._stateManager.resetState.trigger(data);
+		this.stateManager.resetState.trigger(data);
+	}
+
+	public save(): void {
+		
 	}
 }
