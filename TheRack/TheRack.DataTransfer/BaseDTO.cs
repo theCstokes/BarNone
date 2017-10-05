@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TheRack.DataTransfer
 {
-    public abstract class BaseDTO
+    public abstract class BaseDTO<TDTO>
+        where TDTO : new()
     {
         public abstract int ID { get; set; }
 
-        public List<UpdateRequestDTO> UpdateFilter { get; set; }
-
+        public List<string> UpdateFilter { get; set; }
     }
 }

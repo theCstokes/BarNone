@@ -1,22 +1,49 @@
-﻿using Npgsql;
-using TheRack.Core;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using TheRack.DomainModel;
 
 namespace TheRack.DataAccess
 {
-    public class DomainContext : IDisposable
+    public partial class DomainContext : DbContext
     {
-        #region Local Connection Data.
-        public static readonly string HOST = "127.0.0.1";
-        public static readonly string PORT = "5432";
-        public static readonly string USERNAME = "postgres";
-        public static readonly string PASSWORD = "admin";
-        public static readonly string DATABASE = "SharpSight";
-        #endregion
+        private static readonly string HOST = "127.0.0.1";
+        private static readonly string PORT = "5432";
+        private static readonly string USERNAME = "postgres";
+        private static readonly string PASSWORD = "admin";
+        private static readonly string DATABASE = "SharpSight";
+
+        public DomainContext() : base()
+        {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql(Credentials);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            modelBuilder.Entity<RecordCollection>()
+                .HasMany(rc => rc.Records)
+                .WithOne(r => r.RecordCollection);
+
+            modelBuilder.Entity<Record>()
+                .HasOne(r => r.RecordCollection)
+                .WithMany(rc => rc.Records);
+
+            //modelBuilder.Entity<RecordCollection>()
+            //    .HasMany<Record>(s => s.Records);
+            //.Map(cs =>
+            //{
+            //    cs.MapLeftKey("StudentRefId");
+            //    cs.MapRightKey("CourseRefId");
+            //    cs.ToTable("StudentCourse");
+            //});
+
+        }
 
         public static string Credentials
         {
@@ -26,71 +53,5 @@ namespace TheRack.DataAccess
                     USERNAME, PASSWORD, HOST, PORT, DATABASE);
             }
         }
-
-        #region Public Definition(s).
-        public delegate T RequestAction<T>(List<Dictionary<string, object>> results);
-        #endregion
-
-        #region Private Field(s).
-        //private SemaphoreSlim queryBlock;
-        private List<string> errorResults;
-        //private ErrorReporter errorReporter;
-        #endregion
-
-        #region Public Constructor(s).
-        public DomainContext(DomainParameters domainParams)
-        {
-            Connection = new NpgsqlConnection(Credentials);
-            Connection.Open();
-            Transaction = Connection.BeginTransaction();
-
-            AccountID = domainParams.AccountID;
-
-            //queryBlock = new SemaphoreSlim(1, 1);
-
-            this.errorResults = new List<string>();
-            //this.errorReporter = errorReporter;
-        }
-
-        public DomainContext()
-        {
-            Connection = new NpgsqlConnection(Credentials);
-            Connection.Open();
-            Transaction = Connection.BeginTransaction();
-
-            //queryBlock = new SemaphoreSlim(1, 1);
-
-            this.errorResults = new List<string>();
-        }
-        #endregion
-
-        #region Public Property(s).
-        public int AccountID { get; private set; }
-        #endregion
-
-        #region Public Member(s).
-        public NpgsqlTransaction Transaction { get; private set; }
-        public NpgsqlConnection Connection { get; private set; }
-
-        public void Commit()
-        {
-            Transaction.Commit();
-        }
-
-        #endregion
-
-        #region IDisposable Implementation
-        public void Dispose()
-        {
-            Connection.Dispose();
-        }
-        #endregion
-
-        //#region IErrorReporter Implementation.
-        //public void Fail(bool didPass)
-        //{
-        //    errorReporter.Fail(didPass);
-        //}
-        //#endregion
     }
 }
