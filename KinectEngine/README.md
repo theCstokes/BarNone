@@ -1,1 +1,0 @@
-This is the windows client that connects to the Kinect.
