@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TheRack.DataAccess\TheRack.DataAccess.csproj" />
+    <ProjectReference Include="..\TheRack.DataAdapter\TheRack.DataAdapter.csproj" />
+    <ProjectReference Include="..\TheRack.DataTransfer\TheRack.DataTransfer.csproj" />
+    <ProjectReference Include="..\TheRack.DomainModel\TheRack.DomainModel.csproj" />
+  </ItemGroup>
+
+</Project>

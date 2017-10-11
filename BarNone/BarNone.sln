@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone", "BarNone\BarNone.csproj", "{195DFCEE-EEE7-4827-8E5F-03F4F28BB323}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{77D27D1C-4BFF-4CBC-8102-2B311548C1FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TheRack", "TheRack", "{77EA3D2C-6854-4A20-97B8-99D446962774}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataLift", "DataLift", "{6CDB2177-EAA1-4F16-88C1-37B1F97EC4B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.DataLift.Demo", "BarNone.DataLift.Demo\BarNone.DataLift.Demo.csproj", "{4AE75F2E-DB82-47B2-B494-13479320EB20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.Shared.DataTransfer", "BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj", "{A97BB7C6-D74F-463C-8766-998ECA765BA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.TheRack.Demo", "BarNone.TheRack.Demo\BarNone.TheRack.Demo.csproj", "{D52B5453-9888-4FD0-A1D0-489C6BB1CFBE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{195DFCEE-EEE7-4827-8E5F-03F4F28BB323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{195DFCEE-EEE7-4827-8E5F-03F4F28BB323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{195DFCEE-EEE7-4827-8E5F-03F4F28BB323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{195DFCEE-EEE7-4827-8E5F-03F4F28BB323}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AE75F2E-DB82-47B2-B494-13479320EB20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AE75F2E-DB82-47B2-B494-13479320EB20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AE75F2E-DB82-47B2-B494-13479320EB20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AE75F2E-DB82-47B2-B494-13479320EB20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A97BB7C6-D74F-463C-8766-998ECA765BA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A97BB7C6-D74F-463C-8766-998ECA765BA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A97BB7C6-D74F-463C-8766-998ECA765BA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A97BB7C6-D74F-463C-8766-998ECA765BA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D52B5453-9888-4FD0-A1D0-489C6BB1CFBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D52B5453-9888-4FD0-A1D0-489C6BB1CFBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D52B5453-9888-4FD0-A1D0-489C6BB1CFBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D52B5453-9888-4FD0-A1D0-489C6BB1CFBE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4AE75F2E-DB82-47B2-B494-13479320EB20} = {6CDB2177-EAA1-4F16-88C1-37B1F97EC4B5}
+		{A97BB7C6-D74F-463C-8766-998ECA765BA0} = {77D27D1C-4BFF-4CBC-8102-2B311548C1FE}
+		{D52B5453-9888-4FD0-A1D0-489C6BB1CFBE} = {77EA3D2C-6854-4A20-97B8-99D446962774}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BBD0D095-9433-4102-B857-FD70440F37D3}
+	EndGlobalSection
+EndGlobal
