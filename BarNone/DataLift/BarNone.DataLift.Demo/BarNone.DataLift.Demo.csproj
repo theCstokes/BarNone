@@ -48,11 +48,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj">
-      <Project>{a97bb7c6-d74f-463c-8766-998eca765ba0}</Project>
-      <Name>BarNone.Shared.DataTransfer</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
