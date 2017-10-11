@@ -13,11 +13,12 @@ namespace TheRack.ResourceServer.API.Controllers
     [Authorize(Policy = "User")]
     public class RecordCollectionController : Controller
     {
-        [HttpGet("{Detail}")]
-        public IResponse GetWithDetails()
-        {
-            var repo = new RecordCollectionRepository();
-            return EntityResponse.Create(repo.GetWithDetails());
-        }
+        //[HttpGet("{Detail}")]
+        //public IResponse GetWithDetails()
+        //{
+        //    var repo = new RecordCollectionRepository();
+        //    var users = repo.GetWithDetails();
+        //    return EntityResponse.Create(repo.GetWithDetails());
+        //}
     }
 }

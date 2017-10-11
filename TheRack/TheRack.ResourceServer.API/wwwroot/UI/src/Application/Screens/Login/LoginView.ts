@@ -27,8 +27,14 @@ export default class LoginView extends View {
 								text: "Recover"
 							},
 							{
-								id: "loginButton",
 								instance: ControlTypes.Button,
+								id: "createButton",
+								icon: "fa-plus",
+								text: "Create"
+							},
+							{
+								instance: ControlTypes.Button,
+								id: "loginButton",
 								icon: "fa-sign-in",
 								text: "Login"
 							}

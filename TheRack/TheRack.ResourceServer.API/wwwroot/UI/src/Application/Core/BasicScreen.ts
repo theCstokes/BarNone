@@ -1,11 +1,9 @@
 import { AppScreen } from "Vee/Screen/AppScreen";
 import ControlTypes from "Vee/ControlTypes";
 import { View } from "Vee/View/View";
+import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
 
-export default class BasicScreen<TStateManager> extends AppScreen {
-	public onShow(data?: any): void {
-		
-	}
+export default class BasicScreen<TStateManager extends BaseStateManager<any>> extends AppScreen {
 	private _stateManager: TStateManager;
 
 	public constructor(ViewType: { new(): View },
@@ -26,5 +24,9 @@ export default class BasicScreen<TStateManager> extends AppScreen {
 
 	public get stateManager(): TStateManager {
 		return this._stateManager;
+	}
+
+	public onShow(data?: any): void {
+		this.stateManager.init();
 	}
 }

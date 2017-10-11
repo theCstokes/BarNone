@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TheRack.DataAdapter\TheRack.DataAdapter.csproj" />
     <ProjectReference Include="..\TheRack.DataTransfer\TheRack.DataTransfer.csproj" />
     <ProjectReference Include="..\TheRack.DomainModel\TheRack.DomainModel.csproj" />
     <ProjectReference Include="..\TheRack.Repository\TheRack.Repository.csproj" />

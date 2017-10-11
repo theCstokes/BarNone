@@ -14,9 +14,10 @@ namespace TheRack.Repository
         {
             using (var context = new DomainContext())
             {
-                return context.RecordCollections
-                    .Include(x => x.Records)
-                    .ToList();
+                //return context.RecordCollections
+                //    .Include(x => x.Records)
+                //    .ToList();
+                return null;
             }
         }
     }

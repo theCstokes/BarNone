@@ -3,19 +3,20 @@ import ControlTypes from "Vee/ControlTypes";
 import { View } from "Vee/View/View";
 import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
 import ScreenBind from "Vee/Screen/ScreenBind";
+import DataEvent from "Vee/Core/DataEvent/DataEvent";
+import { IDataEvent } from "Vee/Core/DataEvent/IDataEvent";
 
 export default class EditScreen<TStateManager extends BaseStateManager<any>> extends AppScreen {
-	public onShow(data?: any): void {
-		
-	}
 	private _isDirty: boolean;
 	private _stateManager: TStateManager;
+	private _cancelEvent: DataEvent<void>;
 
 	public constructor(ViewType: { new(): View },
 		StateManagerType: { new(screen: AppScreen): TStateManager },
 		isTrackScreen: boolean = false) {
 		super(ViewType, isTrackScreen);
 		this._stateManager = new StateManagerType(this);
+		this._cancelEvent = new DataEvent<void>();
 	}
 
 	public get content(): any[] {
@@ -70,7 +71,8 @@ export default class EditScreen<TStateManager extends BaseStateManager<any>> ext
 			// this.isDirty = isModified;
 		})
 		.onClick(() => {
-			this.stateManager.init();
+			// this.stateManager.init();
+			this._cancelEvent.trigger();
 		});
 
 	public saveBind = ScreenBind
@@ -83,5 +85,13 @@ export default class EditScreen<TStateManager extends BaseStateManager<any>> ext
 		.onClick(() => {
 			this.stateManager.save();
 		});
+
+	public get cancelEvent(): IDataEvent<void> {
+		return this._cancelEvent.expose();
+	}
+
+	public onShow(data?: any): void {
+
+	}
 
 }

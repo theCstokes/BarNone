@@ -13,7 +13,7 @@ export abstract class BaseStateManager<TState> {
 		this._currentState = Utils.clone(state);
 		this._originalState = Utils.clone(state);
 
-		this._saveEvent = new DataEvent();
+		this._saveEvent = new DataEvent<void>();
 	}
 
 	public getCurrentState(): TState {

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using TheRack.DataTransfer;
+using TheRack.DataTransfer.Core;
 using TheRack.DomainModel;
 
-namespace TheRack.DataAdapter
+namespace TheRack.DataAdapter.Core
 {
     public static class DataAdapterActions
     {

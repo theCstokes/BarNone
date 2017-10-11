@@ -19,7 +19,7 @@ export default class ScreenBind<TState> {
 		this._controlCallbacks = {};
 
 		this._screen.showEvent.on(() => {
-			for(var key in this._controlCallbacks) {
+			for (var key in this._controlCallbacks) {
 				if (!this._controlCallbacks.hasOwnProperty(key)) continue;
 				if (this._screen.view[this._controlName] === undefined) continue;
 				this._screen.view[this._controlName][key] = this._controlCallbacks[key];
@@ -27,7 +27,9 @@ export default class ScreenBind<TState> {
 		});
 
 		this._screen.renderEvent.on((data: any) => {
-			this._onRenderCallback(data.original, data.current);
+			if (this._onRenderCallback !== undefined) {
+				this._onRenderCallback(data.original, data.current);
+			}
 		});
 	}
 

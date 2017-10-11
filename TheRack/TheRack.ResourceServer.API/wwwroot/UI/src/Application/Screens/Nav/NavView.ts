@@ -7,7 +7,7 @@ export default class NavView extends View {
 			{
 				instance: ControlTypes.Frame,
 				statusTitle: "Christopher Stokes",
-				statusImageSource: "res/jedi-symbol.jpg",
+				statusImageSource: "res/MacBarBell.jpg",
 				globalDock: {
 					instance: ControlTypes.OrderLayout,
 					rightToLeft: true,

@@ -6,8 +6,8 @@ using TheRack.DomainModel;
 
 namespace TheRack.DataAccess
 {
-    public class AccountDomainContext : BaseDomainContext
+    public partial class DomainContext
     {
-        public DbSet<Account> User { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

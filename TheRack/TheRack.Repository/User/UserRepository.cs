@@ -8,22 +8,15 @@ using TheRack.DataAccess;
 using TheRack.DataAdapter;
 using TheRack.DataTransfer;
 using TheRack.DomainModel;
+using TheRack.Repository.Core;
 
 namespace TheRack.Repository
 {
-    public class UserRepository
+    public class UserRepository : IRepository<UserDTO, User>
     {
         private static UserDataAdapter _adapter = new UserDataAdapter();
 
-        public static List<User> Get()
-        {
-            using (var context = new DomainContext())
-            {
-                return context.Users.ToList();
-            }
-        }
-
-        public static User Login(string userName, string password)
+        public User Login(string userName, string password)
         {
             using (var context = new DomainContext())
             {
@@ -39,7 +32,15 @@ namespace TheRack.Repository
             }
         }
 
-        public static User Get(int id)
+        public List<User> Get()
+        {
+            using (var context = new DomainContext())
+            {
+                return context.Users.ToList();
+            }
+        }
+
+        public User Get(int id)
         {
             using (var context = new DomainContext())
             {
@@ -51,7 +52,7 @@ namespace TheRack.Repository
             }
         }
 
-        public static User GetWithDetails(int id)
+        public User GetWithDetails(int id)
         {
             using (var context = new DomainContext())
             {
@@ -66,7 +67,7 @@ namespace TheRack.Repository
             }
         }
 
-        public static User Create(UserDTO dto)
+        public User Create(UserDTO dto)
         {
             using (var context = new DomainContext())
             {
@@ -79,7 +80,7 @@ namespace TheRack.Repository
             }
         }
 
-        public static User Update(int id, UserDTO dto)
+        public User Update(int id, UserDTO dto)
         {
             using (var context = new DomainContext())
             {
@@ -93,7 +94,7 @@ namespace TheRack.Repository
             }
         }
 
-        public static User Remove(int id)
+        public User Remove(int id)
         {
             using (var context = new DomainContext())
             {

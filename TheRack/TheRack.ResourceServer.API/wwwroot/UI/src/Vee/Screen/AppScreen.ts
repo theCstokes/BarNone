@@ -16,7 +16,6 @@ export abstract class AppScreen implements IScreen {
 	private _renderEvent: DataEvent<any>;
 
 	public constructor(viewType: { new(): View }, isTrackScreen: boolean = false) {
-		// this._viewType = viewType;
 		this._view = new viewType();
 		this._eventBinds = {};
 		this._isTrackScreen = isTrackScreen;
@@ -33,24 +32,6 @@ export abstract class AppScreen implements IScreen {
 	public get isTrackScreen(): boolean {
 		return this._isTrackScreen;
 	}
-
-	// public bind(name: string, callback: any): void {
-	// 	if (this._eventBinds[name] === undefined) {
-	// 		this._eventBinds[name] = [];
-	// 	}
-	// 	this._eventBinds[name].push(callback);
-	// }
-
-	// public trigger(name: string, ...data: any[]): void {
-	// 	if (name in this) {
-	// 		(this as any)[name].apply(this, data);
-	// 	}
-	// 	if (this._eventBinds[name] !== undefined) {
-	// 		this._eventBinds[name].forEach((callback: any) => {
-	// 			callback.apply(this, data);
-	// 		});
-	// 	}
-	// }
 
 	public get components(): BaseElement[] {
 		return this._components;

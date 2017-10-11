@@ -1,9 +1,7 @@
 import Resource from "Vee/Data/Resource";
 
-//const AUTH_URL = "/AuthorizationServer/api/v1/authorize/login";
-//const RESOURCE_URL = "/ResourceServer/api/v1/";
-
-const AUTH_URL = "/api/v1/Authorization";
+const CREATE_URL = "/api/v1/Authorization/Create";
+const AUTH_URL = "/api/v1/Authorization/Login";
 const RESOURCE_URL = "/api/v1/";
 
 export abstract class BaseDataManager {
@@ -14,20 +12,20 @@ export abstract class BaseDataManager {
 	private static _auth: Auth;
 
 	public static async authorize(username: string, password: string): Promise<boolean> {
+		return BaseDataManager.authServerRequest(BaseDataManager.authorizationAddress, username, password);
+	}
 
+	public static async create(username: string, password: string): Promise<boolean> {
+		return BaseDataManager.authServerRequest(BaseDataManager.creationAddress, username, password);
+	}
+
+	private static authServerRequest(path: string, username: string, password: string): Promise<boolean> {
 		var http = new XMLHttpRequest();
 
-		//var args = "username=" + username +
-		//	"&password=" + password +
-		//	"&grant_type=" + BaseDataManager.grant_type +
-		//	"&client_id=" + BaseDataManager.client_id;
+		var args = "userName=" + username +
+			"&password=" + password;
 
-        var args = "userName=" + username +
-            "&password=" + password;
-
-		http.open("POST", BaseDataManager.authorizationAddress, true);
-		// http.setRequestHeader("Access-Control-Allow-Origin", "*");
-    // http.setRequestHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		http.open("POST", path, true);
 		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 		var result = new Promise<boolean>((resolve, reject) => {
@@ -52,6 +50,10 @@ export abstract class BaseDataManager {
 
 	public static get authorizationAddress(): string {
 		return window.location.origin + AUTH_URL;
+	}
+
+	public static get creationAddress(): string {
+		return window.location.origin + CREATE_URL;
 	}
 
 	public static get resourceAddress(): string {

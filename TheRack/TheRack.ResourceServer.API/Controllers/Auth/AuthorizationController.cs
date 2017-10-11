@@ -13,6 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
+using TheRack.DataTransfer;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
@@ -36,9 +37,9 @@ namespace TheRack.ResourceServer.API.Controllers
             };
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Get([FromForm] User applicationUser)
+        public async Task<IActionResult> Login([FromForm] UserDTO applicationUser)
         {
             var identity = await GetClaimsIdentity(applicationUser);
             if (identity == null)
@@ -55,7 +56,55 @@ namespace TheRack.ResourceServer.API.Controllers
                 ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(),
                 ClaimValueTypes.Integer64),
                 identity.FindFirst("User")
-      };
+            };
+
+            // Create the JWT security token and encode it.
+            var jwt = new JwtSecurityToken(
+                issuer: _jwtOptions.Issuer,
+                audience: _jwtOptions.Audience,
+                claims: claims,
+                notBefore: _jwtOptions.NotBefore,
+                expires: _jwtOptions.Expiration,
+                signingCredentials: _jwtOptions.SigningCredentials);
+
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            // Serialize and return the response
+            var response = new
+            {
+                access_token = encodedJwt,
+                expires_in = (int)_jwtOptions.ValidFor.TotalSeconds
+            };
+
+            var json = JsonConvert.SerializeObject(response, _serializerSettings);
+            return new OkObjectResult(json);
+        }
+
+        [HttpPost("Create")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Create([FromForm] UserDTO applicationUser)
+        {
+            applicationUser.Name = applicationUser.UserName;
+
+            var repo = new UserRepository();
+
+            var user = repo.Create(applicationUser);
+            var identity = await GetClaimsIdentity(applicationUser);
+            if (identity == null)
+            {
+                _logger.LogInformation($"Invalid username ({applicationUser.UserName}) or password ({applicationUser.Password})");
+                return BadRequest("Invalid credentials");
+            }
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, applicationUser.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
+                new Claim(JwtRegisteredClaimNames.Iat,
+                ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(),
+                ClaimValueTypes.Integer64),
+                identity.FindFirst("User")
+            };
 
             // Create the JWT security token and encode it.
             var jwt = new JwtSecurityToken(
@@ -110,9 +159,10 @@ namespace TheRack.ResourceServer.API.Controllers
         /// You'd want to retrieve claims through your claims provider
         /// in whatever way suits you, the below is purely for demo purposes!
         /// </summary>
-        private static Task<ClaimsIdentity> GetClaimsIdentity(User user)
+        private static Task<ClaimsIdentity> GetClaimsIdentity(UserDTO user)
         {
-            var entity = UserRepository.Login(user.UserName, user.Password);
+            var repo = new UserRepository();
+            var entity = repo.Login(user.UserName, user.Password);
 
             if (entity == null)
             {

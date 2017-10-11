@@ -46,6 +46,15 @@ export default class UserScreen extends BasicScreen<StateManager> {
 		this.subScreen.stateManager.saveEvent.on(() => {
 			this.stateManager.init();
 		});
+
+		this.subScreen.cancelEvent.on(() => {
+			var current = this.stateManager.getCurrentState();
+			var userData = current.selectionList.find(item => {
+				return (item.id === current.selectionId);
+			});
+			this.subScreen.stateManager.resetState.trigger(userData);
+		});
+		
 		// Vee.push(UserEditScreen);
 	}
 }

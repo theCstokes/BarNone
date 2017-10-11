@@ -6,6 +6,7 @@ import LoginView from "Application/Screens/Login/LoginView";
 import NavScreen from "Application/Screens/Nav/NavScreen";
 import UserScreen from "Application/Screens/User/UserScreen";
 import { StateManager } from "Application/Screens/User/Edit/StateManager";
+import CreateAccountScreen from "Application/Screens/Login/Create/CreateAccountScreen";
 
 export default class LoginScreen extends BasicScreen<StateManager> {
 	// private _stateManager: StateManager;
@@ -14,6 +15,13 @@ export default class LoginScreen extends BasicScreen<StateManager> {
 		super(LoginView, StateManager);
 		// this._stateManager = new StateManager(this);
 	}
+
+	public createAccountBind = ScreenBind
+		.create(this, "createButton")
+		.onClick(async () => {
+			Vee.pop();
+			await Vee.push(CreateAccountScreen);
+		});
 
 	public loginBind = ScreenBind
 		.create(this, "loginButton")

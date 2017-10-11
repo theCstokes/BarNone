@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TheRack.Core\TheRack.Core.csproj" />
     <ProjectReference Include="..\TheRack.DataTransfer\TheRack.DataTransfer.csproj" />
     <ProjectReference Include="..\TheRack.DomainModel\TheRack.DomainModel.csproj" />
   </ItemGroup>

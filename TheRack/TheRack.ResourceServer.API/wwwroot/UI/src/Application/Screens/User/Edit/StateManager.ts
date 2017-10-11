@@ -44,7 +44,7 @@ export class StateManager extends BaseStateManager<State> {
 	}
 
 	public init(): void {
-		throw new Error("Method not implemented.");
+		// this.resetState.trigger();
 	}
 
 	public async onSave(): Promise<void> {
