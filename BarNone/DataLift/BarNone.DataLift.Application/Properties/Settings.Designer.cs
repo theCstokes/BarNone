@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BarNone.DataLift.Application.Properties
+namespace BarNone.DataLift.UI.Properties
 {
 
 

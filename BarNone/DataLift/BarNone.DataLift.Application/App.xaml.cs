@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace BarNone.DataLift.Application
+namespace BarNone.DataLift.UI
 {
     /// <summary>
     /// Interaction logic for App.xaml
