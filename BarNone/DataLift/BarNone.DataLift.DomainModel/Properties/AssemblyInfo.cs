@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BarNone.DataLift.Demo")]
+[assembly: AssemblyTitle("BarNone.DataLift.DomainModel")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BarNone.DataLift.Demo")]
+[assembly: AssemblyProduct("BarNone.DataLift.DomainModel")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4ae75f2e-db82-47b2-b494-13479320eb20")]
+[assembly: Guid("707ade0d-0c8d-4edf-81b9-889b4538efa1")]
 
 // Version information for an assembly consists of the following four values:
 //
