@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:55863/",
+      "applicationUrl": "http://localhost:58427/",
       "sslPort": 0
     }
   },
@@ -19,11 +19,11 @@
     "BarNone.TheRack.ResourceServer.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "ui",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:55864/"
+      "applicationUrl": "http://localhost:58428"
     }
   }
 }

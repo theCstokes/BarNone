@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
-using TheRack.ResourceServer.API.Response;
 using System.Net.Http;
 using System.Net;
-using BarNone.TheRack.Repository;
 using BarNone.Shared.DataTransfer;
+using BarNone.TheRack.Repository;
+using TheRack.ResourceServer.API.Response;
 
 namespace TheRack.ResourceServer.API.Controllers
 {

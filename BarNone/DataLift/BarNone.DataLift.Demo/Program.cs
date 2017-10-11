@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BarNone.Shared.DataTransfer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,10 @@ namespace BarNone.DataLift.Demo
     {
         static void Main(string[] args)
         {
-            //var user = new UserDTO();
-            //user.Name = "Chris Stokes";
-            //Console.WriteLine($"{user.Name}");
+            var user = new UserDTO();
+            user.Name = "Chris Stokes";
+            Console.WriteLine($"{user.Name}");
+            Console.ReadLine();
         }
     }
 }
