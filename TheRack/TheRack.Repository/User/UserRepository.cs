@@ -1,102 +1,111 @@
-﻿using TheRack.DataAccess;
-using TheRack.DataAccessAdapter;
-using TheRack.DataTransfer.UserDTO;
-using TheRack.DomainModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
+using System.Transactions;
+using TheRack.DataAccess;
+using TheRack.DataAdapter;
+using TheRack.DataTransfer;
+using TheRack.DomainModel;
+using TheRack.Repository.Core;
 
 namespace TheRack.Repository
 {
-    public class UserRepository : BaseRepository<UserDTO, User>
+    public class UserRepository : IRepository<UserDTO, User>
     {
+        private static UserDataAdapter _adapter = new UserDataAdapter();
 
-        public User Get(Expression<Func<User, bool>> where = null)
+        public User Login(string userName, string password)
         {
-            var dc = new DomainContext();
-            var adapter = new UserAdapter();
-            var dataMap = adapter.CreateMapForGet();
-            var request = new DataRequest
+            using (var context = new DomainContext())
             {
-                Type = RequestType.LOAD,
-                MetaData = new EntityMetaData
-                {
-                    SchemaName = "public",
-                    TableName = "User"
-                },
-                Entity = new DataEntity(dataMap),
-            };
+                var result = context.Users.Where(c => c.UserName == userName).First();
 
-            request.WhereClauses = WhereClauseBuilder<User>.Execute(where, request);
-            var sql = SQLGenerator.Execute(request);
-            var result = SQLProcessor.Execute(dc, sql);
+                if (result == null) return null;
 
-            var user = new User();
+                context.SaveChanges();
 
-            foreach (var pair in result)
-            {
-                adapter.WriteMap[pair.Key](user, pair.Value);
+                if (result.Password == password) return result;
+
+                return null;
             }
-            
-            dc.Commit();
-            return user;
+        }
+
+        public List<User> Get()
+        {
+            using (var context = new DomainContext())
+            {
+                return context.Users.ToList();
+            }
+        }
+
+        public User Get(int id)
+        {
+            using (var context = new DomainContext())
+            {
+                var result = context.Users.Where(c => c.ID == id).First();
+
+                context.SaveChanges();
+
+                return result;
+            }
+        }
+
+        public User GetWithDetails(int id)
+        {
+            using (var context = new DomainContext())
+            {
+                var result = context
+                    .Users
+                    .Include(u => u.Account)
+                    .Where(c => c.ID == id).First();
+
+                context.SaveChanges();
+
+                return result;
+            }
         }
 
         public User Create(UserDTO dto)
         {
-            var dc = new DomainContext();
-            var adapter = new UserAdapter();
-            var dataMap = adapter.CreateReadMap(dto);
-            var request = new DataRequest
+            using (var context = new DomainContext())
             {
-                Type = RequestType.CREATE,
-                MetaData = new EntityMetaData
-                {
-                    SchemaName = "public",
-                    TableName = "User"
-                },
-                Entity = new DataEntity(dataMap)
-            };
-            var sql = SQLGenerator.Execute(request);
-            var result = SQLProcessor.Execute(dc, sql);
-            var user = adapter.ToDomainModel(dto);
-            user.ID = Convert.ToInt32(result["ID"]);
-            dc.Commit();
-            return user;
+                var entity = _adapter.GetDomainModel(dto);
+                var result = context.Users.Add(entity);
+
+                context.SaveChanges();
+
+                return result.Entity;
+            }
         }
 
-        public User Update(UserDTO dto)
+        public User Update(int id, UserDTO dto)
         {
-            var dc = new DomainContext();
-            var adapter = new UserAdapter();
-            var dataMap = adapter.CreateReadMap(dto);
-            var request = new DataRequest
+            using (var context = new DomainContext())
             {
-                Type = RequestType.UPDATE,
-                MetaData = new EntityMetaData
+                var entity = _adapter.GetDomainModel(dto);
+                entity.ID = id;
+                var result = context.Users.Update(entity);
+
+                context.SaveChanges();
+
+                return result.Entity;
+            }
+        }
+
+        public User Remove(int id)
+        {
+            using (var context = new DomainContext())
+            {
+                var result = context.Users.Remove(new User
                 {
-                    SchemaName = "public",
-                    TableName = "User"
-                },
-                Entity = new DataEntity(dto.ID, dataMap),
-                UpdateFilter = dto.UpdateFilter.Select(filter =>
-                {
-                    return new UpdateRequest
-                    {
-                        Name = filter.Name,
-                        Operation = WhereOperation.GetOperation(filter.Operation)
-                    };
-                }).ToList()
-            };
-            var sql = SQLGenerator.Execute(request);
-            var result = SQLProcessor.Execute(dc, sql);
-            var user = adapter.ToDomainModel(dto);
-            //user.ID = Convert.ToInt32(result["ID"]);
-            dc.Commit();
-            return user;
+                    ID = id
+                });
+
+                context.SaveChanges();
+
+                return result.Entity;
+            }
         }
     }
 }

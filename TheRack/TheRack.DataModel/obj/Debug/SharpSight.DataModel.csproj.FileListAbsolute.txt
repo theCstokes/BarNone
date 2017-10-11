@@ -1,4 +1,0 @@
-C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.DataModel\bin\Debug\SharpSight.DataModel.dll
-C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.DataModel\bin\Debug\SharpSight.DataModel.pdb
-C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.DataModel\obj\Debug\SharpSight.DataModel.dll
-C:\Users\Christopher Stokes\documents\visual studio 2015\Projects\SharpSight\SharpSight.DataModel\obj\Debug\SharpSight.DataModel.pdb

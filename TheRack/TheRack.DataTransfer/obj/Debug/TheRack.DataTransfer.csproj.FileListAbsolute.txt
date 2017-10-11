@@ -1,9 +1,0 @@
-C:\Users\Christopher Stokes\Code\SharpSight\SharpSight.DataTransfer\bin\Debug\SharpSight.DataTransfer.dll
-C:\Users\Christopher Stokes\Code\SharpSight\SharpSight.DataTransfer\bin\Debug\SharpSight.DataTransfer.pdb
-C:\Users\Christopher Stokes\Code\SharpSight\SharpSight.DataTransfer\obj\Debug\TheRack.DataTransfer.csprojResolveAssemblyReference.cache
-C:\Users\Christopher Stokes\Code\SharpSight\SharpSight.DataTransfer\obj\Debug\SharpSight.DataTransfer.dll
-C:\Users\Christopher Stokes\Code\SharpSight\SharpSight.DataTransfer\obj\Debug\SharpSight.DataTransfer.pdb
-C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataTransfer\bin\Debug\TheRack.DataTransfer.dll
-C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataTransfer\bin\Debug\TheRack.DataTransfer.pdb
-C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataTransfer\obj\Debug\TheRack.DataTransfer.dll
-C:\Users\Christopher Stokes\Code\barnone\TheRack\TheRack.DataTransfer\obj\Debug\TheRack.DataTransfer.pdb
