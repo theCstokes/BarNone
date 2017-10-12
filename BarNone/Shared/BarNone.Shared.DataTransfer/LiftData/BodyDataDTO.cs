@@ -17,7 +17,7 @@ namespace BarNone.Shared.DataTransfer
         public override int ID { get; set; }
 
         [JsonProperty(Order = 1)]
-        public TimeSpan RecordTimeStamp { get; set; }
+        public DateTime RecordTimeStamp { get; set; }
 
     }
 
