@@ -2,29 +2,26 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BarNone.Shared.DataTransfer
 {
-    public class LiftDetailDTO : BaseDetailDTO<LiftDetailDTO>
+
+    public class BodyDataFrameDetailDTO : BaseDetailDTO<BodyDataFrameDetailDTO>
     {
         [JsonProperty(Order = 0, NullValueHandling = NullValueHandling.Ignore)]
-        public LiftFolderDTO Parent { get; set; }
-
-        [JsonProperty(Order = 1)]
-        public BodyDataDTO BodyData { get; set; }
-
+        public List<JointDTO> Joints { get; set; }
     }
 
-    public class LiftDTO : BaseParentDTO<LiftDTO, LiftDetailDTO>
+    public class BodyDataFrameDTO : BaseParentDTO<BodyDataFrameDTO, BodyDataFrameDetailDTO>
     {
         [JsonProperty(Order = 0)]
         public override int ID { get; set; }
 
         [JsonProperty(Order = 1)]
-        public string Name { get; set; }
+        public TimeSpan TimeOfFrame { get; set; }
 
         [JsonProperty(Order = 2)]
-        public int ParentID { get; set; }
+        public TimeSpan TimeUntilNextFrame { get; set; }
+
     }
 }
