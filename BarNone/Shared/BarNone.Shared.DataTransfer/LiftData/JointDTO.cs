@@ -30,6 +30,9 @@ namespace BarNone.Shared.DataTransfer
         [JsonProperty(Order = 4)]
         public float PositionZ { get; set; }
 
+        [JsonProperty(Order = 5)]
+        public float TrackingState { get; set; }
+
     }
 
 }
