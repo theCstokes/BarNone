@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace BarNone.DataLift.DomainModel.KinectData
 {
-    class BodyData :BaseDomainModel<BodyDataDTO, BodyDataDetailDTO>
+    class BodyData : BaseDomainModel<BodyDataDTO, BodyDataDetailDTO>
     {
         #region Properties
         /// <summary>
         /// The date and time of the record's start time
         /// </summary>
-        public DateTime RecordDate;
+        public TimeSpan RecordDate;
 
         /// <summary>
         /// List of all body data for a given Record
@@ -37,7 +37,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         /// </summary>
         public BodyData()
         {
-            RecordDate = DateTime.Now;
+            RecordDate = new TimeSpan();
             InternalRecordDate = new List<BodyDataFrame>();
         }
 
@@ -58,6 +58,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         {
             return new BodyDataDTO()
             {
+                RecordTimeStamp = this.RecordDate
             };
         }
         #endregion
