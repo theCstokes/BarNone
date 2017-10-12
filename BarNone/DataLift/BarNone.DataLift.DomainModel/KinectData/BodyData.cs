@@ -1,9 +1,11 @@
-﻿using System;
+﻿using BarNone.DataLift.DomainModel.Core;
+using BarNone.Shared.DataTransfer;
+using System;
 using System.Collections.Generic;
 
 namespace BarNone.DataLift.DomainModel.KinectData
 {
-    class BodyData
+    class BodyData :BaseDomainModel<BodyDataDTO, BodyDataDetailDTO>
     {
         #region Properties
         /// <summary>
@@ -50,6 +52,14 @@ namespace BarNone.DataLift.DomainModel.KinectData
         public void AddNewFrame(BodyDataFrame df)
         {
             InternalRecordDate.Add(df);
+        }
+
+        public override BodyDataDTO BuildDTO()
+        {
+            BodyDataDTO dto = new BodyDataDTO()
+            {
+                RecordTimeStamp = this.RecordDate;
+            };
         }
         #endregion
 
