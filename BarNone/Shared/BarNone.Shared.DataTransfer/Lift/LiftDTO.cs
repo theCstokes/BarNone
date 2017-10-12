@@ -1,8 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BarNone.Shared.DataTransfer
 {
