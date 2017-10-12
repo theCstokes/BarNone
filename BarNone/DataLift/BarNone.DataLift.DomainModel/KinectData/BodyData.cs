@@ -56,9 +56,8 @@ namespace BarNone.DataLift.DomainModel.KinectData
 
         public override BodyDataDTO BuildDTO()
         {
-            BodyDataDTO dto = new BodyDataDTO()
+            return new BodyDataDTO()
             {
-                RecordTimeStamp = this.RecordDate;
             };
         }
         #endregion
