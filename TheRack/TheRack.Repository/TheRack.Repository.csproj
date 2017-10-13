@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BarNone\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj" />
     <ProjectReference Include="..\TheRack.DataAccess\TheRack.DataAccess.csproj" />
     <ProjectReference Include="..\TheRack.DataAdapter\TheRack.DataAdapter.csproj" />
     <ProjectReference Include="..\TheRack.DataTransfer\TheRack.DataTransfer.csproj" />
