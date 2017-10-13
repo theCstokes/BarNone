@@ -12,5 +12,7 @@ namespace BarNone.DataLift.DomainModel.Core
         /// <returns>The Domain Model as a TDTO</returns>
         public abstract TDTO BuildDTO();
 
+        public abstract TDetailDTO BuildDetailDTO();
+
     }
 }

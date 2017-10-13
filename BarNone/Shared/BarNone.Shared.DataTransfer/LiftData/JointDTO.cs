@@ -19,7 +19,7 @@ namespace BarNone.Shared.DataTransfer
 
         [JsonProperty(Order = 1)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public JointType JointType { get; set; }
+        public DTOJointType JointType { get; set; }
 
         [JsonProperty(Order = 2)]
         public float PositionX { get; set; }
@@ -31,7 +31,8 @@ namespace BarNone.Shared.DataTransfer
         public float PositionZ { get; set; }
 
         [JsonProperty(Order = 5)]
-        public float TrackingState { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public DTOTrackingState TrackingState { get; set; }
 
     }
 

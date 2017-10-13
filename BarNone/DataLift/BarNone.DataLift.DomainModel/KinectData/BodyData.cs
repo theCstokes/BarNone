@@ -1,17 +1,18 @@
 ﻿using BarNone.DataLift.DomainModel.Core;
 using BarNone.Shared.DataTransfer;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace BarNone.DataLift.DomainModel.KinectData
 {
-    class BodyData : BaseDomainModel<BodyDataDTO, BodyDataDetailDTO>
+    internal class BodyData : BaseDomainModel<BodyDataDTO, BodyDataDetailDTO>
     {
         #region Properties
         /// <summary>
         /// The date and time of the record's start time
         /// </summary>
-        public TimeSpan RecordDate;
+        public DateTime RecordDate;
 
         /// <summary>
         /// List of all body data for a given Record
@@ -37,7 +38,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         /// </summary>
         public BodyData()
         {
-            RecordDate = new TimeSpan();
+            RecordDate = DateTime.Now;
             InternalRecordDate = new List<BodyDataFrame>();
         }
 
@@ -58,9 +59,19 @@ namespace BarNone.DataLift.DomainModel.KinectData
         {
             return new BodyDataDTO()
             {
-                RecordTimeStamp = this.RecordDate
+                RecordTimeStamp = this.RecordDate,
+                Details = BuildDetailDTO()
             };
         }
+
+        public override BodyDataDetailDTO BuildDetailDTO()
+        {
+            return new BodyDataDetailDTO()
+            {
+                OrderedFrames = this.DataFrames.Select(x => x.BuildDTO()).ToList()
+            };
+        }
+
         #endregion
 
     }

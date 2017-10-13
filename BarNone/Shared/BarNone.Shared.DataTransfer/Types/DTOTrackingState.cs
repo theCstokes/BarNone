@@ -1,6 +1,6 @@
 ﻿namespace BarNone.Shared.DataTransfer.Types
 {
-    public enum TrackingState
+    public enum DTOTrackingState
     {
         NotTracked = 0,
         Inferred = 1,

@@ -4,7 +4,7 @@
     /// All Joint types availiable on the Kinect 2.0 API 
     ///     for skeleton data
     /// </summary>
-    public enum JointType
+    public enum DTOJointType
     {
         SpineBase = 0,
         SpineMid = 1,

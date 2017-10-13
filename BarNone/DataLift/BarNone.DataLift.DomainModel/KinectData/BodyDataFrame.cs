@@ -1,10 +1,14 @@
 ﻿using Microsoft.Kinect;
 using System;
+using System.Linq;
 using System.Collections.Generic;
+using BarNone.DataLift.DomainModel.Core;
+using BarNone.Shared.DataTransfer;
+using BarNone.Shared.DataTransfer.Types;
 
 namespace BarNone.DataLift.DomainModel.KinectData
 {
-    class BodyDataFrame
+    class BodyDataFrame : BaseDomainModel<BodyDataFrameDTO, BodyDataFrameDetailDTO>
     {
         #region Public Properties
         /// <summary>
@@ -28,7 +32,6 @@ namespace BarNone.DataLift.DomainModel.KinectData
             //Set the Time of the dataframe
             TimeOfFrame = DateTime.Now;
             this.Joints = joints;
-
         }
 
         #endregion
@@ -49,6 +52,33 @@ namespace BarNone.DataLift.DomainModel.KinectData
                 return null;
             }
 
+        }
+
+        public override BodyDataFrameDTO BuildDTO()
+        {
+            return new BodyDataFrameDTO()
+            {
+                TimeOfFrame = this.TimeOfFrame,
+                Details = BuildDetailDTO()
+            };
+        }
+
+        public override BodyDataFrameDetailDTO BuildDetailDTO()
+        {
+            return new BodyDataFrameDetailDTO()
+            {
+                Joints = Joints.Select(
+                    kv => new JointDTO()
+                    {
+                        Details = new JointDetailDTO(),
+                        PositionX = kv.Value.Position.X,
+                        PositionY = kv.Value.Position.Y,
+                        PositionZ = kv.Value.Position.Z,
+                        TrackingState = (DTOTrackingState)kv.Key,
+                        JointType = (DTOJointType)kv.Value.JointType
+                    })
+                    .ToList()
+            };
         }
 
         #endregion
