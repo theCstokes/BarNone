@@ -32,8 +32,8 @@ namespace BarNone.TheRack.DomainModel
                 Name = Name,
                 Details = new LiftFolderDetailDTO
                 {
-                    Lifts = Lifts.Select(l => l.BuildDTO()).ToList(),
-                    SubFolders = SubFolders.Select(s => s.BuildDTO()).ToList(),
+                    Lifts = Lifts?.Select(l => l.BuildDTO()).ToList(),
+                    SubFolders = SubFolders?.Select(s => s.BuildDTO()).ToList(),
                     Parent = parent
                 }
             };
