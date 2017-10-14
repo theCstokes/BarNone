@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BarNone.Shared.Core
+namespace BarNone.TheRack.Core
 {
     public abstract class MapEnum<TElement>
         where TElement : MapEnum<TElement>
