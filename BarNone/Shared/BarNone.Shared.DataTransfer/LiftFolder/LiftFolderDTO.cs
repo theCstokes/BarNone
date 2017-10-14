@@ -11,6 +11,9 @@ namespace BarNone.Shared.DataTransfer
 
         [JsonProperty(Order = 1, NullValueHandling = NullValueHandling.Ignore)]
         public List<LiftDTO> Lifts { get; set; }
+
+        [JsonProperty(Order = 2, NullValueHandling = NullValueHandling.Ignore)]
+        public LiftFolderDTO Parent { get; set; }
     }
 
     public class LiftFolderDTO : BaseParentDTO<LiftFolderDTO, LiftFolderDetailDTO>

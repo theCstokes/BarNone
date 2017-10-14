@@ -1,6 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.DataAccess;
-using BarNone.TheRack.DataAdapter;
 using BarNone.TheRack.DomainModel;
 using BarNone.TheRack.Repository.Core;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +13,6 @@ namespace BarNone.TheRack.Repository
 {
     public class UserRepository : IRepository<UserDTO, User>
     {
-        private static UserDataAdapter _adapter = new UserDataAdapter();
-
         public User Login(string userName, string password)
         {
             using (var context = new DomainContext())
@@ -58,7 +55,7 @@ namespace BarNone.TheRack.Repository
             {
                 var result = context
                     .Users
-                    .Include(u => u.Account)
+                    //.Include(u => u.Account)
                     .Where(c => c.ID == id).First();
 
                 context.SaveChanges();
@@ -71,7 +68,7 @@ namespace BarNone.TheRack.Repository
         {
             using (var context = new DomainContext())
             {
-                var entity = _adapter.GetDomainModel(dto);
+                var entity = User.CreateFromDTO(dto);
                 var result = context.Users.Add(entity);
 
                 context.SaveChanges();
@@ -84,7 +81,7 @@ namespace BarNone.TheRack.Repository
         {
             using (var context = new DomainContext())
             {
-                var entity = _adapter.GetDomainModel(dto);
+                var entity = User.CreateFromDTO(dto);
                 entity.ID = id;
                 var result = context.Users.Update(entity);
 

@@ -9,7 +9,6 @@ using TheRack.ResourceServer.API.Response;
 using System.Net.Http;
 using System.Net;
 using BarNone.TheRack.Repository;
-using BarNone.TheRack.DataAdapter;
 using BarNone.Shared.DataTransfer;
 
 namespace TheRack.ResourceServer.API.Controllers
@@ -53,9 +52,9 @@ namespace TheRack.ResourceServer.API.Controllers
             {
                 LiftRepository repository = new LiftRepository();
                 var lift = repository.GetWithDetails(id);
-                var adapter = new LiftDataAdapter();
-                var dto = adapter.GetDTO(lift);
-                return EntityResponse.EntityDTO(dto);
+                //var adapter = new LiftDataAdapter();
+                //var dto = adapter.GetDTO(lift);
+                return EntityResponse.Entity(lift);
             }
             catch (Exception e)
             {

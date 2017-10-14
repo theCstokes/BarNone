@@ -1,4 +1,6 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
+using BarNone.Shared.DomainModel;
+using BarNone.Shared.DomainModel.Core;
 using BarNone.TheRack.DomainModel;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -32,8 +34,7 @@ namespace TheRack.ResourceServer.API.Response
 
     public class EntityResponse : IResponse
     {
-        public static IActionResult Entity<TDomainModel>(TDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
-            where TDomainModel : BaseDomainModel<TDomainModel>, new()
+        public static IActionResult Entity(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
         {
             var response = new EntityDTO
             {
@@ -55,8 +56,7 @@ namespace TheRack.ResourceServer.API.Response
         }
 
 
-        public static IActionResult Enumerable<TDomainModel>(IEnumerable<TDomainModel> entities, HttpStatusCode code = HttpStatusCode.OK)
-            where TDomainModel : BaseDomainModel<TDomainModel>, new()
+        public static IActionResult Enumerable(IEnumerable<IDomainModel> entities, HttpStatusCode code = HttpStatusCode.OK)
         {
 
             var response = new EnumerableDTO

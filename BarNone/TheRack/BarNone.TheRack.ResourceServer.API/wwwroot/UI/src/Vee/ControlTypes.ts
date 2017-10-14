@@ -7,6 +7,7 @@ export default class ControlTypes {
 	public static readonly ContactListItem: string = ControlTypes.getComponentPath("ContactListItem");
 	public static readonly NavigationListItem: string = ControlTypes.getComponentPath("NavigationListItem");
 	public static readonly Input: string = ControlTypes.getComponentPath("Input");
+	public static readonly PasswordInput: string = ControlTypes.getComponentPath("PasswordInput");
 	public static readonly Label: string = ControlTypes.getComponentPath("Label");
 	public static readonly List: string = ControlTypes.getComponentPath("List");
 

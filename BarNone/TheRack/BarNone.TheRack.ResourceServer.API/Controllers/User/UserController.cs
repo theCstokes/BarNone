@@ -10,6 +10,7 @@ using System.Net;
 using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.Repository;
 using TheRack.ResourceServer.API.Response;
+using BarNone.TheRack.DomainModel;
 
 namespace TheRack.ResourceServer.API.Controllers
 {

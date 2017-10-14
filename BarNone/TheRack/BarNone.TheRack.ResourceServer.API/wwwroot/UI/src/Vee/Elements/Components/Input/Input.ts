@@ -5,7 +5,7 @@ import { OnChangeCallback } from "Vee/Elements/Core/BindTypes";
 export default class Input extends BaseComponent {
     private _content: HTMLElement;
     private _hint: HTMLElement;
-    private _input: HTMLInputElement;
+    protected _input: HTMLInputElement;
     private _action: HTMLElement;
 
     private _hintText: string;

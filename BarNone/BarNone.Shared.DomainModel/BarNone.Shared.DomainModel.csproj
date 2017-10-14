@@ -5,11 +5,10 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <ApplicationIcon />
     <StartupObject />
-    <Configurations>Debug;Release;DataLift - Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj" />
+    <ProjectReference Include="..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj" />
   </ItemGroup>
 
 </Project>

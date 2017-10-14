@@ -15,7 +15,7 @@ export default class LoginView extends View {
 					},
 					{
 						id: "passwordInput",
-						instance: ControlTypes.Input,
+						instance: ControlTypes.PasswordInput,
 						hint: "Password"
 					},
 					{

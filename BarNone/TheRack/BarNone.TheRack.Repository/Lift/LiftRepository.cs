@@ -1,6 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.DataAccess;
-using BarNone.TheRack.DataAdapter;
 using BarNone.TheRack.DomainModel;
 using BarNone.TheRack.Repository.Core;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +14,6 @@ namespace BarNone.TheRack.Repository
 {
     public class LiftRepository : IRepository<LiftDTO, Lift>
     {
-        private static LiftFolderDataAdapter _adapter = new LiftFolderDataAdapter();
 
         public List<Lift> Get()
         {

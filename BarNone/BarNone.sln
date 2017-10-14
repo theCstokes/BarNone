@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{77D27D1C-4BFF-4CBC-8102-2B311548C1FE}"
 EndProject
@@ -21,13 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.TheRack.Demo", "The
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.TheRack.ResourceServer.API", "TheRack\BarNone.TheRack.ResourceServer.API\BarNone.TheRack.ResourceServer.API.csproj", "{794A8BDD-63C3-424C-97D6-8F22920E870B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.TheRack.DataAdapter", "TheRack\BarNone.TheRack.DataAdapter\BarNone.TheRack.DataAdapter.csproj", "{9BB5C176-589F-4E7B-BA95-8C654E53117A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.TheRack.Repository", "TheRack\BarNone.TheRack.Repository\BarNone.TheRack.Repository.csproj", "{9E957627-248A-4130-8D61-F65F6CB91745}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.DataLift.UI", "DataLift\BarNone.DataLift.Application\BarNone.DataLift.UI.csproj", "{5ACBD133-8068-4F2B-B778-2121646935A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.DataLift.DomainModel", "DataLift\BarNone.DataLift.DomainModel\BarNone.DataLift.DomainModel.csproj", "{707ADE0D-0C8D-4EDF-81B9-889B4538EFA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.Shared.DomainModel", "BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj", "{5F66CF0F-0725-4A19-A083-33D0A3D7CDA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,11 +67,6 @@ Global
 		{794A8BDD-63C3-424C-97D6-8F22920E870B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{794A8BDD-63C3-424C-97D6-8F22920E870B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{794A8BDD-63C3-424C-97D6-8F22920E870B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9BB5C176-589F-4E7B-BA95-8C654E53117A}.DataLift - Debug|Any CPU.ActiveCfg = DataLift - Debug|Any CPU
-		{9BB5C176-589F-4E7B-BA95-8C654E53117A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BB5C176-589F-4E7B-BA95-8C654E53117A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BB5C176-589F-4E7B-BA95-8C654E53117A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9BB5C176-589F-4E7B-BA95-8C654E53117A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E957627-248A-4130-8D61-F65F6CB91745}.DataLift - Debug|Any CPU.ActiveCfg = DataLift - Debug|Any CPU
 		{9E957627-248A-4130-8D61-F65F6CB91745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E957627-248A-4130-8D61-F65F6CB91745}.Debug|Any CPU.Build.0 = Debug|Any CPU
@@ -89,6 +84,12 @@ Global
 		{707ADE0D-0C8D-4EDF-81B9-889B4538EFA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{707ADE0D-0C8D-4EDF-81B9-889B4538EFA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{707ADE0D-0C8D-4EDF-81B9-889B4538EFA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F66CF0F-0725-4A19-A083-33D0A3D7CDA0}.DataLift - Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F66CF0F-0725-4A19-A083-33D0A3D7CDA0}.DataLift - Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F66CF0F-0725-4A19-A083-33D0A3D7CDA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F66CF0F-0725-4A19-A083-33D0A3D7CDA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F66CF0F-0725-4A19-A083-33D0A3D7CDA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F66CF0F-0725-4A19-A083-33D0A3D7CDA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,10 +101,10 @@ Global
 		{DC7C09E7-27E2-496C-9823-F048BB031174} = {77D27D1C-4BFF-4CBC-8102-2B311548C1FE}
 		{50D258F1-B4CE-4B9C-9831-A8CA423FC068} = {77EA3D2C-6854-4A20-97B8-99D446962774}
 		{794A8BDD-63C3-424C-97D6-8F22920E870B} = {77EA3D2C-6854-4A20-97B8-99D446962774}
-		{9BB5C176-589F-4E7B-BA95-8C654E53117A} = {77EA3D2C-6854-4A20-97B8-99D446962774}
 		{9E957627-248A-4130-8D61-F65F6CB91745} = {77EA3D2C-6854-4A20-97B8-99D446962774}
 		{5ACBD133-8068-4F2B-B778-2121646935A7} = {6CDB2177-EAA1-4F16-88C1-37B1F97EC4B5}
 		{707ADE0D-0C8D-4EDF-81B9-889B4538EFA1} = {6CDB2177-EAA1-4F16-88C1-37B1F97EC4B5}
+		{5F66CF0F-0725-4A19-A083-33D0A3D7CDA0} = {77D27D1C-4BFF-4CBC-8102-2B311548C1FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BBD0D095-9433-4102-B857-FD70440F37D3}
