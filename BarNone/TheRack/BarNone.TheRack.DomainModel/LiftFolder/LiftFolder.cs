@@ -11,31 +11,39 @@ using System.Text;
 namespace BarNone.TheRack.DomainModel
 {
     [Table("LiftFolder", Schema = "public")]
-    public class LiftFolder : BaseChildDomainModel<LiftFolder, LiftFolderDTO, LiftFolder, LiftFolderDTO>
+    public class LiftFolder : BaseChildDomainModel<LiftFolder, LiftFolderDTO, LiftFolder, LiftFolderDTO>,
+        IDetailDomainModel<LiftFolderDTO, LiftFolderDetailDTO>
     {
         [Key]
         public override int ID { get; set; }
 
         public string Name { get; set; }
 
+        public int? ParentID { get; set; }
+
+        [ForeignKey("ParentID")]
         public LiftFolder Parent { get; set; }
 
         public List<Lift> Lifts { get; set; }
 
         public List<LiftFolder> SubFolders { get; set; }
 
+        public LiftFolderDetailDTO BuildDetailDTO()
+        {
+            return new LiftFolderDetailDTO
+            {
+                Lifts = Lifts?.Select(l => l.BuildDTO()).ToList(),
+                SubFolders = SubFolders?.Select(s => s.BuildDTO()).ToList(),
+                Parent = Parent?.BuildDTO()
+            };
+        }
+
         public override LiftFolderDTO BuildDTO(LiftFolderDTO parent)
         {
             return new LiftFolderDTO
             {
                 ID = ID,
-                Name = Name,
-                Details = new LiftFolderDetailDTO
-                {
-                    Lifts = Lifts?.Select(l => l.BuildDTO()).ToList(),
-                    SubFolders = SubFolders?.Select(s => s.BuildDTO()).ToList(),
-                    Parent = parent
-                }
+                Name = Name
             };
         }
 
@@ -43,9 +51,9 @@ namespace BarNone.TheRack.DomainModel
         {
             ID = dto.ID;
             Name = dto.Name;
-            Lifts = dto.Details?.Lifts == null ? 
+            Lifts = dto.Details?.Lifts != null ? 
                 dto.Details.Lifts.Select(l => Lift.CreateFromDTO(l, this)).ToList() : null;
-            SubFolders = dto.Details?.SubFolders == null ?
+            SubFolders = dto.Details?.SubFolders != null ?
                 dto.Details.SubFolders.Select(s => LiftFolder.CreateFromDTO(s)).ToList() : null;
             Parent = parent;
         }

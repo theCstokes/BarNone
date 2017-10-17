@@ -10,7 +10,8 @@ using System.Text;
 namespace BarNone.TheRack.DomainModel
 {
     [Table("Lift", Schema = "public")]
-    public class Lift : BaseChildDomainModel<Lift, LiftDTO, LiftFolder, LiftFolderDTO>
+    public class Lift : BaseChildDomainModel<Lift, LiftDTO, LiftFolder, LiftFolderDTO>,
+        IDetailDomainModel<LiftDTO, LiftDetailDTO>
     {
         [Key]
         public override int ID { get; set; }
@@ -22,17 +23,21 @@ namespace BarNone.TheRack.DomainModel
         [ForeignKey("ParentID")]
         public LiftFolder Parent { get; set; }
 
+        public LiftDetailDTO BuildDetailDTO()
+        {
+            return new LiftDetailDTO
+            {
+                Parent = Parent?.BuildDTO()
+            };
+        }
+
         public override LiftDTO BuildDTO(LiftFolderDTO parentDTO)
         {
             return new LiftDTO
             {
                 ID = ID,
                 Name = Name,
-                ParentID = ParentID,
-                Details = new LiftDetailDTO
-                {
-                    Parent = parentDTO
-                }
+                ParentID = ParentID
             };
         }
 

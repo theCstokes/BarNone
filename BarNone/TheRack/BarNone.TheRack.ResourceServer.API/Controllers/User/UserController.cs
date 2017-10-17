@@ -11,12 +11,13 @@ using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.Repository;
 using TheRack.ResourceServer.API.Response;
 using BarNone.TheRack.DomainModel;
+using BarNone.TheRack.ResourceServer.API.Controllers.Core;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize(Policy = "User")]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         [HttpGet]
         public IActionResult GetAll()
@@ -24,6 +25,12 @@ namespace TheRack.ResourceServer.API.Controllers
             try
             {
                 UserRepository repository = new UserRepository();
+
+                var filter = FilterRequest;
+                if (filter != null)
+                {
+                    return EntityResponse.Enumerable(repository.Get(filter.GetWhere()));
+                }
                 return EntityResponse.Enumerable(repository.Get());
             }
             catch(Exception e)
@@ -38,7 +45,7 @@ namespace TheRack.ResourceServer.API.Controllers
             try
             {
                 UserRepository repository = new UserRepository();
-                return EntityResponse.Entity(repository.Get(id));
+                return EntityResponse.Entity<User, UserDTO>(repository.Get(id));
             }
             catch (Exception e)
             {
@@ -52,7 +59,7 @@ namespace TheRack.ResourceServer.API.Controllers
             try
             {
                 UserRepository repository = new UserRepository();
-                return EntityResponse.Entity(repository.GetWithDetails(id));
+                return EntityResponse.Entity<User, UserDTO>(repository.GetWithDetails(id));
             }
             catch (Exception e)
             {
@@ -66,7 +73,7 @@ namespace TheRack.ResourceServer.API.Controllers
             try
             {
                 UserRepository repository = new UserRepository();
-                return EntityResponse.Entity(repository.Create(value));
+                return EntityResponse.Entity<User, UserDTO>(repository.Create(value));
             }
             catch (Exception e)
             {
@@ -80,7 +87,7 @@ namespace TheRack.ResourceServer.API.Controllers
             try
             {
                 UserRepository repository = new UserRepository();
-                return EntityResponse.Entity(repository.Update(id, value));
+                return EntityResponse.Entity<User, UserDTO>(repository.Update(id, value));
             }
             catch (Exception e)
             {
@@ -94,7 +101,7 @@ namespace TheRack.ResourceServer.API.Controllers
             try
             {
                 UserRepository repository = new UserRepository();
-                return EntityResponse.Entity(repository.Remove(id));
+                return EntityResponse.Entity<User, UserDTO>(repository.Remove(id));
             }
             catch (Exception e)
             {

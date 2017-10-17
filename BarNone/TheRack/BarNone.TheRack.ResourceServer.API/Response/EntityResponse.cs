@@ -34,15 +34,43 @@ namespace TheRack.ResourceServer.API.Response
 
     public class EntityResponse : IResponse
     {
-        public static IActionResult Entity(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
+        public static IActionResult Entity<TDomainModel, TDTO>(TDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
+            where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, new()
+            where TDTO : BaseDTO<TDTO>, new()
         {
             var response = new EntityDTO
             {
-                Entity = entity
+                Entity = entity.BuildDTO()
             };
 
             return CreateResult(response, code);
         }
+
+        public static IActionResult EntityDetail<TDomainModel, TDTO, TDetailDTO>(TDomainModel entity, 
+            HttpStatusCode code = HttpStatusCode.OK)
+            where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, IDetailDomainModel<TDTO, TDetailDTO>, new()
+            where TDTO : BaseParentDTO<TDTO, TDetailDTO>, new()
+            where TDetailDTO : BaseDetailDTO<TDetailDTO>, new()
+        {
+            var dto = entity.BuildDTO();
+            dto.Details = entity.BuildDetailDTO();
+            var response = new EntityDTO
+            {
+                Entity = dto
+            };
+
+            return CreateResult(response, code);
+        }
+
+        //public static IActionResult Entity(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
+        //{
+        //    var response = new EntityDTO
+        //    {
+        //        Entity = entity
+        //    };
+
+        //    return CreateResult(response, code);
+        //}
         public static IActionResult EntityDTO<TDTO>(TDTO entity, HttpStatusCode code = HttpStatusCode.OK)
             where TDTO : BaseDTO<TDTO>, new()
         {

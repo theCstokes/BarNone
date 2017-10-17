@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Transactions;
+using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace BarNone.TheRack.Repository
 {
@@ -29,10 +30,16 @@ namespace BarNone.TheRack.Repository
             }
         }
 
-        public List<User> Get()
+        public List<User> Get(WhereFunc where = null)
         {
             using (var context = new DomainContext())
             {
+                if (where != null)
+                {
+                    return context.Users
+                        .Where((u) => where(u))
+                        .ToList();
+                }
                 return context.Users.ToList();
             }
         }

@@ -5,6 +5,7 @@ using BarNone.TheRack.DomainModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace BarNone.TheRack.Repository.Core
 {
@@ -12,7 +13,7 @@ namespace BarNone.TheRack.Repository.Core
         where TDTO : BaseDTO<TDTO>, new()
         where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, new()
     {
-        List<TDomainModel> Get();
+        List<TDomainModel> Get(WhereFunc where = null);
 
         TDomainModel Get(int id);
 

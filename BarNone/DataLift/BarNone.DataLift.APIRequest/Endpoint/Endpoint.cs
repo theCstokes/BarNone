@@ -37,6 +37,12 @@ namespace BarNone.DataLift.APIRequest
             return result?.Entity;
         }
 
+        public async Task<TDTO> GetWithDetails(int id)
+        {
+            var result = await DataRequest.Get<ResponseEntityDTO<TDTO>>(CreateURL($"{_url}/{id}/Detail"));
+            return result?.Entity;
+        }
+
         public async Task<List<TDTO>> GetAll()
         {
             var result = await DataRequest.Get<ResponseEnumerableDTO<TDTO>>(CreateURL($"{_url}"));

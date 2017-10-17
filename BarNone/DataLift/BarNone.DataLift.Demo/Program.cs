@@ -1,5 +1,8 @@
 ﻿using BarNone.DataLift.APIRequest;
 using BarNone.Shared.DataTransfer.Auth;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +11,12 @@ using System.Threading.Tasks;
 
 namespace BarNone.DataLift.Demo
 {
+    class Person
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public object Value { get; set; }
+    }
     class Program
     {
         static void Main(string[] args)
@@ -18,18 +27,27 @@ namespace BarNone.DataLift.Demo
 
         static async Task Run()
         {
-            var auth = await TokenManager.Authorize("admin", "admin");
-            Console.WriteLine(auth.Access_Token);
-            var users = await DataManager.Users.GetAll();
-            users.ForEach(u => Console.WriteLine(u.UserName));
 
-            var nu = await DataManager.Users.Post(new Shared.DataTransfer.UserDTO
-            {
-                Name = "Test",
-                UserName = "Test444",
-                Password = "123"
-            });
-            Console.WriteLine(nu.ID);
+            //var p = new Person
+            //{
+            //    Age = 55
+            //};
+
+            //var serializer = new JsonSerializer()
+            //{
+            //    ContractResolver = new CamelCasePropertyNamesContractResolver()
+            //};
+
+            //var j = JObject.FromObject(p, serializer);
+
+            var p = JsonConvert.DeserializeObject<Person>("{\"value\": 55}");
+
+            //Console.WriteLine(p.Age);
+            //Console.WriteLine(j["age"]);
+
+            //dynamic d = 55;
+            Console.WriteLine(p.Value.GetType());
+
             Console.ReadLine();
         }
     }

@@ -13,7 +13,7 @@ namespace BarNone.Shared.DomainModel.Core
         where TParentDTO : BaseDTO<TParentDTO>, new()
     {
 
-        #region BaseDomainModel Partial Implimentation.
+        #region BaseDomainModel Partial Implementation.
         public override TDTO BuildDTO()
         {
             return BuildDTO(null);
@@ -21,7 +21,7 @@ namespace BarNone.Shared.DomainModel.Core
 
         public override void PopulateFromDTO(TDTO dto)
         {
-            PopulateFromDTO(null);
+            PopulateFromDTO(dto, null);
         }
         #endregion
 

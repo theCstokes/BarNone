@@ -8,9 +8,8 @@ namespace BarNone.Shared.DataTransfer
         [JsonProperty(Order = 0, NullValueHandling = NullValueHandling.Ignore)]
         public LiftFolderDTO Parent { get; set; }
 
-        [JsonProperty(Order = 1)]
+        [JsonProperty(Order = 1, NullValueHandling = NullValueHandling.Ignore)]
         public BodyDataDTO BodyData { get; set; }
-
     }
 
     public class LiftDTO : BaseParentDTO<LiftDTO, LiftDetailDTO>

@@ -1,0 +1,198 @@
+{
+	"variables": [],
+	"info": {
+		"name": "BarNone",
+		"_postman_id": "5c617c27-141e-7253-9e54-07ab728ec9d0",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"description": "",
+			"item": [
+				{
+					"name": "Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", data.access_token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/Authorization/Login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "userName",
+									"value": "admin",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"description": "",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"url": "{{url}}/User",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lift",
+			"description": "",
+			"item": [
+				{
+					"name": "Get Lift By ID",
+					"request": {
+						"url": "{{url}}/Lift/1/Detail",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LiftFolder",
+			"description": "",
+			"item": [
+				{
+					"name": "Get All LiftFolder",
+					"request": {
+						"url": "{{url}}/LiftFolder",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get ComposableEntity Types",
+			"request": {
+				"url": "http://localhost/ResourceServer/api/v1/ComposableEntity/Types",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwic3ViIjoiYWRtaW4iLCJyb2xlIjpbIk1hbmFnZXIiLCJTdXBlcnZpc29yIl0sImFjY291bnRJRCI6IjEiLCJpc3MiOiJodHRwOi8vand0YXV0aHpzcnYuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOiIwOTkxNTNjMjYyNTE0OWJjOGVjYjNlODVlMDNmMDAyMiIsImV4cCI6MTUwNTkxODc3MywibmJmIjoxNTA1OTE2OTczfQ.Ib0nM9Q5G_gsom6ZkVReB8OPl2SdkKCDqVisEdFu1xo",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"url": "http://localhost/ResourceServer/api/v1/User",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwic3ViIjoiYWRtaW4iLCJyb2xlIjpbIk1hbmFnZXIiLCJTdXBlcnZpc29yIl0sImFjY291bnRJRCI6IjEiLCJpc3MiOiJodHRwOi8vand0YXV0aHpzcnYuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOiIwOTkxNTNjMjYyNTE0OWJjOGVjYjNlODVlMDNmMDAyMiIsImV4cCI6MTUwNTg2Mjg3MCwibmJmIjoxNTA1ODYxMDcwfQ.29YFmhaJqqWFDoLjxpd31i7POkaVIz6dg25kVTihgeE",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ComposableEntity",
+			"request": {
+				"url": "http://localhost/ResourceServer/api/v1/ComposableEntity",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwic3ViIjoiYWRtaW4iLCJyb2xlIjpbIk1hbmFnZXIiLCJTdXBlcnZpc29yIl0sImFjY291bnRJRCI6IjEiLCJpc3MiOiJodHRwOi8vand0YXV0aHpzcnYuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOiIwOTkxNTNjMjYyNTE0OWJjOGVjYjNlODVlMDNmMDAyMiIsImV4cCI6MTUwNTkyMTM3NywibmJmIjoxNTA1OTE5NTc3fQ.4_UlKfTbMmUsLe9KMmiF-MLaMZTK_xp5xMMuBzNkuOM",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"entities\": [\n\t\t{\n\t\t\t\"key\": \"users\",\n\t\t\t\"entityType\": \"User\",\n\t\t\t\"requestType\": \"read\"\n\t\t}\t\n\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

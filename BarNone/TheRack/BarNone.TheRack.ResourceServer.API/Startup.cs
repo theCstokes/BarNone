@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace BarNone.TheRack.ResourceServer.API
 {
@@ -20,6 +21,11 @@ namespace BarNone.TheRack.ResourceServer.API
     {
         public Startup(IHostingEnvironment env)
         {
+            //JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            //{
+            //    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            //};
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -41,12 +47,18 @@ namespace BarNone.TheRack.ResourceServer.API
 
             // Make authentication compulsory across the board (i.e. shut
             // down EVERYTHING unless explicitly opened up).
-            services.AddMvc(config =>
+            services
+                .AddMvc(config =>
             {
                 var policy = new AuthorizationPolicyBuilder()
                                  .RequireAuthenticatedUser()
                                  .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
+            })
+            .AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                //options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
             });
 
             // Use policy auth.

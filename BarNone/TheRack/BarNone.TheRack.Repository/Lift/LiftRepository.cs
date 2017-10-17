@@ -9,16 +9,23 @@ using System.Linq;
 using System.Text;
 using System.Transactions;
 using System.Xml.Linq;
+using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace BarNone.TheRack.Repository
 {
     public class LiftRepository : IRepository<LiftDTO, Lift>
     {
 
-        public List<Lift> Get()
+        public List<Lift> Get(WhereFunc where = null)
         {
             using (var context = new DomainContext())
             {
+                if (where != null)
+                {
+                    return context.Lifts
+                        .Where((l) => where(l))
+                        .ToList();
+                }
                 return context.Lifts.ToList();
             }
         }

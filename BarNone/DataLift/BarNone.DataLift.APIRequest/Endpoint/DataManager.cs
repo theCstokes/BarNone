@@ -14,6 +14,9 @@ namespace BarNone.DataLift.APIRequest
         #region Endpoint Type(s).
         public static Endpoint<UserDTO> Users { get; } =
             new Endpoint<UserDTO>("User");
+
+        public static Endpoint<LiftDTO> Lifts { get; } =
+            new Endpoint<LiftDTO>("Lift");
         #endregion
     }
 }
