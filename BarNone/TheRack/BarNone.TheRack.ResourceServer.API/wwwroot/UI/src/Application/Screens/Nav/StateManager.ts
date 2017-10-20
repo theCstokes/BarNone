@@ -22,6 +22,11 @@ export class State {
 			id: 2,
 			name: "Videos",
 			screenPath: "Application/Screens/User/UserScreen"
+		},
+		{
+			id: 3,
+			name: "Lifts",
+			screenPath: "Application/Screens/Lifts/LiftScreen"
 		}
 	]
 }

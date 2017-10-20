@@ -1,0 +1,6 @@
+C:\Users\Christopher Stokes\Code\barnone\Server\RoyleeIsWrong\RoyleeIsWrong\bin\Debug\RoyleeIsWrong.exe.config
+C:\Users\Christopher Stokes\Code\barnone\Server\RoyleeIsWrong\RoyleeIsWrong\bin\Debug\RoyleeIsWrong.exe
+C:\Users\Christopher Stokes\Code\barnone\Server\RoyleeIsWrong\RoyleeIsWrong\bin\Debug\RoyleeIsWrong.pdb
+C:\Users\Christopher Stokes\Code\barnone\Server\RoyleeIsWrong\RoyleeIsWrong\obj\Debug\RoyleeIsWrong.csprojResolveAssemblyReference.cache
+C:\Users\Christopher Stokes\Code\barnone\Server\RoyleeIsWrong\RoyleeIsWrong\obj\Debug\RoyleeIsWrong.exe
+C:\Users\Christopher Stokes\Code\barnone\Server\RoyleeIsWrong\RoyleeIsWrong\obj\Debug\RoyleeIsWrong.pdb

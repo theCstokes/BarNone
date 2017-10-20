@@ -7,6 +7,14 @@ class LoadResult<TSource> {
 	public entities: TSource[];
 }
 
+export class WhereRequest {
+
+}
+
+export class LoadOptions {
+	public filter?: WhereRequest[];
+}
+
 export default class Resource<TSource> {
 	private _route: string;
 

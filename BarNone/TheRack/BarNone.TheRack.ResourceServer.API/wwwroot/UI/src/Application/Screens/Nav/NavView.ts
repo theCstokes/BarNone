@@ -49,18 +49,7 @@ export default class NavView extends View {
 				navDock: {
 					instance: ControlTypes.List,
 					id: "navList",
-					style: ControlTypes.NavigationListItem,
-					// items: [
-					// 	{
-					// 		id: 1,
-					// 		name: "Users"
-					// 		// selected: true
-					// 	},
-					// 	{
-					// 		id: 2,
-					// 		name: "Videos"
-					// 	}
-					// ]
+					style: ControlTypes.NavigationListItem
 				}
 			}
 		];
