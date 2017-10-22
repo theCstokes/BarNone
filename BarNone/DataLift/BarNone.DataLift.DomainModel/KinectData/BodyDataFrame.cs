@@ -5,12 +5,18 @@ using System.Collections.Generic;
 using BarNone.DataLift.DomainModel.Core;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.Types;
+using BarNone.Shared.DomainModel.Core;
 
 namespace BarNone.DataLift.DomainModel.KinectData
 {
-    class BodyDataFrame : BaseDomainModel<BodyDataFrameDTO, BodyDataFrameDetailDTO>
+    public class BodyDataFrame : BaseChildDomainModel<BodyDataFrame,BodyDataFrameDTO,BodyDataFrame,BodyDataFrameDTO>,
+        IDetailDomainModel<BodyDataFrameDTO, BodyDataFrameDetailDTO>
     {
         #region Public Properties
+        /// <summary>
+        /// ID of this frame
+        /// </summary>
+        public override int ID { get; set; }
         /// <summary>
         /// Time of this frame
         /// </summary>
@@ -27,12 +33,12 @@ namespace BarNone.DataLift.DomainModel.KinectData
         /// <summary>
         /// Construct a Body Data Frame
         /// </summary>
-        public BodyDataFrame(IReadOnlyDictionary<JointType, Joint> joints)
-        {
-            //Set the Time of the dataframe
-            TimeOfFrame = DateTime.Now;
-            this.Joints = joints;
-        }
+        //public BodyDataFrame(IReadOnlyDictionary<JointType, Joint> joints)
+        //{
+        //    //Set the Time of the dataframe
+        //    TimeOfFrame = DateTime.Now;
+        //    this.Joints = joints;
+        //}
 
         #endregion
 
@@ -54,6 +60,15 @@ namespace BarNone.DataLift.DomainModel.KinectData
 
         }
 
+        public override BodyDataFrameDTO BuildDTO(BodyDataFrameDTO parentDTO)
+        {
+            return new BodyDataFrameDTO()
+            {
+                TimeOfFrame = this.TimeOfFrame,
+                Details = BuildDetailDTO()
+            };
+        }
+
         public override BodyDataFrameDTO BuildDTO()
         {
             return new BodyDataFrameDTO()
@@ -63,7 +78,19 @@ namespace BarNone.DataLift.DomainModel.KinectData
             };
         }
 
-        public override BodyDataFrameDetailDTO BuildDetailDTO()
+        public override void PopulateFromDTO(BodyDataFrameDTO dto)
+        {
+            ID = dto.ID;
+            TimeOfFrame = dto.TimeOfFrame;
+        }
+
+        public override void PopulateFromDTO(BodyDataFrameDTO dto, BodyDataFrame parent)
+        {
+            ID = dto.ID;
+            TimeOfFrame = dto.TimeOfFrame;
+        }
+
+        public BodyDataFrameDetailDTO BuildDetailDTO()
         {
             return new BodyDataFrameDetailDTO()
             {

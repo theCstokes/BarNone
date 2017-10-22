@@ -1,18 +1,21 @@
-﻿using BarNone.DataLift.DomainModel.Core;
+﻿//using BarNone.DataLift.DomainModel.Core;
 using BarNone.Shared.DataTransfer;
+using BarNone.Shared.DomainModel.Core;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 
 namespace BarNone.DataLift.DomainModel.KinectData
 {
-    internal class BodyData : BaseDomainModel<BodyDataDTO, BodyDataDetailDTO>
+    internal class BodyData : BaseChildDomainModel<BodyData, BodyDataDTO,BodyData,BodyDataDTO>,
+        IDetailDomainModel<BodyDataDTO,BodyDataDetailDTO>
     {
         #region Properties
+        public override int ID { get; set; }
         /// <summary>
         /// The date and time of the record's start time
         /// </summary>
-        public DateTime RecordDate;
+        public DateTime RecordDate { get; set; }
 
         /// <summary>
         /// List of all body data for a given Record
@@ -28,7 +31,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         /// <summary>
         /// List of the body data stored internally for controlled modification
         /// </summary>
-        private List<BodyDataFrame> InternalRecordDate;
+        private List<BodyDataFrame> InternalRecordDate { get; set; }
 
         #endregion
 
@@ -36,10 +39,36 @@ namespace BarNone.DataLift.DomainModel.KinectData
         /// <summary>
         /// Creates a new Body Data Record
         /// </summary>
-        public BodyData()
+        public override BodyDataDTO BuildDTO()
         {
-            RecordDate = DateTime.Now;
-            InternalRecordDate = new List<BodyDataFrame>();
+            return new BodyDataDTO
+            {
+                RecordTimeStamp = this.RecordDate,
+                Details = BuildDetailDTO(),
+            };
+            
+        }
+
+        public override BodyDataDTO BuildDTO(BodyDataDTO parentDTO)
+        {
+            return new BodyDataDTO
+            {
+                RecordTimeStamp = this.RecordDate,
+                Details = BuildDetailDTO(),
+            };
+        }
+
+        public override void PopulateFromDTO(BodyDataDTO dto)
+        {
+            ID = dto.ID;
+            RecordDate = dto.RecordTimeStamp;
+            
+        }
+
+        public override void PopulateFromDTO(BodyDataDTO dto, BodyData parent)
+        {
+            ID = dto.ID;
+            RecordDate = dto.RecordTimeStamp;
         }
 
         #endregion
@@ -55,16 +84,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
             InternalRecordDate.Add(df);
         }
 
-        public override BodyDataDTO BuildDTO()
-        {
-            return new BodyDataDTO()
-            {
-                RecordTimeStamp = this.RecordDate,
-                Details = BuildDetailDTO()
-            };
-        }
-
-        public override BodyDataDetailDTO BuildDetailDTO()
+        public BodyDataDetailDTO BuildDetailDTO()
         {
             return new BodyDataDetailDTO()
             {
