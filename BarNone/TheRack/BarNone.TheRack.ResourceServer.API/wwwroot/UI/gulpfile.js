@@ -5,16 +5,16 @@ const sourcemaps = require('gulp-sourcemaps');
 
 const less = require('gulp-less');
 const lessGlob = require('gulp-less-glob');
-
-// const JSON_FILES = ['src/Data/**/*.json'];
-
-const BUILD_DIR = "build";
+const mocha= require('gulp-mocha');
 
 // Pull in the project TypeScript config.
-const typescript = ts.createProject('tsconfig.json');
+const test_typescript = ts.createProject('test.tsconfig.json');
+const release_typescript = ts.createProject('tsconfig.json');
+
+let typescript;
 
 gulp.task('clean-scripts', function () {
-    return gulp.src(BUILD_DIR, { read: false })
+    return gulp.src(getDest(), { read: false })
         .pipe(clean());
 });
 
@@ -23,34 +23,58 @@ gulp.task('scripts', ['styles'], () => {
         .pipe(sourcemaps.init())
         .pipe(typescript())
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(BUILD_DIR));
+        .pipe(gulp.dest(getDest()));
 });
-
-// gulp.task('assets', ['clean-scripts'], () => {
-//     return gulp.src(JSON_FILES)
-//         .pipe(gulp.dest('dist/Data'));
-// });
 
 gulp.task('styles', ['clean-scripts'], () => {
     return gulp
         .src('src/Vee/Theme/main.less')
         .pipe(lessGlob())
         .pipe(less())
-        .pipe(gulp.dest('build/Theme'));
+        .pipe(gulp.dest(getDest('Theme')));
 });
 
-gulp.task('default', ['scripts', 'styles']);
+gulp.task('default', ['build']);
 
-gulp.task('build', ['scripts']);
+gulp.task('build', ['releaseSetup', 'scripts']);
 
-// gulp.task('test', ['build'], () => {
-//     return gulp
-//         .src(['dist/Spec/**/*.spec.js'], { read: false })
-//         .pipe(mocha({ reporter: 'spec' }))
-//         .once('error', () => {
-//             process.exit(1);
-//         })
-//         .once('end', () => {
-//             process.exit();
-//         });
-// });
+gulp.task('test', ['testSetup', 'scripts'], () => {
+    return gulp
+        .src([getDest('Test/**/*.test.js')], { read: false })
+        .pipe(mocha({ reporter: 'spec' }))
+        .once('error', () => {
+            process.exit(1);
+        })
+        .once('end', () => {
+            process.exit();
+        });
+});
+
+/**
+ * We need to change the ts target for test.
+ */
+gulp.task('testSetup', () => {
+    typescript = test_typescript;
+    setDest("test");
+});
+
+/**
+ * We need to change the ts target for release.
+ */
+gulp.task('releaseSetup', () => {
+    typescript = release_typescript;
+    setDest("release");
+});
+
+var destType = "";
+
+var setDest = function (path) {
+    destType = path;
+};
+
+var getDest = function (path) {
+    if (path === undefined) {
+        return "build/" + destType;
+    }
+    return "build/" + destType + "/" + path;
+};

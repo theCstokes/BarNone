@@ -10,14 +10,20 @@
   "license": "ISC",
   "devDependencies": {
     "@types/lodash": "^4.14.74",
+    "amd-loader": "0.0.8",
+    "babel-preset-latest": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "chai": "^4.1.2",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
     "gulp-less": "^3.3.2",
     "gulp-less-glob": "^1.0.0",
+    "gulp-mocha-phantomjs": "^0.12.1",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-typescript": "^3.1.7",
     "less-plugin-glob": "^2.0.0",
     "lodash": "^4.17.4",
+    "mocha": "^4.0.1",
     "typescript": "^2.5.2"
   },
   "dependencies": {

@@ -2,9 +2,9 @@
     "compileOnSave": false,
     "compilerOptions": {
         "target": "es6",
-        "module": "amd",
+        "module": "commonjs",
         "sourceMap": true,
-        "outDir": "build/release",
+        "outDir": "build/test",
         "rootDir": "src",
         "baseUrl": "src",
         "noImplicitAny": true,
