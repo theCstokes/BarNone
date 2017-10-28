@@ -9,5 +9,7 @@ namespace BarNone.Shared.DataTransfer.Auth
         public string Access_Token { get; set; }
 
         public int Expires_In { get; set; }
+
+        public bool Authorized { get; set; }
     }
 }

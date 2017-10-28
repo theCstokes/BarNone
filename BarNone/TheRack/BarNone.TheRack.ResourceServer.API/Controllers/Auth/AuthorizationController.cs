@@ -45,7 +45,12 @@ namespace TheRack.ResourceServer.API.Controllers
             if (identity == null)
             {
                 _logger.LogInformation($"Invalid username ({applicationUser.UserName}) or password ({applicationUser.Password})");
-                return BadRequest("Invalid credentials");
+
+                return BadRequest(JsonConvert.SerializeObject(new
+                {
+                    authorized = false,
+                    expires_in = 0
+                }, _serializerSettings));
             }
 
             var claims = new[]
@@ -70,14 +75,12 @@ namespace TheRack.ResourceServer.API.Controllers
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             // Serialize and return the response
-            var response = new
+            return new OkObjectResult(JsonConvert.SerializeObject(new
             {
+                authorized = true,
                 access_token = encodedJwt,
                 expires_in = (int)_jwtOptions.ValidFor.TotalSeconds
-            };
-
-            var json = JsonConvert.SerializeObject(response, _serializerSettings);
-            return new OkObjectResult(json);
+            }, _serializerSettings));
         }
 
         [HttpPost("Create")]
@@ -166,9 +169,10 @@ namespace TheRack.ResourceServer.API.Controllers
 
             if (entity == null)
             {
-                return Task.FromResult(new ClaimsIdentity(
-                  new GenericIdentity(user.UserName, "Token"),
-                  new Claim[] { }));
+                //return Task.FromResult(new ClaimsIdentity(
+                //  new GenericIdentity(user.UserName, "Token"),
+                //  new Claim[] { }));
+                return Task.FromResult<ClaimsIdentity>(null);
             }
 
             return Task.FromResult(new ClaimsIdentity(
