@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BarNone.UnitTest.Datalift.DomainModel
+namespace BarNone.UnitTest.DataLift.DomainModel
 {
     [TestClass]
     public class UnitTest1
