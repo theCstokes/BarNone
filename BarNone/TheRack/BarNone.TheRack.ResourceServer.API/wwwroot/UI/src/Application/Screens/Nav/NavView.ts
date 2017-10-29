@@ -24,9 +24,23 @@ export default class NavView extends View {
 						{
 							instance: ControlTypes.Column,
 							content: [
+								// {
+								// 	instance: ControlTypes.Label,
+								// 	text: "User/Contacts"
+								// }
 								{
-									instance: ControlTypes.Label,
-									text: "User/Contacts"
+									instance: ControlTypes.Breadcrumb,
+									items: [
+										{
+											value: "Snatch"
+										},
+										{
+											value: "Wednesday"
+										}
+									],
+									onClick: () => {
+										console.warn("testst");
+									}
 								}
 							]
 						},
