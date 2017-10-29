@@ -23,34 +23,41 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Lift
 
         public override IActionResult GetAll()
         {
-            var repo = new LiftFolderRepository();
-
-            var filter = FilterRequest;
-            if (filter != null)
+            using (var repo = new LiftFolderRepository())
             {
-                return EntityResponse.Enumerable(repo.Get(filter.GetWhere()));
+                var filter = FilterRequest;
+                if (filter != null)
+                {
+                    return EntityResponse.Enumerable(repo.Get(filter.GetWhere()));
+                }
+                return EntityResponse.Enumerable(repo.Get());
             }
-            return EntityResponse.Enumerable(repo.Get());
         }
 
         public override IActionResult GetByID(int id)
         {
-            var repo = new LiftFolderRepository();
-            return EntityResponse.Entity<LiftFolder, LiftFolderDTO>(repo.Get(id));
+            using (var repo = new LiftFolderRepository())
+            {
+                return EntityResponse.Entity<LiftFolder, LiftFolderDTO>(repo.Get(id));
+            }
         }
 
         public override IActionResult GetWithDetailsByID(int id)
         {
-            var repo = new LiftFolderRepository();
-            return EntityResponse
-                .EntityDetail<LiftFolder, LiftFolderDTO, LiftFolderDetailDTO>(repo.GetWithDetails(id));
+            using (var repo = new LiftFolderRepository())
+            {
+                return EntityResponse
+                    .EntityDetail<LiftFolder, LiftFolderDTO, LiftFolderDetailDTO>(repo.GetWithDetails(id));
+            }
         }
 
         public override IActionResult Post([FromBody] LiftFolderDTO dto)
         {
-            var repo = new LiftFolderRepository();
-            return EntityResponse
-                .EntityDetail<LiftFolder, LiftFolderDTO, LiftFolderDetailDTO>(repo.Create(dto));
+            using (var repo = new LiftFolderRepository())
+            {
+                return EntityResponse
+                    .EntityDetail<LiftFolder, LiftFolderDTO, LiftFolderDetailDTO>(repo.Create(dto));
+            }
         }
 
         public override IActionResult Put(int id, [FromBody] LiftFolderDTO dto)

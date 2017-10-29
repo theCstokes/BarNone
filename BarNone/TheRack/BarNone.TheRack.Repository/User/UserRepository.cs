@@ -12,105 +12,93 @@ using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace BarNone.TheRack.Repository
 {
-    public class UserRepository : IRepository<UserDTO, User>
+    public class UserRepository : BaseRepository<UserDTO, User>
     {
+        public UserRepository() : base(new DomainContext())
+        {
+        }
+
+        public UserRepository(DomainContext context) : base(context)
+        {
+
+        }
+
         public User Login(string userName, string password)
         {
-            using (var context = new DomainContext())
-            {
-                var result = context.Users.Where(c => c.UserName == userName).First();
+            var result = context.Users.Where(c => c.UserName == userName).First();
 
-                if (result == null) return null;
+            if (result == null) return null;
 
-                context.SaveChanges();
+            context.SaveChanges();
 
-                if (result.Password == password) return result;
+            if (result.Password == password) return result;
 
-                return null;
-            }
+            return null;
         }
 
-        public List<User> Get(WhereFunc where = null)
+        public override List<User> Get(WhereFunc where = null)
         {
-            using (var context = new DomainContext())
+            if (where != null)
             {
-                if (where != null)
-                {
-                    return context.Users
-                        .Where((u) => where(u))
-                        .ToList();
-                }
-                return context.Users.ToList();
+                return context.Users
+                    .Where((u) => where(u))
+                    .ToList();
             }
+            return context.Users.ToList();
         }
 
-        public User Get(int id)
+        public override User Get(int id)
         {
-            using (var context = new DomainContext())
-            {
-                var result = context.Users.Where(c => c.ID == id).First();
+            var result = context.Users.Where(c => c.ID == id).First();
 
-                context.SaveChanges();
+            context.SaveChanges();
 
-                return result;
-            }
+            return result;
         }
 
-        public User GetWithDetails(int id)
+        public override User GetWithDetails(int id)
         {
-            using (var context = new DomainContext())
-            {
-                var result = context
-                    .Users
-                    //.Include(u => u.Account)
-                    .Where(c => c.ID == id).First();
+            var result = context
+                .Users
+                //.Include(u => u.Account)
+                .Where(c => c.ID == id).First();
 
-                context.SaveChanges();
+            context.SaveChanges();
 
-                return result;
-            }
+            return result;
         }
 
-        public User Create(UserDTO dto)
+        public override User Create(UserDTO dto)
         {
-            using (var context = new DomainContext())
-            {
-                var entity = User.CreateFromDTO(dto);
-                var result = context.Users.Add(entity);
+            var entity = User.CreateFromDTO(dto);
+            var result = context.Users.Add(entity);
 
-                context.SaveChanges();
+            context.SaveChanges();
 
-                return result.Entity;
-            }
+            return result.Entity;
         }
 
-        public User Update(int id, UserDTO dto)
+        public override User Update(int id, UserDTO dto)
         {
-            using (var context = new DomainContext())
-            {
-                var entity = User.CreateFromDTO(dto);
-                entity.ID = id;
-                var result = context.Users.Update(entity);
+            var entity = User.CreateFromDTO(dto);
+            entity.ID = id;
+            var result = context.Users.Update(entity);
 
-                context.SaveChanges();
+            context.SaveChanges();
 
-                return result.Entity;
-            }
+            return result.Entity;
         }
 
-        public User Remove(int id)
+        public override User Remove(int id)
         {
-            using (var context = new DomainContext())
+            var result = context.Users.Remove(new User
             {
-                var result = context.Users.Remove(new User
-                {
-                    ID = id
-                });
+                ID = id
+            });
 
-                context.SaveChanges();
+            context.SaveChanges();
 
-                return result.Entity;
-            }
+            return result.Entity;
         }
     }
 }

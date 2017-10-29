@@ -25,17 +25,18 @@ namespace TheRack.ResourceServer.API.Controllers
         {
             try
             {
-                LiftRepository repository = new LiftRepository();
-
-                var filter = FilterRequest;
-                if (filter != null)
+                using (LiftRepository repository = new LiftRepository())
                 {
-                    return EntityResponse.Enumerable(repository.Get(filter.GetWhere()));
-                }
+                    var filter = FilterRequest;
+                    if (filter != null)
+                    {
+                        return EntityResponse.Enumerable(repository.Get(filter.GetWhere()));
+                    }
 
-                return EntityResponse.Enumerable(repository.Get());
+                    return EntityResponse.Enumerable(repository.Get());
+                }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return EntityResponse.Error(e);
             }
@@ -46,8 +47,10 @@ namespace TheRack.ResourceServer.API.Controllers
         {
             try
             {
-                LiftRepository repository = new LiftRepository();
-                return EntityResponse.Entity<Lift, LiftDTO>(repository.Get(id));
+                using (LiftRepository repository = new LiftRepository())
+                {
+                    return EntityResponse.Entity<Lift, LiftDTO>(repository.Get(id));
+                }
             }
             catch (Exception e)
             {
@@ -60,11 +63,11 @@ namespace TheRack.ResourceServer.API.Controllers
         {
             try
             {
-                LiftRepository repository = new LiftRepository();
-                var lift = repository.GetWithDetails(id);
-                //var adapter = new LiftDataAdapter();
-                //var dto = adapter.GetDTO(lift);
-                return EntityResponse.EntityDetail<Lift, LiftDTO, LiftDetailDTO>(lift);
+                using (LiftRepository repository = new LiftRepository())
+                {
+                    var lift = repository.GetWithDetails(id);
+                    return EntityResponse.EntityDetail<Lift, LiftDTO, LiftDetailDTO>(lift);
+                }
             }
             catch (Exception e)
             {
@@ -77,8 +80,10 @@ namespace TheRack.ResourceServer.API.Controllers
         {
             try
             {
-                LiftRepository repository = new LiftRepository();
-                return EntityResponse.Entity<Lift, LiftDTO>(repository.Create(value));
+                using (LiftRepository repository = new LiftRepository())
+                {
+                    return EntityResponse.Entity<Lift, LiftDTO>(repository.Create(value));
+                }
             }
             catch (Exception e)
             {
@@ -91,8 +96,10 @@ namespace TheRack.ResourceServer.API.Controllers
         {
             try
             {
-                LiftRepository repository = new LiftRepository();
-                return EntityResponse.Entity<Lift, LiftDTO>(repository.Update(id, value));
+                using (LiftRepository repository = new LiftRepository())
+                {
+                    return EntityResponse.Entity<Lift, LiftDTO>(repository.Update(id, value));
+                }
             }
             catch (Exception e)
             {
@@ -105,8 +112,10 @@ namespace TheRack.ResourceServer.API.Controllers
         {
             try
             {
-                LiftRepository repository = new LiftRepository();
-                return EntityResponse.Entity<Lift, LiftDTO>(repository.Remove(id));
+                using (LiftRepository repository = new LiftRepository())
+                {
+                    return EntityResponse.Entity<Lift, LiftDTO>(repository.Remove(id));
+                }
             }
             catch (Exception e)
             {
