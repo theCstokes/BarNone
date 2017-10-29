@@ -4,10 +4,11 @@ using BarNone.Shared.DomainModel.Core;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.Kinect;
 
 namespace BarNone.DataLift.DomainModel.KinectData
 {
-    internal class BodyData : BaseChildDomainModel<BodyData, BodyDataDTO,BodyData,BodyDataDTO>,
+    public class BodyData : BaseChildDomainModel<BodyData, BodyDataDTO,BodyData,BodyDataDTO>,
         IDetailDomainModel<BodyDataDTO,BodyDataDetailDTO>
     {
         #region Properties
@@ -20,13 +21,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         /// <summary>
         /// List of all body data for a given Record
         /// </summary>
-        public IReadOnlyList<BodyDataFrame> DataFrames
-        {
-            get
-            {
-                return InternalRecordDate.AsReadOnly();
-            }
-        }
+        public IList<BodyDataFrame> DataFrames { get; set; }
 
         /// <summary>
         /// List of the body data stored internally for controlled modification
@@ -35,7 +30,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
 
         #endregion
 
-        #region Constroctor(s)
+        #region Constructor(s)
         /// <summary>
         /// Creates a new Body Data Record
         /// </summary>
@@ -43,6 +38,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         {
             return new BodyDataDTO
             {
+                ID = this.ID,
                 RecordTimeStamp = this.RecordDate,
                 Details = BuildDetailDTO(),
             };
@@ -53,6 +49,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         {
             return new BodyDataDTO
             {
+                ID = this.ID,
                 RecordTimeStamp = this.RecordDate,
                 Details = BuildDetailDTO(),
             };
@@ -60,15 +57,12 @@ namespace BarNone.DataLift.DomainModel.KinectData
 
         public override void PopulateFromDTO(BodyDataDTO dto)
         {
-            ID = dto.ID;
-            RecordDate = dto.RecordTimeStamp;
-            
+            CreateDMfromDTO(dto);
         }
 
         public override void PopulateFromDTO(BodyDataDTO dto, BodyData parent)
         {
-            ID = dto.ID;
-            RecordDate = dto.RecordTimeStamp;
+            CreateDMfromDTO(dto);
         }
 
         #endregion
@@ -90,6 +84,33 @@ namespace BarNone.DataLift.DomainModel.KinectData
             {
                 OrderedFrames = this.DataFrames.Select(x => x.BuildDTO()).ToList()
             };
+        }
+
+        private void CreateDMfromDTO(BodyDataDTO dto)
+        {
+            ID = dto.ID;
+            RecordDate = dto.RecordTimeStamp;
+
+            DataFrames = dto.Details.OrderedFrames.Select(
+                joint => new BodyDataFrame
+                {
+                    ID = joint.ID,
+                    TimeOfFrame = joint.TimeOfFrame,
+                    Joints = joint.Details.Joints.Select(
+                        kv => new Joint()
+                        {
+                            JointType = (JointType)kv.Value.JointType,
+                            Position = new CameraSpacePoint()
+                            {
+                                X = kv.Value.PositionX,
+                                Y = kv.Value.PositionY,
+                                Z = kv.Value.PositionZ
+                            },
+                            TrackingState = (TrackingState)kv.Value.TrackingState
+                        })
+                        .ToDictionary(x => x.JointType, x => x)
+                })
+                .ToList();
         }
 
         #endregion
