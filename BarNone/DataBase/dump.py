@@ -6,10 +6,10 @@ import os
 user = "postgres"
 pw = "admin"
 host = "127.0.0.1"
-db="SharpSight"
+db="BarNone"
  
 dir_name = os.getcwd()
-dump = """ "c:\\program files\\postgresql\\10\\bin\\pg_dump" -U %s -Z 9 -f %s -F c %s  """                  
+dump = """ "c:\\program files\\postgresql\\10\\bin\\pg_dump" -U %s -Z 9 -f "%s" -F c %s  """                  
 os.putenv('PGPASSWORD', pw)
  
 file_name = db  + ".backup"
