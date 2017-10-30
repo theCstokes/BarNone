@@ -78,61 +78,39 @@ namespace BarNone.DataLift.DomainModel.KinectData
         {
             ID = dto.ID;
             TimeOfFrame = dto.TimeOfFrame;
-            try
-            {
-                Joints = BuildJointDict(dto.Details.Joints);
-            }
-            catch(System.NullReferenceException)
-            {
-                Joints = null;
-            }
+            Joints = BuildJointDict(dto.Details?.Joints);
         }
 
         public override void PopulateFromDTO(BodyDataFrameDTO dto, BodyData parent)
         {
             ID = dto.ID;
             TimeOfFrame = dto.TimeOfFrame;
-            try
-            {
-                Joints = BuildJointDict(dto.Details.Joints);
-            }
-            catch (System.NullReferenceException)
-            {
-                Joints = null;
-            }
+            Joints = BuildJointDict(dto.Details.Joints);
 
             parent.AddNewFrame(this);
         }
 
         public BodyDataFrameDetailDTO BuildDetailDTO()
         {
-            try
+            return new BodyDataFrameDetailDTO()
             {
-                return new BodyDataFrameDetailDTO()
+                Joints = Joints?.Select(
+                kv => new JointDTO()
                 {
-                    Joints = Joints.Select(
-                    kv => new JointDTO()
-                    {
-                        Details = new JointDetailDTO(),
-                        PositionX = kv.Value.Position.X,
-                        PositionY = kv.Value.Position.Y,
-                        PositionZ = kv.Value.Position.Z,
-                        TrackingState = (DTOTrackingState)kv.Value.TrackingState,
-                        JointType = (DTOJointType)kv.Value.JointType
-                    })
-                    .ToDictionary(x => x.JointType, x => x)
-                };
-            }
-            catch (System.ArgumentNullException)
-            {
-                return null;
-            }
-            
+                    Details = new JointDetailDTO(),
+                    PositionX = kv.Value.Position.X,
+                    PositionY = kv.Value.Position.Y,
+                    PositionZ = kv.Value.Position.Z,
+                    TrackingState = (DTOTrackingState)kv.Value.TrackingState,
+                    JointType = (DTOJointType)kv.Value.JointType
+                })
+                .ToDictionary(x => x.JointType, x => x)
+            };  
         }
 
         private IDictionary<JointType,Joint> BuildJointDict(IDictionary<DTOJointType, JointDTO> JointListDTO)
         {
-            return JointListDTO.Select(
+            return JointListDTO?.Select(
                 joint => new Joint()
                 {
                     JointType = (JointType)joint.Value.JointType,

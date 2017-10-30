@@ -58,26 +58,18 @@ namespace BarNone.DataLift.DomainModel.KinectData
         {
             return new BodyDataDTO
             {
-                ID = this.ID,
-                RecordTimeStamp = this.RecordDate,
-                Details = BuildDetailDTO(),
+                ID = ID,
+                RecordTimeStamp = RecordDate,
+                Details = BuildDetailDTO()
             };
         }
 
         public BodyDataDetailDTO BuildDetailDTO()
         {
-            try
+            return new BodyDataDetailDTO()
             {
-                return new BodyDataDetailDTO()
-                {
-                    OrderedFrames = this.DataFrames.Select(x => x.BuildDTO()).ToList()
-                };
-            }
-
-            catch (System.ArgumentNullException)
-            {
-                return null;
-            }
+                OrderedFrames = DataFrames?.Select(x => x.BuildDTO()).ToList()
+            };
 
         }
 
@@ -104,10 +96,9 @@ namespace BarNone.DataLift.DomainModel.KinectData
         private void CreateDMfromDTO(BodyDataDTO dto)
         {
             ID = dto.ID;
-            RecordDate = dto.RecordTimeStamp;
-
-            DataFrames = dto.Details.OrderedFrames.Select(
-            joint => BodyDataFrame.CreateFromDTO(joint, this)).ToList();
+            RecordDate = dto.RecordTimeStamp;  
+            DataFrames = dto.Details?.OrderedFrames.Select(
+                joint => BodyDataFrame.CreateFromDTO(joint, this)).ToList();
         }
 
         #endregion
