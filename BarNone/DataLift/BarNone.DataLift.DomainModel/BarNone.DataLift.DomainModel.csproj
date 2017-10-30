@@ -50,7 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\BaseDomainModel.cs" />
     <Compile Include="KinectData\BodyData.cs" />
     <Compile Include="KinectData\BodyDataFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

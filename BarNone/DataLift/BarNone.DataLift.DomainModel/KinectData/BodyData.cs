@@ -5,11 +5,12 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Kinect;
+using BarNone.Shared.DataTransfer.Types;
 
 namespace BarNone.DataLift.DomainModel.KinectData
 {
-    public class BodyData : BaseChildDomainModel<BodyData, BodyDataDTO,BodyData,BodyDataDTO>,
-        IDetailDomainModel<BodyDataDTO,BodyDataDetailDTO>
+    public class BodyData : BaseChildDomainModel<BodyData, BodyDataDTO, BodyData, BodyDataDTO>,
+        IDetailDomainModel<BodyDataDTO, BodyDataDetailDTO>
     {
         #region Properties
         public override int ID { get; set; }
@@ -34,6 +35,25 @@ namespace BarNone.DataLift.DomainModel.KinectData
         /// <summary>
         /// Creates a new Body Data Record
         /// </summary>
+
+        #endregion
+
+        #region API Method(s)
+        /// <summary>
+        /// Add a new frame to the Body Data Record
+        ///     Appends <paramref name="df"/> to the end of <see cref="DataFrames"/>
+        /// </summary>
+        /// <param name="df">Data Frame being added</param>
+        public void AddNewFrame(BodyDataFrame df)
+        {
+            if(DataFrames == null)
+            {
+                DataFrames = new List<BodyDataFrame>();
+            }
+
+            DataFrames.Add(df);
+        }
+
         public override BodyDataDTO BuildDTO()
         {
             return new BodyDataDTO
@@ -42,7 +62,23 @@ namespace BarNone.DataLift.DomainModel.KinectData
                 RecordTimeStamp = this.RecordDate,
                 Details = BuildDetailDTO(),
             };
-            
+        }
+
+        public BodyDataDetailDTO BuildDetailDTO()
+        {
+            try
+            {
+                return new BodyDataDetailDTO()
+                {
+                    OrderedFrames = this.DataFrames.Select(x => x.BuildDTO()).ToList()
+                };
+            }
+
+            catch (System.ArgumentNullException)
+            {
+                return null;
+            }
+
         }
 
         public override BodyDataDTO BuildDTO(BodyDataDTO parentDTO)
@@ -65,55 +101,15 @@ namespace BarNone.DataLift.DomainModel.KinectData
             CreateDMfromDTO(dto);
         }
 
-        #endregion
-
-        #region API Method(s)
-        /// <summary>
-        /// Add a new frame to the Body Data Record
-        ///     Appends <paramref name="df"/> to the end of <see cref="DataFrames"/>
-        /// </summary>
-        /// <param name="df">Data Frame being added</param>
-        public void AddNewFrame(BodyDataFrame df)
-        {
-            InternalRecordDate.Add(df);
-        }
-
-        public BodyDataDetailDTO BuildDetailDTO()
-        {
-            return new BodyDataDetailDTO()
-            {
-                OrderedFrames = this.DataFrames.Select(x => x.BuildDTO()).ToList()
-            };
-        }
-
         private void CreateDMfromDTO(BodyDataDTO dto)
         {
             ID = dto.ID;
             RecordDate = dto.RecordTimeStamp;
 
             DataFrames = dto.Details.OrderedFrames.Select(
-                joint => new BodyDataFrame
-                {
-                    ID = joint.ID,
-                    TimeOfFrame = joint.TimeOfFrame,
-                    Joints = joint.Details.Joints.Select(
-                        kv => new Joint()
-                        {
-                            JointType = (JointType)kv.Value.JointType,
-                            Position = new CameraSpacePoint()
-                            {
-                                X = kv.Value.PositionX,
-                                Y = kv.Value.PositionY,
-                                Z = kv.Value.PositionZ
-                            },
-                            TrackingState = (TrackingState)kv.Value.TrackingState
-                        })
-                        .ToDictionary(x => x.JointType, x => x)
-                })
-                .ToList();
+            joint => BodyDataFrame.CreateFromDTO(joint, this)).ToList();
         }
 
         #endregion
-
     }
 }

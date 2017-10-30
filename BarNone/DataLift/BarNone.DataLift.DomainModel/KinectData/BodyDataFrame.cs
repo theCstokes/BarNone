@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using BarNone.DataLift.DomainModel.Core;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.Types;
 using BarNone.Shared.DomainModel.Core;
@@ -54,6 +53,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         {
             BodyDataFrameDTO currentFrame = new BodyDataFrameDTO()
             {
+                ID = this.ID,
                 TimeOfFrame = this.TimeOfFrame,
                 Details = BuildDetailDTO(),
                 
@@ -68,6 +68,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         {
             return new BodyDataFrameDTO()
             {
+                ID = this.ID,
                 TimeOfFrame = this.TimeOfFrame,
                 Details = BuildDetailDTO()
             };
@@ -77,34 +78,56 @@ namespace BarNone.DataLift.DomainModel.KinectData
         {
             ID = dto.ID;
             TimeOfFrame = dto.TimeOfFrame;
-            Joints = BuildJointDict(dto.Details.Joints);
+            try
+            {
+                Joints = BuildJointDict(dto.Details.Joints);
+            }
+            catch(System.NullReferenceException)
+            {
+                Joints = null;
+            }
         }
 
         public override void PopulateFromDTO(BodyDataFrameDTO dto, BodyData parent)
         {
             ID = dto.ID;
             TimeOfFrame = dto.TimeOfFrame;
-            Joints = BuildJointDict(dto.Details.Joints);
+            try
+            {
+                Joints = BuildJointDict(dto.Details.Joints);
+            }
+            catch (System.NullReferenceException)
+            {
+                Joints = null;
+            }
 
             parent.AddNewFrame(this);
         }
 
         public BodyDataFrameDetailDTO BuildDetailDTO()
         {
-            return new BodyDataFrameDetailDTO()
+            try
             {
-                Joints = Joints.Select(
+                return new BodyDataFrameDetailDTO()
+                {
+                    Joints = Joints.Select(
                     kv => new JointDTO()
                     {
                         Details = new JointDetailDTO(),
                         PositionX = kv.Value.Position.X,
                         PositionY = kv.Value.Position.Y,
                         PositionZ = kv.Value.Position.Z,
-                        TrackingState = (DTOTrackingState)kv.Key,
+                        TrackingState = (DTOTrackingState)kv.Value.TrackingState,
                         JointType = (DTOJointType)kv.Value.JointType
                     })
                     .ToDictionary(x => x.JointType, x => x)
-            };
+                };
+            }
+            catch (System.ArgumentNullException)
+            {
+                return null;
+            }
+            
         }
 
         private IDictionary<JointType,Joint> BuildJointDict(IDictionary<DTOJointType, JointDTO> JointListDTO)
