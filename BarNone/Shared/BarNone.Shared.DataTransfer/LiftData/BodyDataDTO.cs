@@ -19,7 +19,7 @@ namespace BarNone.Shared.DataTransfer
         [JsonProperty(Order = 1)]
         public DateTime RecordTimeStamp { get; set; }
         public DateTime RecordDate { get; set; }
-        internal List<BarNone.DataLift.DomainModel.KinectData.BodyDataFrame> InternalRecordDate { get; public set; }
+        //internal List<BarNone.DataLift.DomainModel.KinectData.BodyDataFrame> InternalRecordDate { get; public set; }
     }
 
 }

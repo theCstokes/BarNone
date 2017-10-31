@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using BarNone.DataLift.DomainModel.Core;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.Types;
 using BarNone.Shared.DomainModel.Core;

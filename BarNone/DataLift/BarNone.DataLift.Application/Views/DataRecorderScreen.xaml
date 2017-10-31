@@ -2,11 +2,41 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:BarNone.DataLift.UI.Views"
+             xmlns:vms="clr-namespace:BarNone.DataLift.UI.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
-             Background="{DynamicResource PrimaryHueDarkForegroundBrush}">
+             MinHeight="500" MinWidth="500"
+             Loaded="UserControl_Loaded"
+             Unloaded="UserControl_Closed">
+    <UserControl.Resources>
+        <vms:DataRecorderVM x:Key="vm"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource vm}"/>
+    </UserControl.DataContext>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Viewbox HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1">
+            <Image Source="{Binding ImageSourceFront}"  />
+        </Viewbox>
+        <Viewbox HorizontalAlignment="Center" Grid.Column="1" Grid.Row="2">
+            <Image Source="{Binding ImageSourceSide}"  />
+        </Viewbox>
+        <Viewbox HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1">
+            <Image Source="{Binding ImageSourceColor}"  />
+        </Viewbox>
     </Grid>
 </UserControl>
