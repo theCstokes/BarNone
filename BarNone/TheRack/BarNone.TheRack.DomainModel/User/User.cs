@@ -21,9 +21,6 @@ namespace BarNone.TheRack.DomainModel
 
         public string Password { get; set; }
 
-        [ForeignKey("Account")]
-        public int? AccountID { get; set; }
-
         public override UserDTO BuildDTO()
         {
             return new UserDTO
