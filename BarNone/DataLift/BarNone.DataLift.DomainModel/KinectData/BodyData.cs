@@ -59,8 +59,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
             return new BodyDataDTO
             {
                 ID = ID,
-                RecordTimeStamp = RecordDate,
-                Details = BuildDetailDTO()
+                RecordTimeStamp = RecordDate
             };
         }
 
@@ -78,8 +77,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
             return new BodyDataDTO
             {
                 ID = this.ID,
-                RecordTimeStamp = this.RecordDate,
-                Details = BuildDetailDTO(),
+                RecordTimeStamp = this.RecordDate
             };
         }
 

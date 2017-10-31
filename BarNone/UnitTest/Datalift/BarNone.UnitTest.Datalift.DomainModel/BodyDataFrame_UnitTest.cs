@@ -50,6 +50,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
             };
 
             var dataFameDTO = dataFame.BuildDTO();
+            dataFameDTO.Details = dataFame.BuildDetailDTO();
 
             foreach (KeyValuePair<JointType,Joint> joint in dataFame.Joints)
             {

@@ -50,6 +50,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
             };
 
             var bodyDataDTO = bodyData.BuildDTO();
+            bodyDataDTO.Details = bodyData.BuildDetailDTO();
 
             Assert.AreEqual(bodyData.ID, bodyDataDTO.ID);
             Assert.AreEqual(bodyData.RecordDate, bodyDataDTO.RecordTimeStamp);

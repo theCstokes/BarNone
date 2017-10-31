@@ -54,9 +54,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
             BodyDataFrameDTO currentFrame = new BodyDataFrameDTO()
             {
                 ID = this.ID,
-                TimeOfFrame = this.TimeOfFrame,
-                Details = BuildDetailDTO(),
-                
+                TimeOfFrame = this.TimeOfFrame
             };
 
             parentDTO.Details.OrderedFrames.Add(currentFrame);
@@ -69,8 +67,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
             return new BodyDataFrameDTO()
             {
                 ID = this.ID,
-                TimeOfFrame = this.TimeOfFrame,
-                Details = BuildDetailDTO()
+                TimeOfFrame = this.TimeOfFrame
             };
         }
 
