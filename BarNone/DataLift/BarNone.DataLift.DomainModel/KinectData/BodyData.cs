@@ -46,7 +46,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         /// <param name="df">Data Frame being added</param>
         public void AddNewFrame(BodyDataFrame df)
         {
-            if(DataFrames == null)
+            if (DataFrames == null)
             {
                 DataFrames = new List<BodyDataFrame>();
             }
@@ -59,16 +59,19 @@ namespace BarNone.DataLift.DomainModel.KinectData
             return new BodyDataDTO
             {
                 ID = ID,
-                RecordTimeStamp = RecordDate
+                RecordTimeStamp = RecordDate,
             };
         }
 
         public BodyDataDetailDTO BuildDetailDTO()
         {
-            return new BodyDataDetailDTO()
+            var ret = new BodyDataDetailDTO()
             {
                 OrderedFrames = DataFrames?.Select(x => x.BuildDTO()).ToList()
             };
+
+            DataFrames.Select(x => x?.BuildDetailDTO());
+            return ret;
 
         }
 
@@ -94,7 +97,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         private void CreateDMfromDTO(BodyDataDTO dto)
         {
             ID = dto.ID;
-            RecordDate = dto.RecordTimeStamp;  
+            RecordDate = dto.RecordTimeStamp;
             DataFrames = dto.Details?.OrderedFrames.Select(
                 joint => BodyDataFrame.CreateFromDTO(joint, this)).ToList();
         }

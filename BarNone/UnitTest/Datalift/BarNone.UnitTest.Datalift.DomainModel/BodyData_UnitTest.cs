@@ -28,7 +28,6 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 ID = 1,
                 RecordDate = DateTime.Now,
                 DataFrames = null
-
             };
 
             var bodyDataDTO = bodyData.BuildDTO();
@@ -45,12 +44,22 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 RecordDate = DateTime.Now,
                 DataFrames = new List<BodyDataFrame>()
                 {
-                    new BodyDataFrame() {ID = 1, TimeOfFrame = DateTime.Now, Joints = null}, new BodyDataFrame() {ID = 2, TimeOfFrame = DateTime.Now, Joints = null}
+                    new BodyDataFrame() {ID = 1, TimeOfFrame = DateTime.Now, Joints = new Dictionary<JointType, Joint>()
+                    {
+                        {(JointType)0, new Joint {JointType = (JointType)0, Position = new CameraSpacePoint {X = 111, Y = 222, Z = 333}, TrackingState = (TrackingState)2 } },
+                        {(JointType)1, new Joint {JointType = (JointType)1, Position = new CameraSpacePoint {X = 111, Y = 222, Z = 333}, TrackingState = (TrackingState)2 } }
+                    } }, new BodyDataFrame() {ID = 2, TimeOfFrame = DateTime.Now, Joints = new Dictionary<JointType, Joint>()
+                    {
+                        {(JointType)0, new Joint {JointType = (JointType)0, Position = new CameraSpacePoint {X = 111, Y = 222, Z = 333}, TrackingState = (TrackingState)2 } },
+                        {(JointType)1, new Joint {JointType = (JointType)1, Position = new CameraSpacePoint {X = 111, Y = 222, Z = 333}, TrackingState = (TrackingState)2 } }
+                    } }
                 }
             };
 
             var bodyDataDTO = bodyData.BuildDTO();
             bodyDataDTO.Details = bodyData.BuildDetailDTO();
+            //bodyDataDTO.Details.OrderedFrames
+
 
             Assert.AreEqual(bodyData.ID, bodyDataDTO.ID);
             Assert.AreEqual(bodyData.RecordDate, bodyDataDTO.RecordTimeStamp);

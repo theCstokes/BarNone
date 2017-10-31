@@ -102,7 +102,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
                     JointType = (DTOJointType)kv.Value.JointType
                 })
                 .ToDictionary(x => x.JointType, x => x)
-            };  
+            };
         }
 
         private IDictionary<JointType,Joint> BuildJointDict(IDictionary<DTOJointType, JointDTO> JointListDTO)
@@ -123,6 +123,5 @@ namespace BarNone.DataLift.DomainModel.KinectData
         }
 
         #endregion
-
     }
 }
