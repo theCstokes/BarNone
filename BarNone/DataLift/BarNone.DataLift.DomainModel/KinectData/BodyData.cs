@@ -4,11 +4,13 @@ using BarNone.Shared.DomainModel.Core;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.Kinect;
+using BarNone.Shared.DataTransfer.Types;
 
 namespace BarNone.DataLift.DomainModel.KinectData
 {
-    internal class BodyData : BaseChildDomainModel<BodyData, BodyDataDTO,BodyData,BodyDataDTO>,
-        IDetailDomainModel<BodyDataDTO,BodyDataDetailDTO>
+    public class BodyData : BaseChildDomainModel<BodyData, BodyDataDTO, BodyData, BodyDataDTO>,
+        IDetailDomainModel<BodyDataDTO, BodyDataDetailDTO>
     {
         #region Properties
         public override int ID { get; set; }
@@ -20,13 +22,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         /// <summary>
         /// List of all body data for a given Record
         /// </summary>
-        public IReadOnlyList<BodyDataFrame> DataFrames
-        {
-            get
-            {
-                return InternalRecordDate.AsReadOnly();
-            }
-        }
+        public IList<BodyDataFrame> DataFrames { get; set; }
 
         /// <summary>
         /// List of the body data stored internally for controlled modification
@@ -35,41 +31,10 @@ namespace BarNone.DataLift.DomainModel.KinectData
 
         #endregion
 
-        #region Constroctor(s)
+        #region Constructor(s)
         /// <summary>
         /// Creates a new Body Data Record
         /// </summary>
-        public override BodyDataDTO BuildDTO()
-        {
-            return new BodyDataDTO
-            {
-                RecordTimeStamp = this.RecordDate,
-                Details = BuildDetailDTO(),
-            };
-            
-        }
-
-        public override BodyDataDTO BuildDTO(BodyDataDTO parentDTO)
-        {
-            return new BodyDataDTO
-            {
-                RecordTimeStamp = this.RecordDate,
-                Details = BuildDetailDTO(),
-            };
-        }
-
-        public override void PopulateFromDTO(BodyDataDTO dto)
-        {
-            ID = dto.ID;
-            RecordDate = dto.RecordTimeStamp;
-            
-        }
-
-        public override void PopulateFromDTO(BodyDataDTO dto, BodyData parent)
-        {
-            ID = dto.ID;
-            RecordDate = dto.RecordTimeStamp;
-        }
 
         #endregion
 
@@ -81,18 +46,62 @@ namespace BarNone.DataLift.DomainModel.KinectData
         /// <param name="df">Data Frame being added</param>
         public void AddNewFrame(BodyDataFrame df)
         {
-            InternalRecordDate.Add(df);
+            if (DataFrames == null)
+            {
+                DataFrames = new List<BodyDataFrame>();
+            }
+
+            DataFrames.Add(df);
+        }
+
+        public override BodyDataDTO BuildDTO()
+        {
+            return new BodyDataDTO
+            {
+                ID = ID,
+                RecordTimeStamp = RecordDate,
+            };
         }
 
         public BodyDataDetailDTO BuildDetailDTO()
         {
-            return new BodyDataDetailDTO()
+            var ret = new BodyDataDetailDTO()
             {
-                OrderedFrames = this.DataFrames.Select(x => x.BuildDTO()).ToList()
+                OrderedFrames = DataFrames?.Select(x => x.BuildDTO()).ToList()
+            };
+
+            DataFrames.Select(x => x?.BuildDetailDTO());
+            return ret;
+
+        }
+
+        public override BodyDataDTO BuildDTO(BodyDataDTO parentDTO)
+        {
+            return new BodyDataDTO
+            {
+                ID = this.ID,
+                RecordTimeStamp = this.RecordDate
             };
         }
 
-        #endregion
+        public override void PopulateFromDTO(BodyDataDTO dto)
+        {
+            CreateDMfromDTO(dto);
+        }
 
+        public override void PopulateFromDTO(BodyDataDTO dto, BodyData parent)
+        {
+            CreateDMfromDTO(dto);
+        }
+
+        private void CreateDMfromDTO(BodyDataDTO dto)
+        {
+            ID = dto.ID;
+            RecordDate = dto.RecordTimeStamp;
+            DataFrames = dto.Details?.OrderedFrames.Select(
+                joint => BodyDataFrame.CreateFromDTO(joint, this)).ToList();
+        }
+
+        #endregion
     }
 }

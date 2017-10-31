@@ -8,7 +8,7 @@ using BarNone.Shared.DomainModel.Core;
 
 namespace BarNone.DataLift.DomainModel.KinectData
 {
-    public class BodyDataFrame : BaseChildDomainModel<BodyDataFrame,BodyDataFrameDTO,BodyDataFrame,BodyDataFrameDTO>,
+    public class BodyDataFrame : BaseChildDomainModel<BodyDataFrame,BodyDataFrameDTO,BodyData,BodyDataDTO>,
         IDetailDomainModel<BodyDataFrameDTO, BodyDataFrameDetailDTO>
     {
         #region Public Properties
@@ -21,24 +21,14 @@ namespace BarNone.DataLift.DomainModel.KinectData
         /// </summary>
         public DateTime TimeOfFrame
         {
-            get; private set;
+            get; set;
         }
 
-        public IReadOnlyDictionary<JointType, Joint> Joints { get; }
+        public IDictionary<JointType, Joint> Joints { get; set; }
 
         #endregion
 
         #region Constructor(s)
-        /// <summary>
-        /// Construct a Body Data Frame
-        /// </summary>
-        //public BodyDataFrame(IReadOnlyDictionary<JointType, Joint> joints)
-        //{
-        //    //Set the Time of the dataframe
-        //    TimeOfFrame = DateTime.Now;
-        //    this.Joints = joints;
-        //}
-
         #endregion
 
         #region API Method(s)
@@ -59,21 +49,25 @@ namespace BarNone.DataLift.DomainModel.KinectData
 
         }
 
-        public override BodyDataFrameDTO BuildDTO(BodyDataFrameDTO parentDTO)
+        public override BodyDataFrameDTO BuildDTO(BodyDataDTO parentDTO)
         {
-            return new BodyDataFrameDTO()
+            BodyDataFrameDTO currentFrame = new BodyDataFrameDTO()
             {
-                TimeOfFrame = this.TimeOfFrame,
-                Details = BuildDetailDTO()
+                ID = this.ID,
+                TimeOfFrame = this.TimeOfFrame
             };
+
+            parentDTO.Details.OrderedFrames.Add(currentFrame);
+
+            return currentFrame;
         }
 
         public override BodyDataFrameDTO BuildDTO()
         {
             return new BodyDataFrameDTO()
             {
-                TimeOfFrame = this.TimeOfFrame,
-                Details = BuildDetailDTO()
+                ID = this.ID,
+                TimeOfFrame = this.TimeOfFrame
             };
         }
 
@@ -81,33 +75,53 @@ namespace BarNone.DataLift.DomainModel.KinectData
         {
             ID = dto.ID;
             TimeOfFrame = dto.TimeOfFrame;
+            Joints = BuildJointDict(dto.Details?.Joints);
         }
 
-        public override void PopulateFromDTO(BodyDataFrameDTO dto, BodyDataFrame parent)
+        public override void PopulateFromDTO(BodyDataFrameDTO dto, BodyData parent)
         {
             ID = dto.ID;
             TimeOfFrame = dto.TimeOfFrame;
+            Joints = BuildJointDict(dto.Details.Joints);
+
+            parent.AddNewFrame(this);
         }
 
         public BodyDataFrameDetailDTO BuildDetailDTO()
         {
             return new BodyDataFrameDetailDTO()
             {
-                Joints = Joints.Select(
-                    kv => new JointDTO()
-                    {
-                        Details = new JointDetailDTO(),
-                        PositionX = kv.Value.Position.X,
-                        PositionY = kv.Value.Position.Y,
-                        PositionZ = kv.Value.Position.Z,
-                        TrackingState = (DTOTrackingState)kv.Key,
-                        JointType = (DTOJointType)kv.Value.JointType
-                    })
-                    .ToList()
+                Joints = Joints?.Select(
+                kv => new JointDTO()
+                {
+                    Details = new JointDetailDTO(),
+                    PositionX = kv.Value.Position.X,
+                    PositionY = kv.Value.Position.Y,
+                    PositionZ = kv.Value.Position.Z,
+                    TrackingState = (DTOTrackingState)kv.Value.TrackingState,
+                    JointType = (DTOJointType)kv.Value.JointType
+                })
+                .ToDictionary(x => x.JointType, x => x)
             };
         }
 
-        #endregion
+        private IDictionary<JointType,Joint> BuildJointDict(IDictionary<DTOJointType, JointDTO> JointListDTO)
+        {
+            return JointListDTO?.Select(
+                joint => new Joint()
+                {
+                    JointType = (JointType)joint.Value.JointType,
+                    Position = new CameraSpacePoint()
+                    {
+                        X = joint.Value.PositionX,
+                        Y = joint.Value.PositionY,
+                        Z = joint.Value.PositionZ
+                    },
+                    TrackingState = (TrackingState)joint.Value.TrackingState
+                })
+                .ToDictionary(x => x.JointType, x => x);
+        }
 
+        #endregion
     }
 }
