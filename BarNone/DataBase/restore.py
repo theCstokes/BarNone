@@ -10,7 +10,7 @@ port = "5433";
 db="BarNone"
 
 dir_name = os.getcwd()
-restore = """ "c:\\program files\\postgresql\\10\\bin\\pg_restore" -h %s -p %s --clean -U %s -d %s "%s" """   #Change number based on whatever version you are using                
+restore = """ "C:\\Program Files\\PostgreSQL\\10\\bin\\pg_restore" -h %s -p %s --clean -U %s -d %s "%s" """   #Change number based on whatever version you are using                
 os.putenv('PGPASSWORD', pw)
 
 file_name = db + ".backup"   
