@@ -4,8 +4,14 @@ using System.Collections.Generic;
 
 namespace BarNone.DataLift.DomainModel.KinectData
 {
+    /// <summary>
+    /// Model of the Human Body, from the Kinect
+    /// </summary>
     public static class Skeleton
     {
+        /// <summary>
+        /// All bone connections forming a human skeleton
+        /// </summary>
         public static List<Tuple<JointType, JointType>> bones = new List<Tuple<JointType, JointType>>() {
             new Tuple<JointType, JointType>(JointType.Head, JointType.Neck),
             new Tuple<JointType, JointType>(JointType.Neck, JointType.SpineShoulder),

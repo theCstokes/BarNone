@@ -22,12 +22,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         /// <summary>
         /// List of all body data for a given Record
         /// </summary>
-        public IList<BodyDataFrame> DataFrames { get; set; }
-
-        /// <summary>
-        /// List of the body data stored internally for controlled modification
-        /// </summary>
-        private List<BodyDataFrame> InternalRecordDate { get; set; }
+        public List<BodyDataFrame> DataFrames { get; set; } = new List<BodyDataFrame>();
 
         #endregion
 

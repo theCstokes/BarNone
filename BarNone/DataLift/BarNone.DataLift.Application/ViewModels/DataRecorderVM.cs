@@ -114,17 +114,9 @@ namespace BarNone.DataLift.UI.ViewModels
         private int displayHeight;
 
         /// <summary>
-        /// List of colors for each body tracked
+        /// Body Color for Body[0]
         /// </summary>
-        private List<Pen> bodyColors = new List<Pen>()
-        {
-            new Pen(Brushes.Red, 6),
-            new Pen(Brushes.Orange, 6),
-            new Pen(Brushes.Green, 6),
-            new Pen(Brushes.Blue, 6),
-            new Pen(Brushes.Indigo, 6),
-            new Pen(Brushes.Violet, 6)
-        };
+        private Pen bodyColor = new Pen(Brushes.Violet, 6);
 
         /// <summary>
         /// Array for the bodies
@@ -151,18 +143,27 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Gets the bitmap to display
         /// </summary>
-        public ImageSource ImageSourceFrontSide
+        public ImageSource ImageSourceSide
         {
             get
             {
-                return imageSourceFront;
+                return imageSourceSide;
             }
         }
 
+        #endregion
+
+        #region Reccording Data Variables
+        /// <summary>
+        /// New Recordings refresh the locally stored data
+        /// </summary>
+        public bool IsNewRecording { get; private set; } = true; //TODO REMOVE = true and actually control
+
+        private BodyData CurrentRecordingBodyData { get; set; }
 
         #endregion
 
-        #region User Control evens
+        #region User Control events
         internal void On_Loaded()
         {
             if (bodyFrameReader != null)
@@ -218,56 +219,102 @@ namespace BarNone.DataLift.UI.ViewModels
 
             if (dataReceived)
             {
-                using (DrawingContext dc = FrontProfileDrawingGroup.Open())
+                if (IsNewRecording)
                 {
-                    // Draw a transparent background to set the render size
-                    dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, displayWidth, displayHeight));
-
-                    int penIndex = 0;
-                    foreach (Body body in bodies)
+                    CurrentRecordingBodyData = new BodyData()
                     {
-                        Pen drawPen = bodyColors[penIndex++];
-
-                        if (body.IsTracked)
-                        {
-                            DrawClippedEdges(body, dc);
-
-                            IReadOnlyDictionary<JointType, Joint> joints = body.Joints;
-
-                            // convert the joint points to depth (display) space
-                            Dictionary<JointType, Point> jointPoints = new Dictionary<JointType, Point>();
-
-                            foreach (JointType jointType in joints.Keys)
-                            {
-                                // sometimes the depth(Z) of an inferred joint may show as negative
-                                // clamp down to 0.1f to prevent coordinatemapper from returning (-Infinity, -Infinity)
-                                CameraSpacePoint position = joints[jointType].Position;
-                                if (position.Z < 0)
-                                {
-                                    position.Z = InferredZPositionClamp;
-                                }
-
-                                DepthSpacePoint depthSpacePoint = coordinateMapper.MapCameraPointToDepthSpace(position);
-                                jointPoints[jointType] = new Point(depthSpacePoint.X, depthSpacePoint.Y);
-                            }
-
-                            DrawBody(joints, jointPoints, dc, drawPen);
-
-                            DrawHand(body.HandLeftState, jointPoints[JointType.HandLeft], dc);
-                            DrawHand(body.HandRightState, jointPoints[JointType.HandRight], dc);
-                        }
-                    }
-
-                    // prevent drawing outside of our render area
-                    FrontProfileDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, displayWidth, displayHeight));
+                        ID = 1,
+                        RecordDate = DateTime.Now
+                    };
+                    IsNewRecording = false;
                 }
+
+
+                //The parent user will be the lifter
+                //  They must first block the camera then reverse until they are spotted (for now)
+                var body = bodies[0];
+
+
+                if (body.IsTracked)
+                {
+                    var frame = new BodyDataFrame() { ID = 1, TimeOfFrame = DateTime.Now, Joints = body.Joints.ToDictionary(k => k.Key, v => v.Value) };
+                    CurrentRecordingBodyData.AddNewFrame(frame);
+                    //Update The Side And Front Views
+                    UpdateFrontView(frame, body);
+                    UpdateSideView(frame, body);
+                }
+
+
             }
         }
         #endregion
 
-        #region Draws
-        private enum Profile { SIDE, FRONT }
+        #region Draw
+        private void UpdateFrontView(BodyDataFrame frame, Body lifter)
+        {
+            using (DrawingContext dc = FrontProfileDrawingGroup.Open())
+            {
+                // Draw a transparent background to set the render size
+                dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, displayWidth, displayHeight));
 
+                DrawClippedEdges(lifter, dc);
+
+                // convert the joint points to depth (display) space
+                Dictionary<JointType, Point> jointPoints = new Dictionary<JointType, Point>();
+
+                foreach (JointType jointType in frame.Joints.Keys)
+                {
+                    // sometimes the depth(Z) of an inferred joint may show as negative
+                    // clamp down to 0.1f to prevent coordinatemapper from returning (-Infinity, -Infinity)
+                    CameraSpacePoint position = frame.Joints[jointType].Position;
+                    if (position.Z < 0)
+                    {
+                        position.Z = InferredZPositionClamp;
+                    }
+
+                    DepthSpacePoint depthSpacePoint = coordinateMapper.MapCameraPointToDepthSpace(position);
+                    jointPoints[jointType] = new Point(depthSpacePoint.X, depthSpacePoint.Y);
+                }
+
+                DrawBody(frame.Joints, jointPoints, dc, bodyColor);
+
+                // prevent drawing outside of our render area
+                FrontProfileDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, displayWidth, displayHeight));
+            }
+        }
+
+        private void UpdateSideView(BodyDataFrame frame, Body lifter)
+        {
+            using (DrawingContext dc = SideProfileDrawingGroup.Open())
+            {
+                // Draw a transparent background to set the render size
+                dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, displayWidth, displayHeight));
+
+                DrawClippedEdges(lifter, dc);
+
+                // convert the joint points to depth (display) space
+                Dictionary<JointType, Point> jointPoints = new Dictionary<JointType, Point>();
+
+                foreach (JointType jointType in frame.Joints.Keys)
+                {
+                    // sometimes the depth(Z) of an inferred joint may show as negative
+                    // clamp down to 0.1f to prevent coordinatemapper from returning (-Infinity, -Infinity)
+                    CameraSpacePoint position = frame.Joints[jointType].Position;
+                    if (position.Z < 0)
+                    {
+                        position.Z = InferredZPositionClamp;
+                    }
+
+                    DepthSpacePoint depthSpacePoint = coordinateMapper.MapCameraPointToDepthSpace(position);
+                    jointPoints[jointType] = new Point((position.Z - lifter.Joints[JointType.SpineBase].Position.Z) * 153.34 + displayWidth / 2, position.Y * (-153.34) + displayHeight / 2);
+                }
+
+                DrawBody(frame.Joints, jointPoints, dc, bodyColor);
+
+                // prevent drawing outside of our render area
+                SideProfileDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, displayWidth, displayHeight));
+            }
+        }
 
         /// <summary>
         /// Draws a body
@@ -276,7 +323,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <param name="jointPoints">translated positions of joints to draw</param>
         /// <param name="drawingContext">drawing context to draw to</param>
         /// <param name="drawingPen">specifies color to draw a specific body</param>
-        private void DrawBody(IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, DrawingContext drawingContext, Pen drawingPen)
+        private void DrawBody(IDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, DrawingContext drawingContext, Pen drawingPen)
         {
             // Draw the bones
             foreach (var bone in Skeleton.bones)
@@ -316,7 +363,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <param name="jointType1">second joint of bone to draw</param>
         /// <param name="drawingContext">drawing context to draw to</param>
         /// /// <param name="drawingPen">specifies color to draw a specific bone</param>
-        private void DrawBone(IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, JointType jointType0, JointType jointType1, DrawingContext drawingContext, Pen drawingPen)
+        private void DrawBone(IDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, JointType jointType0, JointType jointType1, DrawingContext drawingContext, Pen drawingPen)
         {
             Joint joint0 = joints[jointType0];
             Joint joint1 = joints[jointType1];
@@ -346,6 +393,9 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <param name="drawingContext">drawing context to draw to</param>
         private void DrawHand(HandState handState, Point handPosition, DrawingContext drawingContext)
         {
+            //DrawHand(lifter.HandLeftState, jointPoints[JointType.HandLeft], dc);
+            //DrawHand(lifter.HandRightState, jointPoints[JointType.HandRight], dc);
+
             switch (handState)
             {
                 case HandState.Closed:
