@@ -7,11 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
     internal class DataRecorderVM : ViewModelBase
     {
+        #region Private Properties
         #region Brushes
         /// <summary>
         /// Brush used for drawing hands that are currently tracked as closed
@@ -45,7 +47,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
-        #region Drawing Details
+        #region Skeleton Drawing Details
         /// <summary>
         /// Radius of drawn hand circles
         /// </summary>
@@ -65,6 +67,14 @@ namespace BarNone.DataLift.UI.ViewModels
         /// Constant for clamping Z values of camera space points from being negative
         /// </summary>
         private const float InferredZPositionClamp = 0.1f;
+        #endregion
+
+        #region Color Drawing Details
+        /// <summary>
+        /// Bitmap to display
+        /// </summary>
+        private WriteableBitmap colorBitmap = null;
+
         #endregion
 
         #region UI Components
@@ -99,11 +109,6 @@ namespace BarNone.DataLift.UI.ViewModels
         private CoordinateMapper coordinateMapper = null;
 
         /// <summary>
-        /// Reader for body frames
-        /// </summary>
-        private BodyFrameReader bodyFrameReader = null;
-
-        /// <summary>
         /// Width of display (depth space)
         /// </summary>
         private int displayWidth;
@@ -121,7 +126,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Array for the bodies
         /// </summary>
-        private Body[] bodies { get; set; } = null;
+        private IList<Body> Bodies { get; set; }
 
         /// <summary>
         /// Current status text to display
@@ -151,7 +156,25 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets the bitmap to display
+        /// </summary>
+        public ImageSource ImageSourceColor
+        {
+            get
+            {
+                return colorBitmap;
+            }
+        }
+
         #endregion
+
+        #region Frame Reader
+        MultiSourceFrameReader Reader;
+
+        #endregion
+
+
 
         #region Reccording Data Variables
         /// <summary>
@@ -163,22 +186,19 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
+        #endregion
+
         #region User Control events
         internal void On_Loaded()
         {
-            if (bodyFrameReader != null)
-            {
-                bodyFrameReader.FrameArrived += Reader_FrameArrived;
-            }
         }
 
         internal void On_Closed()
         {
-            if (bodyFrameReader != null)
+            if (Reader != null)
             {
-                // BodyFrameReader is IDisposable
-                bodyFrameReader.Dispose();
-                bodyFrameReader = null;
+                Reader.Dispose();
+                Reader = null;
             }
 
             if (kinectSensor != null)
@@ -196,26 +216,25 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         /// <param name="sender">object sending the event</param>
         /// <param name="e">event arguments</param>
-        private void Reader_FrameArrived(object sender, BodyFrameArrivedEventArgs e)
+        private void Reader_FrameArrived(BodyFrame frame)
         {
             bool dataReceived = false;
 
-            using (BodyFrame bodyFrame = e.FrameReference.AcquireFrame())
-            {
-                if (bodyFrame != null)
-                {
-                    if (bodies == null)
-                    {
-                        bodies = new Body[bodyFrame.BodyCount];
-                    }
 
-                    // The first time GetAndRefreshBodyData is called, Kinect will allocate each Body in the array.
-                    // As long as those body objects are not disposed and not set to null in the array,
-                    // those body objects will be re-used.
-                    bodyFrame.GetAndRefreshBodyData(bodies);
-                    dataReceived = true;
+            if (frame != null)
+            {
+                if (Bodies == null)
+                {
+                    Bodies = new Body[frame.BodyFrameSource.BodyCount];
                 }
+
+                // The first time GetAndRefreshBodyData is called, Kinect will allocate each Body in the array.
+                // As long as those body objects are not disposed and not set to null in the array,
+                // those body objects will be re-used.
+                frame.GetAndRefreshBodyData(Bodies);
+                dataReceived = true;
             }
+
 
             if (dataReceived)
             {
@@ -232,24 +251,20 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 //The parent user will be the lifter
                 //  They must first block the camera then reverse until they are spotted (for now)
-                var body = bodies[0];
+                var body = Bodies[0];
+                var dataframe = new BodyDataFrame() { ID = 1, TimeOfFrame = DateTime.Now, Joints = body.Joints.ToDictionary(k => k.Key, v => v.Value) };
+                CurrentRecordingBodyData.AddNewFrame(dataframe);
+                //Update The Side And Front Views
+                UpdateFrontView(dataframe, body);
+                UpdateSideView(dataframe, body);
 
-
-                if (body.IsTracked)
-                {
-                    var frame = new BodyDataFrame() { ID = 1, TimeOfFrame = DateTime.Now, Joints = body.Joints.ToDictionary(k => k.Key, v => v.Value) };
-                    CurrentRecordingBodyData.AddNewFrame(frame);
-                    //Update The Side And Front Views
-                    UpdateFrontView(frame, body);
-                    UpdateSideView(frame, body);
-                }
 
 
             }
         }
         #endregion
 
-        #region Draw
+        #region Draw Skeletons
         private void UpdateFrontView(BodyDataFrame frame, Body lifter)
         {
             using (DrawingContext dc = FrontProfileDrawingGroup.Open())
@@ -456,6 +471,39 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
+        #region Draw Color
+        /// <summary>
+        /// Handles the color frame data arriving from the sensor
+        /// </summary>
+        /// <param name="sender">object sending the event</param>
+        /// <param name="e">event arguments</param>
+        private void Reader_ColorFrameArrived(ColorFrame frame)
+        {
+            if (frame != null)
+            {
+                FrameDescription colorFrameDescription = frame.FrameDescription;
+
+                using (KinectBuffer colorBuffer = frame.LockRawImageBuffer())
+                {
+                    colorBitmap.Lock();
+
+                    // verify data and write the new color frame data to the display bitmap
+                    if ((colorFrameDescription.Width == colorBitmap.PixelWidth) && (colorFrameDescription.Height == colorBitmap.PixelHeight))
+                    {
+                        frame.CopyConvertedFrameDataToIntPtr(
+                            colorBitmap.BackBuffer,
+                            (uint)(colorFrameDescription.Width * colorFrameDescription.Height * 4),
+                            ColorImageFormat.Bgra);
+
+                        colorBitmap.AddDirtyRect(new Int32Rect(0, 0, colorBitmap.PixelWidth, colorBitmap.PixelHeight));
+                    }
+
+                    colorBitmap.Unlock();
+                }
+            }
+
+        }
+        #endregion
 
 
         public string KinectConnected;
@@ -467,16 +515,20 @@ namespace BarNone.DataLift.UI.ViewModels
 
             // get the coordinate mapper
             coordinateMapper = kinectSensor.CoordinateMapper;
-
             // get the depth (display) extents
-            FrameDescription frameDescription = kinectSensor.DepthFrameSource.FrameDescription;
 
+            Reader = kinectSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color |
+                                                 FrameSourceTypes.Body);
+            Reader.MultiSourceFrameArrived += Reader_MultiSourceFrameArrived;
+
+            FrameDescription frameDescription = kinectSensor.DepthFrameSource.FrameDescription;
             // get size of joint space
             displayWidth = frameDescription.Width;
             displayHeight = frameDescription.Height;
 
-            // open the reader for the body frames
-            bodyFrameReader = kinectSensor.BodyFrameSource.OpenReader();
+            FrameDescription colorFrameDescription = kinectSensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
+            // create the bitmap to display
+            colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
 
             // open the sensor
             kinectSensor.Open();
@@ -492,6 +544,31 @@ namespace BarNone.DataLift.UI.ViewModels
 
             // Create an image source that we can use in our image control
             imageSourceSide = new DrawingImage(SideProfileDrawingGroup);
+        }
+
+        private void Reader_MultiSourceFrameArrived(object sender, MultiSourceFrameArrivedEventArgs e)
+        {
+            // Get a reference to the multi-frame
+            var reference = e.FrameReference.AcquireFrame();
+
+            // Open color frame
+            using (var frame = reference.ColorFrameReference.AcquireFrame())
+            {
+                if (frame != null)
+                {
+                    Reader_ColorFrameArrived(frame);
+                }
+            }
+
+            // Open depth frame
+            using (var frame = reference.BodyFrameReference.AcquireFrame())
+            {
+                if (frame != null)
+                {
+                    
+                    Reader_FrameArrived(frame);
+                }
+            }
         }
 
 
