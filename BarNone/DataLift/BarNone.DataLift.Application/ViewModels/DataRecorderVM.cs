@@ -1,4 +1,5 @@
 ﻿using BarNone.DataLift.DomainModel.KinectData;
+using BarNone.DataLift.UI.Commands;
 using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -220,12 +222,12 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             bool dataReceived = false;
 
-
             if (frame != null)
             {
                 if (Bodies == null)
                 {
                     Bodies = new Body[frame.BodyFrameSource.BodyCount];
+
                 }
 
                 // The first time GetAndRefreshBodyData is called, Kinect will allocate each Body in the array.
@@ -234,6 +236,18 @@ namespace BarNone.DataLift.UI.ViewModels
                 frame.GetAndRefreshBodyData(Bodies);
                 dataReceived = true;
             }
+
+            //foreach(Body b in Bodies)
+            //{
+            //    if (WeGotHands())
+            //    {
+            //        tracked and set a flag to break
+            //    }
+            //    else
+            //    {
+            //        b = null;
+            //    }
+            //}
 
 
             if (dataReceived)
@@ -251,6 +265,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 //The parent user will be the lifter
                 //  They must first block the camera then reverse until they are spotted (for now)
+
                 var body = Bodies[0];
                 var dataframe = new BodyDataFrame() { ID = 1, TimeOfFrame = DateTime.Now, Joints = body.Joints.ToDictionary(k => k.Key, v => v.Value) };
                 CurrentRecordingBodyData.AddNewFrame(dataframe);
@@ -258,6 +273,10 @@ namespace BarNone.DataLift.UI.ViewModels
                 UpdateFrontView(dataframe, body);
                 UpdateSideView(dataframe, body);
 
+                //for(int i = 0; i < Bodies.Count; i++)
+                //{
+                //    Bodies[i] = null;
+                //}
 
 
             }
@@ -505,6 +524,29 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
+        #region TEST_TEMP
+        public RelayCommand _TestStrategy1 { get; private set; }
+
+
+        public ICommand TestStrategy1
+        {
+            get
+            {
+                if (_TestStrategy1 == null)
+                {
+                    _TestStrategy1 = new RelayCommand(action => TestStrategy1_ResetKinectSensor());
+                }
+                return _TestStrategy1;
+            }
+        }
+
+        private void TestStrategy1_ResetKinectSensor()
+        {
+            kinectSensor.Close();
+            kinectSensor.Open();
+        }
+        #endregion
+
 
         public string KinectConnected;
 
@@ -565,7 +607,7 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (frame != null)
                 {
-                    
+
                     Reader_FrameArrived(frame);
                 }
             }

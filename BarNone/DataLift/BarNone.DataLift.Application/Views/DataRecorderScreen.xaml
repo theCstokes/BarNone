@@ -38,5 +38,8 @@
         <Viewbox HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1">
             <Image Source="{Binding ImageSourceColor}"  />
         </Viewbox>
+        <StackPanel Grid.Column="2" Grid.Row="2" Margin="10">
+            <Button Content="Test Strategy 1 - Reset Kinect, Thats it" Command="{Binding TestStrategy1}" Margin="10" Height="50" FontSize="30" />
+        </StackPanel>
     </Grid>
 </UserControl>
