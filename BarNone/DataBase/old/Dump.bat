@@ -1,0 +1,1 @@
+"C:\Program Files\PostgreSQL\10\bin\pg_dump.exe" -h localhost -p 5433 -U postgres -F c -f BarNone.backup BarNone
