@@ -1,4 +1,4 @@
-﻿using BarNone.TheRack.DomainModel;
+﻿using BarNone.TheRack.DomainModel.Body;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,6 @@ namespace BarNone.TheRack.DataAccess
 {
     public partial class DomainContext
     {
-        public virtual DbSet<Body> Bodies { get; set; }
+        public virtual DbSet<JointTrackingState> TrackingStates { get; set; }
     }
 }
