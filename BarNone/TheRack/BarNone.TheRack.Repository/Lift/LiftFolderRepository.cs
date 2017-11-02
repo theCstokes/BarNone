@@ -11,61 +11,58 @@ using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace BarNone.TheRack.Repository
 {
-    public class LiftFolderRepository : IRepository<LiftFolderDTO, LiftFolder>
+    public class LiftFolderRepository : BaseRepository<LiftFolderDTO, LiftFolder>
     {
-        public LiftFolder Create(LiftFolderDTO dto)
+        public LiftFolderRepository() : base(new DomainContext())
         {
-            using (var dc = new DomainContext())
-            {
-                var folder = LiftFolder.CreateFromDTO(dto);
-                var result = dc.LiftFolders.Add(folder);
-
-                dc.SaveChanges();
-                return result.Entity;
-            }
         }
 
-        public List<LiftFolder> Get(WhereFunc where = null)
+        public LiftFolderRepository(DomainContext context) : base(context)
         {
-            using(var dc = new DomainContext())
-            {
-                if (where != null)
-                {
-                    return dc.LiftFolders
-                        .Where((lf) => where(lf))
-                        .ToList();
-                }
-                return dc.LiftFolders.ToList();
-            }
+
         }
 
-        public LiftFolder Get(int id)
+        public override LiftFolder Create(LiftFolderDTO dto)
         {
-            using (var dc = new DomainContext())
-            {
-                return dc.LiftFolders.Where(lf => lf.ID == id).First();
-            }
+            var folder = LiftFolder.CreateFromDTO(dto);
+            var result = context.LiftFolders.Add(folder);
+
+            context.SaveChanges();
+            return result.Entity;
         }
 
-        public LiftFolder GetWithDetails(int id)
+        public override List<LiftFolder> Get(WhereFunc where = null)
         {
-            using (var dc = new DomainContext())
+            if (where != null)
             {
-                return dc.LiftFolders
-                    .Include(lf => lf.Parent)
-                    .Include(lf => lf.Lifts)
-                    .Include(lf => lf.SubFolders)
-                    .Where(lf => lf.ID == id)
-                    .First();
+                return context.LiftFolders
+                    .Where((lf) => where(lf))
+                    .ToList();
             }
+            return context.LiftFolders.ToList();
         }
 
-        public LiftFolder Remove(int id)
+        public override LiftFolder Get(int id)
+        {
+            return context.LiftFolders.Where(lf => lf.ID == id).First();
+        }
+
+        public override LiftFolder GetWithDetails(int id)
+        {
+            return context.LiftFolders
+                .Include(lf => lf.Parent)
+                .Include(lf => lf.Lifts)
+                .Include(lf => lf.SubFolders)
+                .Where(lf => lf.ID == id)
+                .First();
+        }
+
+        public override LiftFolder Remove(int id)
         {
             throw new NotImplementedException();
         }
 
-        public LiftFolder Update(int id, LiftFolderDTO dto)
+        public override LiftFolder Update(int id, LiftFolderDTO dto)
         {
             throw new NotImplementedException();
         }

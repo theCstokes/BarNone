@@ -27,26 +27,11 @@ namespace BarNone.DataLift.Demo
 
         static async Task Run()
         {
+            var r = await TokenManager.Authorize("admin", "adminf");
+            Console.WriteLine(r);
 
-            //var p = new Person
-            //{
-            //    Age = 55
-            //};
-
-            //var serializer = new JsonSerializer()
-            //{
-            //    ContractResolver = new CamelCasePropertyNamesContractResolver()
-            //};
-
-            //var j = JObject.FromObject(p, serializer);
-
-            var p = JsonConvert.DeserializeObject<Person>("{\"value\": 55}");
-
-            //Console.WriteLine(p.Age);
-            //Console.WriteLine(j["age"]);
-
-            //dynamic d = 55;
-            Console.WriteLine(p.Value.GetType());
+            var g = await DataManager.Lifts.GetAll();
+            Console.WriteLine(g);
 
             Console.ReadLine();
         }

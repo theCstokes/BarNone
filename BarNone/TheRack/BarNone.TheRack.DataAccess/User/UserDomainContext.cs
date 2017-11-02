@@ -8,6 +8,6 @@ namespace BarNone.TheRack.DataAccess
 {
     public partial class DomainContext
     {
-        public DbSet<User> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

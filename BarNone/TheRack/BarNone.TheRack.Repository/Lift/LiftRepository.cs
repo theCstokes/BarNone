@@ -13,92 +13,82 @@ using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace BarNone.TheRack.Repository
 {
-    public class LiftRepository : IRepository<LiftDTO, Lift>
+    public class LiftRepository : BaseRepository<LiftDTO, Lift>
     {
-
-        public List<Lift> Get(WhereFunc where = null)
+        public LiftRepository() : base(new DomainContext())
         {
-            using (var context = new DomainContext())
-            {
-                if (where != null)
-                {
-                    return context.Lifts
-                        .Where((l) => where(l))
-                        .ToList();
-                }
-                return context.Lifts.ToList();
-            }
         }
 
-        public Lift Get(int id)
+        public LiftRepository(DomainContext context) : base(context)
         {
-            using (var context = new DomainContext())
-            {
-                var result = context.Lifts.Where(c => c.ID == id).First();
 
-                context.SaveChanges();
-
-                return result;
-            }
         }
 
-        public Lift GetWithDetails(int id)
+        public override List<Lift> Get(WhereFunc where = null)
         {
-            using (var context = new DomainContext())
+            if (where != null)
             {
-                var result = context
-                    .Lifts
-                    .Include(u => u.Parent)
-                    .Where(c => c.ID == id).First();
-
-                context.SaveChanges();
-
-                return result;
+                return context.Lifts
+                    .Where((l) => where(l))
+                    .ToList();
             }
+            return context.Lifts.ToList();
         }
 
-        public Lift Create(LiftDTO dto)
+        public override Lift Get(int id)
         {
-            using (var context = new DomainContext())
-            {
-                //var entity = _adapter.GetDomainModel(dto);
-                //var result = context.Lifts.Add(entity);
+            var result = context.Lifts.Where(c => c.ID == id).First();
 
-                //context.SaveChanges();
+            context.SaveChanges();
 
-                //return result.Entity;
-                return null;
-            }
+            return result;
         }
 
-        public Lift Update(int id, LiftDTO dto)
+        public override Lift GetWithDetails(int id)
         {
-            using (var context = new DomainContext())
-            {
-                //var entity = _adapter.GetDomainModel(dto);
-                //entity.ID = id;
-                //var result = context.Lifts.Update(entity);
+            var result = context
+                .Lifts
+                .Include(u => u.Parent)
+                .Where(c => c.ID == id).First();
 
-                //context.SaveChanges();
+            context.SaveChanges();
 
-                //return result.Entity;
-                return null;
-            }
+            return result;
         }
 
-        public Lift Remove(int id)
+        public override Lift Create(LiftDTO dto)
         {
-            using (var context = new DomainContext())
+            //var entity = _adapter.GetDomainModel(dto);
+            //var result = context.Lifts.Add(entity);
+
+            //context.SaveChanges();
+
+            //return result.Entity;
+            return null;
+        }
+
+        public override Lift Update(int id, LiftDTO dto)
+        {
+            //var entity = _adapter.GetDomainModel(dto);
+            //entity.ID = id;
+            //var result = context.Lifts.Update(entity);
+
+            //context.SaveChanges();
+
+            //return result.Entity;
+            return null;
+        }
+
+        public override Lift Remove(int id)
+        {
+            var result = context.Lifts.Remove(new Lift
             {
-                var result = context.Lifts.Remove(new Lift
-                {
-                    ID = id
-                });
+                ID = id
+            });
 
-                context.SaveChanges();
+            context.SaveChanges();
 
-                return result.Entity;
-            }
+            return result.Entity;
         }
     }
 }
