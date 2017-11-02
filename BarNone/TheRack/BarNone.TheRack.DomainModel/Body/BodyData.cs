@@ -9,7 +9,7 @@ using System.Text;
 
 namespace BarNone.TheRack.DomainModel
 {
-    [Table("Body", Schema = "public")]
+    [Table("BodyData", Schema = "public")]
     public class BodyData : BaseDomainModel<BodyData, BodyDataDTO>
     {
         [Key]

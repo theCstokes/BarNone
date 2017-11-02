@@ -44,7 +44,10 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Body
 
         public override IActionResult Post(BodyDataDTO dto)
         {
-            throw new NotImplementedException();
+            using (var repo = new BodyDataRepository())
+            {
+                return EntityResponse.Entity<BodyData, BodyDataDTO>(repo.Create(dto));
+            }
         }
 
         public override IActionResult Put(int id, BodyDataDTO dto)
