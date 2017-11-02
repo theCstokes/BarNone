@@ -1,0 +1,1 @@
+"C:\Program Files\PostgreSQL\9.5\bin\pg_restore.exe" -h localhost -p 5433 -U postgres -d BarNone -v BarNone.backup
