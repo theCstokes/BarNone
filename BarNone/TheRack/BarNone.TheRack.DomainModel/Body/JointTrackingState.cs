@@ -24,7 +24,7 @@ namespace BarNone.TheRack.DomainModel.Body
         [Key]
         public override int ID { get; set; }
 
-        public override int EnumID { get; set; }
+        public override int Value { get; set; }
 
         public override string Name { get; set; }
         #endregion

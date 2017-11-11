@@ -57,5 +57,10 @@ namespace BarNone.TheRack.DomainModel
                 dto.Details.SubFolders.Select(s => LiftFolder.CreateFromDTO(s)).ToList() : null;
             Parent = parent;
         }
+
+        dynamic IDetailDomainModel.BuildDetailDTO()
+        {
+            return BuildDetailDTO();
+        }
     }
 }

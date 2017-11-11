@@ -48,5 +48,12 @@ namespace BarNone.TheRack.DomainModel
             ParentID = dto.ParentID;
             Parent = parent;
         }
+
+        #region IDetailDomainModel Implementation.
+        dynamic IDetailDomainModel.BuildDetailDTO()
+        {
+            return BuildDetailDTO();
+        }
+        #endregion
     }
 }

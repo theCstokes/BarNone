@@ -34,9 +34,35 @@ namespace TheRack.ResourceServer.API.Response
 
     public class EntityResponse : IResponse
     {
-        public static IActionResult Entity<TDomainModel, TDTO>(TDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
-            where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, new()
-            where TDTO : BaseDTO<TDTO>, new()
+        //public static IActionResult Entity<TDomainModel, TDTO>(TDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
+        //    where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, new()
+        //    where TDTO : BaseDTO<TDTO>, new()
+        //{
+        //    var response = new EntityDTO
+        //    {
+        //        Entity = entity.BuildDTO()
+        //    };
+
+        //    return CreateResult(response, code);
+        //}
+
+        //public static IActionResult EntityDetail<TDomainModel, TDTO, TDetailDTO>(TDomainModel entity, 
+        //    HttpStatusCode code = HttpStatusCode.OK)
+        //    where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, IDetailDomainModel<TDTO, TDetailDTO>, new()
+        //    where TDTO : BaseParentDTO<TDTO, TDetailDTO>, new()
+        //    where TDetailDTO : BaseDetailDTO<TDetailDTO>, new()
+        //{
+        //    var dto = entity.BuildDTO();
+        //    dto.Details = entity.BuildDetailDTO();
+        //    var response = new EntityDTO
+        //    {
+        //        Entity = dto
+        //    };
+
+        //    return CreateResult(response, code);
+        //}
+
+        public static IActionResult Response(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
         {
             var response = new EntityDTO
             {
@@ -46,11 +72,7 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
-        public static IActionResult EntityDetail<TDomainModel, TDTO, TDetailDTO>(TDomainModel entity, 
-            HttpStatusCode code = HttpStatusCode.OK)
-            where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, IDetailDomainModel<TDTO, TDetailDTO>, new()
-            where TDTO : BaseParentDTO<TDTO, TDetailDTO>, new()
-            where TDetailDTO : BaseDetailDTO<TDetailDTO>, new()
+        public static IActionResult DetailResponse(IParentDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
         {
             var dto = entity.BuildDTO();
             dto.Details = entity.BuildDetailDTO();
@@ -62,27 +84,16 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
-        //public static IActionResult Entity(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
-        //{
-        //    var response = new EntityDTO
-        //    {
-        //        Entity = entity
-        //    };
-
-        //    return CreateResult(response, code);
-        //}
-        public static IActionResult EntityDTO<TDTO>(TDTO entity, HttpStatusCode code = HttpStatusCode.OK)
-            where TDTO : BaseDTO<TDTO>, new()
+        public static IActionResult Response(IEnumerable<IDomainModel> entities, HttpStatusCode code = HttpStatusCode.OK)
         {
-
-            var response = new EntityDTO
+            var response = new EnumerableDTO
             {
-                Entity = entity
+                Count = entities.Count(),
+                Entities = entities
             };
 
             return CreateResult(response, code);
         }
-
 
         public static IActionResult Enumerable(IEnumerable<IDomainModel> entities, HttpStatusCode code = HttpStatusCode.OK)
         {
@@ -94,6 +105,18 @@ namespace TheRack.ResourceServer.API.Response
             };
 
             return CreateResult(response, code);
+        }
+
+        public static IActionResult Enumerable(dynamic result, HttpStatusCode code = HttpStatusCode.OK)
+        {
+
+            //var response = new EnumerableDTO
+            //{
+            //    Count = entities.Count(),
+            //    Entities = entities
+            //};
+
+            return CreateResult(result, code);
         }
 
         public static IActionResult Error(Exception e, HttpStatusCode code = HttpStatusCode.InternalServerError)
@@ -109,16 +132,6 @@ namespace TheRack.ResourceServer.API.Response
 
         private static IActionResult CreateResult(object source, HttpStatusCode code)
         {
-            //return new ObjectResult(JsonConvert.SerializeObject(source,
-            //    new JsonSerializerSettings
-            //    {
-            //        ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            //        NullValueHandling = NullValueHandling.Ignore
-            //    }))
-            //{
-            //    StatusCode = (int)code
-            //};
-
             return new ObjectResult(source)
             {
                 StatusCode = (int)code

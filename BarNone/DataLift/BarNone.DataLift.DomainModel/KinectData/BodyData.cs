@@ -4,8 +4,6 @@ using BarNone.Shared.DomainModel.Core;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Microsoft.Kinect;
-using BarNone.Shared.DataTransfer.Types;
 
 namespace BarNone.DataLift.DomainModel.KinectData
 {
@@ -97,6 +95,13 @@ namespace BarNone.DataLift.DomainModel.KinectData
                 joint => BodyDataFrame.CreateFromDTO(joint, this)).ToList();
         }
 
+        #endregion
+
+        #region IDetailDomainModel Implementation.
+        dynamic IDetailDomainModel.BuildDetailDTO()
+        {
+            return BuildDetailDTO();
+        }
         #endregion
     }
 }

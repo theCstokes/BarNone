@@ -2,7 +2,7 @@
 
 namespace BarNone.Shared.DataTransfer.Core
 {
-    public abstract class BaseParentDTO<TDTO, TDetailDTO> : BaseDTO<TDTO>
+    public abstract class BaseParentDTO<TDTO, TDetailDTO> : BaseDTO<TDTO>, IParentDTO<TDetailDTO>
         where TDTO : new()
         where TDetailDTO: BaseDetailDTO<TDetailDTO>, new()
     {
@@ -13,5 +13,18 @@ namespace BarNone.Shared.DataTransfer.Core
 
         [JsonProperty(Order = int.MaxValue, NullValueHandling = NullValueHandling.Ignore)]
         public TDetailDTO Details { get; set; }
+
+
+        dynamic IParentDTO.Details
+        {
+            get
+            {
+                return Details;
+            }
+            set
+            {
+                Details = value;
+            }
+        }
     }
 }

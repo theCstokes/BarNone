@@ -3,6 +3,7 @@ using BarNone.Shared.DomainModel.Core;
 using BarNone.TheRack.DataAccess;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BarNone.TheRack.Repository.Core
@@ -36,7 +37,39 @@ namespace BarNone.TheRack.Repository.Core
         public abstract TDomainModel Get(int id);
         public abstract TDomainModel GetWithDetails(int id);
         public abstract TDomainModel Remove(int id);
-        public abstract TDomainModel Update(int id, TDTO dto); 
+        public abstract TDomainModel Update(int id, TDTO dto);
+        #endregion
+
+        #region Public IRepository Implementation.
+        List<dynamic> IRepository.Get(FilterDTO.WhereFunc where)
+        {
+            return Get(where).Select(v => v as dynamic).ToList();
+        }
+
+        dynamic IRepository.Get(int id)
+        {
+            return Get(id);
+        }
+
+        dynamic IRepository.GetWithDetails(int id)
+        {
+            return GetWithDetails(id);
+        }
+
+        public dynamic Create(dynamic dto)
+        {
+            return Create(dto as TDTO);
+        }
+
+        public dynamic Update(int id, dynamic dto)
+        {
+            return Update(id, dto as TDTO);
+        }
+
+        dynamic IRepository.Remove(int id)
+        {
+            return Remove(id);
+        }
         #endregion
     }
 }

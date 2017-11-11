@@ -44,5 +44,12 @@ namespace BarNone.Shared.DomainModel.Core
             return dm;
         }
         #endregion
+
+        #region IDomainModel Implementation.
+        dynamic IDomainModel.BuildDTO()
+        {
+            return BuildDTO();
+        }
+        #endregion
     }
 }

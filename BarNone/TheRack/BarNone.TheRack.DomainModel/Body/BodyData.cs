@@ -5,12 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text;
 
 namespace BarNone.TheRack.DomainModel
 {
     [Table("BodyData", Schema = "public")]
-    public class BodyData : BaseDomainModel<BodyData, BodyDataDTO>
+    public class BodyData : BaseDomainModel<BodyData, BodyDataDTO>, IParentDomainModel<BodyDataDTO, BodyDataDetailDTO>
     {
         [Key]
         public override int ID { get; set; }
@@ -19,14 +20,32 @@ namespace BarNone.TheRack.DomainModel
 
         public List<BodyDataFrame> BodyDataFrames { get; set; }
 
+        public dynamic BuildDetailDTO()
+        {
+            return new BodyDataDetailDTO
+            {
+                OrderedFrames = BodyDataFrames.Select(f => f.BuildDTO()).ToList()
+            };
+        }
+
         public override BodyDataDTO BuildDTO()
         {
-            throw new NotImplementedException();
+            return new BodyDataDTO
+            {
+                ID = ID,
+                RecordTimeStamp = RecordDate
+            };
         }
 
         public override void PopulateFromDTO(BodyDataDTO dto)
         {
-            throw new NotImplementedException();
+            ID = dto.ID;
+            RecordDate = dto.RecordTimeStamp;
+        }
+
+        BodyDataDetailDTO IParentDomainModel<BodyDataDTO, BodyDataDetailDTO>.BuildDetailDTO()
+        {
+            return BuildDetailDTO();
         }
     }
 }
