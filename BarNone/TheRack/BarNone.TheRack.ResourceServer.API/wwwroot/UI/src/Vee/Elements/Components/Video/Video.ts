@@ -20,11 +20,10 @@ export default class Video extends BaseComponent {
     constructor(parent: HTMLElement) {
         super(parent);
         Core.addClass(this.element, "UEye-Video");
-        this._content = Core.create("div", this.element, "Content");
-        // this._hint = Core.create("div", this._content, "Hint");
-        this._canvas = Core.create("canvas", this._content, "Canvas") as HTMLCanvasElement;
+        this._canvas = Core.create("canvas", this.element, "Canvas") as HTMLCanvasElement;
+        this._canvas.width = this._canvas.offsetWidth;
+        this._canvas.height = this._canvas.offsetHeight;
         this._currentFrame = 0;
-
         var c = this._canvas.getContext('2d');
         if (c !== null) {
             this._context = c;
