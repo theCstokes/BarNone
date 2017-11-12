@@ -2,33 +2,17 @@ import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
 import StateBind from "Vee/Core/DataBind/StateBind";
 import { IDataBind } from "Vee/Core/DataBind/IDataBind";
 import { AppScreen } from "Vee/Screen/AppScreen";
+import DataManager from "Application/Data/DataManager";
 
-class NavElement {
-	public id: number;
-	public name: string;
-	public screenPath: string;
+class LineData {
+	public x1: number;
+	public y1: number;
+	public x2: number;
+	public y2: number;
 }
 
 export class State {
-	public currentScreenId: number;
-	public navHistory: number[] = [];
-	public navElementList: NavElement[] = [
-		{
-			id: 1,
-			name: "Users",
-			screenPath: "Application/Screens/User/UserScreen"
-		},
-		{
-			id: 2,
-			name: "Videos",
-			screenPath: "Application/Screens/User/UserScreen"
-		},
-		{
-			id: 3,
-			name: "Lifts",
-			screenPath: "Application/Screens/Lifts/LiftScreen"
-		}
-	]
+	public lineData: LineData[];
 }
 
 export class StateManager extends BaseStateManager<State> {
@@ -36,32 +20,15 @@ export class StateManager extends BaseStateManager<State> {
 		.create<State>(this, true)
 		.onAction((state, data) => {
 			var nextState = Utils.clone(state);
-			nextState.currentScreenId = nextState.navElementList[0].id;
-			nextState.navHistory.push(nextState.currentScreenId);
-
-			return nextState;
-		});
-
-	public readonly _selectionChange = StateBind
-		.create<State>(this)
-		.onAction((state, data) => {
-			var nextState = Utils.clone(state);
-			nextState.currentScreenId = data.id;
-			nextState.navHistory.push(nextState.currentScreenId);
-
-			return nextState;
-		});
-
-	public readonly _navigateBack = StateBind
-		.create<State>(this)
-		.onAction((state, data) => {
-			var nextState = Utils.clone(state);
-			nextState.navHistory.pop();
-			
-			if (nextState.navHistory.length > 0) {
-				var lastIndex = (nextState.navHistory.length - 1);
-				nextState.currentScreenId = nextState.navHistory[lastIndex];
-			}
+			nextState.lineData = data;
+			//  [
+			// 	{
+			// 		x1: 50,
+			// 		x2: 100,
+			// 		y1: 50,
+			// 		y2: 100
+			// 	}
+			// ]
 
 			return nextState;
 		});
@@ -74,16 +41,9 @@ export class StateManager extends BaseStateManager<State> {
 		return this._resetState.expose();
 	}
 
-	public get selectionChange(): IDataBind {
-		return this._selectionChange.expose();
-	}
-
-	public get navigateBack(): IDataBind {
-		return this._navigateBack.expose();
-	}
-
-	public init(): void {
-		this.resetState.trigger();
+	public async init(): Promise<void> {
+		var data = await DataManager.Joints.load({ useOverride: true });
+		this.resetState.trigger(data);
 	}
 
 	public onSave(): void {

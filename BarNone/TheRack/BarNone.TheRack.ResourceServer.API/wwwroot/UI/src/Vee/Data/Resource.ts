@@ -33,7 +33,7 @@ export default class Resource<TSource> {
 		if (pOptions !== undefined) options = pOptions;
 
 		var builder = RequestBuilder
-			.GET(BaseDataManager.resourceAddress + this._route)
+			.GET(this._route, BaseDataManager.resourceAddress + this._route)
 			.header("Authorization", "Bearer " + BaseDataManager.auth.access_token);
 
 		if (options.filter !== undefined) {
@@ -49,7 +49,7 @@ export default class Resource<TSource> {
 
 	public async update(id: number, source: TSource): Promise<TSource[]> {
 		var result = await RequestBuilder
-			.PUT(StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, this._route, id), {
+			.PUT(this._route, StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, this._route, id), {
 				id: id
 			})
 			.header("Authorization", "Bearer " + BaseDataManager.auth.access_token)

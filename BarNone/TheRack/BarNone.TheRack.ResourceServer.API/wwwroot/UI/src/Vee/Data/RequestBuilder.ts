@@ -5,25 +5,27 @@ type Verb = "GET" | "PUT" | "POST" | "PATCH" | "DELETE";
 
 export default class RequestBuilder {
 	private _verb: Verb;
+	private _resource: string;
 	private _route: string;
 	private _headers: { [key: string]: string };
 
-	private constructor(verb: Verb, route: string) {
+	private constructor(resource: string, verb: Verb, route: string) {
+		this._resource = resource;
 		this._verb = verb;
 		this._route = route;
 		this._headers = {};
 	}
 
-	public static GET(route: string): RequestBuilder {
-		return new RequestBuilder("GET", route);
+	public static GET(resource: string, route: string): RequestBuilder {
+		return new RequestBuilder(resource, "GET", route);
 	}
 
-	public static PUT(route: string, args: { [key: string]: any } = {}): RequestBuilder {
+	public static PUT(resource: string, route: string, args: { [key: string]: any } = {}): RequestBuilder {
 		for (var key in args) {
 			var routeKey = "{" + key + "}";
 			route = route.replace(routeKey, args[key]);
 		}
-		return new RequestBuilder("PUT", route);
+		return new RequestBuilder(resource, "PUT", route);
 	}
 
 	public header(key: string, value: string): RequestBuilder {
@@ -33,9 +35,14 @@ export default class RequestBuilder {
 
 	public async execute(data: any = null, useOverride: boolean = false): Promise<string> {
 		if (useOverride) {
-			console.warn(this._route);
-			var dataOverride: BaseDataOverride<any> = await Loader.sync(this._route);
-			return JSON.stringify(dataOverride.data);
+			var filePath = "Application/Data/DataOverride/api/v1/" + this._resource;
+			var dataOverride: any = await Loader.sync(filePath);
+
+			if (dataOverride === undefined) return "";
+
+			var DataOverrideType: { new(): BaseDataOverride<any> } = dataOverride.default;
+			var override = new DataOverrideType();
+			return override.response;
 		}
 		return await this._executeAPI(data);
 	}
