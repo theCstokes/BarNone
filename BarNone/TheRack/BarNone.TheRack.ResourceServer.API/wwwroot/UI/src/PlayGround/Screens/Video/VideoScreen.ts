@@ -14,18 +14,8 @@ export default class VideoScreen extends BasicScreen<StateManager> {
 
 	public videoPlayerBind = ScreenBind
 		.create<State>(this, "videoPlayer")
-		// .onSelect(async data => {
-		// 	// console.log(data);
-		// 	// Vee.popTo(this);
-		// 	this.stateManager.selectionChange.trigger({
-		// 		id: data.id
-		// 	});
-		// })
 		.onRender(async (original, current) => {
 			this.view.videoPlayer.frameData = current.lineData;
-			// .map(d => {
-			// 	return { x: d.x1, y: d.y1 };
-			// });
 	});
 
 	public onShow() {

@@ -3,10 +3,24 @@ import Joint from "Application/Data/Models/Body/Joint";
 
 export default class JointsData extends BaseDataOverride<Joint> {
 	public data: Joint[] = [
-		{ x: 50, y: 50, z: 0 },
-		{ x: 100, y: 50, z: 0 },
-		{ x: 50, y: 100, z: 0 },
-		{ x: 100, y: 100, z: 0 }
+		{
+			x1: 100,
+			y1: 50,
+			x2: 100,
+			y2: 100
+		},
+		{
+			x1: 100,
+			y1: 100,
+			x2: 50,
+			y2: 200
+		},
+		{
+			x1: 100,
+			y1: 100,
+			x2: 150,
+			y2: 300
+		}
 	];
 
 }

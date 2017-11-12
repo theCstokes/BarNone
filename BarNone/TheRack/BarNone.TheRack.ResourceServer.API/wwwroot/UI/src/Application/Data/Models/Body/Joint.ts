@@ -1,7 +1,9 @@
 export default class Joint {
-	public x: number;
+	public x1: number;
 
-	public y: number;
+	public y1: number;
 
-	public z: number;
+	public x2: number;
+
+	public y2: number;
 }

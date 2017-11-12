@@ -2,7 +2,7 @@ import { BaseComponent } from "Vee/Elements/Core/BaseComponent/BaseComponent";
 import Core from "Vee/Elements/Core/Core";
 import { OnChangeCallback } from "Vee/Elements/Core/BindTypes";
 
-type FrameData = { x: number, y: number };
+type FrameData = { x1: number, y1: number, x2: number, y2: number };
 
 export default class Video extends BaseComponent {
     private _content: HTMLElement;
@@ -21,8 +21,8 @@ export default class Video extends BaseComponent {
         super(parent);
         Core.addClass(this.element, "UEye-Video");
         this._content = Core.create("div", this.element, "Content");
-        this._hint = Core.create("div", this._content, "Hint");
-        this._canvas = Core.create("canvas", this._content, "canvas") as HTMLCanvasElement;
+        // this._hint = Core.create("div", this._content, "Hint");
+        this._canvas = Core.create("canvas", this._content, "Canvas") as HTMLCanvasElement;
         this._currentFrame = 0;
 
         var c = this._canvas.getContext('2d');
@@ -41,15 +41,34 @@ export default class Video extends BaseComponent {
 
     public set frameData(value: FrameData[]) {
         if (this._context != null) {
-            this._context.fillStyle = '#32CD32';
-            this._context.beginPath();
+            this._context.lineWidth = 5;
 
             value.forEach(frame => {
-                this._context.arc(frame.x, frame.y, 7, 0, Math.PI*2, true);
-               
-                this._context.fill();
+                this._context.beginPath();
+                this._context.moveTo(frame.x1, frame.y1);
+                this._context.lineTo(frame.x2, frame.y2);
+                this._context.strokeStyle = "green";
+                this._context.stroke();
+                this._context.closePath();
             });
-            this._context.closePath();
+
+            value.forEach(frame => {
+                this._context.beginPath();
+                this._context.arc(frame.x1, frame.y1, 4, 0, 2 * Math.PI);
+                this._context.strokeStyle = "blue";
+                this._context.stroke();
+                this._context.fillStyle = 'blue';
+                this._context.fill();
+                this._context.closePath();
+
+                this._context.beginPath();
+                this._context.arc(frame.x2, frame.y2, 4, 0, 2 * Math.PI);
+                this._context.strokeStyle = "blue";
+                this._context.stroke();
+                this._context.fillStyle = 'blue';
+                this._context.fill();
+                this._context.closePath();
+            });
         }
     }
 
@@ -83,5 +102,9 @@ export default class Video extends BaseComponent {
         } else {
             Core.addClass(this.element, "disabled");
         }
+    }
+
+    public onShow(): void {
+        console.warn("error");
     }
 }
