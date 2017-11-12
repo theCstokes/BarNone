@@ -62,6 +62,16 @@ namespace TheRack.ResourceServer.API.Response
         //    return CreateResult(response, code);
         //}
 
+        public static IActionResult Entity(object entity, HttpStatusCode code = HttpStatusCode.OK)
+        {
+            var response = new EntityDTO
+            {
+                Entity = entity
+            };
+
+            return CreateResult(response, code);
+        }
+
         public static IActionResult Response(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
         {
             var response = new EntityDTO

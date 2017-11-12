@@ -4,6 +4,8 @@ using BarNone.TheRack.Repository;
 using BarNone.TheRack.Repository.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,22 +22,67 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
         public IActionResult Flex([FromBody] FlexRequestEntity value)
         {
             var context = new DomainContext();
-            var result = value.Requests.Select(s =>
+            var flexResponse = value.Requests.Aggregate(new FlexResponse(), (result, entity) =>
             {
-                var repo = FlexMap.Map[s.Type](context);
-                return repo.Get();
+                var name = entity.Name ?? entity.Type;
+
+                result.Results[name] = _process(context, entity);
+
+                return result;
             });
 
-            return EntityResponse.Enumerable(result, System.Net.HttpStatusCode.OK);
-            //var repo = FlexMap.Map[value.]
-            //return null;
+            return EntityResponse.Entity(flexResponse, System.Net.HttpStatusCode.OK);
+        }
+
+        private dynamic _process(DomainContext context, FlexEntity entity)
+        {
+            var repo = FlexMap.Map[entity.Type](context);
+            var name = entity.Name ?? entity.Type;
+
+            var result = new FlexResponseEntity();
+
+            switch (entity.RequestType)
+            {
+                case FlexRequestType.Get:
+                    var elements = repo.Get();
+                    result.Result = elements.Select(e =>
+                    {
+                        var re = new FlexResponseEntity();
+                        re.Result = e;
+
+                        if (entity.Details != null)
+                        {
+                            re.Details = entity.Details.Select(detail => _process(context, detail)).ToList();
+                        }
+                        return re;
+                    });
+                    break;
+                case FlexRequestType.Create:
+                    result = repo.Create(entity.Entity);
+                    break;
+            }
+
+            return result;
         }
     }
 
     public class FlexResponse
     {
-        public string Type { get; set; }
+
+        public FlexResponse()
+        {
+            Results = new Dictionary<string, FlexResponseEntity>();
+        }
+
+        public Dictionary<string, FlexResponseEntity> Results { get; set; }
+    }
+
+    public class FlexResponseEntity
+    {
         public dynamic Result { get; set; }
+
+        public List<dynamic> Details { get; set; }
+
     }
 
     public class FlexRequestEntity
@@ -47,15 +94,20 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
     {
         public string Type { get; set; }
 
-        public FlexRequestType Request { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public FlexRequestType RequestType { get; set; }
+
+        public string Name { get; set; }
 
         public dynamic Entity { get; set; }
+
+        public List<FlexEntity> Details { get; set; }
     }
 
     public enum FlexRequestType
     {
-        GET = 0,
-        CREATE = 1
+        Get = 0,
+        Create = 1
     }
 
     public static class FlexEntityType
