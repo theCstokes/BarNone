@@ -16,6 +16,14 @@ export default class VideoView extends View {
 							{
 								x: 50,
 								y: 50
+							},
+							{
+								x: 70,
+								y: 50
+							},
+							{
+								x: 90,
+								y: 50
 							}
 						]
 					}

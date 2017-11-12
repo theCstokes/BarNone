@@ -45,7 +45,9 @@ export default class Video extends BaseComponent {
             this._context.beginPath();
 
             value.forEach(frame => {
-                this._context.lineTo(frame.x, frame.y);
+                this._context.arc(frame.x, frame.y, 7, 0, Math.PI*2, true);
+               
+                this._context.fill();
             });
             this._context.closePath();
         }
