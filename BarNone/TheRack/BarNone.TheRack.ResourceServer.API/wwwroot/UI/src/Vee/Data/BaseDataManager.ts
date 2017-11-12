@@ -45,6 +45,7 @@ export abstract class BaseDataManager {
 	}
 
 	public static get auth(): Auth {
+		if (this._auth === undefined) return new Auth();
 		return this._auth;
 	}
 
