@@ -1,3 +1,6 @@
+import Loader from "Vee/Elements/Core/Loader";
+import { BaseDataOverride } from "Vee/Data/BaseDataOverride";
+
 type Verb = "GET" | "PUT" | "POST" | "PATCH" | "DELETE";
 
 export default class RequestBuilder {
@@ -16,7 +19,7 @@ export default class RequestBuilder {
 	}
 
 	public static PUT(route: string, args: { [key: string]: any } = {}): RequestBuilder {
-		for(var key in args) {
+		for (var key in args) {
 			var routeKey = "{" + key + "}";
 			route = route.replace(routeKey, args[key]);
 		}
@@ -24,16 +27,25 @@ export default class RequestBuilder {
 	}
 
 	public header(key: string, value: string): RequestBuilder {
-		this._headers[key] =  value;
+		this._headers[key] = value;
 		return this;
 	}
 
-	public async execute(data: any = null): Promise<string> {
+	public async execute(data: any = null, useOverride: boolean = false): Promise<string> {
+		if (useOverride) {
+			console.warn(this._route);
+			var dataOverride: BaseDataOverride<any> = await Loader.sync(this._route);
+			return JSON.stringify(dataOverride.data);
+		}
+		return await this._executeAPI(data);
+	}
+
+	public async _executeAPI(data: any = null): Promise<string> {
 		return new Promise<string>((resolve, reject) => {
 			var xhr = new XMLHttpRequest();
 			xhr.open(this._verb, this._route, true);
 
-			for(var key in this._headers) {
+			for (var key in this._headers) {
 				if (!this._headers.hasOwnProperty(key)) continue;
 				xhr.setRequestHeader(key, this._headers[key]);
 			}
