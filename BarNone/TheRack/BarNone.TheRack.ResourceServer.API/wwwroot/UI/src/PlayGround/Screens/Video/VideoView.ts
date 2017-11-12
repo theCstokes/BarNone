@@ -14,16 +14,17 @@ export default class VideoView extends View {
 						instance: ControlTypes.Video,
 						frameData: [
 							{
-								x: 50,
-								y: 50
+								x1: 50,
+								y1: 50,
+								x2: 90,
+								y2: 100
+
 							},
 							{
-								x: 70,
-								y: 50
-							},
-							{
-								x: 90,
-								y: 50
+								x1: 90,
+								y1: 100,
+								x2: 110,
+								y2: 100
 							}
 						]
 					}

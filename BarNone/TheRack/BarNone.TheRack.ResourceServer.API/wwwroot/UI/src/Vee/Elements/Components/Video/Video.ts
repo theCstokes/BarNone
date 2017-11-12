@@ -2,7 +2,7 @@ import { BaseComponent } from "Vee/Elements/Core/BaseComponent/BaseComponent";
 import Core from "Vee/Elements/Core/Core";
 import { OnChangeCallback } from "Vee/Elements/Core/BindTypes";
 
-type FrameData = { x: number, y: number };
+type FrameData = { x1: number, y1: number, x2: number, y2: number };
 
 export default class Video extends BaseComponent {
     private _content: HTMLElement;
@@ -40,14 +40,19 @@ export default class Video extends BaseComponent {
     }
 
     public set frameData(value: FrameData[]) {
-        if (this._context != null) {
-            this._context.fillStyle = '#32CD32';
+        if (this._context != null) {  
+            this._context.lineWidth = 5;
             this._context.beginPath();
-
             value.forEach(frame => {
-                this._context.arc(frame.x, frame.y, 7, 0, Math.PI*2, true);
-               
+                this._context.fillStyle = "#FF0000";
+                this._context.rect(frame.x1,frame.y1,10,10);
                 this._context.fill();
+                this._context.rect(frame.x2,frame.y2,10,10);
+                this._context.fill();
+                this._context.moveTo(frame.x1, frame.y1);
+                this._context.lineTo(frame.x2, frame.y2);
+                this._context.strokeStyle = "#32CD32";
+                this._context.stroke();
             });
             this._context.closePath();
         }
