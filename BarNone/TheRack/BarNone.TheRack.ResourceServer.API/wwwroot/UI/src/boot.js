@@ -15,7 +15,7 @@ define([
 ], function (Vee, Vee_config_d, App, PlayGround) {
 
 	// Flags.
-	var launchPlayGround = false;
+	var launchPlayGround = true;
 
 	// Start.
 	Vee.default.start();
