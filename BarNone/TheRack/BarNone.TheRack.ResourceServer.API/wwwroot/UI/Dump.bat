@@ -1,1 +1,0 @@
-python dump.py %1 & gulp build
