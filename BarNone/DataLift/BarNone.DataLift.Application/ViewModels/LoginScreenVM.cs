@@ -2,6 +2,8 @@
 using System.Windows.Input;
 using System.Security;
 using BarNone.DataLift.UI.Nav;
+using BarNone.DataLift.APIRequest;
+using System.Threading.Tasks;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -18,7 +20,7 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_loginCommand == null)
                 {
-                    _loginCommand = new RelayCommand(action => Login(), pred => CanLogin());
+                    _loginCommand = new RelayCommand(async action => await LoginAsync());
                 }
                 return _loginCommand;
             }
@@ -33,10 +35,11 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
 
-        private void Login()
+        private async Task LoginAsync()
         {
+            if(await CanLogin())
             //Login server calls here to get a valid token and shift to data recorder or notify bad user pass combo
-            PageManager.SwitchPage(UIPages.DataRecorderView);
+                PageManager.SwitchPage(UIPages.DataRecorderView);
         }
 
         private void Register()
@@ -44,9 +47,13 @@ namespace BarNone.DataLift.UI.ViewModels
             PageManager.SwitchPage(UIPages.RegisterView);
         }
         
-        private bool CanLogin()
+        private async Task<bool> CanLogin()
         {
-            return ((!string.IsNullOrWhiteSpace(Username)) && (Password?.Length > 0));
+            var r = await TokenManager.Authorize(Username, Password.ToString());
+            return r.Authorized;
+
+            //return r.Authorized;
+            //return ((!string.IsNullOrWhiteSpace(Username)) && (Password?.Length > 0));
         }
 
         //Destructor to ensure the password is removed from the system

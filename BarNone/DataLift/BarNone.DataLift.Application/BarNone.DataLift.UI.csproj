@@ -147,7 +147,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
@@ -163,6 +165,10 @@
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj">
       <Project>{EE13BDCE-8F4F-46C6-8E36-97EEDAF64F04}</Project>
       <Name>BarNone.Shared.DomainModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BarNone.DataLift.APIRequest\BarNone.DataLift.APIRequest.csproj">
+      <Project>{3A9BE071-8A01-47A8-85CC-A3F712D3C6A9}</Project>
+      <Name>BarNone.DataLift.APIRequest</Name>
     </ProjectReference>
     <ProjectReference Include="..\BarNone.DataLift.DomainModel\BarNone.DataLift.DomainModel.csproj">
       <Project>{707ade0d-0c8d-4edf-81b9-889b4538efa1}</Project>
