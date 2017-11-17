@@ -8,4 +8,14 @@ namespace BarNone.Shared.DataTransfer.Core
     {
         int ID { get; set; }
     }
+
+    //public interface IParentDTO : IDTO
+    //{
+    //    dynamic Details { get; set; }
+    //}
+
+    //public interface IParentDTO<TDetailDTO> : IDTO
+    //{
+    //    dynamic Details { get; set; }
+    //}
 }

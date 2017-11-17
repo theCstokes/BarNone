@@ -6,23 +6,24 @@ using System.Text;
 namespace BarNone.Shared.DomainModel.Core
 {
     public abstract class BaseChildDomainModel<TDomainModel, TDTO, TParentDomainModel, TParentDTO>
-        : BaseDomainModel<TDomainModel, TDTO>
+        : DomainModel<TDomainModel, TDTO>
         where TDomainModel : BaseChildDomainModel<TDomainModel, TDTO, TParentDomainModel, TParentDTO>, new()
         where TDTO : BaseDTO<TDTO>, new()
-        where TParentDomainModel : BaseDomainModel<TParentDomainModel, TParentDTO>, new()
+        where TParentDomainModel : DomainModel<TParentDomainModel, TParentDTO>, new()
         where TParentDTO : BaseDTO<TParentDTO>, new()
     {
+        //public override int ID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         #region BaseDomainModel Partial Implementation.
-        public override TDTO BuildDTO()
-        {
-            return BuildDTO(null);
-        }
+        //public override TDTO BuildDTO()
+        //{
+        //    return BuildDTO(null);
+        //}
 
-        public override void PopulateFromDTO(TDTO dto)
-        {
-            PopulateFromDTO(dto, null);
-        }
+        //public override void PopulateFromDTO(TDTO dto)
+        //{
+        //    PopulateFromDTO(dto, null);
+        //}
         #endregion
 
         #region Public Abstract Member(s).
@@ -42,6 +43,16 @@ namespace BarNone.Shared.DomainModel.Core
             var dm = new TDomainModel();
             dm.PopulateFromDTO(dto, parent);
             return dm;
+        }
+
+        protected override TDTO OnBuildDTO()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void OnPopulate(TDTO dto, ConvertConfig config = null)
+        {
+            throw new NotImplementedException();
         }
         #endregion
 

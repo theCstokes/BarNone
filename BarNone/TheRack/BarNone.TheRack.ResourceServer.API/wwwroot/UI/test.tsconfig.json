@@ -12,8 +12,7 @@
         "strictNullChecks": true,
         "alwaysStrict": true,
         "listEmittedFiles": true,
-      "allowJs": true,
-      "types": ["chai"]
+        "allowJs": true
     },
     "exclude": [
         "./node_modules",

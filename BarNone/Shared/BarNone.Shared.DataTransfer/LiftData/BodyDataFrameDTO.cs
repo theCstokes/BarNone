@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using BarNone.Shared.DataTransfer.Types;
 
 namespace BarNone.Shared.DataTransfer
 {
@@ -10,7 +9,7 @@ namespace BarNone.Shared.DataTransfer
     public class BodyDataFrameDetailDTO : BaseDetailDTO<BodyDataFrameDetailDTO>
     {
         [JsonProperty(Order = 0, NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<DTOJointType, JointDTO> Joints { get; set; }
+        public List<JointDTO> Joints { get; set; }
     }
 
     public class BodyDataFrameDTO : BaseParentDTO<BodyDataFrameDTO, BodyDataFrameDetailDTO>

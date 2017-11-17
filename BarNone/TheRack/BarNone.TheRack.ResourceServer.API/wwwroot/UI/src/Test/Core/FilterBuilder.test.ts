@@ -1,7 +1,9 @@
+import 'mocha';
 import * as chai from "chai"
 import { FilterBuilder } from "Vee/Core/FilterBuilder"
 
 let expect = chai.expect;
+
 
 describe("FilterBuilder", () => {
 	it("Builds Property Path", () => {
