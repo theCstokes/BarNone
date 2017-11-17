@@ -1,7 +1,8 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using BarNone.TheRack.DomainModel.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace BarNone.TheRack.Repository.Core
 {
     public class DefaultDetailRepository<TDTO, TDomainModel> : BaseRepository<TDTO, TDomainModel>
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : DomainModel<TDomainModel, TDTO>, new()
+        where TDomainModel : class, IDomainModel<TDomainModel, TDTO>, new()
     {
 
         #region Public Delegate Definition(s).
@@ -44,7 +45,7 @@ namespace BarNone.TheRack.Repository.Core
 
         public override TDomainModel Create(TDTO dto)
         {
-            var dm = DomainModel<TDomainModel, TDTO>.CreateFromDTO(dto);
+            var dm = DTOTransformable<TDomainModel, TDTO>.CreateFromDTO(dto);
             var result = _resolver(context).Add(dm);
 
             context.SaveChanges();
@@ -102,7 +103,7 @@ namespace BarNone.TheRack.Repository.Core
 
             dto.ID = id;
 
-            var dm = DomainModel<TDomainModel, TDTO>.CreateFromDTO(dto);
+            var dm = DTOTransformable<TDomainModel, TDTO>.CreateFromDTO(dto);
             var result = _resolver(context).Update(dm);
 
             context.SaveChanges();

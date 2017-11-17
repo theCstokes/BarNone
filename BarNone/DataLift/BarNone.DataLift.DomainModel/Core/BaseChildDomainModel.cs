@@ -1,15 +1,13 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace BarNone.Shared.DomainModel.Core
+namespace BarNone.Shared.DTOTransformable.Core
 {
     public abstract class BaseChildDomainModel<TDomainModel, TDTO, TParentDomainModel, TParentDTO>
-        : DomainModel<TDomainModel, TDTO>
+        : DTOTransformable<TDomainModel, TDTO>
         where TDomainModel : BaseChildDomainModel<TDomainModel, TDTO, TParentDomainModel, TParentDTO>, new()
         where TDTO : BaseDTO<TDTO>, new()
-        where TParentDomainModel : DomainModel<TParentDomainModel, TParentDTO>, new()
+        where TParentDomainModel : DTOTransformable<TParentDomainModel, TParentDTO>, new()
         where TParentDTO : BaseDTO<TParentDTO>, new()
     {
         //public override int ID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

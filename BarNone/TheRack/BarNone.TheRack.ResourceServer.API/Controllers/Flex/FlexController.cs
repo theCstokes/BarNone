@@ -1,4 +1,4 @@
-﻿using BarNone.Shared.DomainModel.Core;
+﻿using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
 using BarNone.TheRack.FlexEngine;
 using BarNone.TheRack.Repository;

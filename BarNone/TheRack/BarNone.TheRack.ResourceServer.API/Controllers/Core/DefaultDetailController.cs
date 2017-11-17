@@ -1,5 +1,6 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DomainModel.Core;
 using BarNone.TheRack.Repository.Core;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,7 +13,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
 {
     public class DefaultDetailController<TDTO, TDomainModel, TRepo> : DetailController<TDTO>
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : DomainModel<TDomainModel, TDTO>, new()
+        where TDomainModel : class, IDomainModel<TDomainModel, TDTO>, new()
         where TRepo : BaseRepository<TDTO, TDomainModel>
     {
 

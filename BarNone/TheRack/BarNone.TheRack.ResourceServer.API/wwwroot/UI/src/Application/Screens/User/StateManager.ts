@@ -13,8 +13,6 @@ export class State implements ISelectionState<User> {
 
 export class StateManager extends SelectionStateManager<User, State> {
 	public constructor(screen: AppScreen) {
-		super(screen, new State(), () => DataManager.Users.load({
-			useOverride: true
-		}));
+		super(screen, new State(), () => DataManager.Users.load());
 	}
 }

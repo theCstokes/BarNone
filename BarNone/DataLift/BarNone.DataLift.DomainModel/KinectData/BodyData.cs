@@ -1,6 +1,6 @@
 ﻿//using BarNone.DataLift.DomainModel.Core;
 using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace BarNone.DataLift.DomainModel.KinectData
 {
     public class BodyData : BaseChildDomainModel<BodyData, BodyDataDTO, BodyData, BodyDataDTO>,
-        IDetailDomainModel<BodyDataDTO, BodyDataDetailDTO>
+        IDetailDTOTransformable<BodyDataDTO, BodyDataDetailDTO>
     {
         #region Properties
         public override int ID { get; set; }
@@ -56,14 +56,14 @@ namespace BarNone.DataLift.DomainModel.KinectData
             };
         }
 
-        public BodyDataDetailDTO BuildDetailDTO()
+        public BodyDataDetailDTO CreateDTO()
         {
             var ret = new BodyDataDetailDTO()
             {
                 OrderedFrames = DataFrames?.Select(x => x.BuildDTO()).ToList()
             };
 
-            DataFrames.Select(x => x?.BuildDetailDTO());
+            DataFrames.Select(x => x?.CreateDTO());
             return ret;
 
         }
@@ -98,9 +98,9 @@ namespace BarNone.DataLift.DomainModel.KinectData
         #endregion
 
         #region IDetailDomainModel Implementation.
-        dynamic IDetailDomainModel.BuildDetailDTO()
+        dynamic IDetailDTOTransformable.CreateDTO()
         {
-            return BuildDetailDTO();
+            return CreateDTO();
         }
         #endregion
     }
