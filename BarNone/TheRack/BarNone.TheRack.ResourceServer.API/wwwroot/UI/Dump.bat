@@ -1,0 +1,1 @@
+python dump.py & gulp build

@@ -1,1 +1,1 @@
-"C:\Program Files\PostgreSQL\9.5\bin\pg_restore.exe" -h localhost -p 5433 -U postgres -d BarNone -v BarNone.backup
+"C:\Program Files\PostgreSQL\10\bin\pg_restore.exe" -h localhost -p 5433 --clean -U postgres -d BarNone BarNone.backup
