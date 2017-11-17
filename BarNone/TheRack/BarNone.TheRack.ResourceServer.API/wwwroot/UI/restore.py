@@ -2,11 +2,12 @@
 
 import subprocess
 import os
+import sys
 
 user = "postgres"
 pw = "admin"
 host = "127.0.0.1"
-port = "5433";
+port=sys.argv[1]
 db="BarNone"
 
 dir_name = os.getcwd()

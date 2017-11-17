@@ -1,1 +1,1 @@
-python restore.py & gulp build
+python restore.py %1 & gulp build

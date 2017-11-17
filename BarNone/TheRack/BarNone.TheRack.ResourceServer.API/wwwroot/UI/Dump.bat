@@ -1,1 +1,1 @@
-python dump.py & gulp build
+python dump.py %1 & gulp build
