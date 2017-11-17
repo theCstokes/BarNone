@@ -1,7 +1,4 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BarNone.Shared.DataTransfer.LiftData
 {

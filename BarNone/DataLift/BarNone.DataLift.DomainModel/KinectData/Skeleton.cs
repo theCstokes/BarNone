@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BarNone.DataLift.DomainModel.KinectData
+namespace BarNone.DataLift.DataModel.KinectData
 {
     /// <summary>
     /// Model of the Human Body, from the Kinect

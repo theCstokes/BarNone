@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BarNone.TheRack.DomainModel.Body
+﻿namespace BarNone.TheRack.DomainModel.Body
 {
     public enum EJointTrackingState
     {

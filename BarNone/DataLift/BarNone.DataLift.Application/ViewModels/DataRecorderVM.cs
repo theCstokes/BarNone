@@ -1,4 +1,4 @@
-﻿using BarNone.DataLift.DomainModel.KinectData;
+﻿using BarNone.DataLift.DataModel.KinectData;
 using BarNone.DataLift.UI.Commands;
 using Microsoft.Kinect;
 using System;

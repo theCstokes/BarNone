@@ -1,9 +1,7 @@
 ﻿using BarNone.TheRack.DataAccess;
-using BarNone.TheRack.Repository;
-using BarNone.TheRack.Repository.Core;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using BarNone.TheRack.Repository.Core;
+using BarNone.TheRack.Repository;
 
 namespace BarNone.TheRack.FlexEngine
 {

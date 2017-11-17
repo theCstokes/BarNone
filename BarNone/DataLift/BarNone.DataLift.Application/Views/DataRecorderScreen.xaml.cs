@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using BarNone.DataLift.DomainModel.KinectData;
+using BarNone.DataLift.DataModel.KinectData;
 using System.ComponentModel;
 using BarNone.DataLift.UI.ViewModels;
 

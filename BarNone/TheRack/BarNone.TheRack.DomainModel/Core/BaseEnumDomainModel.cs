@@ -1,9 +1,6 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
 using BarNone.Shared.DTOTransformable.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using BarNone.TheRack.DomainModel.Core;
 
 
 namespace BarNone.TheRack.DomainModel.Core
