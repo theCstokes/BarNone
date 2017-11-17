@@ -60,17 +60,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DataLift\BarNone.DataLift.DomainModel\BarNone.DataLift.DomainModel.csproj">
+    <ProjectReference Include="..\..\..\DataLift\BarNone.DataLift.DomainModel\BarNone.DataLift.DataModel.csproj">
       <Project>{707ade0d-0c8d-4edf-81b9-889b4538efa1}</Project>
-      <Name>BarNone.DataLift.DomainModel</Name>
+      <Name>BarNone.DataLift.DataModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj">
       <Project>{DC7C09E7-27E2-496C-9823-F048BB031174}</Project>
       <Name>BarNone.Shared.DataTransfer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj">
+    <ProjectReference Include="..\..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DTOTransform.csproj">
       <Project>{EE13BDCE-8F4F-46C6-8E36-97EEDAF64F04}</Project>
-      <Name>BarNone.Shared.DomainModel</Name>
+      <Name>BarNone.Shared.DTOTransform</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

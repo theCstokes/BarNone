@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DTOTransformable.Core;
 
-namespace BarNone.DataLift.DomainModel.KinectData
+namespace BarNone.DataLift.DataModel.KinectData
 {
     public class BodyDataFrame : BaseChildDomainModel<BodyDataFrame, BodyDataFrameDTO, BodyData, BodyDataDTO>,
         IDetailDTOTransformable<BodyDataFrameDTO, BodyDataFrameDetailDTO>

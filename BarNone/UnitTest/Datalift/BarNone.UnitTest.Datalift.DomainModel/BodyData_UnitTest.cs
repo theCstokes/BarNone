@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BarNone.DataLift.DomainModel.KinectData;
+using BarNone.DataLift.DataModel.KinectData;
 using System.Collections.Generic;
 using BarNone.Shared.DataTransfer;
 using Microsoft.Kinect;

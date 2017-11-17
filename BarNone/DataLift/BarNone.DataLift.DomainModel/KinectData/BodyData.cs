@@ -1,11 +1,10 @@
-﻿//using BarNone.DataLift.DomainModel.Core;
-using BarNone.Shared.DataTransfer;
+﻿using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DTOTransformable.Core;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace BarNone.DataLift.DomainModel.KinectData
+namespace BarNone.DataLift.DataModel.KinectData
 {
     public class BodyData : BaseChildDomainModel<BodyData, BodyDataDTO, BodyData, BodyDataDTO>,
         IDetailDTOTransformable<BodyDataDTO, BodyDataDetailDTO>
