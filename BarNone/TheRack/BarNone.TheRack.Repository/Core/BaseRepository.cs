@@ -1,6 +1,7 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
+using BarNone.TheRack.DomainModel.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace BarNone.TheRack.Repository.Core
     public abstract class BaseRepository<TDTO, TDomainModel> : IRepository<TDTO, TDomainModel>,
         IDisposable
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : DomainModel<TDomainModel, TDTO>, new()
+        where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, new()
     {
         #region Protected Read Only Field(s).
         protected readonly DomainContext context;
@@ -41,17 +42,17 @@ namespace BarNone.TheRack.Repository.Core
         #endregion
 
         #region Public IRepository Implementation.
-        List<IDomainModel> IRepository.Get(FilterDTO.WhereFunc where)
+        List<IDTOTransformable> IRepository.Get(FilterDTO.WhereFunc where)
         {
-            return Get(where).Select(v => v as IDomainModel).ToList();
+            return Get(where).Select(v => v as IDTOTransformable).ToList();
         }
 
-        IDomainModel IRepository.Get(int id)
+        IDTOTransformable IRepository.Get(int id)
         {
             return Get(id);
         }
 
-        IDomainModel IRepository.GetWithDetails(int id)
+        IDTOTransformable IRepository.GetWithDetails(int id)
         {
             return GetWithDetails(id);
         }
@@ -66,17 +67,17 @@ namespace BarNone.TheRack.Repository.Core
         //    return Update(id, dto as TDTO);
         //}
 
-        IDomainModel IRepository.Remove(int id)
+        IDTOTransformable IRepository.Remove(int id)
         {
             return Remove(id);
         }
 
-        IDomainModel IRepository.Create(dynamic dto)
+        IDTOTransformable IRepository.Create(dynamic dto)
         {
             return Create(dto as TDTO);
         }
 
-        IDomainModel IRepository.Update(int id, dynamic dto)
+        IDTOTransformable IRepository.Update(int id, dynamic dto)
         {
             return Update(id, dto as TDTO);
         }

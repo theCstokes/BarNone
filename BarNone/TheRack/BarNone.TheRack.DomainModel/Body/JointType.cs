@@ -1,5 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer.LiftData;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DomainModel.Core;
 using System;
 using System.Collections.Generic;

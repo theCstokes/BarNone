@@ -3,12 +3,12 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
 
 namespace BarNone.DataLift.DomainModel.KinectData
 {
     public class BodyDataFrame : BaseChildDomainModel<BodyDataFrame,BodyDataFrameDTO,BodyData,BodyDataDTO>,
-        IDetailDomainModel<BodyDataFrameDTO, BodyDataFrameDetailDTO>
+        IDetailDTOTransformable<BodyDataFrameDTO, BodyDataFrameDetailDTO>
     {
         #region Public Property(s).
         /// <summary>
@@ -83,7 +83,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
             parent.AddNewFrame(this);
         }
 
-        public BodyDataFrameDetailDTO BuildDetailDTO()
+        public BodyDataFrameDetailDTO CreateDTO()
         {
             return new BodyDataFrameDetailDTO()
             {
@@ -121,9 +121,9 @@ namespace BarNone.DataLift.DomainModel.KinectData
         #endregion
 
         #region IDetailDomainModel Implementation.
-        dynamic IDetailDomainModel.BuildDetailDTO()
+        dynamic IDetailDTOTransformable.CreateDTO()
         {
-            return BuildDetailDTO();
+            return CreateDTO();
         } 
         #endregion
     }

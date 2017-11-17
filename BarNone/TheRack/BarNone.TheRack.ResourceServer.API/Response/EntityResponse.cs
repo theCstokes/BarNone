@@ -1,6 +1,6 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DomainModel;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DomainModel;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -72,7 +72,7 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(entity, code);
         }
 
-        public static IActionResult Response(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
+        public static IActionResult Response(IDTOTransformable entity, HttpStatusCode code = HttpStatusCode.OK)
         {
             var config = new ConvertConfig();
             var dto = entity.CreateDTO(config);
@@ -84,7 +84,7 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
-        public static IActionResult DetailResponse(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK, int? depth = null)
+        public static IActionResult DetailResponse(IDTOTransformable entity, HttpStatusCode code = HttpStatusCode.OK, int? depth = null)
         {
             var config = new ConvertConfig(depth);
             var dto = entity.CreateDTO(config);
@@ -96,7 +96,7 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
-        public static IActionResult Response(IEnumerable<IDomainModel> entities, HttpStatusCode code = HttpStatusCode.OK)
+        public static IActionResult Response(IEnumerable<IDTOTransformable> entities, HttpStatusCode code = HttpStatusCode.OK)
         {
             var response = new EnumerableDTO
             {
@@ -107,7 +107,7 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
-        public static IActionResult Enumerable(IEnumerable<IDomainModel> entities, HttpStatusCode code = HttpStatusCode.OK)
+        public static IActionResult Enumerable(IEnumerable<IDTOTransformable> entities, HttpStatusCode code = HttpStatusCode.OK)
         {
 
             var response = new EnumerableDTO

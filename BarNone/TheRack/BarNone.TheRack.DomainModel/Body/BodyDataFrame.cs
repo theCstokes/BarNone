@@ -1,5 +1,6 @@
 ﻿using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DomainModel.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,7 @@ using System.Text;
 namespace BarNone.TheRack.DomainModel.Body
 {
     [Table("BodyDataFrame", Schema = "public")]
-    public class BodyDataFrame : DetailDomainModel<BodyDataFrame, BodyDataFrameDTO, BodyDataFrameDetailDTO>
+    public class BodyDataFrame : BaseDetailDomainModel<BodyDataFrame, BodyDataFrameDTO, BodyDataFrameDetailDTO>
     {
         [Key]
         public override int ID { get; set; }

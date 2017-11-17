@@ -57,7 +57,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
             };
 
             var bodyDataDTO = bodyData.BuildDTO();
-            bodyDataDTO.Details = bodyData.BuildDetailDTO();
+            bodyDataDTO.Details = bodyData.CreateDTO();
             //bodyDataDTO.Details.OrderedFrames
 
 

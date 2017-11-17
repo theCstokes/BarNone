@@ -1,12 +1,14 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using BarNone.TheRack.DomainModel.Core;
+
 
 namespace BarNone.TheRack.DomainModel.Core
 {
-    public abstract class BaseEnumDomainModel<TType, TEType, TDTO> : DomainModel<TType, TDTO>
+    public abstract class BaseEnumDomainModel<TType, TEType, TDTO> : BaseDomainModel<TType, TDTO>
         where TType : BaseEnumDomainModel<TType, TEType, TDTO>, new()
         where TEType : struct
         where TDTO : BaseTypeDTO<TDTO>, new()
@@ -32,7 +34,7 @@ namespace BarNone.TheRack.DomainModel.Core
         public abstract int Value { get; set; }
 
         public abstract string Name { get; set; }
-        public override int ID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override int ID { get; set; }
         #endregion
 
         #region Public Operator Overload(s).

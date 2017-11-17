@@ -1,7 +1,8 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DomainModel;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DomainModel;
+using BarNone.TheRack.DomainModel.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,22 +12,22 @@ namespace BarNone.TheRack.Repository.Core
 {
     public interface IRepository
     {
-        List<IDomainModel> Get(WhereFunc where = null);
+        List<IDTOTransformable> Get(WhereFunc where = null);
 
-        IDomainModel Get(int id);
+        IDTOTransformable Get(int id);
 
-        IDomainModel GetWithDetails(int id);
+        IDTOTransformable GetWithDetails(int id);
 
-        IDomainModel Create(dynamic dto);
+        IDTOTransformable Create(dynamic dto);
 
-        IDomainModel Update(int id, dynamic dto);
+        IDTOTransformable Update(int id, dynamic dto);
 
-        IDomainModel Remove(int id);
+        IDTOTransformable Remove(int id);
     }
 
     public interface IRepository<TDTO, TDomainModel> : IRepository
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : DomainModel<TDomainModel, TDTO>, new()
+        where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, new()
     {
         new List<TDomainModel> Get(WhereFunc where = null);
 
