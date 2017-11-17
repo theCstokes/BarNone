@@ -12,7 +12,7 @@ namespace BarNone.TheRack.Repository.Core
 {
     public class DefaultDetailRepository<TDTO, TDomainModel> : BaseRepository<TDTO, TDomainModel>
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : IDomainModel<TDomainModel, TDTO>, new()
+        where TDomainModel : class, IDomainModel<TDomainModel, TDTO>, new()
     {
 
         #region Public Delegate Definition(s).

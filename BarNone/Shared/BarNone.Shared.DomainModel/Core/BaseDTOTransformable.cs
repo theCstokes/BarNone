@@ -4,7 +4,7 @@ using System;
 namespace BarNone.Shared.DTOTransformable.Core
 {
     public abstract class DTOTransformable<TDTOTransferObject, TDTO> : IDTOTransformable<TDTO>
-        where TDTOTransferObject : DTOTransformable<TDTOTransferObject, TDTO>, new()
+        where TDTOTransferObject : IDTOTransformable<TDTO>, new()
         where TDTO : BaseDTO<TDTO>, new()
     {
         

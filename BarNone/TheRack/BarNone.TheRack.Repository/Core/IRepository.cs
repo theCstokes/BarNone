@@ -27,7 +27,7 @@ namespace BarNone.TheRack.Repository.Core
 
     public interface IRepository<TDTO, TDomainModel> : IRepository
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, new()
+        where TDomainModel : class, IDomainModel<TDomainModel, TDTO>, new()
     {
         new List<TDomainModel> Get(WhereFunc where = null);
 

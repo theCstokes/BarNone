@@ -11,5 +11,7 @@ namespace BarNone.Shared.DTOTransformable.Core
         where TDTO : BaseDTO<TDTO>, new()
     {
         new TDTO CreateDTO(ConvertConfig config = null);
+
+        void PopulateFromDTO(TDTO dto, ConvertConfig config = null);
     }
 }

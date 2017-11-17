@@ -12,7 +12,7 @@ namespace BarNone.TheRack.Repository.Core
     public abstract class BaseRepository<TDTO, TDomainModel> : IRepository<TDTO, TDomainModel>,
         IDisposable
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, new()
+        where TDomainModel : class, IDomainModel<TDomainModel, TDTO>, new()
     {
         #region Protected Read Only Field(s).
         protected readonly DomainContext context;
