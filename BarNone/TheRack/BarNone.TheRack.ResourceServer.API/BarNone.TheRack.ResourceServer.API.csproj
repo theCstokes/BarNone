@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Configurations>Debug;Release;DataLift - Debug</Configurations>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.TypeScript.Compiler" Version="2.4.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BarNone.TheRack.FlexEngine\BarNone.TheRack.FlexEngine.csproj" />
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj" />
     <ProjectReference Include="..\BarNone.TheRack.DomainModel\BarNone.TheRack.DomainModel.csproj" />
     <ProjectReference Include="..\BarNone.TheRack.Repository\BarNone.TheRack.Repository.csproj" />

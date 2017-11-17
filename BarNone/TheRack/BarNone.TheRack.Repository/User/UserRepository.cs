@@ -25,13 +25,14 @@ namespace BarNone.TheRack.Repository
 
         public User Login(string userName, string password)
         {
-            var result = context.Users.Where(c => c.UserName == userName).First();
+            var result = context.Users.Where(c => c.UserName == userName);
+            if (!result.Any()) return null;
 
-            if (result == null) return null;
+            var user = result.FirstOrDefault();
 
             context.SaveChanges();
 
-            if (result.Password == password) return result;
+            if (user.Password == password) return user;
 
             return null;
         }

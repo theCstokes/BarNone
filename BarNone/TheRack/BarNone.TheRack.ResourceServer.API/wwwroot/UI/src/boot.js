@@ -4,7 +4,7 @@ require.config({
 		data: "../../data",
 		lodash: '../../node_modules/lodash/lodash'
 	},
-	// urlArgs: "v=" + (new Date()).getTime()
+	urlArgs: "v=" + (new Date()).getTime()
 });
 
 define([

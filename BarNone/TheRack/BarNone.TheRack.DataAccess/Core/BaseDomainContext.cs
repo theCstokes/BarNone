@@ -2,16 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Net.Http;
 
 namespace BarNone.TheRack.DataAccess
 {
     public class BaseDomainContext : DbContext
     {
         private static readonly string HOST = "127.0.0.1";
-        private static readonly string PORT = "5432";
+        private static readonly string PORT = "5433";
         private static readonly string USERNAME = "postgres";
         private static readonly string PASSWORD = "admin";
-        private static readonly string DATABASE = "SharpSight";
+        private static readonly string DATABASE = "BarNone";
 
         public BaseDomainContext() : base()
         {

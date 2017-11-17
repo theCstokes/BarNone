@@ -1,12 +1,12 @@
 import Vee from "Vee/Vee";
 import Core from "Vee/Elements/Core/Core";
 import ControlTypes from "Vee/ControlTypes";
-// import NavScreen from "PlayGround/Nav/NavScreen";
-// import UserScreen from "PlayGround/User/UserScreen";
+// import VideoScreen from "PlayGround/Screens/Video/VideoScreen";
+import NavScreen from "PlayGround/Screens/Nav/NavScreen";
 
 export default class App {
 	public static async start(): Promise<void> {
-		// await Vee.push(NavScreen);
-		// await Vee.push(UserScreen);
+		await Vee.push(NavScreen);
+		// await Vee.push(VideoScreen);
 	}
 }

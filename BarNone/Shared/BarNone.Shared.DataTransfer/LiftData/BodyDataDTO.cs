@@ -18,7 +18,6 @@ namespace BarNone.Shared.DataTransfer
 
         [JsonProperty(Order = 1)]
         public DateTime RecordTimeStamp { get; set; }
-
     }
 
 }

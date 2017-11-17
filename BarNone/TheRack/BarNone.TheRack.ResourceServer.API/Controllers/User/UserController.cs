@@ -45,7 +45,7 @@ namespace TheRack.ResourceServer.API.Controllers
             try
             {
                 UserRepository repository = new UserRepository();
-                return EntityResponse.Entity<User, UserDTO>(repository.Get(id));
+                return EntityResponse.Response(repository.Get(id));
             }
             catch (Exception e)
             {
@@ -59,7 +59,7 @@ namespace TheRack.ResourceServer.API.Controllers
             try
             {
                 UserRepository repository = new UserRepository();
-                return EntityResponse.Entity<User, UserDTO>(repository.GetWithDetails(id));
+                return EntityResponse.Response(repository.GetWithDetails(id));
             }
             catch (Exception e)
             {
@@ -73,7 +73,7 @@ namespace TheRack.ResourceServer.API.Controllers
             try
             {
                 UserRepository repository = new UserRepository();
-                return EntityResponse.Entity<User, UserDTO>(repository.Create(value));
+                return EntityResponse.Response(repository.Create(value));
             }
             catch (Exception e)
             {
@@ -87,7 +87,7 @@ namespace TheRack.ResourceServer.API.Controllers
             try
             {
                 UserRepository repository = new UserRepository();
-                return EntityResponse.Entity<User, UserDTO>(repository.Update(id, value));
+                return EntityResponse.Response(repository.Update(id, value));
             }
             catch (Exception e)
             {
@@ -101,7 +101,7 @@ namespace TheRack.ResourceServer.API.Controllers
             try
             {
                 UserRepository repository = new UserRepository();
-                return EntityResponse.Entity<User, UserDTO>(repository.Remove(id));
+                return EntityResponse.Response(repository.Remove(id));
             }
             catch (Exception e)
             {
