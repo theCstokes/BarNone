@@ -24,11 +24,24 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        public ICommand RegisterCommand
+        {
+            get
+            {
+                return new RelayCommand(action => Register());
+            }
+        }
+
 
         private void Login()
         {
             //Login server calls here to get a valid token and shift to data recorder or notify bad user pass combo
             PageManager.SwitchPage(UIPages.DataRecorderView);
+        }
+
+        private void Register()
+        {
+            PageManager.SwitchPage(UIPages.RegisterView);
         }
         
         private bool CanLogin()
