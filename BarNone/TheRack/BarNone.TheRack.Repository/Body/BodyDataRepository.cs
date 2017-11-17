@@ -15,16 +15,17 @@ namespace BarNone.TheRack.Repository
         //: BaseRepository<BodyDataDTO, BodyData>
     {
         public BodyDataRepository() : base(
-            new DomainContext(), 
-            c => c.Bodies, 
-            s => s.Include(b => b.BodyDataFrames))
+            new DomainContext(),
+            c => c.Bodies,
+            //s => s.Include(b => b.BodyDataFrames.Select(f => f.Joints)))
+            s => s.Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints))
         {
         }
 
         public BodyDataRepository(DomainContext context) : base(
             context,
             c => c.Bodies,
-            s => s.Include(b => b.BodyDataFrames))
+            s => s.Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints))
         {
 
         }

@@ -11,7 +11,7 @@ namespace BarNone.TheRack.Repository.Core
 {
     public class DefaultDetailRepository<TDTO, TDomainModel> : BaseRepository<TDTO, TDomainModel>
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, IParentDomainModel, new()
+        where TDomainModel : DomainModel<TDomainModel, TDTO>, new()
     {
 
         #region Public Delegate Definition(s).
@@ -44,7 +44,7 @@ namespace BarNone.TheRack.Repository.Core
 
         public override TDomainModel Create(TDTO dto)
         {
-            var dm = BaseDomainModel<TDomainModel, TDTO>.CreateFromDTO(dto);
+            var dm = DomainModel<TDomainModel, TDTO>.CreateFromDTO(dto);
             var result = _resolver(context).Add(dm);
 
             context.SaveChanges();
@@ -102,7 +102,7 @@ namespace BarNone.TheRack.Repository.Core
 
             dto.ID = id;
 
-            var dm = BaseDomainModel<TDomainModel, TDTO>.CreateFromDTO(dto);
+            var dm = DomainModel<TDomainModel, TDTO>.CreateFromDTO(dto);
             var result = _resolver(context).Update(dm);
 
             context.SaveChanges();

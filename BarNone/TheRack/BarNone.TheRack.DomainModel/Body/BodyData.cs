@@ -11,7 +11,7 @@ using System.Text;
 namespace BarNone.TheRack.DomainModel
 {
     [Table("BodyData", Schema = "public")]
-    public class BodyData : BaseDomainModel<BodyData, BodyDataDTO>, IParentDomainModel<BodyDataDTO, BodyDataDetailDTO>
+    public class BodyData : DetailDomainModel<BodyData, BodyDataDTO, BodyDataDetailDTO>
     {
         [Key]
         public override int ID { get; set; }
@@ -20,15 +20,7 @@ namespace BarNone.TheRack.DomainModel
 
         public List<BodyDataFrame> BodyDataFrames { get; set; }
 
-        public dynamic BuildDetailDTO()
-        {
-            return new BodyDataDetailDTO
-            {
-                OrderedFrames = BodyDataFrames.Select(f => f.BuildDTO()).ToList()
-            };
-        }
-
-        public override BodyDataDTO BuildDTO()
+        protected override BodyDataDTO OnBuildDTO()
         {
             return new BodyDataDTO
             {
@@ -37,15 +29,47 @@ namespace BarNone.TheRack.DomainModel
             };
         }
 
-        public override void PopulateFromDTO(BodyDataDTO dto)
+        protected override BodyDataDetailDTO OnBuildDetailDTO(ConvertConfig config)
+        {
+            return new BodyDataDetailDTO
+            {
+                OrderedFrames = BodyDataFrames.Select(frame => frame.CreateDTO(config)).ToList()
+            };
+        }
+
+        protected override void OnPopulate(BodyDataDTO dto, ConvertConfig config = null)
         {
             ID = dto.ID;
             RecordDate = dto.RecordTimeStamp;
+            BodyDataFrames = dto.Details?.OrderedFrames.Select(frame => BodyDataFrame.CreateFromDTO(frame)).ToList();
         }
 
-        BodyDataDetailDTO IParentDomainModel<BodyDataDTO, BodyDataDetailDTO>.BuildDetailDTO()
-        {
-            return BuildDetailDTO();
-        }
+        //public dynamic BuildDetailDTO()
+        //{
+        //    return new BodyDataDetailDTO
+        //    {
+        //        OrderedFrames = BodyDataFrames.Select(f => f.BuildDTO()).ToList()
+        //    };
+        //}
+
+        //public override BodyDataDTO BuildDTO()
+        //{
+        //    return new BodyDataDTO
+        //    {
+        //        ID = ID,
+        //        RecordTimeStamp = RecordDate
+        //    };
+        //}
+
+        //public override void PopulateFromDTO(BodyDataDTO dto)
+        //{
+        //    ID = dto.ID;
+        //    RecordDate = dto.RecordTimeStamp;
+        //}
+
+        //BodyDataDetailDTO IParentDomainModel<BodyDataDTO, BodyDataDetailDTO>.BuildDetailDTO()
+        //{
+        //    return BuildDetailDTO();
+        //}
     }
 }

@@ -64,28 +64,30 @@ namespace TheRack.ResourceServer.API.Response
 
         public static IActionResult Entity(object entity, HttpStatusCode code = HttpStatusCode.OK)
         {
-            var response = new EntityDTO
-            {
-                Entity = entity
-            };
+            //var response = new EntityDTO
+            //{
+            //    Entity = entity
+            //};
 
-            return CreateResult(response, code);
+            return CreateResult(entity, code);
         }
 
         public static IActionResult Response(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
         {
+            var config = new ConvertConfig();
+            var dto = entity.CreateDTO(config);
             var response = new EntityDTO
             {
-                Entity = entity.BuildDTO()
+                Entity = dto
             };
 
             return CreateResult(response, code);
         }
 
-        public static IActionResult DetailResponse(IParentDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
+        public static IActionResult DetailResponse(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK, int? depth = null)
         {
-            var dto = entity.BuildDTO();
-            dto.Details = entity.BuildDetailDTO();
+            var config = new ConvertConfig(depth);
+            var dto = entity.CreateDTO(config);
             var response = new EntityDTO
             {
                 Entity = dto

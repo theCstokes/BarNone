@@ -10,8 +10,7 @@ using System.Text;
 namespace BarNone.TheRack.DomainModel.Body
 {
     [Table("BodyDataFrame", Schema = "public")]
-    public class BodyDataFrame : BaseDomainModel<BodyDataFrame, BodyDataFrameDTO>, 
-        IParentDomainModel<BodyDataFrameDTO, BodyDataFrameDetailDTO>
+    public class BodyDataFrame : DetailDomainModel<BodyDataFrame, BodyDataFrameDTO, BodyDataFrameDetailDTO>
     {
         [Key]
         public override int ID { get; set; }
@@ -25,31 +24,56 @@ namespace BarNone.TheRack.DomainModel.Body
 
         public BodyData BodyData { get; set; }
 
-        public BodyDataFrameDetailDTO BuildDetailDTO()
+        //public BodyDataFrameDetailDTO BuildDetailDTO()
+        //{
+        //    return new BodyDataFrameDetailDTO
+        //    {
+        //        Joints = Joints.Select(j => j.BuildDTO()).ToList()
+        //    };
+        //}
+
+        protected override BodyDataFrameDetailDTO OnBuildDetailDTO(ConvertConfig config)
         {
             return new BodyDataFrameDetailDTO
             {
-                Joints = Joints.Select(j => j.BuildDTO()).ToList()
+                Joints = Joints?.Select(j => j.CreateDTO(config)).ToList()
             };
         }
 
-        public override BodyDataFrameDTO BuildDTO()
+        protected override BodyDataFrameDTO OnBuildDTO()
         {
             return new BodyDataFrameDTO
             {
                 ID = ID,
-                TimeOfFrame = TimeOfFrame
+                TimeOfFrame = TimeOfFrame,
+                //TimeUntilNextFrame = Tim
             };
         }
 
-        public override void PopulateFromDTO(BodyDataFrameDTO dto)
+        protected override void OnPopulate(BodyDataFrameDTO dto, ConvertConfig config = null)
         {
-            throw new NotImplementedException();
+            ID = dto.ID;
+            TimeOfFrame = dto.TimeOfFrame;
+            Joints = dto.Details?.Joints.Select(j => Joint.CreateFromDTO(j)).ToList();
         }
 
-        dynamic IParentDomainModel.BuildDetailDTO()
-        {
-            return BuildDetailDTO();
-        }
+        //public override BodyDataFrameDTO BuildDTO()
+        //{
+        //    return new BodyDataFrameDTO
+        //    {
+        //        ID = ID,
+        //        TimeOfFrame = TimeOfFrame
+        //    };
+        //}
+
+        //public override void PopulateFromDTO(BodyDataFrameDTO dto)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //dynamic IParentDomainModel.BuildDetailDTO()
+        //{
+        //    return BuildDetailDTO();
+        //}
     }
 }

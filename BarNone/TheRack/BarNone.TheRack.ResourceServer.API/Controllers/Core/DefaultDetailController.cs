@@ -12,7 +12,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
 {
     public class DefaultDetailController<TDTO, TDomainModel, TRepo> : DetailController<TDTO>
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, new()
+        where TDomainModel : DomainModel<TDomainModel, TDTO>, new()
         where TRepo : BaseRepository<TDTO, TDomainModel>
     {
 
@@ -60,7 +60,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
         {
             using (var repo = _builder())
             {
-                return EntityResponse.DetailResponse(repo.GetWithDetails(id) as IParentDomainModel);
+                return EntityResponse.DetailResponse(repo.GetWithDetails(id));
             }
         }
 

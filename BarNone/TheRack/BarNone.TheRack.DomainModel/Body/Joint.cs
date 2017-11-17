@@ -8,15 +8,15 @@ using System.Text;
 namespace BarNone.TheRack.DomainModel.Body
 {
     [Table("Joint", Schema = "public")]
-    public class Joint : BaseDomainModel<Joint, JointDTO>
+    public class Joint : DomainModel<Joint, JointDTO>
     {
         public override int ID { get; set; }
 
-        public float PositionX { get; set; }
+        public float X { get; set; }
 
-        public float PositionY { get; set; }
+        public float Y { get; set; }
 
-        public float PositionZ { get; set; }
+        public float Z { get; set; }
 
         public int BodyDataFrameID { get; set; }
 
@@ -25,14 +25,42 @@ namespace BarNone.TheRack.DomainModel.Body
 
         public JointTrackingState TrackingState { get; set; }
 
-        public override JointDTO BuildDTO()
+        //public override JointDTO BuildDTO()
+        //{
+        //    return new JointDTO
+        //    {
+        //        ID = ID,
+        //        PositionX = PositionX,
+        //        PositionY = PositionY,
+        //        PositionZ = PositionZ,
+        //        TrackingState = TrackingState.BuildDTO()
+        //    };
+        //}
+
+        //public override void PopulateFromDTO(JointDTO dto)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        protected override JointDTO OnBuildDTO()
         {
-            throw new NotImplementedException();
+            return new JointDTO
+            {
+                ID = ID,
+                PositionX = X,
+                PositionY = Y,
+                PositionZ = Z,
+                TrackingState = TrackingState?.CreateDTO()
+            };
         }
 
-        public override void PopulateFromDTO(JointDTO dto)
+        protected override void OnPopulate(JointDTO dto, ConvertConfig config = null)
         {
-            throw new NotImplementedException();
+            ID = dto.ID;
+            X = dto.PositionX;
+            Y = dto.PositionY;
+            Z = dto.PositionZ;
+            TrackingState = JointTrackingState.CreateFromDTO(dto.TrackingState);
         }
     }
 }

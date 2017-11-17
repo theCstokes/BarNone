@@ -9,24 +9,24 @@ namespace BarNone.Shared.DomainModel.Core
     {
         int ID { get; set; }
 
-        dynamic BuildDTO();
+        dynamic CreateDTO(ConvertConfig config = null);
     }
 
     public interface IDomainModel<TDTO> : IDomainModel
         where TDTO : BaseDTO<TDTO>, new()
     {
-        new TDTO BuildDTO();
+        new TDTO CreateDTO(ConvertConfig config = null);
     }
 
-    public interface IParentDomainModel : IDomainModel
-    {
-        dynamic BuildDetailDTO();
-    }
+    //public interface IParentDomainModel : IDomainModel
+    //{
+    //    dynamic BuildDetailDTO();
+    //}
 
-    public interface IParentDomainModel<TDTO, TDetailDTO> : IDomainModel<TDTO>, IParentDomainModel
-        where TDTO : BaseDTO<TDTO>, new()
-        where TDetailDTO : BaseDetailDTO<TDetailDTO>, new()
-    {
-        new TDetailDTO BuildDetailDTO();
-    }
+    //public interface IParentDomainModel<TDTO, TDetailDTO> : IDomainModel<TDTO>, IParentDomainModel
+    //    where TDTO : BaseDTO<TDTO>, new()
+    //    where TDetailDTO : BaseDetailDTO<TDetailDTO>, new()
+    //{
+    //    new TDetailDTO BuildDetailDTO();
+    //}
 }

@@ -10,8 +10,8 @@ using System.Text;
 namespace BarNone.TheRack.DomainModel
 {
     [Table("Lift", Schema = "public")]
-    public class Lift : BaseChildDomainModel<Lift, LiftDTO, LiftFolder, LiftFolderDTO>,
-        IDetailDomainModel<LiftDTO, LiftDetailDTO>
+    public class Lift : DetailDomainModel<Lift, LiftDTO, LiftDetailDTO>
+        //IDetailDomainModel<LiftDTO, LiftDetailDTO>
     {
         [Key]
         public override int ID { get; set; }
@@ -23,37 +23,63 @@ namespace BarNone.TheRack.DomainModel
         [ForeignKey("ParentID")]
         public LiftFolder Parent { get; set; }
 
-        public LiftDetailDTO BuildDetailDTO()
+        protected override LiftDetailDTO OnBuildDetailDTO(ConvertConfig config)
         {
             return new LiftDetailDTO
             {
-                Parent = Parent?.BuildDTO()
+                Parent = Parent.CreateDTO(config)
             };
         }
 
-        public override LiftDTO BuildDTO(LiftFolderDTO parentDTO)
+        protected override LiftDTO OnBuildDTO()
         {
             return new LiftDTO
             {
                 ID = ID,
-                Name = Name,
-                ParentID = ParentID
+                Name = Name
             };
         }
 
-        public override void PopulateFromDTO(LiftDTO dto, LiftFolder parent)
+        protected override void OnPopulate(LiftDTO dto, ConvertConfig config = null)
         {
             ID = dto.ID;
             Name = dto.Name;
-            ParentID = dto.ParentID;
-            Parent = parent;
+
+            // Use Parent Chain.
+            Parent = config?.Parent;
         }
 
-        #region IDetailDomainModel Implementation.
-        dynamic IDetailDomainModel.BuildDetailDTO()
-        {
-            return BuildDetailDTO();
-        }
-        #endregion
+        //public LiftDetailDTO BuildDetailDTO()
+        //{
+        //    return new LiftDetailDTO
+        //    {
+        //        Parent = Parent?.BuildDTO()
+        //    };
+        //}
+
+        //public override LiftDTO BuildDTO(LiftFolderDTO parentDTO)
+        //{
+        //    return new LiftDTO
+        //    {
+        //        ID = ID,
+        //        Name = Name,
+        //        ParentID = ParentID
+        //    };
+        //}
+
+        //public override void PopulateFromDTO(LiftDTO dto, LiftFolder parent)
+        //{
+        //    ID = dto.ID;
+        //    Name = dto.Name;
+        //    ParentID = dto.ParentID;
+        //    Parent = parent;
+        //}
+
+        //#region IDetailDomainModel Implementation.
+        //dynamic IDetailDomainModel.BuildDetailDTO()
+        //{
+        //    return BuildDetailDTO();
+        //}
+        //#endregion
     }
 }

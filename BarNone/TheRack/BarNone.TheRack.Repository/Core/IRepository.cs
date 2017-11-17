@@ -11,22 +11,22 @@ namespace BarNone.TheRack.Repository.Core
 {
     public interface IRepository
     {
-        List<dynamic> Get(WhereFunc where = null);
+        List<IDomainModel> Get(WhereFunc where = null);
 
-        dynamic Get(int id);
+        IDomainModel Get(int id);
 
-        dynamic GetWithDetails(int id);
+        IDomainModel GetWithDetails(int id);
 
-        dynamic Create(dynamic dto);
+        IDomainModel Create(dynamic dto);
 
-        dynamic Update(int id, dynamic dto);
+        IDomainModel Update(int id, dynamic dto);
 
-        dynamic Remove(int id);
+        IDomainModel Remove(int id);
     }
 
     public interface IRepository<TDTO, TDomainModel> : IRepository
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, new()
+        where TDomainModel : DomainModel<TDomainModel, TDTO>, new()
     {
         new List<TDomainModel> Get(WhereFunc where = null);
 

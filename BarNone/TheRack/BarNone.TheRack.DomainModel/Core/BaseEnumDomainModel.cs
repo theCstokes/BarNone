@@ -1,13 +1,15 @@
-﻿using BarNone.Shared.DomainModel.Core;
+﻿using BarNone.Shared.DataTransfer.Core;
+using BarNone.Shared.DomainModel.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace BarNone.TheRack.DomainModel.Core
 {
-    public abstract class BaseEnumDomainModel<TType, TEType> : IDomainModel
-        where TType : BaseEnumDomainModel<TType, TEType>, new()
+    public abstract class BaseEnumDomainModel<TType, TEType, TDTO> : DomainModel<TType, TDTO>
+        where TType : BaseEnumDomainModel<TType, TEType, TDTO>, new()
         where TEType : struct
+        where TDTO : BaseTypeDTO<TDTO>, new()
     {
         #region Public Constructor(s).
         public BaseEnumDomainModel()
@@ -25,11 +27,12 @@ namespace BarNone.TheRack.DomainModel.Core
         #endregion
 
         #region Public Property(s).
-        public abstract int ID { get; set; }
+        //public abstract int ID { get; set; }
 
         public abstract int Value { get; set; }
 
         public abstract string Name { get; set; }
+        public override int ID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         #endregion
 
         #region Public Operator Overload(s).
@@ -39,9 +42,21 @@ namespace BarNone.TheRack.DomainModel.Core
         #endregion
 
         #region IDetailDomainModel Implementation.
-        dynamic IDomainModel.BuildDTO()
+        protected override TDTO OnBuildDTO()
         {
-            return Value;
+            return new TDTO
+            {
+                ID = ID,
+                Value = Value,
+                Name = Name
+            };
+        }
+
+        protected override void OnPopulate(TDTO dto, ConvertConfig config = null)
+        {
+            ID = dto.ID;
+            Value = dto.Value;
+            Name = dto.Name;
         }
         #endregion
     }

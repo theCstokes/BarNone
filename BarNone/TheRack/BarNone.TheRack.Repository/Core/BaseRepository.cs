@@ -11,7 +11,7 @@ namespace BarNone.TheRack.Repository.Core
     public abstract class BaseRepository<TDTO, TDomainModel> : IRepository<TDTO, TDomainModel>,
         IDisposable
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, new()
+        where TDomainModel : DomainModel<TDomainModel, TDTO>, new()
     {
         #region Protected Read Only Field(s).
         protected readonly DomainContext context;
@@ -41,34 +41,44 @@ namespace BarNone.TheRack.Repository.Core
         #endregion
 
         #region Public IRepository Implementation.
-        List<dynamic> IRepository.Get(FilterDTO.WhereFunc where)
+        List<IDomainModel> IRepository.Get(FilterDTO.WhereFunc where)
         {
-            return Get(where).Select(v => v as dynamic).ToList();
+            return Get(where).Select(v => v as IDomainModel).ToList();
         }
 
-        dynamic IRepository.Get(int id)
+        IDomainModel IRepository.Get(int id)
         {
             return Get(id);
         }
 
-        dynamic IRepository.GetWithDetails(int id)
+        IDomainModel IRepository.GetWithDetails(int id)
         {
             return GetWithDetails(id);
         }
 
-        public dynamic Create(dynamic dto)
+        //IDomainModel Create(dynamic dto)
+        //{
+        //    return Create(dto as TDTO);
+        //}
+
+        //IDomainModel Update(int id, dynamic dto)
+        //{
+        //    return Update(id, dto as TDTO);
+        //}
+
+        IDomainModel IRepository.Remove(int id)
+        {
+            return Remove(id);
+        }
+
+        IDomainModel IRepository.Create(dynamic dto)
         {
             return Create(dto as TDTO);
         }
 
-        public dynamic Update(int id, dynamic dto)
+        IDomainModel IRepository.Update(int id, dynamic dto)
         {
             return Update(id, dto as TDTO);
-        }
-
-        dynamic IRepository.Remove(int id)
-        {
-            return Remove(id);
         }
         #endregion
     }

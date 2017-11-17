@@ -1,4 +1,5 @@
-﻿using BarNone.TheRack.DomainModel.Core;
+﻿using BarNone.Shared.DataTransfer.LiftData;
+using BarNone.TheRack.DomainModel.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using System.Text;
 namespace BarNone.TheRack.DomainModel.Body
 {
     [Table("JointTrackingState", Schema = "public")]
-    public class JointTrackingState : BaseEnumDomainModel<JointTrackingState, EJointTrackingState>
+    public class JointTrackingState : BaseEnumDomainModel<JointTrackingState, EJointTrackingState, TrackingStateDTO>
     {
         #region Public Constructor(s).
         public JointTrackingState(): base()
