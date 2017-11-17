@@ -10,7 +10,7 @@ using System.Text;
 namespace BarNone.TheRack.DomainModel
 {
     [Table("User", Schema = "public")]
-    public class User : BaseDomainModel<User, UserDTO>
+    public class User : DomainModel<User, UserDTO>
     {
         [Key]
         public override int ID { get; set; }
@@ -21,7 +21,7 @@ namespace BarNone.TheRack.DomainModel
 
         public string Password { get; set; }
 
-        public override UserDTO BuildDTO()
+        protected override UserDTO OnBuildDTO()
         {
             return new UserDTO
             {
@@ -32,12 +32,31 @@ namespace BarNone.TheRack.DomainModel
             };
         }
 
-        public override void PopulateFromDTO(UserDTO dto)
+        protected override void OnPopulate(UserDTO dto, ConvertConfig config = null)
         {
             ID = dto.ID;
             Name = dto.Name;
             UserName = dto.UserName;
             Password = dto.Password;
         }
+
+        //public override UserDTO BuildDTO()
+        //{
+        //    return new UserDTO
+        //    {
+        //        ID = ID,
+        //        Name = Name,
+        //        UserName = UserName,
+        //        Password = Password
+        //    };
+        //}
+
+        //public override void PopulateFromDTO(UserDTO dto)
+        //{
+        //    ID = dto.ID;
+        //    Name = dto.Name;
+        //    UserName = dto.UserName;
+        //    Password = dto.Password;
+        //}
     }
 }

@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.DomainModel.Core;
+﻿using BarNone.Shared.DataTransfer.LiftData;
+using BarNone.Shared.DomainModel.Core;
 using BarNone.TheRack.DomainModel.Core;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Text;
 namespace BarNone.TheRack.DomainModel
 {
     [Table("JointType", Schema = "public")]
-    public class JointType : BaseEnumDomainModel<JointType, EJointType>
+    public class JointType : BaseEnumDomainModel<JointType, EJointType, JointTypeDTO>
     {
         #region Public Constructor(s).
         public JointType(): base()
@@ -25,7 +26,7 @@ namespace BarNone.TheRack.DomainModel
         [Key]
         public override int ID { get; set; }
 
-        public override int EnumID { get; set; }
+        public override int Value { get; set; }
 
         public override string Name { get; set; }
         #endregion

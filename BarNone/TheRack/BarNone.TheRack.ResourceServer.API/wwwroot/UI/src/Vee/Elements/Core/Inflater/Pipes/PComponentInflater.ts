@@ -9,6 +9,10 @@ export default class PComponentInflater {
 		var ComponentType = await InflationHelpers.createInstance<BaseComponent>(config.instance);
 		var component = new ComponentType(parent);
 
+		if ("onShow" in component) {
+			component.onShow();
+		}
+
 		InflationHelpers.populateComponent(component, config);
 
 		data.componentList.push(component);

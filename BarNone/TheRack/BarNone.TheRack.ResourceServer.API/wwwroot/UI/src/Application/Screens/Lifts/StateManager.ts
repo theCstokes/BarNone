@@ -15,8 +15,10 @@ export class State implements ISelectionState<LiftFolder> {
 export class StateManager extends SelectionStateManager<LiftFolder, State> {
 	public constructor(screen: AppScreen) {
 		super(screen, new State(), () => DataManager.LiftFolders.load({
-			property: (f: LiftFolder) => f.parentID,
-			value: null
+			filter: {
+				property: (f: LiftFolder) => f.parentID,
+				value: null
+			}
 		}));
 	}
 }

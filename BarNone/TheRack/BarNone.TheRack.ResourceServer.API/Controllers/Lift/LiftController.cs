@@ -30,10 +30,10 @@ namespace TheRack.ResourceServer.API.Controllers
                     var filter = FilterRequest;
                     if (filter != null)
                     {
-                        return EntityResponse.Enumerable(repository.Get(filter.GetWhere()));
+                        return EntityResponse.Response(repository.Get(filter.GetWhere()));
                     }
 
-                    return EntityResponse.Enumerable(repository.Get());
+                    return EntityResponse.Response(repository.Get());
                 }
             }
             catch (Exception e)
@@ -49,7 +49,7 @@ namespace TheRack.ResourceServer.API.Controllers
             {
                 using (LiftRepository repository = new LiftRepository())
                 {
-                    return EntityResponse.Entity<Lift, LiftDTO>(repository.Get(id));
+                    return EntityResponse.Response(repository.Get(id));
                 }
             }
             catch (Exception e)
@@ -66,7 +66,7 @@ namespace TheRack.ResourceServer.API.Controllers
                 using (LiftRepository repository = new LiftRepository())
                 {
                     var lift = repository.GetWithDetails(id);
-                    return EntityResponse.EntityDetail<Lift, LiftDTO, LiftDetailDTO>(lift);
+                    return EntityResponse.Response(lift);
                 }
             }
             catch (Exception e)
@@ -82,7 +82,7 @@ namespace TheRack.ResourceServer.API.Controllers
             {
                 using (LiftRepository repository = new LiftRepository())
                 {
-                    return EntityResponse.Entity<Lift, LiftDTO>(repository.Create(value));
+                    return EntityResponse.Response(repository.Create(value));
                 }
             }
             catch (Exception e)
@@ -98,7 +98,7 @@ namespace TheRack.ResourceServer.API.Controllers
             {
                 using (LiftRepository repository = new LiftRepository())
                 {
-                    return EntityResponse.Entity<Lift, LiftDTO>(repository.Update(id, value));
+                    return EntityResponse.Response(repository.Update(id, value));
                 }
             }
             catch (Exception e)
@@ -114,7 +114,7 @@ namespace TheRack.ResourceServer.API.Controllers
             {
                 using (LiftRepository repository = new LiftRepository())
                 {
-                    return EntityResponse.Entity<Lift, LiftDTO>(repository.Remove(id));
+                    return EntityResponse.Response(repository.Remove(id));
                 }
             }
             catch (Exception e)

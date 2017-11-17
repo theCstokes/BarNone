@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DataTransfer.Types;
 using BarNone.Shared.DomainModel.Core;
 
 namespace BarNone.DataLift.DomainModel.KinectData
@@ -11,7 +10,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
     public class BodyDataFrame : BaseChildDomainModel<BodyDataFrame,BodyDataFrameDTO,BodyData,BodyDataDTO>,
         IDetailDomainModel<BodyDataFrameDTO, BodyDataFrameDetailDTO>
     {
-        #region Public Properties
+        #region Public Property(s).
         /// <summary>
         /// ID of this frame
         /// </summary>
@@ -19,10 +18,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
         /// <summary>
         /// Time of this frame
         /// </summary>
-        public DateTime TimeOfFrame
-        {
-            get; set;
-        }
+        public DateTime TimeOfFrame { get; set; }
 
         public IDictionary<JointType, Joint> Joints { get; set; }
 
@@ -53,8 +49,8 @@ namespace BarNone.DataLift.DomainModel.KinectData
         {
             BodyDataFrameDTO currentFrame = new BodyDataFrameDTO()
             {
-                ID = this.ID,
-                TimeOfFrame = this.TimeOfFrame
+                ID = ID,
+                TimeOfFrame = TimeOfFrame
             };
 
             parentDTO.Details.OrderedFrames.Add(currentFrame);
@@ -66,8 +62,8 @@ namespace BarNone.DataLift.DomainModel.KinectData
         {
             return new BodyDataFrameDTO()
             {
-                ID = this.ID,
-                TimeOfFrame = this.TimeOfFrame
+                ID = ID,
+                TimeOfFrame = TimeOfFrame
             };
         }
 
@@ -122,6 +118,13 @@ namespace BarNone.DataLift.DomainModel.KinectData
                 .ToDictionary(x => x.JointType, x => x);
         }
 
+        #endregion
+
+        #region IDetailDomainModel Implementation.
+        dynamic IDetailDomainModel.BuildDetailDTO()
+        {
+            return BuildDetailDTO();
+        } 
         #endregion
     }
 }
