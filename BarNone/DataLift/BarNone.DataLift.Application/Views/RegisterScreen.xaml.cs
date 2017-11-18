@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BarNone.DataLift.UI.Views
+namespace BarNone.DataLift.Application.Views
 {
     /// <summary>
-    /// Interaction logic for RegisterPage.xaml
+    /// Interaction logic for RegisterScreen.xaml
     /// </summary>
-    public partial class RegisterPage : UserControl
+    public partial class RegisterScreen : UserControl
     {
-        public RegisterPage()
+        public RegisterScreen()
         {
             InitializeComponent();
         }

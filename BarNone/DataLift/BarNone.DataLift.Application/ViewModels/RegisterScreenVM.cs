@@ -8,6 +8,11 @@ namespace BarNone.DataLift.UI.ViewModels
 {
     class RegisterScreenVM : ViewModelBase
     {
-        
+        public string Username { get; set; }
+
+        public void OnUsernameChanged()
+        {
+
+        }
     }
 }

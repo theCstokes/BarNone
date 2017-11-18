@@ -90,8 +90,8 @@
     <Compile Include="Views\LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RegisterPage.xaml.cs">
-      <DependentUpon>RegisterPage.xaml</DependentUpon>
+    <Compile Include="Views\RegistrationScreen.xaml.cs">
+      <DependentUpon>RegistrationScreen.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -115,7 +115,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\RegisterPage.xaml">
+    <Page Include="Views\RegistrationScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

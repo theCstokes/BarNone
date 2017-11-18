@@ -11,7 +11,7 @@ namespace BarNone.DataLift.UI.ViewModels
     {
         public string Username { get; set; }
         public SecureString Password { private get; set; }
-        
+
         private RelayCommand _loginCommand;
 
         public ICommand LoginCommand
@@ -44,7 +44,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
         private void Register()
         {
-            PageManager.SwitchPage(UIPages.RegisterView);
+            PageManager.SwitchPage(UIPages.RegistrationView);
         }
         
         private async Task<bool> CanLogin()
