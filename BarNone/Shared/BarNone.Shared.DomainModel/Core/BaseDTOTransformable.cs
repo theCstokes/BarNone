@@ -44,10 +44,13 @@ namespace BarNone.Shared.DTOTransformable.Core
     {
         public override TDTO CreateDTO(ConvertConfig config = null)
         {
-            if (!config.CanContinue) return null;
+            if (config != null)
+            {
+                if (!config.CanContinue) return null;
+            }
             var dto = OnBuildDTO();
 
-            var detailConfig = config.GetNext();
+            var detailConfig = config?.GetNext();
 
             dto.Details = OnBuildDetailDTO(detailConfig);
             return dto;
