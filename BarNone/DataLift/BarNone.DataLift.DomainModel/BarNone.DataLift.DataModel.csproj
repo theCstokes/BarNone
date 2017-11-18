@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\BaseChildDomainModel.cs" />
+    <Compile Include="Core\BaseDataModel.cs" />
     <Compile Include="KinectData\Skeleton.cs" />
     <Compile Include="KinectData\BodyData.cs" />
     <Compile Include="KinectData\BodyDataFrame.cs" />

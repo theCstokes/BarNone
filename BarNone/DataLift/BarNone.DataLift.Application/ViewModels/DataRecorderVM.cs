@@ -256,7 +256,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 {
                     CurrentRecordingBodyData = new BodyData()
                     {
-                        ID = 1,
                         RecordDate = DateTime.Now
                     };
                     IsNewRecording = false;
@@ -267,7 +266,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 //  They must first block the camera then reverse until they are spotted (for now)
 
                 var body = Bodies[0];
-                var dataframe = new BodyDataFrame() { ID = 1, TimeOfFrame = DateTime.Now, Joints = body.Joints.ToDictionary(k => k.Key, v => v.Value) };
+                var dataframe = new BodyDataFrame() { TimeOfFrame = DateTime.Now, Joints = body.Joints.ToDictionary(k => k.Key, v => v.Value) };
                 CurrentRecordingBodyData.AddNewFrame(dataframe);
                 //Update The Side And Front Views
                 UpdateFrontView(dataframe, body);
