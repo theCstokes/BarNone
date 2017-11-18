@@ -1,0 +1,1 @@
+pushd DataBase\ & python restore.py & pushd ..\TheRack\BarNone.TheRack.ResourceServer.API\wwwroot\UI\ & npm install & npm install -g gulp & gulp build

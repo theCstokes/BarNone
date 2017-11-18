@@ -2,12 +2,13 @@
 
 import subprocess
 import os
+import sys
 
 user = "postgres"
 pw = "admin"
 host = "127.0.0.1"
-port = "5433";
-db="BarNone"
+port = "5433"
+db = "BarNone"
 
 dir_name = os.getcwd()
 restore = """ "C:\\Program Files\\PostgreSQL\\10\\bin\\pg_restore" -h %s -p %s --clean -U %s -d %s "%s" """   #Change number based on whatever version you are using                
