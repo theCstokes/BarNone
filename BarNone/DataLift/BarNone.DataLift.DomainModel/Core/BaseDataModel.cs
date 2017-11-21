@@ -22,6 +22,13 @@ namespace BarNone.Shared.DTOTransformable.Core
             dm.PopulateFromDTO(dto);
             return dm;
         }
+
+        //public static TDataModel CreateFromDetailDTO(TDetailDTO dto)
+        //{
+        //    var dm = new TDataModel();
+        //    dm.PopulateFromDetailDTO(dto);
+        //    return dm;
+        //}
         
         #endregion
 

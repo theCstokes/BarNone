@@ -1,4 +1,5 @@
-﻿using BarNone.TheRack.DomainModel;
+﻿using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DomainModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
@@ -50,7 +51,9 @@ namespace BarNone.UnitTest.TheRack.DomainModel
 
             var parentDTO = parent.CreateDTO();
 
-            var liftDTO = lift.CreateDTO(parentDTO);
+            var config = new ConvertConfig(parentDTO);
+
+            var liftDTO = lift.CreateDTO();
             Assert.IsNotNull(liftDTO);
             Assert.AreEqual(lift.ID, liftDTO.ID);
             Assert.AreEqual(lift.Name, liftDTO.Name);

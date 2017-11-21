@@ -10,24 +10,36 @@ namespace BarNone.Shared.DTOTransformable.Core
 
         dynamic IDTOTransformable.CreateDTO(ConvertConfig config = null)
         {
+            if (config == null) config = new ConvertConfig(1);
+            if (!config.CanContinue) return null;
+
             return CreateDTO(config);
         }
 
         public virtual TDTO CreateDTO(ConvertConfig config = null)
         {
+            if (config == null) config = new ConvertConfig(1);
             if (!config.CanContinue) return null;
+
             var dto = OnBuildDTO();
             return dto;
         }
 
         public virtual void PopulateFromDTO(TDTO dto, ConvertConfig config = null)
         {
+            if (config == null) config = new ConvertConfig(1);
+            if (!config.CanContinue) return;
+
             OnPopulate(dto);
         }
 
         public static TDTOTransferObject CreateFromDTO(TDTO dto, ConvertConfig config = null)
         {
+            if (config == null) config = new ConvertConfig(1);
             var dm = new TDTOTransferObject();
+
+            if (!config.CanContinue) return dm;
+
             dm.PopulateFromDTO(dto);
             return dm;
         }
@@ -44,30 +56,38 @@ namespace BarNone.Shared.DTOTransformable.Core
     {
         public override TDTO CreateDTO(ConvertConfig config = null)
         {
-            if (config != null)
-            {
-                if (!config.CanContinue) return null;
-            }
+            if (config == null) config = new ConvertConfig(1);
+            if (!config.CanContinue) return null;
+
             var dto = OnBuildDTO();
+            base.CreateDTO(config);
 
             var detailConfig = config?.GetNext();
+            if (detailConfig.CanContinue)
+            {
+                dto.Details = OnBuildDetailDTO(detailConfig);
+            }
 
-            dto.Details = OnBuildDetailDTO(detailConfig);
             return dto;
         }
 
         public override void PopulateFromDTO(TDTO dto, ConvertConfig config = null)
         {
+            if (config == null) config = new ConvertConfig(1);
+            if (!config.CanContinue) return;
+            config.Parent = GetParent();
 
-            if (config != null)
+            OnPopulate(dto);
+
+            var detailConfig = config?.GetNext();
+            if (dto.Details != null && detailConfig.CanContinue)
             {
-                if (!config.CanContinue) return;
-                config.Parent = GetParent();
+                OnDetailPopulate(dto.Details, config);
             }
-            base.PopulateFromDTO(dto, config);
         }
 
         protected abstract TDetailDTO OnBuildDetailDTO(ConvertConfig config);
+        protected abstract void OnDetailPopulate(TDetailDTO dto, ConvertConfig config = null);
 
         public virtual dynamic GetParent()
         {
@@ -78,8 +98,6 @@ namespace BarNone.Shared.DTOTransformable.Core
         {
 
         }
-
-
     }
 
     public class ConvertConfig
