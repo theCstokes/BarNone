@@ -74,6 +74,22 @@ namespace BarNone.DataLift.DataModel.KinectData
             }
         }
 
+        protected override void OnDetailPopulate(BodyDataFrameDetailDTO dto, ConvertConfig config = null)
+        {
+            Joints = dto.Joints.Select(
+                joint => new Joint()
+                {
+                    JointType = (JointType)Enum.ToObject(typeof(JointType), joint.JointType.Value),
+                    Position = new CameraSpacePoint()
+                    {
+                        X = joint.PositionX,
+                        Y = joint.PositionY,
+                        Z = joint.PositionZ
+                    },
+                    TrackingState = (TrackingState)Enum.ToObject(typeof(TrackingState), joint.TrackingState.Value)
+                })
+                .ToDictionary(x => x.JointType, x => x);
+        }
 
         #endregion
 

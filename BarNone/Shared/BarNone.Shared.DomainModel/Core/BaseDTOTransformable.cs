@@ -64,9 +64,29 @@ namespace BarNone.Shared.DTOTransformable.Core
                 config.Parent = GetParent();
             }
             base.PopulateFromDTO(dto, config);
+
+            if (dto.Details != null)
+            {
+                OnDetailPopulate(dto.Details, config);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("WRONG DTO TYPE NOOB");
+            }
         }
 
+        //public void PopulateFromDetailDTO(TDetailDTO dto, ConvertConfig config = null)
+        //{
+        //    if (config != null)
+        //    {
+        //        if (!config.CanContinue) return;
+        //        config.Parent = GetParent();
+        //    }
+        //    OnDetailPopulate(dto, config);
+        //}
+
         protected abstract TDetailDTO OnBuildDetailDTO(ConvertConfig config);
+        protected abstract void OnDetailPopulate(TDetailDTO dto, ConvertConfig config = null);
 
         public virtual dynamic GetParent()
         {

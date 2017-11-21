@@ -63,9 +63,15 @@ namespace BarNone.DataLift.DataModel.KinectData
         protected override void OnPopulate(BodyDataDTO dto, ConvertConfig config = null)
         {
             RecordDate = dto.RecordTimeStamp;
-            DataFrames = dto.Details?.OrderedFrames.Select(
+        }
+
+        protected override void OnDetailPopulate(BodyDataDetailDTO dto, ConvertConfig config = null)
+        {
+            DataFrames = dto.OrderedFrames.Select(
                 joint => BodyDataFrame.CreateFromDTO(joint)).ToList();
         }
+
+
 
         #endregion
     }
