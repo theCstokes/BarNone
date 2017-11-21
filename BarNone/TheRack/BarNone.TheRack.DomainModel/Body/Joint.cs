@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BarNone.TheRack.DomainModel.Body
 {
     [Table("Joint", Schema = "public")]
-    public class Joint : BaseDomainModel<Joint, JointDTO>
+    public class Joint : BaseDetailDomainModel<Joint, JointDTO, JointDetailDTO>
     {
         public override int ID { get; set; }
 
@@ -21,44 +21,47 @@ namespace BarNone.TheRack.DomainModel.Body
         [ForeignKey("BodyDataFrameID")]
         public BodyDataFrame BodyDataFrame { get; set; }
 
-        public JointTrackingState TrackingState { get; set; }
+        public int JointTypeID { get; set; }
 
-        //public override JointDTO BuildDTO()
-        //{
-        //    return new JointDTO
-        //    {
-        //        ID = ID,
-        //        PositionX = PositionX,
-        //        PositionY = PositionY,
-        //        PositionZ = PositionZ,
-        //        TrackingState = TrackingState.BuildDTO()
-        //    };
-        //}
+        [ForeignKey("JointTypeID")]
+        public JointType JointType { get; set; }
 
-        //public override void PopulateFromDTO(JointDTO dto)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public int JointTrackingStateTypeID { get; set; }
+
+        [ForeignKey("JointTrackingStateTypeID")]
+        public JointTrackingState JointTrackingStateType { get; set; }
+
+        protected override JointDetailDTO OnBuildDetailDTO(ConvertConfig config)
+        {
+            return new JointDetailDTO
+            {
+                JointType = JointType?.CreateDTO(config),
+                JointTrackingStateType = JointTrackingStateType?.CreateDTO(config),
+                BodyDataFrame = BodyDataFrame?.CreateDTO(config)
+            };
+        }
 
         protected override JointDTO OnBuildDTO()
         {
             return new JointDTO
             {
                 ID = ID,
-                PositionX = X,
-                PositionY = Y,
-                PositionZ = Z,
-                TrackingState = TrackingState?.CreateDTO()
+                X = X,
+                Y = Y,
+                Z = Z,
+                JointTypeID = JointTypeID,
+                JointTrackingStateTypeID = JointTrackingStateTypeID,
+                BodyDataFrameID = BodyDataFrameID
             };
         }
 
         protected override void OnPopulate(JointDTO dto, ConvertConfig config = null)
         {
             ID = dto.ID;
-            X = dto.PositionX;
-            Y = dto.PositionY;
-            Z = dto.PositionZ;
-            TrackingState = JointTrackingState.CreateFromDTO(dto.TrackingState);
+            X = dto.X;
+            Y = dto.Y;
+            Z = dto.Z;
+            JointTrackingStateType = JointTrackingState.CreateFromDTO(dto.Details?.JointTrackingStateType);
         }
     }
 }

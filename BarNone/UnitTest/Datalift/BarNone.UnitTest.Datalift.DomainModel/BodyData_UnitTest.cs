@@ -109,8 +109,8 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                             {
                                 Joints = new Dictionary<DTOJointType, JointDTO>()
                                 {
-                                    {(DTOJointType)0, new JointDTO {JointType = (DTOJointType)0, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = (DTOTrackingState)2} },
-                                    {(DTOJointType)1, new JointDTO {JointType = (DTOJointType)1, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = (DTOTrackingState)2} }
+                                    {(DTOJointType)0, new JointDTO {JointType = (DTOJointType)0, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} },
+                                    {(DTOJointType)1, new JointDTO {JointType = (DTOJointType)1, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} }
                                 }
                             }
                         },
@@ -122,8 +122,8 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                             {
                                 Joints = new Dictionary<DTOJointType, JointDTO>()
                                 {
-                                    {(DTOJointType)0, new JointDTO {JointType = (DTOJointType)0, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = (DTOTrackingState)2} },
-                                    {(DTOJointType)1, new JointDTO {JointType = (DTOJointType)1, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = (DTOTrackingState)2} }
+                                    {(DTOJointType)0, new JointDTO {JointType = (DTOJointType)0, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} },
+                                    {(DTOJointType)1, new JointDTO {JointType = (DTOJointType)1, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} }
                                 }
                             }
                         },

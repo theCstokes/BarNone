@@ -57,11 +57,11 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 var jointDTO = dataFameDTO.Details.Joints[(DTOJointType)joint.Key];
 
                 Assert.AreEqual(joint.Value.JointType, (JointType)jointDTO.JointType);
-                Assert.AreEqual(joint.Value.TrackingState, (TrackingState)jointDTO.TrackingState);
+                Assert.AreEqual(joint.Value.TrackingState, (TrackingState)jointDTO.JointTrackingStateType);
 
-                Assert.AreEqual(joint.Value.Position.X, jointDTO.PositionX);
-                Assert.AreEqual(joint.Value.Position.Y, jointDTO.PositionY);
-                Assert.AreEqual(joint.Value.Position.Z, jointDTO.PositionZ);
+                Assert.AreEqual(joint.Value.Position.X, jointDTO.X);
+                Assert.AreEqual(joint.Value.Position.Y, jointDTO.Y);
+                Assert.AreEqual(joint.Value.Position.Z, jointDTO.Z);
             }
         }
 
@@ -91,8 +91,8 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 {
                     Joints = new Dictionary<DTOJointType, JointDTO>()
                     {
-                        {(DTOJointType)0, new JointDTO {JointType = (DTOJointType)0, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = (DTOTrackingState)2} },
-                        {(DTOJointType)1, new JointDTO {JointType = (DTOJointType)1, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = (DTOTrackingState)2} }
+                        {(DTOJointType)0, new JointDTO {JointType = (DTOJointType)0, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} },
+                        {(DTOJointType)1, new JointDTO {JointType = (DTOJointType)1, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} }
                     }
                 }
             };
@@ -104,11 +104,11 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 var joint = dataFrame.Joints[(JointType)jointDTO.Key];
 
                 Assert.AreEqual(joint.JointType, (JointType)jointDTO.Value.JointType);
-                Assert.AreEqual(joint.TrackingState, (TrackingState)jointDTO.Value.TrackingState);
+                Assert.AreEqual(joint.TrackingState, (TrackingState)jointDTO.Value.JointTrackingStateType);
 
-                Assert.AreEqual(joint.Position.X, jointDTO.Value.PositionX);
-                Assert.AreEqual(joint.Position.Y, jointDTO.Value.PositionY);
-                Assert.AreEqual(joint.Position.Z, jointDTO.Value.PositionZ);
+                Assert.AreEqual(joint.Position.X, jointDTO.Value.X);
+                Assert.AreEqual(joint.Position.Y, jointDTO.Value.Y);
+                Assert.AreEqual(joint.Position.Z, jointDTO.Value.Z);
             }
         }
     }

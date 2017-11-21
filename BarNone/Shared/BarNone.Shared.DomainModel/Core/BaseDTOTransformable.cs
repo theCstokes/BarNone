@@ -48,8 +48,10 @@ namespace BarNone.Shared.DTOTransformable.Core
             var dto = OnBuildDTO();
 
             var detailConfig = config.GetNext();
-
-            dto.Details = OnBuildDetailDTO(detailConfig);
+            if (detailConfig.CanContinue)
+            {
+                dto.Details = OnBuildDetailDTO(detailConfig);
+            }
             return dto;
         }
 
