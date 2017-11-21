@@ -52,26 +52,7 @@ namespace BarNone.DataLift.DataModel.KinectData
 
         protected override void OnPopulate(BodyDataFrameDTO dto, ConvertConfig config = null)
         {
-
             TimeOfFrame = dto.TimeOfFrame;
-
-            // Ghetto fix...  Basically if details are null we say that it is not a detail DTO
-            if ((dto.Details) != null)
-            {
-                Joints = dto.Details.Joints.Select(
-                joint => new Joint()
-                {
-                    JointType = (JointType)Enum.ToObject(typeof(JointType), joint.JointType.Value),
-                    Position = new CameraSpacePoint()
-                    {
-                        X = joint.PositionX,
-                        Y = joint.PositionY,
-                        Z = joint.PositionZ
-                    },
-                    TrackingState = (TrackingState)Enum.ToObject(typeof(TrackingState), joint.TrackingState.Value)
-                })
-                .ToDictionary(x => x.JointType, x => x);
-            }
         }
 
         protected override void OnDetailPopulate(BodyDataFrameDetailDTO dto, ConvertConfig config = null)
