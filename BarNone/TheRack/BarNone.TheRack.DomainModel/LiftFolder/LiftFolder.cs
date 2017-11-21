@@ -10,7 +10,6 @@ namespace BarNone.TheRack.DomainModel
 {
     [Table("LiftFolder", Schema = "public")]
     public class LiftFolder : BaseDetailDomainModel<LiftFolder, LiftFolderDTO, LiftFolderDetailDTO>
-        //IDetailDomainModel<LiftFolderDTO, LiftFolderDetailDTO>
     {
         [Key]
         public override int ID { get; set; }
@@ -49,12 +48,13 @@ namespace BarNone.TheRack.DomainModel
         {
             ID = dto.ID;
             Name = dto.Name;
+        }
 
-            Lifts = dto.Details?.Lifts.Select(l => Lift.CreateFromDTO(l)).ToList();
-            SubFolders = dto.Details?.SubFolders.Select(f => LiftFolder.CreateFromDTO(f, config)).ToList();
-
-            // Use parent chain.
-            Parent = config.Parent;
+        protected override void OnDetailPopulate(LiftFolderDetailDTO dto, ConvertConfig config = null)
+        {
+            Parent = LiftFolder.CreateFromDTO(config?.Parent, config);
+            Lifts = dto.Lifts?.Select(l => Lift.CreateFromDTO(l, config)).ToList();
+            SubFolders = dto.SubFolders?.Select(f => LiftFolder.CreateFromDTO(f, config)).ToList();
         }
     }
 }

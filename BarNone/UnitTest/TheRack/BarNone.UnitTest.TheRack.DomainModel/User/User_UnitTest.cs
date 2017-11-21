@@ -13,7 +13,7 @@ namespace BarNone.UnitTest.TheRack.DomainModel
         public void BuildDTO_Test()
         {
             var user = new User();
-            var dto = user.BuildDTO();
+            var dto = user.CreateDTO();
 
             Assert.IsNotNull(dto);
         }

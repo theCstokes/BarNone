@@ -23,23 +23,6 @@ namespace BarNone.TheRack.DomainModel.Body
 
         public JointTrackingState TrackingState { get; set; }
 
-        //public override JointDTO BuildDTO()
-        //{
-        //    return new JointDTO
-        //    {
-        //        ID = ID,
-        //        PositionX = PositionX,
-        //        PositionY = PositionY,
-        //        PositionZ = PositionZ,
-        //        TrackingState = TrackingState.BuildDTO()
-        //    };
-        //}
-
-        //public override void PopulateFromDTO(JointDTO dto)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         protected override JointDTO OnBuildDTO()
         {
             return new JointDTO

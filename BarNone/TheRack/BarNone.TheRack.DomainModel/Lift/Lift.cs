@@ -8,7 +8,6 @@ namespace BarNone.TheRack.DomainModel
 {
     [Table("Lift", Schema = "public")]
     public class Lift : BaseDetailDomainModel<Lift, LiftDTO, LiftDetailDTO>
-        //IDetailDomainModel<LiftDTO, LiftDetailDTO>
     {
         [Key]
         public override int ID { get; set; }
@@ -41,9 +40,11 @@ namespace BarNone.TheRack.DomainModel
         {
             ID = dto.ID;
             Name = dto.Name;
+        }
 
-            // Use Parent Chain.
-            Parent = config?.Parent;
+        protected override void OnDetailPopulate(LiftDetailDTO dto, ConvertConfig config = null)
+        {
+            Parent = LiftFolder.CreateFromDTO(config?.Parent, config);
         }
     }
 }
