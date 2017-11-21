@@ -58,7 +58,6 @@ namespace BarNone.Shared.DTOTransformable.Core
 
         public override void PopulateFromDTO(TDTO dto, ConvertConfig config = null)
         {
-
             if (config != null)
             {
                 if (!config.CanContinue) return;
