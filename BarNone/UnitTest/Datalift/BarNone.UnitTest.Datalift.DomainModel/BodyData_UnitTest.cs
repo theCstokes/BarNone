@@ -1,10 +1,11 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BarNone.DataLift.DataModel.KinectData;
-using System.Collections.Generic;
+﻿using BarNone.DataLift.DataModel.KinectData;
 using BarNone.Shared.DataTransfer;
+using BarNone.Shared.DataTransfer.LiftData;
+using BarNone.Shared.DTOTransformable.Core;
 using Microsoft.Kinect;
-using BarNone.Shared.DataTransfer.Types;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
 namespace BarNone.UnitTest.DataLift.DomainModel
 {
@@ -15,7 +16,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
         public void BuildBodyData_Test()
         {
             var bodyData = new BodyData();
-            var bodyDataDTO = bodyData.BuildDTO();
+            var bodyDataDTO = bodyData.CreateDTO(new ConvertConfig());
 
             Assert.IsNotNull(bodyDataDTO);
         }
@@ -25,14 +26,12 @@ namespace BarNone.UnitTest.DataLift.DomainModel
         {
             var bodyData = new BodyData()
             {
-                ID = 1,
                 RecordDate = DateTime.Now,
                 DataFrames = null
             };
 
-            var bodyDataDTO = bodyData.BuildDTO();
+            var bodyDataDTO = bodyData.CreateDTO(new ConvertConfig());
 
-            Assert.AreEqual(bodyData.ID, bodyDataDTO.ID);
             Assert.AreEqual(bodyData.RecordDate, bodyDataDTO.RecordTimeStamp);
         }
         [TestMethod]
@@ -40,15 +39,14 @@ namespace BarNone.UnitTest.DataLift.DomainModel
         {
             var bodyData = new BodyData()
             {
-                ID = 1,
                 RecordDate = DateTime.Now,
                 DataFrames = new List<BodyDataFrame>()
                 {
-                    new BodyDataFrame() {ID = 1, TimeOfFrame = DateTime.Now, Joints = new Dictionary<JointType, Joint>()
+                    new BodyDataFrame() {TimeOfFrame = DateTime.Now, Joints = new Dictionary<JointType, Joint>()
                     {
                         {(JointType)0, new Joint {JointType = (JointType)0, Position = new CameraSpacePoint {X = 111, Y = 222, Z = 333}, TrackingState = (TrackingState)2 } },
                         {(JointType)1, new Joint {JointType = (JointType)1, Position = new CameraSpacePoint {X = 111, Y = 222, Z = 333}, TrackingState = (TrackingState)2 } }
-                    } }, new BodyDataFrame() {ID = 2, TimeOfFrame = DateTime.Now, Joints = new Dictionary<JointType, Joint>()
+                    } }, new BodyDataFrame() {TimeOfFrame = DateTime.Now, Joints = new Dictionary<JointType, Joint>()
                     {
                         {(JointType)0, new Joint {JointType = (JointType)0, Position = new CameraSpacePoint {X = 111, Y = 222, Z = 333}, TrackingState = (TrackingState)2 } },
                         {(JointType)1, new Joint {JointType = (JointType)1, Position = new CameraSpacePoint {X = 111, Y = 222, Z = 333}, TrackingState = (TrackingState)2 } }
@@ -56,20 +54,15 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 }
             };
 
-            var bodyDataDTO = bodyData.BuildDTO();
-            bodyDataDTO.Details = bodyData.CreateDTO();
-            //bodyDataDTO.Details.OrderedFrames
+            var bodyDataDTO = bodyData.CreateDTO(new ConvertConfig());
 
-
-            Assert.AreEqual(bodyData.ID, bodyDataDTO.ID);
             Assert.AreEqual(bodyData.RecordDate, bodyDataDTO.RecordTimeStamp);
 
-            for(int i = 0; i < bodyData.DataFrames.Count; i++)
+            for (int i = 0; i < bodyData.DataFrames.Count; i++)
             {
                 var frame = bodyData.DataFrames[i];
                 var frameDTO = bodyDataDTO.Details.OrderedFrames[i];
-
-                Assert.AreEqual(frame.ID, frameDTO.ID);
+                
                 Assert.AreEqual(frame.TimeOfFrame, frameDTO.TimeOfFrame);
             }
         }
@@ -86,7 +79,6 @@ namespace BarNone.UnitTest.DataLift.DomainModel
 
             var bodyData = BodyData.CreateFromDTO(bodyDataDTO);
 
-            Assert.AreEqual(bodyDataDTO.ID, bodyData.ID);
             Assert.AreEqual(bodyDataDTO.RecordTimeStamp, bodyData.RecordDate);
         }
 
@@ -107,10 +99,10 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                             TimeOfFrame = DateTime.Now,
                             Details = new BodyDataFrameDetailDTO()
                             {
-                                Joints = new Dictionary<DTOJointType, JointDTO>()
+                                Joints = new List<JointDTO>()
                                 {
-                                    {(DTOJointType)0, new JointDTO {JointType = (DTOJointType)0, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} },
-                                    {(DTOJointType)1, new JointDTO {JointType = (DTOJointType)1, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} }
+                                    { new JointDTO {JointType = new JointTypeDTO() { Value = 0}, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = new TrackingStateDTO() { Value = 2} } },
+                                    { new JointDTO {JointType = new JointTypeDTO() { Value = 1}, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = new TrackingStateDTO() { Value = 2} } }
                                 }
                             }
                         },
@@ -120,10 +112,10 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                             TimeOfFrame = DateTime.Now,
                             Details = new BodyDataFrameDetailDTO()
                             {
-                                Joints = new Dictionary<DTOJointType, JointDTO>()
+                                Joints = new List<JointDTO>()
                                 {
-                                    {(DTOJointType)0, new JointDTO {JointType = (DTOJointType)0, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} },
-                                    {(DTOJointType)1, new JointDTO {JointType = (DTOJointType)1, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} }
+                                    { new JointDTO {JointType = new JointTypeDTO() { Value = 0}, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = new TrackingStateDTO() { Value = 2} } },
+                                    { new JointDTO {JointType = new JointTypeDTO() { Value = 1}, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = new TrackingStateDTO() { Value = 2} } }
                                 }
                             }
                         },
@@ -132,16 +124,14 @@ namespace BarNone.UnitTest.DataLift.DomainModel
             };
 
             var bodyData = BodyData.CreateFromDTO(bodyDataDTO);
-
-            Assert.AreEqual(bodyData.ID, bodyDataDTO.ID);
+            
             Assert.AreEqual(bodyData.RecordDate, bodyDataDTO.RecordTimeStamp);
 
             for (int i = 0; i < bodyData.DataFrames.Count; i++)
             {
                 var frame = bodyData.DataFrames[i];
                 var frameDTO = bodyDataDTO.Details.OrderedFrames[i];
-
-                Assert.AreEqual(frame.ID, frameDTO.ID);
+                
                 Assert.AreEqual(frame.TimeOfFrame, frameDTO.TimeOfFrame);
             }
         }

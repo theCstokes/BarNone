@@ -61,7 +61,14 @@ namespace BarNone.TheRack.DomainModel.Body
             X = dto.X;
             Y = dto.Y;
             Z = dto.Z;
-            JointTrackingStateType = JointTrackingState.CreateFromDTO(dto.Details?.JointTrackingStateType);
+            JointTypeID = dto.JointTypeID;
+            JointTrackingStateTypeID = dto.JointTrackingStateTypeID;
+        }
+
+        protected override void OnDetailPopulate(JointDetailDTO dto, ConvertConfig config = null)
+        {
+            JointType = JointType.CreateFromDTO(dto.JointType, config);
+            JointTrackingStateType = JointTrackingState.CreateFromDTO(dto.JointTrackingStateType, config);
         }
     }
 }

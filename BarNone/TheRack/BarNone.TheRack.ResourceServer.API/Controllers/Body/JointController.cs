@@ -1,4 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DomainModel.Body;
 using BarNone.TheRack.Repository.Body;
 using BarNone.TheRack.ResourceServer.API.Controllers.Core;
@@ -15,7 +16,9 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Body
     [Authorize(Policy = "User")]
     public class JointController : DefaultDetailController<JointDTO, Joint, JointRepository>
     {
-        public JointController(): base(() => new JointRepository())
+        public JointController(): base(
+            () => new JointRepository(),
+            () => new ConvertConfig(2))
         {
 
         }

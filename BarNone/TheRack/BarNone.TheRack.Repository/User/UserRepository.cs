@@ -1,4 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
 using BarNone.TheRack.DomainModel;
 using BarNone.TheRack.Repository.Core;
@@ -20,7 +21,6 @@ namespace BarNone.TheRack.Repository
 
         public UserRepository(DomainContext context) : base(context)
         {
-
         }
 
         public User Login(string userName, string password)
@@ -71,7 +71,7 @@ namespace BarNone.TheRack.Repository
 
         public override User Create(UserDTO dto)
         {
-            var entity = User.CreateFromDTO(dto);
+            var entity = User.CreateFromDTO(dto, Config);
             var result = context.Users.Add(entity);
 
             context.SaveChanges();
@@ -81,7 +81,7 @@ namespace BarNone.TheRack.Repository
 
         public override User Update(int id, UserDTO dto)
         {
-            var entity = User.CreateFromDTO(dto);
+            var entity = User.CreateFromDTO(dto, Config);
             entity.ID = id;
             var result = context.Users.Update(entity);
 

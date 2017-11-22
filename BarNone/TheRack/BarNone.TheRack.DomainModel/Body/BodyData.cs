@@ -41,35 +41,11 @@ namespace BarNone.TheRack.DomainModel
         {
             ID = dto.ID;
             RecordDate = dto.RecordTimeStamp;
-            BodyDataFrames = dto.Details?.OrderedFrames.Select(frame => BodyDataFrame.CreateFromDTO(frame)).ToList();
         }
 
-        //public dynamic BuildDetailDTO()
-        //{
-        //    return new BodyDataDetailDTO
-        //    {
-        //        OrderedFrames = BodyDataFrames.Select(f => f.BuildDTO()).ToList()
-        //    };
-        //}
-
-        //public override BodyDataDTO BuildDTO()
-        //{
-        //    return new BodyDataDTO
-        //    {
-        //        ID = ID,
-        //        RecordTimeStamp = RecordDate
-        //    };
-        //}
-
-        //public override void PopulateFromDTO(BodyDataDTO dto)
-        //{
-        //    ID = dto.ID;
-        //    RecordDate = dto.RecordTimeStamp;
-        //}
-
-        //BodyDataDetailDTO IParentDomainModel<BodyDataDTO, BodyDataDetailDTO>.BuildDetailDTO()
-        //{
-        //    return BuildDetailDTO();
-        //}
+        protected override void OnDetailPopulate(BodyDataDetailDTO dto, ConvertConfig config = null)
+        {
+            BodyDataFrames = dto.OrderedFrames?.Select(frame => BodyDataFrame.CreateFromDTO(frame, config)).ToList();
+        }
     }
 }

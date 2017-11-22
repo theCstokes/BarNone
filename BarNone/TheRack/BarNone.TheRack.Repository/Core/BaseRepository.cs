@@ -22,7 +22,12 @@ namespace BarNone.TheRack.Repository.Core
         public BaseRepository(DomainContext context)
         {
             this.context = context;
+            Config = new ConvertConfig();
         }
+        #endregion
+
+        #region Public Property(s).
+        public ConvertConfig Config { get; set; } 
         #endregion
 
         #region Public IDisposable Implementation.

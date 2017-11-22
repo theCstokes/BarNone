@@ -72,9 +72,10 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(entity, code);
         }
 
-        public static IActionResult Response(IDTOTransformable entity, HttpStatusCode code = HttpStatusCode.OK)
+        public static IActionResult Response(IDTOTransformable entity, HttpStatusCode code = HttpStatusCode.OK, ConvertConfig config = null)
         {
-            var config = new ConvertConfig(1);
+            if (config == null) config = new ConvertConfig(1);
+
             var dto = entity.CreateDTO(config);
             var response = new EntityDTO
             {
@@ -84,9 +85,10 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
-        public static IActionResult DetailResponse(IDTOTransformable entity, HttpStatusCode code = HttpStatusCode.OK, int? depth = 2)
+        public static IActionResult DetailResponse(IDTOTransformable entity, HttpStatusCode code = HttpStatusCode.OK, ConvertConfig config = null)
         {
-            var config = new ConvertConfig(depth);
+            if (config == null) config = new ConvertConfig(2);
+            
             var dto = entity.CreateDTO(config);
             var response = new EntityDTO
             {

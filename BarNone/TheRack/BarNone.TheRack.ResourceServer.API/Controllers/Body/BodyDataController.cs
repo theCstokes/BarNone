@@ -1,4 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DomainModel;
 using BarNone.TheRack.Repository;
 using BarNone.TheRack.ResourceServer.API.Controllers.Core;
@@ -17,7 +18,9 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Body
     public class BodyDataController : DefaultDetailController<BodyDataDTO, BodyData, BodyDataRepository>
     {
 
-        public BodyDataController(): base(() => new BodyDataRepository())
+        public BodyDataController(): base(
+            () => new BodyDataRepository(),
+            () => new ConvertConfig(4))
         {
 
         }

@@ -24,14 +24,6 @@ namespace BarNone.TheRack.DomainModel.Body
 
         public BodyData BodyData { get; set; }
 
-        //public BodyDataFrameDetailDTO BuildDetailDTO()
-        //{
-        //    return new BodyDataFrameDetailDTO
-        //    {
-        //        Joints = Joints.Select(j => j.BuildDTO()).ToList()
-        //    };
-        //}
-
         protected override BodyDataFrameDetailDTO OnBuildDetailDTO(ConvertConfig config)
         {
             return new BodyDataFrameDetailDTO
@@ -45,8 +37,7 @@ namespace BarNone.TheRack.DomainModel.Body
             return new BodyDataFrameDTO
             {
                 ID = ID,
-                TimeOfFrame = TimeOfFrame,
-                //TimeUntilNextFrame = Tim
+                TimeOfFrame = TimeOfFrame
             };
         }
 
@@ -54,26 +45,11 @@ namespace BarNone.TheRack.DomainModel.Body
         {
             ID = dto.ID;
             TimeOfFrame = dto.TimeOfFrame;
-            Joints = dto.Details?.Joints.Select(j => Joint.CreateFromDTO(j)).ToList();
         }
 
-        //public override BodyDataFrameDTO BuildDTO()
-        //{
-        //    return new BodyDataFrameDTO
-        //    {
-        //        ID = ID,
-        //        TimeOfFrame = TimeOfFrame
-        //    };
-        //}
-
-        //public override void PopulateFromDTO(BodyDataFrameDTO dto)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //dynamic IParentDomainModel.BuildDetailDTO()
-        //{
-        //    return BuildDetailDTO();
-        //}
+        protected override void OnDetailPopulate(BodyDataFrameDetailDTO dto, ConvertConfig config = null)
+        {
+            Joints = dto.Joints?.Select(j => Joint.CreateFromDTO(j, config)).ToList();
+        }
     }
 }

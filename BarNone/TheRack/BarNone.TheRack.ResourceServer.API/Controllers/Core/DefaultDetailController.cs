@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TheRack.ResourceServer.API.Response;
+using static BarNone.TheRack.Repository.Core.Resolvers;
 
 namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
 {
@@ -23,12 +24,21 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
 
         #region Private Field(s).
         private RepoBuilder _builder;
+
+        private ConfigResolver _configResolver;
         #endregion
 
         #region Public Constructor(s).
-        public DefaultDetailController(RepoBuilder builder)
+        public DefaultDetailController(RepoBuilder builder, ConfigResolver configResolver = null)
         {
             _builder = builder;
+            if (configResolver != null)
+            {
+                _configResolver = configResolver;
+            } else
+            {
+                _configResolver = () => new ConvertConfig(1);
+            }
         }
         #endregion
 
@@ -61,7 +71,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
         {
             using (var repo = _builder())
             {
-                return EntityResponse.DetailResponse(repo.GetWithDetails(id));
+                return EntityResponse.DetailResponse(repo.GetWithDetails(id), config: _configResolver());
             }
         }
 
@@ -69,7 +79,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
         {
             using (var repo = _builder())
             {
-                return EntityResponse.Response(repo.Create(dto));
+                return EntityResponse.DetailResponse(repo.Create(dto), config: _configResolver());
             }
         }
 

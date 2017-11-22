@@ -1,4 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
 using BarNone.TheRack.DomainModel;
 using BarNone.TheRack.Repository.Core;
@@ -24,7 +25,7 @@ namespace BarNone.TheRack.Repository
 
         public override LiftFolder Create(LiftFolderDTO dto)
         {
-            var folder = LiftFolder.CreateFromDTO(dto);
+            var folder = LiftFolder.CreateFromDTO(dto, new ConvertConfig());
             var result = context.LiftFolders.Add(folder);
 
             context.SaveChanges();

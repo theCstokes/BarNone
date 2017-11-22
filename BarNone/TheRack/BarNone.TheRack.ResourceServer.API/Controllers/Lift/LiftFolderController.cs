@@ -47,7 +47,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Lift
             using (var repo = new LiftFolderRepository())
             {
                 return EntityResponse
-                    .Response(repo.GetWithDetails(id));
+                    .DetailResponse(repo.GetWithDetails(id));
             }
         }
 

@@ -6,13 +6,14 @@ using System.Collections.Generic;
 using System.Text;
 using BarNone.TheRack.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using BarNone.Shared.DTOTransformable.Core;
 
 namespace BarNone.TheRack.Repository.Body
 {
     public class JointRepository : DefaultDetailRepository<JointDTO, Joint>
     {
         public JointRepository() : base(
-            new DomainContext(),
+            () => new ConvertConfig(),
             c => c.Joints,
             c => c.Include(j => j.BodyDataFrame),
             c => c.Include(j => j.JointType),
@@ -22,6 +23,7 @@ namespace BarNone.TheRack.Repository.Body
 
         public JointRepository(DomainContext context) : base(
             context,
+            () => new ConvertConfig(),
             c => c.Joints,
             c => c.Include(j => j.BodyDataFrame),
             c => c.Include(j => j.JointType),

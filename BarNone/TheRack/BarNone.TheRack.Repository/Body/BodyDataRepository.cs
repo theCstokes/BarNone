@@ -8,6 +8,7 @@ using System.Text;
 using BarNone.Shared.DataTransfer.Core;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using BarNone.Shared.DTOTransformable.Core;
 
 namespace BarNone.TheRack.Repository
 {
@@ -15,17 +16,17 @@ namespace BarNone.TheRack.Repository
         //: BaseRepository<BodyDataDTO, BodyData>
     {
         public BodyDataRepository() : base(
-            new DomainContext(),
+            () => new ConvertConfig(),
             c => c.Bodies,
-            //s => s.Include(b => b.BodyDataFrames.Select(f => f.Joints)))
-            s => s.Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints))
+            s => s.Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointType))
         {
         }
 
         public BodyDataRepository(DomainContext context) : base(
             context,
+            () => new ConvertConfig(),
             c => c.Bodies,
-            s => s.Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints))
+            s => s.Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointType))
         {
 
         }

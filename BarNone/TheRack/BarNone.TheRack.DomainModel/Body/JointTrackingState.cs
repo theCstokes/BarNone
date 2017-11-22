@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BarNone.TheRack.DomainModel.Body
 {
-    [Table("JointTrackingState", Schema = "public")]
+    [Table("JointTrackingStateType", Schema = "public")]
     public class JointTrackingState : BaseEnumDomainModel<JointTrackingState, EJointTrackingState, JointTrackingStateTypeDTO>
     {
         #region Public Constructor(s).

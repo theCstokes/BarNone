@@ -4,17 +4,13 @@ using System.Linq;
 using System.Collections.Generic;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DTOTransformable.Core;
+using BarNone.Shared.DataTransfer.LiftData;
 
 namespace BarNone.DataLift.DataModel.KinectData
 {
-    public class BodyDataFrame : BaseChildDomainModel<BodyDataFrame, BodyDataFrameDTO, BodyData, BodyDataDTO>,
-        IDetailDTOTransformable<BodyDataFrameDTO, BodyDataFrameDetailDTO>
+    public class BodyDataFrame : BaseDataModel<BodyDataFrame, BodyDataFrameDTO, BodyDataFrameDetailDTO>
     {
         #region Public Property(s).
-        /// <summary>
-        /// ID of this frame
-        /// </summary>
-        public override int ID { get; set; }
         /// <summary>
         /// Time of this frame
         /// </summary>
@@ -22,33 +18,101 @@ namespace BarNone.DataLift.DataModel.KinectData
 
         public IDictionary<JointType, Joint> Joints { get; set; }
 
+
         #endregion
 
-        #region Constructor(s)
-        #endregion
+        #region Abstract Class Impl
 
-        #region API Method(s)
-        public override BodyDataFrameDTO BuildDTO(BodyDataDTO parentDTO)
+        protected override BodyDataFrameDetailDTO OnBuildDetailDTO(ConvertConfig config)
+        {
+            var jointDTOList = Joints?.Values.Select(
+                kv => new JointDTO()
+                {
+                    PositionX = kv.Position.X,
+                    PositionY = kv.Position.Y,
+                    PositionZ = kv.Position.Z,
+                    TrackingState = new TrackingStateDTO() { Value = Convert.ToInt32(kv.TrackingState) },
+                    JointType = new JointTypeDTO() { Value = Convert.ToInt32(kv.JointType) }
+                })
+                .ToList();
+
+            return new BodyDataFrameDetailDTO() { Joints = jointDTOList };
+        }
+
+        protected override BodyDataFrameDTO OnBuildDTO()
         {
             BodyDataFrameDTO currentFrame = new BodyDataFrameDTO()
             {
-                ID = ID,
                 TimeOfFrame = TimeOfFrame
             };
-
-            parentDTO.Details.OrderedFrames.Add(currentFrame);
 
             return currentFrame;
         }
 
-        public override void PopulateFromDTO(BodyDataFrameDTO dto, BodyData parent)
-        {
 
-            ID = dto.ID;
+        protected override void OnPopulate(BodyDataFrameDTO dto, ConvertConfig config = null)
+        {
             TimeOfFrame = dto.TimeOfFrame;
-            //Joints = BuildJointDict(dto.Details?.Joints);
         }
+
+        protected override void OnDetailPopulate(BodyDataFrameDetailDTO dto, ConvertConfig config = null)
+        {
+            Joints = dto.Joints.Select(
+                joint => new Joint()
+                {
+                    JointType = (JointType)Enum.ToObject(typeof(JointType), joint.JointType.Value),
+                    Position = new CameraSpacePoint()
+                    {
+                        X = joint.PositionX,
+                        Y = joint.PositionY,
+                        Z = joint.PositionZ
+                    },
+                    TrackingState = (TrackingState)Enum.ToObject(typeof(TrackingState), joint.TrackingState.Value)
+                })
+                .ToDictionary(x => x.JointType, x => x);
+        }
+
         #endregion
+
+        private IDictionary<JointType, Joint> BuildJointDict(IList<JointDTO> JointList)
+        {
+            return JointList?.Select(jointDTO => new Joint()
+            {
+                JointType = (JointType)jointDTO.JointTypeID,
+                Position = new CameraSpacePoint()
+                {
+                    X = jointDTO.X,
+                    Y = jointDTO.Y,
+                    Z = jointDTO.Z
+                },
+                TrackingState = (TrackingState)jointDTO.JointTrackingStateTypeID
+            })
+                .ToDictionary(x => x.JointType, x => x);
+        }
+
+
+        //#region API Method(s)
+        //public override BodyDataFrameDTO BuildDTO(BodyDataDTO parentDTO)
+        //{
+        //    BodyDataFrameDTO currentFrame = new BodyDataFrameDTO()
+        //    {
+        //        ID = ID,
+        //        TimeOfFrame = TimeOfFrame
+        //    };
+
+        //    parentDTO.Details.OrderedFrames.Add(currentFrame);
+
+        //    return currentFrame;
+        //}
+
+        //public override void PopulateFromDTO(BodyDataFrameDTO dto, BodyData parent)
+        //{
+
+        //    ID = dto.ID;
+        //    TimeOfFrame = dto.TimeOfFrame;
+        //    //Joints = BuildJointDict(dto.Details?.Joints);
+        //}
+        //#endregion
         ///// <summary>
         ///// Calculate the time between <paramref name="frame"/> and this
         ///// </summary>
@@ -122,7 +186,7 @@ namespace BarNone.DataLift.DataModel.KinectData
         //    };
         //}
 
-        //private IDictionary<JointType,Joint> BuildJointDict(IDictionary<DTOJointType, JointDTO> JointListDTO)
+        //private IDictionary<JointType, Joint> BuildJointDict(IDictionary<DTOJointType, JointDTO> JointListDTO)
         //{
         //    return JointListDTO?.Select(
         //        joint => new Joint()

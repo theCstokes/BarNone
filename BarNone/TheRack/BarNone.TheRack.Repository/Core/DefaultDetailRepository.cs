@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static BarNone.TheRack.Repository.Core.Resolvers;
 
 namespace BarNone.TheRack.Repository.Core
 {
@@ -24,20 +25,23 @@ namespace BarNone.TheRack.Repository.Core
         #region Private Field(s).
         private DbSetResolver _resolver;
         private DetailResolver[] _detailResolvers;
+        private ConfigResolver _configResolver;
         #endregion
 
         #region Public Constructor(s).
-        public DefaultDetailRepository(DbSetResolver resolver, params DetailResolver[] detailResolvers)
+        public DefaultDetailRepository(ConfigResolver configResolver, DbSetResolver resolver, params DetailResolver[] detailResolvers)
             : base(new DomainContext())
         {
+            _configResolver = configResolver;
             _resolver = resolver;
             _detailResolvers = detailResolvers;
         }
 
-        public DefaultDetailRepository(DomainContext context, DbSetResolver resolver,
+        public DefaultDetailRepository(DomainContext context, ConfigResolver configResolver, DbSetResolver resolver,
             params DetailResolver[] detailResolvers)
             : base(context)
         {
+            _configResolver = configResolver;
             _resolver = resolver;
             _detailResolvers = detailResolvers;
         }
@@ -45,7 +49,12 @@ namespace BarNone.TheRack.Repository.Core
 
         public override TDomainModel Create(TDTO dto)
         {
-            var dm = DTOTransformable<TDomainModel, TDTO>.CreateFromDTO(dto);
+            var dm = new TDomainModel();
+
+            var config = _configResolver();
+
+            dm.PopulateFromDTO(dto, config);
+            
             var result = _resolver(context).Add(dm);
 
             context.SaveChanges();
@@ -103,7 +112,9 @@ namespace BarNone.TheRack.Repository.Core
 
             dto.ID = id;
 
-            var dm = DTOTransformable<TDomainModel, TDTO>.CreateFromDTO(dto);
+            var config = _configResolver();
+
+            var dm = DTOTransformable<TDomainModel, TDTO>.CreateFromDTO(dto, config);
             var result = _resolver(context).Update(dm);
 
             context.SaveChanges();
