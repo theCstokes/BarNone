@@ -3,7 +3,7 @@ using BarNone.Shared.DataTransfer.Core;
 
 namespace BarNone.TheRack.DomainModel.Core
 {
-    //public abstract class BaseDomainModel<TDomainModel, TDTO> : DTOTransformable<TDomainModel, TDTO>, IDomainModel<TDomainModel, TDTO> 
+    //public abstract class BaseDomainModel<TDomainModel, TDTO> : DTOTransformable<TDomainModel, TDTO>, IDomainModel<TDomainModel, TDTO>
     //    where TDomainModel : DTOTransformable<TDomainModel, TDTO>, IDomainModel<TDomainModel, TDTO>, new()
     //    where TDTO : BaseDTO<TDTO>, new()
     //{

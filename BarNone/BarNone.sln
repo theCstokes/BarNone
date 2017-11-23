@@ -51,9 +51,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.UnitTest.TheRack.Re
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.TheRack.FlexEngine", "BarNone.TheRack.FlexEngine\BarNone.TheRack.FlexEngine.csproj", "{24CD3B53-1182-455E-97FC-6D9A653AE22C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.Shared.DataConverter", "Shared\BarNone.Shared.DataConverter\BarNone.Shared.DataConverter.csproj", "{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.Shared.DataConverter", "Shared\BarNone.Shared.DataConverter\BarNone.Shared.DataConverter.csproj", "{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.TheRack.DataConverters", "TheRack\BarNone.TheRack.DataConverters\BarNone.TheRack.DataConverters.csproj", "{79150C41-A571-4F27-8479-97999DFC67ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.TheRack.DataConverters", "TheRack\BarNone.TheRack.DataConverters\BarNone.TheRack.DataConverters.csproj", "{79150C41-A571-4F27-8479-97999DFC67ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.DataLift.DataConverters", "BarNone.DataLift.DataConverters\BarNone.DataLift.DataConverters.csproj", "{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -203,6 +205,14 @@ Global
 		{79150C41-A571-4F27-8479-97999DFC67ED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{79150C41-A571-4F27-8479-97999DFC67ED}.WorkingWithTheRack|Any CPU.ActiveCfg = Debug|Any CPU
 		{79150C41-A571-4F27-8479-97999DFC67ED}.WorkingWithTheRack|Any CPU.Build.0 = Debug|Any CPU
+		{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F}.DataLift - Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F}.DataLift - Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F}.WorkingWithTheRack|Any CPU.ActiveCfg = Release|Any CPU
+		{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F}.WorkingWithTheRack|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -230,6 +240,7 @@ Global
 		{24CD3B53-1182-455E-97FC-6D9A653AE22C} = {77EA3D2C-6854-4A20-97B8-99D446962774}
 		{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108} = {77D27D1C-4BFF-4CBC-8102-2B311548C1FE}
 		{79150C41-A571-4F27-8479-97999DFC67ED} = {77EA3D2C-6854-4A20-97B8-99D446962774}
+		{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F} = {6CDB2177-EAA1-4F16-88C1-37B1F97EC4B5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BBD0D095-9433-4102-B857-FD70440F37D3}

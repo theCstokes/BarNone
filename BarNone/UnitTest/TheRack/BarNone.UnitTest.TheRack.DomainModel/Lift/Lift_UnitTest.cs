@@ -1,4 +1,5 @@
 ﻿using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DataConverters;
 using BarNone.TheRack.DomainModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace BarNone.UnitTest.TheRack.DomainModel
         public void BuildDTO_Create_Test()
         {
             var lift = new Lift();
-            var liftDTO = lift.CreateDTO(new ConvertConfig());
+            var liftDTO = Converters.Convert.Lift.CreateDTO(lift);
             Assert.IsNotNull(liftDTO);
         }
 
@@ -25,7 +26,7 @@ namespace BarNone.UnitTest.TheRack.DomainModel
                 Name = "Test",
                 ParentID = 44
             };
-            var liftDTO = lift.CreateDTO(new ConvertConfig());
+            var liftDTO = Converters.Convert.Lift.CreateDTO(lift);
             Assert.IsNotNull(liftDTO);
             Assert.AreEqual(lift.ID, liftDTO.ID);
             Assert.AreEqual(lift.Name, liftDTO.Name);
@@ -49,11 +50,12 @@ namespace BarNone.UnitTest.TheRack.DomainModel
             };
             lift.Parent = parent;
 
-            var parentDTO = parent.CreateDTO(new ConvertConfig());
+
+            var parentDTO = Converters.Convert.LiftFolder.CreateDTO(parent);
 
             var config = new ConvertConfig(parentDTO);
 
-            var liftDTO = lift.CreateDTO(new ConvertConfig());
+            var liftDTO = Converters.Convert.Lift.CreateDTO(lift);
             Assert.IsNotNull(liftDTO);
             Assert.AreEqual(lift.ID, liftDTO.ID);
             Assert.AreEqual(lift.Name, liftDTO.Name);

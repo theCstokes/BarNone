@@ -180,7 +180,7 @@
       <Project>{3a9be071-8a01-47a8-85cc-a3f712d3c6a9}</Project>
       <Name>BarNone.DataLift.APIRequest</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BarNone.DataLift.DomainModel\BarNone.DataLift.DomainModel.csproj">
+    <ProjectReference Include="..\BarNone.DataLift.DomainModel\BarNone.DataLift.DataModel.csproj">
       <Project>{707ade0d-0c8d-4edf-81b9-889b4538efa1}</Project>
       <Name>BarNone.DataLift.DataModel</Name>
     </ProjectReference>

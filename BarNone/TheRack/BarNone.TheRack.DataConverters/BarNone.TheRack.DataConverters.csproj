@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\BarNone.Shared.Core\BarNone.Shared.Core.csproj" />
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DataConverter\BarNone.Shared.DataConverter.csproj" />
     <ProjectReference Include="..\BarNone.TheRack.DomainModel\BarNone.TheRack.DomainModel.csproj" />
   </ItemGroup>

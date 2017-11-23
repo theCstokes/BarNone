@@ -1,4 +1,5 @@
-﻿using BarNone.DataLift.DataModel.KinectData;
+﻿using BarNone.DataLift.DataConverters;
+using BarNone.DataLift.DataModel.KinectData;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.LiftData;
 using BarNone.Shared.DTOTransformable.Core;
@@ -16,7 +17,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
         public void BuildBodyData_Test()
         {
             var bodyData = new BodyData();
-            var bodyDataDTO = bodyData.CreateDTO(new ConvertConfig());
+            var bodyDataDTO = Converters.Convert.BodyData.CreateDTO(bodyData); //.CreateDTO(new ConvertConfig());
 
             Assert.IsNotNull(bodyDataDTO);
         }
@@ -30,7 +31,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 DataFrames = null
             };
 
-            var bodyDataDTO = bodyData.CreateDTO(new ConvertConfig());
+            var bodyDataDTO = Converters.Convert.BodyData.CreateDTO(bodyData);
 
             Assert.AreEqual(bodyData.RecordDate, bodyDataDTO.RecordTimeStamp);
         }
@@ -54,7 +55,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 }
             };
 
-            var bodyDataDTO = bodyData.CreateDTO(new ConvertConfig());
+            var bodyDataDTO = Converters.Convert.BodyData.CreateDTO(bodyData);
 
             Assert.AreEqual(bodyData.RecordDate, bodyDataDTO.RecordTimeStamp);
 
@@ -77,7 +78,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 Details = null
             };
 
-            var bodyData = BodyData.CreateFromDTO(bodyDataDTO);
+            var bodyData = Converters.Convert.BodyData.CreateDataModel(bodyDataDTO);
 
             Assert.AreEqual(bodyDataDTO.RecordTimeStamp, bodyData.RecordDate);
         }
@@ -123,7 +124,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 }
             };
 
-            var bodyData = BodyData.CreateFromDTO(bodyDataDTO);
+            var bodyData = Converters.Convert.BodyData.CreateDataModel(bodyDataDTO);
             
             Assert.AreEqual(bodyData.RecordDate, bodyDataDTO.RecordTimeStamp);
 

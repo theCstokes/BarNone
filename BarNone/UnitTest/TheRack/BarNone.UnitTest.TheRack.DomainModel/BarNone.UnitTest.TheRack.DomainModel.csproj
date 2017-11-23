@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\TheRack\BarNone.TheRack.DataConverters\BarNone.TheRack.DataConverters.csproj" />
     <ProjectReference Include="..\..\..\TheRack\BarNone.TheRack.DomainModel\BarNone.TheRack.DomainModel.csproj" />
   </ItemGroup>
 

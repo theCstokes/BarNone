@@ -11,63 +11,62 @@ namespace BarNone.Shared.DataConverter
         ShareDataConverterCache Cache { get; }
     }
 
-    //public abstract class BaseConverter
-    //{
-    //    public ShareDataConverterCache Cache { get; private set; }
-    //    private Converters()
-    //    {
-    //        Cache = new ShareDataConverterCache();
-    //        Init();
-    //    }
+    public abstract class BaseConverter<TConverters> : IConverter
+        where TConverters : BaseConverter<TConverters>, new()
+    {
+        private Dictionary<Type, IDataConverter> dataConverterMap;
+        private Dictionary<Type, IDataConverter> dtoConverterMap;
 
-    //    public UserConverter User { get; private set; }
+        #region Private Constructor(s).
+        public BaseConverter()
+        {
+            dataConverterMap = new Dictionary<Type, IDataConverter>();
+            dtoConverterMap = new Dictionary<Type, IDataConverter>();
+            Cache = new ShareDataConverterCache();
+            Init();
+        }
+        #endregion
 
-    //    public static Converters Convert
-    //    {
-    //        get
-    //        {
-    //            return new Converters();
-    //        }
-    //    }
+        #region Public Property(s).
+        public ShareDataConverterCache Cache { get; private set; }
+        #endregion
 
-    //    private void Init()
-    //    {
-    //        User = new UserConverter(this);
-    //    }
-    //}
+        #region Public Static Property(s).
+        public static TConverters Convert
+        {
+            get
+            {
+                return new TConverters();
+            }
+        }
+        #endregion
 
-    //public class ConverterContext
-    //{
-    //    public UserConverter UserConverter { get; set; }
+        #region Public Member(s).
+        public IDataConverter GetConverterFromData(Type type)
+        {
+            return dataConverterMap[type];
+        }
 
+        public IDataConverter GetConverterFromDTO(Type type)
+        {
+            return dtoConverterMap[type];
+        }
+        #endregion
 
-    //}
+        #region Private Member(s).     
+        protected TConverter Register<TData, TDTO, TConverter>(TConverter converter)
+            where TData : ITrackable<TData>, new()
+            where TDTO : ITrackableDTO<TDTO>, new()
+            where TConverter : IDataConverter
+        {
+            /// TODO - Dont do this. Should just us properties to construct elements.... faster.
+            dataConverterMap[typeof(TData)] = converter;
+            dtoConverterMap[typeof(TDTO)] = converter;
 
-    //public class User : ITrackable<User>
-    //{
-    //    public int ID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    //}
+            return converter;
+        }
 
-    //public class UserDTO : ITrackableDTO<UserDTO>
-    //{
-    //    public int ID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    //}
-
-    //public class UserConverter : BaseDataConverter<User, UserDTO>
-    //{
-    //    public UserConverter(Converters converters) : base(converters)
-    //    {
-
-    //    }
-
-    //    public override User OnCreateDataModel(UserDTO dto)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public override UserDTO OnCreateDTO(User data)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
+        protected abstract void Init();
+        #endregion
+    }
 }

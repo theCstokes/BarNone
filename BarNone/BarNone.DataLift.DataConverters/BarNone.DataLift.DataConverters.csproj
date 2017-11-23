@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{707ADE0D-0C8D-4EDF-81B9-889B4538EFA1}</ProjectGuid>
+    <ProjectGuid>{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BarNone.DataLift.DomainModel</RootNamespace>
-    <AssemblyName>BarNone.DataLift.DomainModel</AssemblyName>
+    <RootNamespace>BarNone.DataLift.DataConverters</RootNamespace>
+    <AssemblyName>BarNone.DataLift.DataConverters</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -29,50 +31,46 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DataLift - Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\DataLift - Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WorkingWithTheRack|AnyCPU'">
-    <OutputPath>bin\WorkingWithTheRack\</OutputPath>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Kinect, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Kinect, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\BaseDataModel.cs" />
-    <Compile Include="Core\IDataModel.cs" />
-    <Compile Include="KinectData\Skeleton.cs" />
-    <Compile Include="KinectData\BodyData.cs" />
-    <Compile Include="KinectData\BodyDataFrame.cs" />
+    <Compile Include="Converters.cs" />
+    <Compile Include="KinectData\BodyDataConverter.cs" />
+    <Compile Include="KinectData\BodyDataFrameConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Shared\BarNone.Shared.Core\BarNone.Shared.Core.csproj">
-      <Project>{1C1D8D67-DBAC-484B-8631-CD28AD0499F1}</Project>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataLift\BarNone.DataLift.DomainModel\BarNone.DataLift.DataModel.csproj">
+      <Project>{707ADE0D-0C8D-4EDF-81B9-889B4538EFA1}</Project>
+      <Name>BarNone.DataLift.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared\BarNone.Shared.Core\BarNone.Shared.Core.csproj">
+      <Project>{1c1d8d67-dbac-484b-8631-cd28ad0499f1}</Project>
       <Name>BarNone.Shared.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj">
-      <Project>{dc7c09e7-27e2-496c-9823-f048bb031174}</Project>
+    <ProjectReference Include="..\Shared\BarNone.Shared.DataConverter\BarNone.Shared.DataConverter.csproj">
+      <Project>{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}</Project>
+      <Name>BarNone.Shared.DataConverter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj">
+      <Project>{DC7C09E7-27E2-496C-9823-F048BB031174}</Project>
       <Name>BarNone.Shared.DataTransfer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DTOTransform.csproj">
-      <Project>{ee13bdce-8f4f-46c6-8e36-97eedaf64f04}</Project>
-      <Name>BarNone.Shared.DTOTransform</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

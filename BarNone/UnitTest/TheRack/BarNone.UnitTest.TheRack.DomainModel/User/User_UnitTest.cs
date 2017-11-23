@@ -1,4 +1,5 @@
 ﻿using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DataConverters;
 using BarNone.TheRack.DomainModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -14,7 +15,7 @@ namespace BarNone.UnitTest.TheRack.DomainModel
         public void BuildDTO_Test()
         {
             var user = new User();
-            var dto = user.CreateDTO(new ConvertConfig());
+            var dto = Converters.Convert.User.CreateDTO(user);
 
             Assert.IsNotNull(dto);
         }
