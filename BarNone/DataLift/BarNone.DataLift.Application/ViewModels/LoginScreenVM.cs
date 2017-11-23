@@ -2,14 +2,16 @@
 using System.Windows.Input;
 using System.Security;
 using BarNone.DataLift.UI.Nav;
-using BarNone.DataLift.APIRequest;
 using System.Threading.Tasks;
+using BarNone.DataLift.APIRequest;
+using System.Runtime.InteropServices;
+using System;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
     class LoginScreenVM : ViewModelBase
     {
-        public string Username { get; set; }
+        public static string Username { get; set; }
         public SecureString Password { private get; set; }
 
         private RelayCommand _loginCommand;
@@ -49,7 +51,7 @@ namespace BarNone.DataLift.UI.ViewModels
         
         private async Task<bool> CanLogin()
         {
-            var r = await TokenManager.Authorize(Username, Password.ToString());
+            var r = await TokenManager.Authorize(Username, ConvertSecure(Password));
             return r.Authorized;
 
             //return r.Authorized;
@@ -62,5 +64,18 @@ namespace BarNone.DataLift.UI.ViewModels
             Password.Dispose();
         }
 
+        static string ConvertSecure(SecureString value)
+        {
+            IntPtr bstr = Marshal.SecureStringToBSTR(value);
+
+            try
+            {
+                return Marshal.PtrToStringBSTR(bstr);
+            }
+            finally
+            {
+                Marshal.FreeBSTR(bstr);
+            }
+        }
     }
 }

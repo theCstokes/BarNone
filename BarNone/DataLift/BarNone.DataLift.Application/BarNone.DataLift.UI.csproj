@@ -56,6 +56,9 @@
       <HintPath>..\..\packages\Microsoft.Kinect.2.0.1410.19000\lib\net45\Microsoft.Kinect.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PropertyChanged, Version=2.1.4.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\..\packages\PropertyChanged.Fody.2.1.4\lib\netstandard1.0\PropertyChanged.dll</HintPath>
       <Private>False</Private>
@@ -158,6 +161,10 @@
     <Folder Include="res\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\BarNone.Shared.Core\BarNone.Shared.Core.csproj">
+      <Project>{1C1D8D67-DBAC-484B-8631-CD28AD0499F1}</Project>
+      <Name>BarNone.Shared.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj">
       <Project>{dc7c09e7-27e2-496c-9823-f048bb031174}</Project>
       <Name>BarNone.Shared.DataTransfer</Name>
@@ -167,7 +174,7 @@
       <Name>BarNone.Shared.DomainModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\BarNone.DataLift.APIRequest\BarNone.DataLift.APIRequest.csproj">
-      <Project>{3A9BE071-8A01-47A8-85CC-A3F712D3C6A9}</Project>
+      <Project>{3a9be071-8a01-47a8-85cc-a3f712d3c6a9}</Project>
       <Name>BarNone.DataLift.APIRequest</Name>
     </ProjectReference>
     <ProjectReference Include="..\BarNone.DataLift.DomainModel\BarNone.DataLift.DomainModel.csproj">
