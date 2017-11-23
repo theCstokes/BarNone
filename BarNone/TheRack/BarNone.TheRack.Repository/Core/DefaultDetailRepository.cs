@@ -58,11 +58,25 @@ namespace BarNone.TheRack.Repository.Core
             var config = _configResolver();
 
             var dm = DetailDataConverterResolver().CreateDataModel(dto);
-            
-            var result = _resolver(context).Add(dm);
+
+            //var result = _resolver(context).Add(dm);
+
+            var dataSet = _resolver(context);
+
+            //var q = dataSet.AsQueryable();
+
+            //if (_detailResolvers.Count() > 0)
+            //{
+            //    q = _detailResolvers.Aggregate(q, (result, resolver) =>
+            //    {
+            //        return resolver(result);
+            //    });
+            //}
+
+            var createResult = dataSet.Add(dm);
 
             context.SaveChanges();
-            return result.Entity;
+            return createResult.Entity;
         }
 
         public override List<TDomainModel> Get(FilterDTO.WhereFunc where = null)

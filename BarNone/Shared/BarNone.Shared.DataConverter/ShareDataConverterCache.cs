@@ -27,7 +27,7 @@ namespace BarNone.Shared.DataConverter
         {
             if (!_coverterCache.ContainsKey(converterType)) return null;
             return _coverterCache[converterType]
-                .Where(c => c.DTO.ID == dto.ID)
+                .Where(c => c.DTO == dto)
                 .Select(c => c.DataModel)
                 .FirstOrDefault();
         }
@@ -36,7 +36,7 @@ namespace BarNone.Shared.DataConverter
         {
             if (!_coverterCache.ContainsKey(converterType)) return null;
             return _coverterCache[converterType]
-                .Where(c => c.DataModel.ID == dataModel.ID)
+                .Where(c => c.DataModel == dataModel)
                 .Select(c => c.DTO)
                 .FirstOrDefault();
         }
