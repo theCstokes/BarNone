@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BarNone.Shared.Core\BarNone.Shared.Core.csproj" />
     <ProjectReference Include="..\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj" />
   </ItemGroup>
 

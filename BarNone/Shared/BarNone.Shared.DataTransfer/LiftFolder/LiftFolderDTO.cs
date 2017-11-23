@@ -23,5 +23,8 @@ namespace BarNone.Shared.DataTransfer
 
         [JsonProperty(Order = 1)]
         public string Name { get; set; }
+
+        [JsonProperty(Order = 2)]
+        public int? ParentID { get; set; }
     }
 }

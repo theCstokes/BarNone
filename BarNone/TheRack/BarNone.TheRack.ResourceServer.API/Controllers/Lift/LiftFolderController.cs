@@ -38,7 +38,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Lift
         {
             using (var repo = new LiftFolderRepository())
             {
-                return EntityResponse.Entity<LiftFolder, LiftFolderDTO>(repo.Get(id));
+                return EntityResponse.Response(repo.Get(id));
             }
         }
 
@@ -47,7 +47,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Lift
             using (var repo = new LiftFolderRepository())
             {
                 return EntityResponse
-                    .EntityDetail<LiftFolder, LiftFolderDTO, LiftFolderDetailDTO>(repo.GetWithDetails(id));
+                    .DetailResponse(repo.GetWithDetails(id));
             }
         }
 
@@ -56,7 +56,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Lift
             using (var repo = new LiftFolderRepository())
             {
                 return EntityResponse
-                    .EntityDetail<LiftFolder, LiftFolderDTO, LiftFolderDetailDTO>(repo.Create(dto));
+                    .Response(repo.Create(dto));
             }
         }
 

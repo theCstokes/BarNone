@@ -1,4 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DomainModel;
 using BarNone.TheRack.Repository;
 using BarNone.TheRack.ResourceServer.API.Controllers.Core;
@@ -14,45 +15,14 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Body
 {
     [Route("api/v1/[controller]")]
     [Authorize(Policy = "User")]
-    public class BodyDataController : DetailController<BodyDataDTO>
+    public class BodyDataController : DefaultDetailController<BodyDataDTO, BodyData, BodyDataRepository>
     {
-        public override IActionResult Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
 
-        public override IActionResult GetAll()
+        public BodyDataController(): base(
+            () => new BodyDataRepository(),
+            () => new ConvertConfig(4))
         {
-            using (var repo = new BodyDataRepository())
-            {
-                return EntityResponse.Enumerable(repo.Get());
-            }
-        }
 
-        public override IActionResult GetByID(int id)
-        {
-            using (var repo = new BodyDataRepository())
-            {
-                return EntityResponse.Entity<BodyData, BodyDataDTO>(repo.Get(id));
-            }
-        }
-
-        public override IActionResult GetWithDetailsByID(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override IActionResult Post(BodyDataDTO dto)
-        {
-            using (var repo = new BodyDataRepository())
-            {
-                return EntityResponse.Entity<BodyData, BodyDataDTO>(repo.Create(dto));
-            }
-        }
-
-        public override IActionResult Put(int id, BodyDataDTO dto)
-        {
-            throw new NotImplementedException();
         }
     }
 }

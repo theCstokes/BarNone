@@ -8,61 +8,29 @@ using System.Text;
 using BarNone.Shared.DataTransfer.Core;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DataConverters;
 
 namespace BarNone.TheRack.Repository
 {
-    public class BodyDataRepository : BaseRepository<BodyDataDTO, BodyData>
+    public class BodyDataRepository : DefaultDetailRepository<BodyData, BodyDataDTO, BodyDataDetailDTO>
     {
-        public BodyDataRepository() : base(new DomainContext())
+        public BodyDataRepository() : base(
+            () => new ConvertConfig(),
+            c => c.Bodies,
+            s => s.Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointType))
         {
         }
 
-        public BodyDataRepository(DomainContext context) : base(context)
+        public BodyDataRepository(DomainContext context) : base(
+            context,
+            () => new ConvertConfig(),
+            c => c.Bodies,
+            s => s.Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointType))
         {
 
         }
 
-        public override BodyData Create(BodyDataDTO dto)
-        {
-            var bodyData = BodyData.CreateFromDTO(dto);
-            var result = context.Bodies.Add(bodyData);
-
-            context.SaveChanges();
-            return result.Entity;
-        }
-
-        public override List<BodyData> Get(FilterDTO.WhereFunc where = null)
-        {
-            if (where != null)
-            {
-                return context.Bodies
-                    .Where(b => where(b))
-                    .ToList();
-            }
-            return context.Bodies.ToList();
-        }
-
-        public override BodyData Get(int id)
-        {
-            return context.Bodies.Where(b => b.ID == id).FirstOrDefault();
-        }
-
-        public override BodyData GetWithDetails(int id)
-        {
-            return context.Bodies
-                .Include(b => b.BodyDataFrames)
-                .Where(b => b.ID == id)
-                .FirstOrDefault();
-        }
-
-        public override BodyData Remove(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override BodyData Update(int id, BodyDataDTO dto)
-        {
-            throw new NotImplementedException();
-        }
+        protected override ConverterResolver DetailDataConverterResolver => () => Converters.Convert.BodyData;
     }
 }

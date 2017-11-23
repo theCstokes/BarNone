@@ -1,18 +1,19 @@
 ﻿using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DomainModel.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+using System.Linq;
 
 namespace BarNone.TheRack.DomainModel.Body
 {
-    [Table("Body", Schema = "public")]
-    public class BodyDataFrame : BaseDomainModel<BodyDataFrame, BodyDataFrameDTO>
+    [Table("BodyDataFrame", Schema = "public")]
+    public class BodyDataFrame : IDomainModel<BodyDataFrame>
     {
         [Key]
-        public override int ID { get; set; }
+        public int ID { get; set; }
 
         public DateTime TimeOfFrame { get; set; }
 
@@ -23,14 +24,32 @@ namespace BarNone.TheRack.DomainModel.Body
 
         public BodyData BodyData { get; set; }
 
-        public override BodyDataFrameDTO BuildDTO()
-        {
-            throw new NotImplementedException();
-        }
+        //protected override BodyDataFrameDetailDTO OnBuildDetailDTO(ConvertConfig config)
+        //{
+        //    return new BodyDataFrameDetailDTO
+        //    {
+        //        Joints = Joints?.Select(j => j.CreateDTO(config)).ToList()
+        //    };
+        //}
 
-        public override void PopulateFromDTO(BodyDataFrameDTO dto)
-        {
-            throw new NotImplementedException();
-        }
+        //protected override BodyDataFrameDTO OnBuildDTO()
+        //{
+        //    return new BodyDataFrameDTO
+        //    {
+        //        ID = ID,
+        //        TimeOfFrame = TimeOfFrame
+        //    };
+        //}
+
+        //protected override void OnPopulate(BodyDataFrameDTO dto, ConvertConfig config = null)
+        //{
+        //    ID = dto.ID;
+        //    TimeOfFrame = dto.TimeOfFrame;
+        //}
+
+        //protected override void OnDetailPopulate(BodyDataFrameDetailDTO dto, ConvertConfig config = null)
+        //{
+        //    Joints = dto.Joints?.Select(j => Joint.CreateFromDTO(j, config)).ToList();
+        //}
     }
 }

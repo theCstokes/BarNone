@@ -1,20 +1,16 @@
 ﻿using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DomainModel;
-using BarNone.Shared.DomainModel.Core;
-using System;
-using System.Collections.Generic;
+using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DomainModel.Core;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace BarNone.TheRack.DomainModel
 {
     [Table("Lift", Schema = "public")]
-    public class Lift : BaseChildDomainModel<Lift, LiftDTO, LiftFolder, LiftFolderDTO>,
-        IDetailDomainModel<LiftDTO, LiftDetailDTO>
+    public class Lift : IDomainModel<Lift>
     {
         [Key]
-        public override int ID { get; set; }
+        public int ID { get; set; }
 
         public string Name { get; set; }
 
@@ -23,30 +19,32 @@ namespace BarNone.TheRack.DomainModel
         [ForeignKey("ParentID")]
         public LiftFolder Parent { get; set; }
 
-        public LiftDetailDTO BuildDetailDTO()
-        {
-            return new LiftDetailDTO
-            {
-                Parent = Parent?.BuildDTO()
-            };
-        }
+        //protected override LiftDetailDTO OnBuildDetailDTO(ConvertConfig config)
+        //{
+        //    return new LiftDetailDTO
+        //    {
+        //        Parent = Parent.CreateDTO(config)
+        //    };
+        //}
 
-        public override LiftDTO BuildDTO(LiftFolderDTO parentDTO)
-        {
-            return new LiftDTO
-            {
-                ID = ID,
-                Name = Name,
-                ParentID = ParentID
-            };
-        }
+        //protected override LiftDTO OnBuildDTO()
+        //{
+        //    return new LiftDTO
+        //    {
+        //        ID = ID,
+        //        Name = Name
+        //    };
+        //}
 
-        public override void PopulateFromDTO(LiftDTO dto, LiftFolder parent)
-        {
-            ID = dto.ID;
-            Name = dto.Name;
-            ParentID = dto.ParentID;
-            Parent = parent;
-        }
+        //protected override void OnPopulate(LiftDTO dto, ConvertConfig config = null)
+        //{
+        //    ID = dto.ID;
+        //    Name = dto.Name;
+        //}
+
+        //protected override void OnDetailPopulate(LiftDetailDTO dto, ConvertConfig config = null)
+        //{
+        //    Parent = LiftFolder.CreateFromDTO(config?.Parent, config);
+        //}
     }
 }

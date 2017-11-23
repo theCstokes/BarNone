@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BarNone.TheRack.DomainModel
+﻿namespace BarNone.TheRack.DomainModel
 {
     public enum EJointType
     {

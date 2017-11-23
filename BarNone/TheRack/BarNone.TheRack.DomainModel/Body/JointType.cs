@@ -1,10 +1,7 @@
-﻿using BarNone.Shared.DomainModel.Core;
+﻿using BarNone.Shared.DataTransfer.LiftData;
 using BarNone.TheRack.DomainModel.Core;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace BarNone.TheRack.DomainModel
 {
@@ -19,15 +16,6 @@ namespace BarNone.TheRack.DomainModel
         public JointType(EJointType @enum): base(@enum)
         {
         }
-        #endregion
-
-        #region Public Property(s).
-        [Key]
-        public override int ID { get; set; }
-
-        public override int EnumID { get; set; }
-
-        public override string Name { get; set; }
         #endregion
 
         #region Public Operator Overload(s).

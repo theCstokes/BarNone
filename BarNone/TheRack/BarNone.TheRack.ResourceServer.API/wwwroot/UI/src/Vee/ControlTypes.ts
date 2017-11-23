@@ -10,6 +10,8 @@ export default class ControlTypes {
 	public static readonly PasswordInput: string = ControlTypes.getComponentPath("PasswordInput");
 	public static readonly Label: string = ControlTypes.getComponentPath("Label");
 	public static readonly List: string = ControlTypes.getComponentPath("List");
+	public static readonly Video: string = ControlTypes.getComponentPath("Video");
+	public static readonly Range: string = ControlTypes.getComponentPath("Range");
 
 	// Containers.
 	public static readonly Column: string = ControlTypes.getContainerPath("Column");
