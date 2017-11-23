@@ -1,5 +1,6 @@
 ﻿using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
+using BarNone.TheRack.DataConverters;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,7 +18,7 @@ namespace BarNone.TheRack.FlexEngine
             {
                 return new FlexResposeEntityDTO
                 {
-                    Result = e.CreateDTO(new ConvertConfig()),
+                    Result = Converters.Convert.GetConverterFromData(e.GetType()).CreateDTO(e),
                     Details = entityDTO.Details?.Aggregate(new Dictionary<string, dynamic>(), (result, detail) =>
                     {
                         var name = detail.Name ?? detail.Type;

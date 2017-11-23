@@ -14,8 +14,8 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
 {
     public class DefaultDetailController<TDTO, TDomainModel, TRepo> : DetailController<TDTO>
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : class, IDomainModel<TDomainModel, TDTO>, new()
-        where TRepo : BaseRepository<TDTO, TDomainModel>
+        where TDomainModel : class, IDomainModel<TDomainModel>, new()
+        where TRepo : BaseRepository<TDomainModel, TDTO>
     {
 
         #region Public Delegate Definition(s).

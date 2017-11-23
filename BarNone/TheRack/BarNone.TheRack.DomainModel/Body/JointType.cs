@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BarNone.TheRack.DomainModel
 {
     [Table("JointType", Schema = "public")]
-    public class JointType : BaseEnumDomainModel<JointType, EJointType, JointTypeDTO>
+    public class JointType : BaseEnumDomainModel<JointType, EJointType>
     {
         #region Public Constructor(s).
         public JointType(): base()
@@ -16,15 +16,6 @@ namespace BarNone.TheRack.DomainModel
         public JointType(EJointType @enum): base(@enum)
         {
         }
-        #endregion
-
-        #region Public Property(s).
-        [Key]
-        public override int ID { get; set; }
-
-        public override int Value { get; set; }
-
-        public override string Name { get; set; }
         #endregion
 
         #region Public Operator Overload(s).

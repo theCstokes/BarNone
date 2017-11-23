@@ -7,10 +7,11 @@ using System.Text;
 using BarNone.TheRack.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DataConverters;
 
 namespace BarNone.TheRack.Repository.Body
 {
-    public class JointRepository : DefaultDetailRepository<JointDTO, Joint>
+    public class JointRepository : DefaultDetailRepository<Joint, JointDTO, JointDetailDTO>
     {
         public JointRepository() : base(
             () => new ConvertConfig(),
@@ -31,5 +32,7 @@ namespace BarNone.TheRack.Repository.Body
         {
 
         }
+
+        protected override ConverterResolver DetailDataConverterResolver => () => Converters.Convert.Joint;
     }
 }

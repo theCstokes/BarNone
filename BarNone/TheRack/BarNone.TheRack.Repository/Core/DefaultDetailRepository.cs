@@ -8,24 +8,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static BarNone.TheRack.Repository.Core.Resolvers;
+using BarNone.Shared.DataConverter;
+using BarNone.TheRack.DataConverters;
 
 namespace BarNone.TheRack.Repository.Core
 {
-    public class DefaultDetailRepository<TDTO, TDomainModel> : BaseRepository<TDTO, TDomainModel>
-        where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : class, IDomainModel<TDomainModel, TDTO>, new()
+    public abstract class DefaultDetailRepository<TDomainModel, TDTO, TDetailDTO> : BaseRepository<TDomainModel, TDTO>
+        where TDTO : BaseParentDTO<TDTO, TDetailDTO>, new()
+        where TDetailDTO : BaseDetailDTO<TDetailDTO>, new()
+        where TDomainModel : class, IDomainModel<TDomainModel>, new()
     {
 
         #region Public Delegate Definition(s).
         public delegate DbSet<TDomainModel> DbSetResolver(DomainContext context);
 
         public delegate IQueryable<TDomainModel> DetailResolver(IQueryable<TDomainModel> set);
+
+        public delegate BaseDetailDataConverter<TDomainModel, TDTO, TDetailDTO, Converters> ConverterResolver();
         #endregion
 
         #region Private Field(s).
         private DbSetResolver _resolver;
         private DetailResolver[] _detailResolvers;
         private ConfigResolver _configResolver;
+        protected abstract ConverterResolver DetailDataConverterResolver { get; }
         #endregion
 
         #region Public Constructor(s).
@@ -49,11 +55,9 @@ namespace BarNone.TheRack.Repository.Core
 
         public override TDomainModel Create(TDTO dto)
         {
-            var dm = new TDomainModel();
-
             var config = _configResolver();
 
-            dm.PopulateFromDTO(dto, config);
+            var dm = DetailDataConverterResolver().CreateDataModel(dto);
             
             var result = _resolver(context).Add(dm);
 
@@ -114,7 +118,9 @@ namespace BarNone.TheRack.Repository.Core
 
             var config = _configResolver();
 
-            var dm = DTOTransformable<TDomainModel, TDTO>.CreateFromDTO(dto, config);
+            //var dm = DTOTransformable<TDomainModel, TDTO>.CreateFromDTO(dto, config);
+
+            var dm = DetailDataConverterResolver().CreateDataModel(dto);
             var result = _resolver(context).Update(dm);
 
             context.SaveChanges();

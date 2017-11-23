@@ -10,10 +10,10 @@ using System.Linq;
 namespace BarNone.TheRack.DomainModel.Body
 {
     [Table("BodyDataFrame", Schema = "public")]
-    public class BodyDataFrame : BaseDetailDomainModel<BodyDataFrame, BodyDataFrameDTO, BodyDataFrameDetailDTO>
+    public class BodyDataFrame : IDomainModel<BodyDataFrame>
     {
         [Key]
-        public override int ID { get; set; }
+        public int ID { get; set; }
 
         public DateTime TimeOfFrame { get; set; }
 
@@ -24,32 +24,32 @@ namespace BarNone.TheRack.DomainModel.Body
 
         public BodyData BodyData { get; set; }
 
-        protected override BodyDataFrameDetailDTO OnBuildDetailDTO(ConvertConfig config)
-        {
-            return new BodyDataFrameDetailDTO
-            {
-                Joints = Joints?.Select(j => j.CreateDTO(config)).ToList()
-            };
-        }
+        //protected override BodyDataFrameDetailDTO OnBuildDetailDTO(ConvertConfig config)
+        //{
+        //    return new BodyDataFrameDetailDTO
+        //    {
+        //        Joints = Joints?.Select(j => j.CreateDTO(config)).ToList()
+        //    };
+        //}
 
-        protected override BodyDataFrameDTO OnBuildDTO()
-        {
-            return new BodyDataFrameDTO
-            {
-                ID = ID,
-                TimeOfFrame = TimeOfFrame
-            };
-        }
+        //protected override BodyDataFrameDTO OnBuildDTO()
+        //{
+        //    return new BodyDataFrameDTO
+        //    {
+        //        ID = ID,
+        //        TimeOfFrame = TimeOfFrame
+        //    };
+        //}
 
-        protected override void OnPopulate(BodyDataFrameDTO dto, ConvertConfig config = null)
-        {
-            ID = dto.ID;
-            TimeOfFrame = dto.TimeOfFrame;
-        }
+        //protected override void OnPopulate(BodyDataFrameDTO dto, ConvertConfig config = null)
+        //{
+        //    ID = dto.ID;
+        //    TimeOfFrame = dto.TimeOfFrame;
+        //}
 
-        protected override void OnDetailPopulate(BodyDataFrameDetailDTO dto, ConvertConfig config = null)
-        {
-            Joints = dto.Joints?.Select(j => Joint.CreateFromDTO(j, config)).ToList();
-        }
+        //protected override void OnDetailPopulate(BodyDataFrameDetailDTO dto, ConvertConfig config = null)
+        //{
+        //    Joints = dto.Joints?.Select(j => Joint.CreateFromDTO(j, config)).ToList();
+        //}
     }
 }

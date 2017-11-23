@@ -1,6 +1,7 @@
 ﻿using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
+using BarNone.TheRack.DataConverters;
 using BarNone.TheRack.DomainModel;
 using BarNone.TheRack.Repository.Core;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace BarNone.TheRack.Repository
 {
-    public class UserRepository : BaseRepository<UserDTO, User>
+    public class UserRepository : BaseRepository<User, UserDTO>
     {
         public UserRepository() : base(new DomainContext())
         {
@@ -71,7 +72,7 @@ namespace BarNone.TheRack.Repository
 
         public override User Create(UserDTO dto)
         {
-            var entity = User.CreateFromDTO(dto, Config);
+            var entity = Converters.Convert.User.CreateDataModel(dto);
             var result = context.Users.Add(entity);
 
             context.SaveChanges();
@@ -81,7 +82,7 @@ namespace BarNone.TheRack.Repository
 
         public override User Update(int id, UserDTO dto)
         {
-            var entity = User.CreateFromDTO(dto, Config);
+            var entity = Converters.Convert.User.CreateDataModel(dto);
             entity.ID = id;
             var result = context.Users.Update(entity);
 

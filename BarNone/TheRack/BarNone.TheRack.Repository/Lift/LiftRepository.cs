@@ -13,7 +13,7 @@ using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace BarNone.TheRack.Repository
 {
-    public class LiftRepository : BaseRepository<LiftDTO, Lift>
+    public class LiftRepository : BaseRepository<Lift, LiftDTO>
     {
         public LiftRepository() : base(new DomainContext())
         {

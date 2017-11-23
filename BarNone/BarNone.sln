@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{77D27D1C-4BFF-4CBC-8102-2B311548C1FE}"
 EndProject
@@ -50,6 +50,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.UnitTest.TheRack.Repository", "UnitTest\TheRack\BarNone.UnitTest.TheRack.Repository\BarNone.UnitTest.TheRack.Repository.csproj", "{994E5A71-D7E4-4F76-B738-8D83DA891A64}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.TheRack.FlexEngine", "BarNone.TheRack.FlexEngine\BarNone.TheRack.FlexEngine.csproj", "{24CD3B53-1182-455E-97FC-6D9A653AE22C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.Shared.DataConverter", "Shared\BarNone.Shared.DataConverter\BarNone.Shared.DataConverter.csproj", "{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.TheRack.DataConverters", "TheRack\BarNone.TheRack.DataConverters\BarNone.TheRack.DataConverters.csproj", "{79150C41-A571-4F27-8479-97999DFC67ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -179,6 +183,22 @@ Global
 		{24CD3B53-1182-455E-97FC-6D9A653AE22C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{24CD3B53-1182-455E-97FC-6D9A653AE22C}.WorkingWithTheRack|Any CPU.ActiveCfg = WorkingWithTheRack|Any CPU
 		{24CD3B53-1182-455E-97FC-6D9A653AE22C}.WorkingWithTheRack|Any CPU.Build.0 = WorkingWithTheRack|Any CPU
+		{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}.DataLift - Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}.DataLift - Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}.WorkingWithTheRack|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}.WorkingWithTheRack|Any CPU.Build.0 = Debug|Any CPU
+		{79150C41-A571-4F27-8479-97999DFC67ED}.DataLift - Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79150C41-A571-4F27-8479-97999DFC67ED}.DataLift - Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79150C41-A571-4F27-8479-97999DFC67ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79150C41-A571-4F27-8479-97999DFC67ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79150C41-A571-4F27-8479-97999DFC67ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79150C41-A571-4F27-8479-97999DFC67ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79150C41-A571-4F27-8479-97999DFC67ED}.WorkingWithTheRack|Any CPU.ActiveCfg = Debug|Any CPU
+		{79150C41-A571-4F27-8479-97999DFC67ED}.WorkingWithTheRack|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -204,6 +224,8 @@ Global
 		{A272F749-D94F-4DC1-AAA7-C28DCA08C6EA} = {B0E499A7-3F66-4EF5-876D-1D66702FB9BE}
 		{994E5A71-D7E4-4F76-B738-8D83DA891A64} = {0F3F877B-13EF-4922-82A1-BB049B638971}
 		{24CD3B53-1182-455E-97FC-6D9A653AE22C} = {77EA3D2C-6854-4A20-97B8-99D446962774}
+		{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108} = {77D27D1C-4BFF-4CBC-8102-2B311548C1FE}
+		{79150C41-A571-4F27-8479-97999DFC67ED} = {77EA3D2C-6854-4A20-97B8-99D446962774}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BBD0D095-9433-4102-B857-FD70440F37D3}

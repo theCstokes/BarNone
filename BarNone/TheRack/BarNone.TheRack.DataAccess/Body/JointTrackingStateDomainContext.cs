@@ -8,6 +8,6 @@ namespace BarNone.TheRack.DataAccess
 {
     public partial class DomainContext
     {
-        public virtual DbSet<JointTrackingState> TrackingStates { get; set; }
+        public virtual DbSet<JointTrackingStateType> TrackingStates { get; set; }
     }
 }
