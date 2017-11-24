@@ -623,7 +623,8 @@ namespace BarNone.DataLift.UI.ViewModels
 
             var toSend = new LiftDTO()
             {
-                Name = "This is a new lift",
+                ParentID = 1,
+                Name = LiftName,
                 Details = new LiftDetailDTO()
                 {
                     BodyData = new BodyDataDTO()
