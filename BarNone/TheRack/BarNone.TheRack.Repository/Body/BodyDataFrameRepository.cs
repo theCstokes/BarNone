@@ -13,25 +13,20 @@ namespace BarNone.TheRack.Repository
 {
     public class BodyDataFrameRepository : DefaultDetailRepository<BodyDataFrame, BodyDataFrameDTO, BodyDataFrameDetailDTO>
     {
-        public BodyDataFrameRepository() : base(
-            () => new ConvertConfig(),
-            c => c.BodyDataFrames,
-            s => s.Include(b => b.Joints),
-            s => s.Include(b => b.BodyData))
+        public BodyDataFrameRepository() : base()
         {
         }
 
-        public BodyDataFrameRepository(DomainContext context) : base(
-            context,
-            () => new ConvertConfig(),
-            c => c.BodyDataFrames,
-            s => s.Include(b => b.Joints),
-            s => s.Include(b => b.BodyData))
+        public BodyDataFrameRepository(DomainContext context) : base(context)
         {
         }
 
         protected override ConverterResolver DetailDataConverterResolver => () => Converters.Convert.BodyDataFrame;
 
-        protected override DetailResolver DetailDataResolver => throw new NotImplementedException();
+        protected override DbSetResolver SetResolver => (config) => config.BodyDataFrames;
+
+        protected override Resolver DetailDataResolver => (s) => s.Include(f => f.BodyData)
+                .Include(l => l.Joints).ThenInclude(j => j.JointType)
+                .Include(l => l.Joints).ThenInclude(j => j.JointTrackingStateType);
     }
 }
