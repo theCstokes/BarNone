@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoginService } from './../login/login.service';
+import { Observable } from 'rxjs/Observable';
 
-
-export interface Joint{
+export interface Joint {
   jointTypeID: number,
   x: number,
   y: number,
@@ -30,20 +30,15 @@ export class LiftsService {
     });
   }
 
-  getLiftDetails(id : number) : Joint[] {
+  getLiftDetails(id: number): Observable<object> {
     let options = {
       headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.loginService.access_token)
     };
 
-    let url : string = '/api/v1/Lift/' + String(id) + '/Detail';
+    let url: string = '/api/v1/Lift/' + String(id) + '/Detail';
     console.log(url);
-    
 
-    this.http.get(url, options).subscribe(response => {
-      console.log(response["entity"].details.bodyData.details.orderedFrames[0].details.joints);
-      return response["entity"].details.bodyData.details.orderedFrames[0].details.joints
-    });
-    return null;
+    return this.http.get(url, options);
   }
 
 }
