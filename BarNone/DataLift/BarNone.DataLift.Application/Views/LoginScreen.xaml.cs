@@ -33,6 +33,7 @@ namespace BarNone.DataLift.UI.Views
                 ((dynamic)this.DataContext).Password = new SecureString();
                 var vm = (ViewModelBase)DataContext;
                 Loaded += (a, b) => vm.Loaded();
+                Loaded += (a, b) => LoginPassword.Clear();
             }
         }
 
