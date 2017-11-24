@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from './login.service'
 
 @Component({
   selector: 'bn-login',
@@ -11,12 +12,10 @@ export class LoginComponent implements OnInit {
   password: string;
 
   loginClicked(){
-    if (this.username == "u" && this.password == "p"){
-      this.username = "this is a name";
-    }
+    this.loginService.authenticate(this.username,this.password);
   }
 
-  constructor() { }
+  constructor(private loginService: LoginService) { }
 
   ngOnInit() {
   }

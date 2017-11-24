@@ -8,14 +8,16 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { UserModule  } from './user/user.module';
 import { RouterModule, Routes } from '@angular/router';
-import { UserComponent } from './user/user.component';
 import { LiftsComponent } from './lifts/lifts.component';
 import { WelcomeComponent } from './welcome/welcome.component';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule} from '@angular/material/toolbar';
+import { HttpClientModule } from '@angular/common/http';
+
 
 const routes = [
-  {path: 'user', component: UserComponent},
+  {path: 'user', component: UserModule},
   {path: 'lifts', component: LiftsComponent},
   { path: '', component: WelcomeComponent}
 ];
@@ -24,12 +26,12 @@ const routes = [
   declarations: [
     AppComponent,
     LoginDialogComponent,
-    UserComponent,
     LiftsComponent,
     WelcomeComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     MatDialogModule,
     BrowserAnimationsModule,
     LoginModule,
@@ -37,6 +39,7 @@ const routes = [
     MatIconModule,
     MatListModule,
     MatToolbarModule,
+    UserModule,
     RouterModule.forRoot(routes,{ enableTracing: true })
   ],
   providers: [MatIconRegistry],
