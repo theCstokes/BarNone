@@ -25,7 +25,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
     public class FlexController : BaseController
     {
         [HttpPost]
-        public IActionResult Flex([FromBody] FlexRequestDTO requestDTO)
+        public IActionResult Flex()
         {
             using (MemoryStream ms = new MemoryStream())
             {

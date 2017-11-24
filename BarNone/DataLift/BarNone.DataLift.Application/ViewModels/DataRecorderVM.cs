@@ -635,7 +635,7 @@ namespace BarNone.DataLift.UI.ViewModels
             var bodyDto = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
             toSend.Details.BodyData = bodyDto;
 
-            var temp = await DataManager.Lifts.Post(toSend);
+            var temp = await DataManager.LiftFlex.Post(toSend);
 
             //System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp.ToString());
 
