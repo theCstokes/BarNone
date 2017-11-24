@@ -11,17 +11,17 @@ import { MatListModule } from '@angular/material/list';
 import { RouterModule, Routes } from '@angular/router';
 import { UserComponent } from './user/user.component';
 import { UserModule } from './user/user.module';
-import { LiftsComponent} from './lifts/lifts.component';
-import { LiftsModule} from './lifts/lifts.module';
+import { LiftsComponent } from './lifts/lifts.component';
+import { LiftsModule } from './lifts/lifts.module';
 import { WelcomeComponent } from './welcome/welcome.component';
-import { MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { HttpClientModule } from '@angular/common/http';
 
 
 const routes = [
-  {path: 'user', component: UserModule},
-  {path: 'lifts', component: LiftsComponent},
-  { path: '', component: WelcomeComponent}
+  { path: 'user', component: UserModule },
+  { path: 'lifts', component: LiftsComponent },
+  { path: '', component: WelcomeComponent }
 ];
 
 @NgModule({
@@ -42,7 +42,7 @@ const routes = [
     MatToolbarModule,
     UserModule,
     LiftsModule,
-    RouterModule.forRoot(routes,{ enableTracing: true })
+    RouterModule.forRoot(routes, { enableTracing: true })
   ],
   providers: [MatIconRegistry],
   entryComponents: [LoginDialogComponent],

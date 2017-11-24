@@ -11,8 +11,8 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
 
-  loginClicked(){
-    this.loginService.authenticate(this.username,this.password);
+  loginClicked() {
+    this.loginService.authenticate(this.username, this.password);
   }
 
   constructor(private loginService: LoginService) { }

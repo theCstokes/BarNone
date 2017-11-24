@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
-import {MatIconRegistry} from '@angular/material/icon';
+import { MatIconRegistry } from '@angular/material/icon';
 import { LoginService } from './login/login.service'
 
 
@@ -12,15 +12,15 @@ import { LoginService } from './login/login.service'
 })
 
 
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   // login: LoginComponent;
 
-  modes = [{link: "/user", text:"User Profile", icon:"account_box"}, 
-    {link: "/lifts", text:"Lifts", icon:"timeline"}];
+  modes = [{ link: "/user", text: "User Profile", icon: "account_box" },
+  { link: "/lifts", text: "Lifts", icon: "timeline" }];
 
-  constructor(private loginService: LoginService, public dialog: MatDialog, matIconRegistry: MatIconRegistry){
+  constructor(private loginService: LoginService, public dialog: MatDialog, matIconRegistry: MatIconRegistry) {
     this.openDialog();
-    this.loginService.user_authenticated.subscribe(() => {console.log("received emit");this.dialog.closeAll();});
+    this.loginService.user_authenticated.subscribe(() => { console.log("received emit"); this.dialog.closeAll(); });
   }
 
   openDialog(): void {
