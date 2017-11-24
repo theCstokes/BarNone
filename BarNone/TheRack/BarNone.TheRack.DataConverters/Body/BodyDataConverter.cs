@@ -26,14 +26,14 @@ namespace BarNone.TheRack.DataConverters.Body
         public override void OnCreateDetailDataModel(BodyData data, BodyDataDetailDTO dto)
         {
             data.BodyDataFrames = 
-                dto.OrderedFrames.Select(f => converterContext.BodyDataFrame.CreateDataModel(f)).ToList();
+                dto.OrderedFrames?.Select(f => converterContext.BodyDataFrame.CreateDataModel(f)).ToList();
         }
 
         public override BodyDataDetailDTO OnCreateDetailDTO(BodyData data)
         {
             return new BodyDataDetailDTO
             {
-                OrderedFrames = data.BodyDataFrames.Select(f => converterContext.BodyDataFrame.CreateDTO(f)).ToList()
+                OrderedFrames = data.BodyDataFrames?.Select(f => converterContext.BodyDataFrame.CreateDTO(f)).ToList()
             };
         }
 

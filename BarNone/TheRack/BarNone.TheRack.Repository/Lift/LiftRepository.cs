@@ -50,6 +50,9 @@ namespace BarNone.TheRack.Repository
             var result = context
                 .Lifts
                 .Include(u => u.Parent)
+                .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints)
+                .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointType)
+                .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointTrackingStateType)
                 .Where(c => c.ID == id).First();
 
             context.SaveChanges();
@@ -65,7 +68,6 @@ namespace BarNone.TheRack.Repository
             context.SaveChanges();
 
             return result.Entity;
-            //return null;
         }
 
         public override Lift Update(int id, LiftDTO dto)
