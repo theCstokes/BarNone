@@ -31,5 +31,7 @@ namespace BarNone.TheRack.Repository
         }
 
         protected override ConverterResolver DetailDataConverterResolver => () => Converters.Convert.BodyDataFrame;
+
+        protected override DetailResolver DetailDataResolver => throw new NotImplementedException();
     }
 }

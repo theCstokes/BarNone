@@ -32,6 +32,7 @@ namespace BarNone.TheRack.Repository.Core
         private DetailResolver[] _detailResolvers;
         private ConfigResolver _configResolver;
         protected abstract ConverterResolver DetailDataConverterResolver { get; }
+        protected abstract DetailResolver DetailDataResolver { get; }
         #endregion
 
         #region Public Constructor(s).

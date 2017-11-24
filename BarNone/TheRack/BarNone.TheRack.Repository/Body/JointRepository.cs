@@ -34,5 +34,7 @@ namespace BarNone.TheRack.Repository.Body
         }
 
         protected override ConverterResolver DetailDataConverterResolver => () => Converters.Convert.Joint;
+
+        protected override DetailResolver DetailDataResolver => throw new NotImplementedException();
     }
 }
