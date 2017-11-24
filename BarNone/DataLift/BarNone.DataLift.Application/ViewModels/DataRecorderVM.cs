@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using BarNone.DataLift.APIRequest;
 using BarNone.Shared.DataTransfer;
-using BarNone.DataLift.UI.Nav;
+using BarNone.DataLift.DataConverters;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -574,7 +574,6 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             CurrentRecordingBodyData = new BodyData
             {
-                ID = currentID + 1,
                 DataFrames = new List<BodyDataFrame>(),
                 RecordDate = DateTime.Now
             };
@@ -598,20 +597,19 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <returns></returns>
         private async Task EndCurrentRecording()
         {
-
+            //var _bodyData = 
 
             var toSend = new LiftDTO()
             {
-                ID = 2,
                 Name = "This is a new lift",
-                Details =
+                Details = new LiftDetailDTO()
                 {
-                    //TODO: When chris fixes DTOs send this shit to the server.
-                    //BodyData = CurrentRecordingBodyData.BuildDTO()
-
-
+                    BodyData = new BodyDataDTO()
                 }
+                
             };
+
+            toSend.Details.BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
 
             var send = await DataManager.Lifts.Post(toSend);
 
@@ -625,7 +623,7 @@ namespace BarNone.DataLift.UI.ViewModels
         internal DataRecorderVM()
         {
             Task.Run(() => SetUser());
-            Task.Run(() => GetAllLifts());
+            //Task.Run(() => GetAllLifts());
 
             // one sensor is currently supported
             kinectSensor = KinectSensor.GetDefault();
