@@ -13,6 +13,9 @@ using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.DomainModel;
 using BarNone.TheRack.ResourceServer.API.Controllers;
 using BarNone.TheRack.ResourceServer.API.Controllers.Core;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
@@ -76,18 +79,26 @@ namespace TheRack.ResourceServer.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] LiftDTO value)
+        public IActionResult Post()
         {
-            try
+            using (MemoryStream ms = new MemoryStream())
             {
-                using (LiftRepository repository = new LiftRepository())
+                HttpContext.Request.Body.CopyTo(ms);
+                byte[] data = ms.ToArray();
+                var jsonString = Encoding.ASCII.GetString(data);
+                var dto = JsonConvert.DeserializeObject<LiftDTO>(jsonString);
+
+                try
                 {
-                        return EntityResponse.Response(repository.Create(value));
+                    using (LiftRepository repository = new LiftRepository())
+                    {
+                        return EntityResponse.Response(repository.Create(dto));
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                return EntityResponse.Error(e);
+                catch (Exception e)
+                {
+                    return EntityResponse.Error(e);
+                }
             }
         }
 
