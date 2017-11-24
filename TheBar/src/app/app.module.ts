@@ -14,10 +14,12 @@ import { UserModule } from './user/user.module';
 import { LiftsComponent} from './lifts/lifts.component';
 import { LiftsModule} from './lifts/lifts.module';
 import { WelcomeComponent } from './welcome/welcome.component';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule} from '@angular/material/toolbar';
+import { HttpClientModule } from '@angular/common/http';
+
 
 const routes = [
-  {path: 'user', component: UserComponent},
+  {path: 'user', component: UserModule},
   {path: 'lifts', component: LiftsComponent},
   { path: '', component: WelcomeComponent}
 ];
@@ -30,6 +32,7 @@ const routes = [
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     MatDialogModule,
     BrowserAnimationsModule,
     LoginModule,
