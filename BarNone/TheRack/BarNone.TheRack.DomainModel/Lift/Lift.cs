@@ -14,12 +14,12 @@ namespace BarNone.TheRack.DomainModel
 
         public string Name { get; set; }
 
-        public int ParentID { get; set; }
+        public int? ParentID { get; set; }
 
         [ForeignKey("ParentID")]
         public LiftFolder Parent { get; set; }
 
-        public int BodyDataID { get; set; }
+        public int? BodyDataID { get; set; }
 
         public BodyData BodyData { get; set; }
     }

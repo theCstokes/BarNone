@@ -6,5 +6,5 @@ import LoginScreen from "Application/Screens/Login/LoginScreen";
 export default class App {
 	public static async start(): Promise<void> {
 		await Vee.push(LoginScreen);
-	}
+    }
 }

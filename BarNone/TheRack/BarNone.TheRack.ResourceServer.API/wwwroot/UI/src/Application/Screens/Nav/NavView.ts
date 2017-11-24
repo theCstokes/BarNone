@@ -25,25 +25,28 @@ export default class NavView extends View {
 							instance: ControlTypes.Column,
 							content: [
 								{
-									instance: ControlTypes.Label,
-									text: "User/Contacts"
+                                    instance: ControlTypes.Breadcrumb,
+                                    id: "navBreadcrumbs",
+									onClick: () => {
+										console.warn("testst");
+									}
 								}
 							]
-						},
-						{
-							instance: ControlTypes.Column,
-							content: [
-								{
-									instance: ControlTypes.Button,
-									text: "Add Contact"
-								}
-							]
-						},
-						{
-							instance: ControlTypes.Column,
-							content: {
-							}
 						}
+						//{
+						//	instance: ControlTypes.Column,
+						//	content: [
+						//		{
+						//			instance: ControlTypes.Button,
+						//			text: "Add Contact"
+						//		}
+						//	]
+						//},
+						//{
+						//	instance: ControlTypes.Column,
+						//	content: {
+						//	}
+						//}
 					]
 				},
 				navDock: {

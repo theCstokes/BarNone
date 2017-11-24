@@ -16,7 +16,9 @@ export default class NavScreen extends BasicScreen<StateManager> {
 		.create<State>(this, "navList")
 		.onSelect(async data => {
 			// console.log(data);
-			Vee.popTo(this);
+            Vee.popTo(this);
+            //console.warn(data.name);
+            
 			this.stateManager.selectionChange.trigger({
 				id: data.id
 			});
@@ -33,7 +35,9 @@ export default class NavScreen extends BasicScreen<StateManager> {
 			var navElement = current.navElementList.find(item => {
 				return (item.id === current.currentScreenId);
 			});
-			if (navElement !== undefined) {
+            if (navElement !== undefined) {
+                //this.view.navBreadcrumbs.push({ value: navElement.name });
+                this.view.navBreadcrumbs.items = [{ value: navElement.name }];
 				var NextScreen = await Loader.sync(navElement.screenPath);
 				await Vee.push(NextScreen.default);
 			}
