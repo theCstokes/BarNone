@@ -88,7 +88,6 @@ namespace BarNone.DataLift.UI.Drawing
         }
         #endregion
 
-
         #region Internal Draws
         /// <summary>
         /// Draws a body

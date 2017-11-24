@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BarNone.DataLift.UI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,10 @@ namespace BarNone.DataLift.UI.Views
         public RegistrationScreen()
         {
             InitializeComponent();
+
+            var vm = DataContext as ViewModelBase;
+            Loaded += (a, b) => vm.Loaded();
+
         }
     }
 }
