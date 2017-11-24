@@ -15,7 +15,7 @@ export class LiftsComponent implements OnInit {
   ];
 
   constructor(private liftsService: LiftsService) {
-
+    this.joints=this.joints_static;
   }
 
   ngOnInit() {
