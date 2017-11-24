@@ -63,7 +63,6 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region Commands
-
         public ICommand BackCommand { get; } = new RelayCommand(action => PageManager.SwitchPage(UIPages.LoginView));
 
         public RelayCommand _RegisterCommand;
@@ -74,19 +73,21 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_RegisterCommand == null)
                 {
-                    _RegisterCommand = new RelayCommand(async action => 
+                    _RegisterCommand = new RelayCommand(async action =>
                     {
-                        await TMP();
+                        await RegisterNewUser();
                     });
                 }
                 return _RegisterCommand;
             }
         }
 
-        public async Task TMP()
+        public async Task RegisterNewUser()
         {
-            var a = await DataManager.Users.Post(new UserDTO() { UserName = Username, Password = ConvertSecure(Password) });
-            PageManager.SwitchPage(UIPages.LoginView);
+            var g = await TokenManager.Create(new UserDTO() { UserName = Username, Password = ConvertSecure(Password) });
+            if (g.Authorized)
+                PageManager.SwitchPage(UIPages.DataRecorderView);
+            
         }
 
 
