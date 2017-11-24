@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login.component';
 import { LoginService } from './login.service'
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule} from '@angular/material/form-field';
@@ -13,6 +14,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     MatInputModule,
     MatFormFieldModule,
+    FlexLayoutModule,
     MatButtonModule,
     FormsModule
   ],

@@ -16,11 +16,12 @@ import { LiftsModule } from './lifts/lifts.module';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HttpClientModule } from '@angular/common/http';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 const routes = [
   { path: 'user', component: UserModule },
-  { path: 'lifts', component: LiftsComponent },
+  { path: 'lifts', component: LiftsModule },
   { path: '', component: WelcomeComponent }
 ];
 
@@ -33,6 +34,7 @@ const routes = [
   imports: [
     BrowserModule,
     HttpClientModule,
+    FlexLayoutModule,
     MatDialogModule,
     BrowserAnimationsModule,
     LoginModule,
@@ -42,7 +44,7 @@ const routes = [
     MatToolbarModule,
     UserModule,
     LiftsModule,
-    RouterModule.forRoot(routes, { enableTracing: true })
+    RouterModule.forRoot(routes, { enableTracing: false })
   ],
   providers: [MatIconRegistry],
   entryComponents: [LoginDialogComponent],

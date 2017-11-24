@@ -1,10 +1,43 @@
-  <mat-tab-group>
-      <mat-tab label="User Information"> 
-          <img src="assets/Default.png" alt="Default User" width="300" height="300">
-          <div><h4>Name: {{User}}</h4>
-            <h4>: {{User}}</h4>
-            
-            </div>
-   </mat-tab>
-      <mat-tab label="Account Settings">Content 2</mat-tab>
-  </mat-tab-group>
+<br>
+<div 
+  fxLayout='row' 
+  fxLayoutWrap 
+  fxLayoutAlign="space-around space-between"
+  >
+
+  <div *ngFor='let user of users' fxFlex='0 1 calc(400px-25px)'>
+    <mat-card>
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{user.name}}</mat-card-title>
+        <mat-card-subtitle>{{user.userName}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- <p>
+              This is a card.
+            </p> -->
+      </mat-card-content>
+      <mat-card-actions>
+        <!-- <button mat-button>LIKE</button>
+            <button mat-button>SHARE</button> -->
+      </mat-card-actions>
+
+    </mat-card>
+  </div>
+</div>
+
+<!-- 
+
+<mat-tab label="User Information">
+
+
+
+
+
+
+  <img src="assets/Default.png" alt="Default User" width="300" height="300">
+</mat-tab>
+<mat-tab label="Account Settings">Content 2</mat-tab>
+
+ <mat-tab-group>
+</mat-tab-group> -->

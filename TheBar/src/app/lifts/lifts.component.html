@@ -1,24 +1,29 @@
 <button (click)="buttonClicked()">Click Me</button>
-<button (click)="getDetails()">Click Detailed</button>
-<button (click)="draw()">Draw</button>
 
-<mat-grid-list cols="5" rowHeight="500px">
-  <mat-grid-tile *ngFor="let lift of lifts">
+<br>
+<div 
+  fxLayout='row' 
+  fxLayoutWrap 
+  fxLayoutAlign="space-evenly space-between"
+  fxLayoutGap="25px"
+  >
+
+  <div *ngFor='let lift of lifts' fxFlex='0 1 calc(300px-25px)'>
     <mat-card>
-      <img src="http://placehold.it/150x150" class="md-card-image" alt="user avatar">
+      <mat-card-header>
+        <mat-card-title>{{lift.name}}</mat-card-title>
+        <mat-card-subtitle>{{lift.id}}</mat-card-subtitle>
+      </mat-card-header>
       <mat-card-content>
-        <h2>
-          {{lift.title}}
-        </h2>
-        <p>
-          {{lift.type}}
-        </p>
+        <!-- <p>
+              This is a card.
+            </p> -->
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button>
-              VIEW
-            </button>
+          <button (click)="getDetails()" mat-raised-button color="primary">Get Details</button>
+          <button (click)="draw()" mat-raised-button color="primary">Draw</button>
       </mat-card-actions>
+
     </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
+  </div>
+</div>

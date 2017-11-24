@@ -5,6 +5,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import { LiftsComponent } from './lifts.component';
 import { LiftsService } from './lifts.service';
+import { RouterModule, Routes } from '@angular/router';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+
 
 
 @NgModule({
@@ -12,7 +16,9 @@ import { LiftsService } from './lifts.service';
     CommonModule,
     MatCardModule,
     MatGridListModule,
-    MatButtonModule
+    MatButtonModule,
+    FlexLayoutModule,
+    RouterModule.forChild([{ path: 'lifts', component: LiftsComponent }])
   ],
   providers: [LiftsService],
   declarations: [
