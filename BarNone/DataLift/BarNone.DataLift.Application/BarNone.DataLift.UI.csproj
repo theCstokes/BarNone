@@ -86,10 +86,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Drawing\KinectToImage.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\DataRecorderVM.cs" />
     <Compile Include="ViewModels\LoginScreenVM.cs" />
     <Compile Include="ViewModels\RegisterScreenVM.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\DataRecorderScreen.xaml.cs">
       <DependentUpon>DataRecorderScreen.xaml</DependentUpon>
     </Compile>

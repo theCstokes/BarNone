@@ -1,17 +1,27 @@
-﻿using BarNone.DataLift.UI.Commands;
-using System;
-using System.Collections.Generic;
+﻿using BarNone.DataLift.UI.Nav;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
-    class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
+        protected void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            PropertyChanged?.Invoke(this, e);
+        }
+
+
+        internal virtual void Loaded()
+        {
+            //Do Nothing by default
+        }
+
+        internal virtual void Closed()
+        {
+            //Do Nothing by default
+        }
+
     }
 }

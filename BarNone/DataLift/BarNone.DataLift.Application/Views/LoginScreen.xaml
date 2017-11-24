@@ -41,7 +41,7 @@
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
     <DockPanel>
-        <materialDesign:ColorZone Padding="24" DockPanel.Dock="Top" Background="{DynamicResource PrimaryHueMidBrush}" />
+        <materialDesign:ColorZone Height="50" DockPanel.Dock="Top" Background="{DynamicResource PrimaryHueMidBrush}" />
 
         <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center" MaxHeight="370" MaxWidth="480" Margin="10"  MinHeight="300" MinWidth="400">
             <Grid>
@@ -62,7 +62,7 @@
 
 
                         <!--Username Input Area-->
-                        <TextBox x:Name="LoginUsername" Grid.Row="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="40 0 40 0" HorizontalAlignment="Stretch" Height="40" Text="{Binding Path=Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="18" VerticalAlignment="Center">
+                        <TextBox x:Name="LoginUsername" Grid.Row="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="40 0 40 0" HorizontalAlignment="Stretch" Height="40" Text="{Binding Path=Username, Mode=TwoWay}" FontSize="18" VerticalAlignment="Center">
                             <materialDesign:HintAssist.Hint>
                                 <StackPanel Orientation="Horizontal" >
                                     <materialDesign:PackIcon Kind="Account" />
