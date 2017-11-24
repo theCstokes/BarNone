@@ -24,35 +24,18 @@ namespace BarNone.DataLift.UI.Views
     /// </summary>
     public partial class DataRecorderScreen : UserControl
     {
-        private DataRecorderVM ViewModel;
 
         #region Constructor
         public DataRecorderScreen()
         {
             InitializeComponent();
-            ViewModel = (DataRecorderVM)DataContext;
+            var vm = DataContext as ViewModelBase;
+
+            Loaded += (a, b) => vm.Loaded();
+            Unloaded += (a, b) => vm.Closed();
         }
+
         #endregion
-
-        /// <summary>
-        /// Execute start up tasks
-        /// </summary>
-        /// <param name="sender">object sending the event</param>
-        /// <param name="e">event arguments</param>
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            ViewModel.On_Loaded();
-        }
-
-        /// <summary>
-        /// Execute shutdown tasks
-        /// </summary>
-        /// <param name="sender">object sending the event</param>
-        /// <param name="e">event arguments</param>
-        private void UserControl_Closed(object sender, RoutedEventArgs e)
-        {
-            ViewModel.On_Closed();
-        }
 
     }
 }

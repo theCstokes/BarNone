@@ -12,12 +12,30 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using BarNone.DataLift.APIRequest;
 using BarNone.Shared.DataTransfer;
+using BarNone.DataLift.UI.Nav;
+using System.ComponentModel;
 using BarNone.DataLift.DataConverters;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
-    internal class DataRecorderVM : ViewModelBase
+    public class DataRecorderVM : ViewModelBase
     {
+        #region Bound Properties
+        private string _LiftName = "";
+        public string LiftName
+        {
+            get => _LiftName;
+            set
+            {
+                if (_LiftName != value)
+                {
+                    _LiftName = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("LiftName"));
+                }
+            }
+        }
+        #endregion
+
         #region Private Properties
         #region Brushes
         /// <summary>
@@ -198,11 +216,12 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region User Control events
-        internal void On_Loaded()
+        internal override void Loaded()
         {
+            LiftName = "";
         }
 
-        internal void On_Closed()
+        internal override void Closed()
         {
             if (Reader != null)
             {
@@ -560,7 +579,7 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             get
             {
-                if(_StartRecording == null)
+                if (_StartRecording == null)
                 {
                     _StartRecording = new RelayCommand(action => StartNewRecording());
                 }
@@ -578,6 +597,8 @@ namespace BarNone.DataLift.UI.ViewModels
                 RecordDate = DateTime.Now
             };
         }
+
+        public ICommand LogoutCommand { get; } = new RelayCommand(action => PageManager.SwitchPage(UIPages.LoginView));
 
         public RelayCommand _EndRecording { get; private set; }
         public ICommand EndRecording
@@ -606,7 +627,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 {
                     BodyData = new BodyDataDTO()
                 }
-                
+
             };
 
             var temp = await DataManager.Bodies.Post(Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData));
@@ -620,7 +641,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
         public string KinectConnected;
 
-        internal DataRecorderVM()
+        public DataRecorderVM()
         {
             Task.Run(() => SetUser());
             //Task.Run(() => GetAllLifts());
@@ -667,7 +688,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             foreach (UserDTO singleUser in user)
             {
-                if (LoginScreenVM.Username == singleUser.UserName)
+                if (LoginScreenVM._Username == singleUser.UserName)
                     CurrentUser = singleUser;
             }
         }
