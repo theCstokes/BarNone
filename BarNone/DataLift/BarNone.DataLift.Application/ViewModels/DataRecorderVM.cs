@@ -609,9 +609,9 @@ namespace BarNone.DataLift.UI.ViewModels
                 
             };
 
-            toSend.Details.BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
+            var temp = await DataManager.Bodies.Post(Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData));
 
-            System.Diagnostics.Debug.WriteLine("The lift with the name was sent to the server");
+            System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp);
 
             StartNewRecording();
         }
