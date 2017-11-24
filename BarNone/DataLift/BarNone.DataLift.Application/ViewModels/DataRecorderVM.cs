@@ -607,6 +607,7 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_EndRecording == null)
                 {
+                    //_EndRecording = new RelayCommand(action => EndCurrentRecording());
                     _EndRecording = new RelayCommand(async action => await EndCurrentRecording());
                 }
                 return _EndRecording;
@@ -630,9 +631,12 @@ namespace BarNone.DataLift.UI.ViewModels
 
             };
 
-            var temp = await DataManager.Bodies.Post(Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData));
+            var bodyDto = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
+            toSend.Details.BodyData = bodyDto;
 
-            System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp);
+            var temp = await DataManager.Lifts.Post(toSend);
+
+            //System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp.ToString());
 
             StartNewRecording();
         }
