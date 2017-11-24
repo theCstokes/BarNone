@@ -29,6 +29,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WorkingWithTheRack|AnyCPU'">
+    <OutputPath>bin\WorkingWithTheRack\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DL|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DL\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -59,9 +71,9 @@
       <Project>{DC7C09E7-27E2-496C-9823-F048BB031174}</Project>
       <Name>BarNone.Shared.DataTransfer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj">
+    <ProjectReference Include="..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DTOTransform.csproj">
       <Project>{EE13BDCE-8F4F-46C6-8E36-97EEDAF64F04}</Project>
-      <Name>BarNone.Shared.DomainModel</Name>
+      <Name>BarNone.Shared.DTOTransform</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

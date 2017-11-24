@@ -1,58 +1,26 @@
 ﻿using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DomainModel.Body;
+using BarNone.TheRack.DomainModel.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
 
 namespace BarNone.TheRack.DomainModel
 {
     [Table("BodyData", Schema = "public")]
-    public class BodyData : DetailDomainModel<BodyData, BodyDataDTO, BodyDataDetailDTO>
+    public class BodyData : IDomainModel<BodyData>
     {
         [Key]
-        public override int ID { get; set; }
+        public int ID { get; set; }
 
         public DateTime RecordDate { get; set; }
 
         public List<BodyDataFrame> BodyDataFrames { get; set; }
 
-        protected override BodyDataDTO OnBuildDTO()
-        {
-            return new BodyDataDTO
-            {
-                ID = ID,
-                RecordTimeStamp = RecordDate
-            };
-        }
-
-        protected override BodyDataDetailDTO OnBuildDetailDTO(ConvertConfig config)
-        {
-            return new BodyDataDetailDTO
-            {
-                OrderedFrames = BodyDataFrames.Select(frame => frame.CreateDTO(config)).ToList()
-            };
-        }
-
-        protected override void OnPopulate(BodyDataDTO dto, ConvertConfig config = null)
-        {
-            ID = dto.ID;
-            RecordDate = dto.RecordTimeStamp;
-            BodyDataFrames = dto.Details?.OrderedFrames.Select(frame => BodyDataFrame.CreateFromDTO(frame)).ToList();
-        }
-
-        //public dynamic BuildDetailDTO()
-        //{
-        //    return new BodyDataDetailDTO
-        //    {
-        //        OrderedFrames = BodyDataFrames.Select(f => f.BuildDTO()).ToList()
-        //    };
-        //}
-
-        //public override BodyDataDTO BuildDTO()
+        //protected override BodyDataDTO OnBuildDTO()
         //{
         //    return new BodyDataDTO
         //    {
@@ -61,15 +29,23 @@ namespace BarNone.TheRack.DomainModel
         //    };
         //}
 
-        //public override void PopulateFromDTO(BodyDataDTO dto)
+        //protected override BodyDataDetailDTO OnBuildDetailDTO(ConvertConfig config)
+        //{
+        //    return new BodyDataDetailDTO
+        //    {
+        //        OrderedFrames = BodyDataFrames.Select(frame => frame.CreateDTO(config)).ToList()
+        //    };
+        //}
+
+        //protected override void OnPopulate(BodyDataDTO dto, ConvertConfig config = null)
         //{
         //    ID = dto.ID;
         //    RecordDate = dto.RecordTimeStamp;
         //}
 
-        //BodyDataDetailDTO IParentDomainModel<BodyDataDTO, BodyDataDetailDTO>.BuildDetailDTO()
+        //protected override void OnDetailPopulate(BodyDataDetailDTO dto, ConvertConfig config = null)
         //{
-        //    return BuildDetailDTO();
+        //    BodyDataFrames = dto.OrderedFrames?.Select(frame => BodyDataFrame.CreateFromDTO(frame, config)).ToList();
         //}
     }
 }

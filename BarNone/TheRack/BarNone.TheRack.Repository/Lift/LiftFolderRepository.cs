@@ -1,5 +1,7 @@
 ﻿using BarNone.Shared.DataTransfer;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
+using BarNone.TheRack.DataConverters;
 using BarNone.TheRack.DomainModel;
 using BarNone.TheRack.Repository.Core;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +13,7 @@ using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace BarNone.TheRack.Repository
 {
-    public class LiftFolderRepository : BaseRepository<LiftFolderDTO, LiftFolder>
+    public class LiftFolderRepository : BaseRepository<LiftFolder, LiftFolderDTO>
     {
         public LiftFolderRepository() : base(new DomainContext())
         {
@@ -24,7 +26,7 @@ namespace BarNone.TheRack.Repository
 
         public override LiftFolder Create(LiftFolderDTO dto)
         {
-            var folder = LiftFolder.CreateFromDTO(dto);
+            var folder = Converters.Convert.LiftFolder.CreateDataModel(dto);
             var result = context.LiftFolders.Add(folder);
 
             context.SaveChanges();

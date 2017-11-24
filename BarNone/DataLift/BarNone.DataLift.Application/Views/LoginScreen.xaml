@@ -6,40 +6,87 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:BarNone.DataLift.UI.Views"
              xmlns:vms="clr-namespace:BarNone.DataLift.UI.ViewModels"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="500">
+             mc:Ignorable="d">
     <UserControl.Resources>
-        <vms:LoginScreenVM x:Key="vm"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ComboBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Slider.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource MaterialDesignPasswordBox}">
+                <Setter Property="Margin" Value="0 8 0 8" />
+            </Style>
+            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MaterialDesignComboBox}">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="Margin" Value="0 8 0 8" />
+            </Style>
+            <Style TargetType="{x:Type Viewbox}">
+                <Setter Property="Width" Value="18" />
+                <Setter Property="Height" Value="18" />
+                <Setter Property="Margin" Value="0 0 8 0" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="{x:Type Slider}" BasedOn="{StaticResource MaterialDesignSlider}">
+                <Setter Property="Margin" Value="0 8 0 8" />
+            </Style>
+            <Style TargetType="materialDesign:PackIcon" BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="4 0 4 0" />
+            </Style>
+            <vms:LoginScreenVM x:Key="vm"/>
+        </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.DataContext>
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
-    <Border Background="{DynamicResource MaterialDesignBackground}" BorderBrush="{DynamicResource PrimaryHueDarkForegroundBrush}" CornerRadius="20" BorderThickness="2" MaxHeight="210" MaxWidth="400" Margin="10"  MinHeight="200" MinWidth="300">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="20"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="4*" />
-                <ColumnDefinition Width="20" />
-            </Grid.ColumnDefinitions>
+    <DockPanel>
+        <materialDesign:ColorZone Height="50" DockPanel.Dock="Top" Background="{DynamicResource PrimaryHueMidBrush}" />
 
-            <!--Username Input Area-->
-            <TextBox x:Name="LoginUsername" Grid.Column="2" Grid.Row="1" Margin="5,5,5,5" HorizontalAlignment="Left" Height="40" Text="{Binding Path=Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="18" VerticalAlignment="Top" Width="280"/>
-            <materialDesign:PackIcon Kind="dumbbell" Grid.Column="1" Grid.Row="1" Margin="5,5,2,5"
-                                     VerticalAlignment="Center" HorizontalAlignment="Center" Width="32" Height="32"/>
-            <!--Password Input Area-->
-            <PasswordBox x:Name="LoginPassword" PasswordChanged="PasswordBoxChangedEvent" Grid.Column="2" Grid.Row="2" Margin="5,5,5,5" HorizontalAlignment="Left" Height="40" FontSize="18"  VerticalAlignment="Top" Width="280"/>
-            <materialDesign:PackIcon Kind="AccountKey" Grid.Column="1" Grid.Row="2" Margin="5,5,2,5"
-                                     VerticalAlignment="Center" HorizontalAlignment="Center" Width="32" Height="32"/>
-            <!--Login Command Area-->
-            <Button x:Name="LoginButton" Command="{Binding LoginCommand}" Grid.Column="2" Grid.Row="3" Margin="5,5,5,5" Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="Login" HorizontalAlignment="Right" VerticalAlignment="Center" Width="139"/>
-        </Grid>
-    </Border>
+        <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center" MaxHeight="370" MaxWidth="480" Margin="10"  MinHeight="300" MinWidth="400">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+
+                <materialDesign:ColorZone Grid.Row="0" Padding="12" Background="{DynamicResource PrimaryHueMidBrush}"/>
+
+                <DockPanel Grid.Row="1" VerticalAlignment="Stretch">
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+
+                        <!--Username Input Area-->
+                        <TextBox x:Name="LoginUsername" Grid.Row="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="40 0 40 0" HorizontalAlignment="Stretch" Height="40" Text="{Binding Path=Username, Mode=TwoWay}" FontSize="18" VerticalAlignment="Center">
+                            <materialDesign:HintAssist.Hint>
+                                <StackPanel Orientation="Horizontal" >
+                                    <materialDesign:PackIcon Kind="Account" />
+                                    <TextBlock>Username</TextBlock>
+                                </StackPanel>
+                            </materialDesign:HintAssist.Hint>
+                        </TextBox>
+                        <!--Password Input Area-->
+                        <PasswordBox x:Name="LoginPassword" PasswordChanged="PasswordBoxChangedEvent" Grid.Row="1"  Margin="40,0,40,0" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" HorizontalAlignment="Stretch" FontSize="18" VerticalAlignment="Top" >
+                            <materialDesign:HintAssist.Hint>
+                                <StackPanel Orientation="Horizontal" >
+                                    <materialDesign:PackIcon Kind="Key" />
+                                    <TextBlock>Password</TextBlock>
+                                </StackPanel>
+                            </materialDesign:HintAssist.Hint>
+                        </PasswordBox>
+                    </Grid>
+                </DockPanel>
+
+                <DockPanel Grid.Row="3" VerticalAlignment="Top" Margin="0,10">
+                    <Button x:Name="RegisterButton" DockPanel.Dock="Left" Command="{Binding RegisterCommand}" Margin="40,0,0,0" Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="Register" Width="140"/>
+                    <Button x:Name="LoginButton" DockPanel.Dock="Right" Command="{Binding LoginCommand}" Margin="0,0,30,0" Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="Login" Width="140"/>
+                </DockPanel>
+            </Grid>
+        </materialDesign:Card>
+    </DockPanel>
 </UserControl>

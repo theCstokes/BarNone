@@ -1,4 +1,4 @@
-﻿using BarNone.DataLift.DomainModel.KinectData;
+﻿using BarNone.DataLift.DataModel.KinectData;
 using BarNone.DataLift.UI.Commands;
 using Microsoft.Kinect;
 using System;
@@ -10,11 +10,32 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using BarNone.DataLift.APIRequest;
+using BarNone.Shared.DataTransfer;
+using BarNone.DataLift.UI.Nav;
+using System.ComponentModel;
+using BarNone.DataLift.DataConverters;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
-    internal class DataRecorderVM : ViewModelBase
+    public class DataRecorderVM : ViewModelBase
     {
+        #region Bound Properties
+        private string _LiftName = "";
+        public string LiftName
+        {
+            get => _LiftName;
+            set
+            {
+                if (_LiftName != value)
+                {
+                    _LiftName = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("LiftName"));
+                }
+            }
+        }
+        #endregion
+
         #region Private Properties
         #region Brushes
         /// <summary>
@@ -186,16 +207,21 @@ namespace BarNone.DataLift.UI.ViewModels
 
         private BodyData CurrentRecordingBodyData { get; set; }
 
+        private UserDTO CurrentUser { get; set; }
+
+        private int currentID;
+
         #endregion
 
         #endregion
 
         #region User Control events
-        internal void On_Loaded()
+        internal override void Loaded()
         {
+            LiftName = "";
         }
 
-        internal void On_Closed()
+        internal override void Closed()
         {
             if (Reader != null)
             {
@@ -256,7 +282,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 {
                     CurrentRecordingBodyData = new BodyData()
                     {
-                        ID = 1,
                         RecordDate = DateTime.Now
                     };
                     IsNewRecording = false;
@@ -267,7 +292,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 //  They must first block the camera then reverse until they are spotted (for now)
 
                 var body = Bodies[0];
-                var dataframe = new BodyDataFrame() { ID = 1, TimeOfFrame = DateTime.Now, Joints = body.Joints.ToDictionary(k => k.Key, v => v.Value) };
+                var dataframe = new BodyDataFrame() { TimeOfFrame = DateTime.Now, Joints = body.Joints.ToDictionary(k => k.Key, v => v.Value) };
                 CurrentRecordingBodyData.AddNewFrame(dataframe);
                 //Update The Side And Front Views
                 UpdateFrontView(dataframe, body);
@@ -547,11 +572,80 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
+        #region Start and Finish Recording
+
+        public RelayCommand _StartRecording { get; private set; }
+        public ICommand StartRecording
+        {
+            get
+            {
+                if (_StartRecording == null)
+                {
+                    _StartRecording = new RelayCommand(action => StartNewRecording());
+                }
+                return _StartRecording;
+            }
+        }
+        /// <summary>
+        /// Resets the current recording body when the user wants to begin a lift
+        /// </summary>
+        private void StartNewRecording()
+        {
+            CurrentRecordingBodyData = new BodyData
+            {
+                DataFrames = new List<BodyDataFrame>(),
+                RecordDate = DateTime.Now
+            };
+        }
+
+        public ICommand LogoutCommand { get; } = new RelayCommand(action => PageManager.SwitchPage(UIPages.LoginView));
+
+        public RelayCommand _EndRecording { get; private set; }
+        public ICommand EndRecording
+        {
+            get
+            {
+                if (_EndRecording == null)
+                {
+                    _EndRecording = new RelayCommand(async action => await EndCurrentRecording());
+                }
+                return _EndRecording;
+            }
+        }
+        /// <summary>
+        /// Posts the recorded lift to the server when the user denotes a lift has been completed.
+        /// </summary>
+        /// <returns></returns>
+        private async Task EndCurrentRecording()
+        {
+            //var _bodyData = 
+
+            var toSend = new LiftDTO()
+            {
+                Name = "This is a new lift",
+                Details = new LiftDetailDTO()
+                {
+                    BodyData = new BodyDataDTO()
+                }
+
+            };
+
+            var temp = await DataManager.Bodies.Post(Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData));
+
+            System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp);
+
+            StartNewRecording();
+        }
+
+        #endregion
 
         public string KinectConnected;
 
-        internal DataRecorderVM()
+        public DataRecorderVM()
         {
+            Task.Run(() => SetUser());
+            //Task.Run(() => GetAllLifts());
+
             // one sensor is currently supported
             kinectSensor = KinectSensor.GetDefault();
 
@@ -586,6 +680,24 @@ namespace BarNone.DataLift.UI.ViewModels
 
             // Create an image source that we can use in our image control
             imageSourceSide = new DrawingImage(SideProfileDrawingGroup);
+        }
+
+        private async Task SetUser()
+        {
+            var user = await DataManager.Users.GetAll();
+
+            foreach (UserDTO singleUser in user)
+            {
+                if (LoginScreenVM._Username == singleUser.UserName)
+                    CurrentUser = singleUser;
+            }
+        }
+
+        private async Task GetAllLifts()
+        {
+            var lifts = await DataManager.Lifts.GetAll();
+
+            int currentID = lifts.Count();
         }
 
         private void Reader_MultiSourceFrameArrived(object sender, MultiSourceFrameArrivedEventArgs e)

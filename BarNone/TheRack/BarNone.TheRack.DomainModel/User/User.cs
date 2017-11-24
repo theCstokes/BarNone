@@ -1,19 +1,17 @@
 ﻿using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DomainModel;
-using BarNone.Shared.DomainModel.Core;
-using System;
-using System.Collections.Generic;
+using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DomainModel.Core;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+using System;
 
 namespace BarNone.TheRack.DomainModel
 {
     [Table("User", Schema = "public")]
-    public class User : DomainModel<User, UserDTO>
+    public class User : IDomainModel<User>
     {
         [Key]
-        public override int ID { get; set; }
+        public int ID { get; set; }
 
         public string Name { get; set; }
 
@@ -21,26 +19,12 @@ namespace BarNone.TheRack.DomainModel
 
         public string Password { get; set; }
 
-        protected override UserDTO OnBuildDTO()
+        public static void CreateFromDTO(UserDTO dto, ConvertConfig config)
         {
-            return new UserDTO
-            {
-                ID = ID,
-                Name = Name,
-                UserName = UserName,
-                Password = Password
-            };
+            throw new NotImplementedException();
         }
 
-        protected override void OnPopulate(UserDTO dto, ConvertConfig config = null)
-        {
-            ID = dto.ID;
-            Name = dto.Name;
-            UserName = dto.UserName;
-            Password = dto.Password;
-        }
-
-        //public override UserDTO BuildDTO()
+        //protected override UserDTO OnBuildDTO()
         //{
         //    return new UserDTO
         //    {
@@ -51,7 +35,7 @@ namespace BarNone.TheRack.DomainModel
         //    };
         //}
 
-        //public override void PopulateFromDTO(UserDTO dto)
+        //protected override void OnPopulate(UserDTO dto, ConvertConfig config = null)
         //{
         //    ID = dto.ID;
         //    Name = dto.Name;

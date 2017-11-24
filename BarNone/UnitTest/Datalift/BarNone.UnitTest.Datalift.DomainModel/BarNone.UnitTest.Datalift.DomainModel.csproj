@@ -37,6 +37,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WorkingWithTheRack|AnyCPU'">
+    <OutputPath>bin\WorkingWithTheRack\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DL|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DL\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Kinect, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -57,17 +69,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DataLift\BarNone.DataLift.DomainModel\BarNone.DataLift.DomainModel.csproj">
+    <ProjectReference Include="..\..\..\BarNone.DataLift.DataConverters\BarNone.DataLift.DataConverters.csproj">
+      <Project>{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F}</Project>
+      <Name>BarNone.DataLift.DataConverters</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DataLift\BarNone.DataLift.DomainModel\BarNone.DataLift.DataModel.csproj">
       <Project>{707ade0d-0c8d-4edf-81b9-889b4538efa1}</Project>
-      <Name>BarNone.DataLift.DomainModel</Name>
+      <Name>BarNone.DataLift.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Shared\BarNone.Shared.DataConverter\BarNone.Shared.DataConverter.csproj">
+      <Project>{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}</Project>
+      <Name>BarNone.Shared.DataConverter</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj">
       <Project>{DC7C09E7-27E2-496C-9823-F048BB031174}</Project>
       <Name>BarNone.Shared.DataTransfer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj">
+    <ProjectReference Include="..\..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DTOTransform.csproj">
       <Project>{EE13BDCE-8F4F-46C6-8E36-97EEDAF64F04}</Project>
-      <Name>BarNone.Shared.DomainModel</Name>
+      <Name>BarNone.Shared.DTOTransform</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

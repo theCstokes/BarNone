@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.DataTransfer;
+﻿using BarNone.TheRack.DataConverters;
+using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.DataAccess;
 using BarNone.TheRack.DomainModel;
 using BarNone.TheRack.Repository.Core;
@@ -13,7 +14,7 @@ using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace BarNone.TheRack.Repository
 {
-    public class LiftRepository : BaseRepository<LiftDTO, Lift>
+    public class LiftRepository : BaseRepository<Lift, LiftDTO>
     {
         public LiftRepository() : base(new DomainContext())
         {
@@ -49,6 +50,9 @@ namespace BarNone.TheRack.Repository
             var result = context
                 .Lifts
                 .Include(u => u.Parent)
+                .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints)
+                .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointType)
+                .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointTrackingStateType)
                 .Where(c => c.ID == id).First();
 
             context.SaveChanges();
@@ -58,13 +62,12 @@ namespace BarNone.TheRack.Repository
 
         public override Lift Create(LiftDTO dto)
         {
-            //var entity = _adapter.GetDomainModel(dto);
-            //var result = context.Lifts.Add(entity);
+            var entity = Converters.Convert.Lift.CreateDataModel(dto);
+            var result = context.Lifts.Add(entity);
 
-            //context.SaveChanges();
+            context.SaveChanges();
 
-            //return result.Entity;
-            return null;
+            return result.Entity;
         }
 
         public override Lift Update(int id, LiftDTO dto)

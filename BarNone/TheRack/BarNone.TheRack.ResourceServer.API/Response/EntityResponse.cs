@@ -1,7 +1,9 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DomainModel;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable;
+using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DataConverters;
 using BarNone.TheRack.DomainModel;
+using BarNone.TheRack.DomainModel.Core;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -72,10 +74,11 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(entity, code);
         }
 
-        public static IActionResult Response(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
+        public static IActionResult Response(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK, ConvertConfig config = null)
         {
-            var config = new ConvertConfig();
-            var dto = entity.CreateDTO(config);
+            //if (config == null) config = new ConvertConfig(1);
+
+            var dto = Converters.Convert.GetConverterFromData(entity.GetType()).CreateDTO(entity);
             var response = new EntityDTO
             {
                 Entity = dto
@@ -84,10 +87,13 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
-        public static IActionResult DetailResponse(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK, int? depth = null)
+        public static IActionResult DetailResponse(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK, ConvertConfig config = null)
         {
-            var config = new ConvertConfig(depth);
-            var dto = entity.CreateDTO(config);
+            //if (config == null) config = new ConvertConfig(2);
+
+            //var dto = entity.CreateDTO(config);
+
+            var dto = Converters.Convert.GetConverterFromData(entity.GetType()).CreateDTO(entity);
             var response = new EntityDTO
             {
                 Entity = dto
@@ -102,12 +108,13 @@ namespace TheRack.ResourceServer.API.Response
             {
                 Count = entities.Count(),
                 Entities = entities
+                .Select(entity => Converters.Convert.GetConverterFromData(entity.GetType()).CreateDTO(entity)).ToList()
             };
 
             return CreateResult(response, code);
         }
 
-        public static IActionResult Enumerable(IEnumerable<IDomainModel> entities, HttpStatusCode code = HttpStatusCode.OK)
+        public static IActionResult Enumerable(IEnumerable<IDTOTransformable> entities, HttpStatusCode code = HttpStatusCode.OK)
         {
 
             var response = new EnumerableDTO

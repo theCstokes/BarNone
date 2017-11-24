@@ -1,7 +1,8 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DomainModel;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DomainModel;
+using BarNone.TheRack.DomainModel.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,9 +25,9 @@ namespace BarNone.TheRack.Repository.Core
         IDomainModel Remove(int id);
     }
 
-    public interface IRepository<TDTO, TDomainModel> : IRepository
+    public interface IRepository<TDomainModel, TDTO> : IRepository
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : DomainModel<TDomainModel, TDTO>, new()
+        where TDomainModel : class, IDomainModel<TDomainModel>, new()
     {
         new List<TDomainModel> Get(WhereFunc where = null);
 
@@ -41,17 +42,17 @@ namespace BarNone.TheRack.Repository.Core
         new TDomainModel Remove(int id);
     }
 
-    public interface ITest
-    {
-        dynamic Create<TDTO>(TDTO dto) where TDTO : BaseDTO<TDTO>, new();
-    }
+    //public interface ITest
+    //{
+    //    dynamic Create<TDTO>(TDTO dto) where TDTO : BaseDTO<TDTO>, new();
+    //}
 
-    public class BaseTest<TDTO> : ITest
-        where TDTO : BaseDTO<TDTO>, new()
-    {
-        public dynamic Create<TDTO>(TDTO dto) where TDTO : BaseDTO<TDTO>, new()
-        {
-            throw new NotImplementedException();
-        }
-    }
+    //public class BaseTest<TDTO> : ITest
+    //    where TDTO : BaseDTO<TDTO>, new()
+    //{
+    //    public dynamic Create<TDTO>(TDTO dto) where TDTO : BaseDTO<TDTO>, new()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 }

@@ -1,19 +1,19 @@
 ﻿using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DomainModel.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
 
 namespace BarNone.TheRack.DomainModel.Body
 {
     [Table("BodyDataFrame", Schema = "public")]
-    public class BodyDataFrame : DetailDomainModel<BodyDataFrame, BodyDataFrameDTO, BodyDataFrameDetailDTO>
+    public class BodyDataFrame : IDomainModel<BodyDataFrame>
     {
         [Key]
-        public override int ID { get; set; }
+        public int ID { get; set; }
 
         public DateTime TimeOfFrame { get; set; }
 
@@ -24,40 +24,15 @@ namespace BarNone.TheRack.DomainModel.Body
 
         public BodyData BodyData { get; set; }
 
-        //public BodyDataFrameDetailDTO BuildDetailDTO()
+        //protected override BodyDataFrameDetailDTO OnBuildDetailDTO(ConvertConfig config)
         //{
         //    return new BodyDataFrameDetailDTO
         //    {
-        //        Joints = Joints.Select(j => j.BuildDTO()).ToList()
+        //        Joints = Joints?.Select(j => j.CreateDTO(config)).ToList()
         //    };
         //}
 
-        protected override BodyDataFrameDetailDTO OnBuildDetailDTO(ConvertConfig config)
-        {
-            return new BodyDataFrameDetailDTO
-            {
-                Joints = Joints?.Select(j => j.CreateDTO(config)).ToList()
-            };
-        }
-
-        protected override BodyDataFrameDTO OnBuildDTO()
-        {
-            return new BodyDataFrameDTO
-            {
-                ID = ID,
-                TimeOfFrame = TimeOfFrame,
-                //TimeUntilNextFrame = Tim
-            };
-        }
-
-        protected override void OnPopulate(BodyDataFrameDTO dto, ConvertConfig config = null)
-        {
-            ID = dto.ID;
-            TimeOfFrame = dto.TimeOfFrame;
-            Joints = dto.Details?.Joints.Select(j => Joint.CreateFromDTO(j)).ToList();
-        }
-
-        //public override BodyDataFrameDTO BuildDTO()
+        //protected override BodyDataFrameDTO OnBuildDTO()
         //{
         //    return new BodyDataFrameDTO
         //    {
@@ -66,14 +41,15 @@ namespace BarNone.TheRack.DomainModel.Body
         //    };
         //}
 
-        //public override void PopulateFromDTO(BodyDataFrameDTO dto)
+        //protected override void OnPopulate(BodyDataFrameDTO dto, ConvertConfig config = null)
         //{
-        //    throw new NotImplementedException();
+        //    ID = dto.ID;
+        //    TimeOfFrame = dto.TimeOfFrame;
         //}
 
-        //dynamic IParentDomainModel.BuildDetailDTO()
+        //protected override void OnDetailPopulate(BodyDataFrameDetailDTO dto, ConvertConfig config = null)
         //{
-        //    return BuildDetailDTO();
+        //    Joints = dto.Joints?.Select(j => Joint.CreateFromDTO(j, config)).ToList();
         //}
     }
 }

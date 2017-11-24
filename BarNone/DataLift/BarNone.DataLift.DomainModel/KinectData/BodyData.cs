@@ -1,17 +1,17 @@
-﻿//using BarNone.DataLift.DomainModel.Core;
+﻿using BarNone.DataLift.DomainModel.Core;
 using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace BarNone.DataLift.DomainModel.KinectData
+namespace BarNone.DataLift.DataModel.KinectData
 {
-    public class BodyData : BaseChildDomainModel<BodyData, BodyDataDTO, BodyData, BodyDataDTO>,
-        IDetailDomainModel<BodyDataDTO, BodyDataDetailDTO>
+    public class BodyData : IDataModel<BodyData>
     {
         #region Properties
-        public override int ID { get; set; }
+        public int ID { get; set; }
+
         /// <summary>
         /// The date and time of the record's start time
         /// </summary>
@@ -24,14 +24,7 @@ namespace BarNone.DataLift.DomainModel.KinectData
 
         #endregion
 
-        #region Constructor(s)
-        /// <summary>
-        /// Creates a new Body Data Record
-        /// </summary>
-
-        #endregion
-
-        #region API Method(s)
+        #region Public Member(s).
         /// <summary>
         /// Add a new frame to the Body Data Record
         ///     Appends <paramref name="df"/> to the end of <see cref="DataFrames"/>
@@ -46,62 +39,43 @@ namespace BarNone.DataLift.DomainModel.KinectData
 
             DataFrames.Add(df);
         }
-
-        public override BodyDataDTO BuildDTO()
-        {
-            return new BodyDataDTO
-            {
-                ID = ID,
-                RecordTimeStamp = RecordDate,
-            };
-        }
-
-        public BodyDataDetailDTO BuildDetailDTO()
-        {
-            var ret = new BodyDataDetailDTO()
-            {
-                OrderedFrames = DataFrames?.Select(x => x.BuildDTO()).ToList()
-            };
-
-            DataFrames.Select(x => x?.BuildDetailDTO());
-            return ret;
-
-        }
-
-        public override BodyDataDTO BuildDTO(BodyDataDTO parentDTO)
-        {
-            return new BodyDataDTO
-            {
-                ID = this.ID,
-                RecordTimeStamp = this.RecordDate
-            };
-        }
-
-        public override void PopulateFromDTO(BodyDataDTO dto)
-        {
-            CreateDMfromDTO(dto);
-        }
-
-        public override void PopulateFromDTO(BodyDataDTO dto, BodyData parent)
-        {
-            CreateDMfromDTO(dto);
-        }
-
-        private void CreateDMfromDTO(BodyDataDTO dto)
-        {
-            ID = dto.ID;
-            RecordDate = dto.RecordTimeStamp;
-            DataFrames = dto.Details?.OrderedFrames.Select(
-                joint => BodyDataFrame.CreateFromDTO(joint, this)).ToList();
-        }
-
         #endregion
 
-        #region IDetailDomainModel Implementation.
-        dynamic IDetailDomainModel.BuildDetailDTO()
-        {
-            return BuildDetailDTO();
-        }
-        #endregion
+        //#region Abstract Impl
+        //protected override BodyDataDetailDTO OnBuildDetailDTO(ConvertConfig config)
+        //{
+        //    var ret = new BodyDataDetailDTO()
+        //    {
+        //        OrderedFrames = DataFrames?.Select(x => x.CreateDTO(config)).ToList()
+        //    };
+
+        //    //DataFrames.Select(x => x?.CreateDTO());
+        //    return ret;
+        //}
+
+        //protected override BodyDataDTO OnBuildDTO()
+        //{
+        //    return new BodyDataDTO
+        //    {
+        //        //TODO ID DUH DO IT
+        //        //ID = this.ID, 
+        //        RecordTimeStamp = this.RecordDate
+        //    };
+        //}
+
+        //protected override void OnPopulate(BodyDataDTO dto, ConvertConfig config = null)
+        //{
+        //    RecordDate = dto.RecordTimeStamp;
+        //}
+
+        //protected override void OnDetailPopulate(BodyDataDetailDTO dto, ConvertConfig config = null)
+        //{
+        //    DataFrames = dto.OrderedFrames.Select(
+        //        joint => BodyDataFrame.CreateFromDTO(joint)).ToList();
+        //}
+
+
+
+        //#endregion
     }
 }

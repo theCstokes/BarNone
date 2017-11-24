@@ -1,4 +1,4 @@
-﻿using BarNone.DataLift.DomainModel.KinectData;
+﻿using BarNone.DataLift.DataModel.KinectData;
 using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
@@ -87,7 +87,6 @@ namespace BarNone.DataLift.UI.Drawing
            
         }
         #endregion
-
 
         #region Internal Draws
         /// <summary>

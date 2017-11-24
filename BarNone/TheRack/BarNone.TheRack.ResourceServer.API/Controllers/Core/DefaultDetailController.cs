@@ -1,5 +1,6 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DomainModel.Core;
 using BarNone.TheRack.Repository.Core;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,13 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TheRack.ResourceServer.API.Response;
+using static BarNone.TheRack.Repository.Core.Resolvers;
 
 namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
 {
     public class DefaultDetailController<TDTO, TDomainModel, TRepo> : DetailController<TDTO>
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : DomainModel<TDomainModel, TDTO>, new()
-        where TRepo : BaseRepository<TDTO, TDomainModel>
+        where TDomainModel : class, IDomainModel<TDomainModel>, new()
+        where TRepo : BaseRepository<TDomainModel, TDTO>
     {
 
         #region Public Delegate Definition(s).
@@ -22,12 +24,21 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
 
         #region Private Field(s).
         private RepoBuilder _builder;
+
+        private ConfigResolver _configResolver;
         #endregion
 
         #region Public Constructor(s).
-        public DefaultDetailController(RepoBuilder builder)
+        public DefaultDetailController(RepoBuilder builder, ConfigResolver configResolver = null)
         {
             _builder = builder;
+            if (configResolver != null)
+            {
+                _configResolver = configResolver;
+            } else
+            {
+                _configResolver = () => new ConvertConfig(1);
+            }
         }
         #endregion
 
@@ -60,7 +71,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
         {
             using (var repo = _builder())
             {
-                return EntityResponse.DetailResponse(repo.GetWithDetails(id));
+                return EntityResponse.DetailResponse(repo.GetWithDetails(id), config: _configResolver());
             }
         }
 
@@ -68,7 +79,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
         {
             using (var repo = _builder())
             {
-                return EntityResponse.Response(repo.Create(dto));
+                return EntityResponse.DetailResponse(repo.Create(dto), config: _configResolver());
             }
         }
 

@@ -1,5 +1,5 @@
 {
-    "compileOnSave": false,
+  "compileOnSave": false,
   "compilerOptions": {
     "target": "es6",
     "module": "amd",
@@ -13,12 +13,13 @@
     "alwaysStrict": true,
     "listEmittedFiles": true,
     "allowJs": true,
-    "types": [ "chai" ]
+    "types": [ "mocha", "chai" ]
   },
-    "exclude": [
-        "./node_modules",
-        "./gulpfile.js",
-        "./build",
-        "./libs"
-    ]
+  "exclude": [
+    "./node_modules",
+    "./gulpfile.js",
+    "./build",
+    "./libs",
+    "./index.html"
+  ]
 }

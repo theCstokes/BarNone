@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BarNone.Shared.DataTransfer.Core
+﻿namespace BarNone.Shared.DataTransfer.Core
 {
     public abstract class BaseTypeDTO<TDTO> : BaseDTO<TDTO>
-        where TDTO : new()
+        where TDTO : BaseTypeDTO<TDTO>, new()
     {
         public abstract int Value { get; set; }
 

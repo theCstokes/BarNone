@@ -1,10 +1,11 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BarNone.DataLift.DomainModel.KinectData;
-using System.Collections.Generic;
-using Microsoft.Kinect;
-using BarNone.Shared.DataTransfer.Types;
+﻿using BarNone.DataLift.DataModel.KinectData;
 using BarNone.Shared.DataTransfer;
+using BarNone.Shared.DataTransfer.LiftData;
+using Microsoft.Kinect;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BarNone.UnitTest.DataLift.DomainModel
 {
@@ -15,7 +16,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
         public void BuildDTO_Test()
         {
             var dataFrame = new BodyDataFrame();
-            var dataFrameDTO = dataFrame.BuildDTO();
+            var dataFrameDTO = dataFrame.CreateDTO();
 
             Assert.IsNotNull(dataFrameDTO);
         }
@@ -25,13 +26,10 @@ namespace BarNone.UnitTest.DataLift.DomainModel
         {
             var dataFrame = new BodyDataFrame()
             {
-                ID = 1,
                 TimeOfFrame = DateTime.Now
             };
 
-            var dataFrameDTO = dataFrame.BuildDTO();
-
-            Assert.AreEqual(dataFrame.ID, dataFrameDTO.ID);
+            var dataFrameDTO = dataFrame.CreateDTO();
             Assert.AreEqual(dataFrame.TimeOfFrame, dataFrameDTO.TimeOfFrame);
         }
         
@@ -40,7 +38,6 @@ namespace BarNone.UnitTest.DataLift.DomainModel
         {
             var dataFame = new BodyDataFrame()
             {
-                ID = 1,
                 TimeOfFrame = DateTime.Now,
                 Joints = new Dictionary<JointType, Joint>()
                 {
@@ -49,19 +46,24 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 }
             };
 
-            var dataFameDTO = dataFame.BuildDTO();
-            dataFameDTO.Details = dataFame.BuildDetailDTO();
+            var dataFameDTO = dataFame.CreateDTO();
 
             foreach (KeyValuePair<JointType,Joint> joint in dataFame.Joints)
             {
-                var jointDTO = dataFameDTO.Details.Joints[(DTOJointType)joint.Key];
 
+<<<<<<< HEAD
                 Assert.AreEqual(joint.Value.JointType, (JointType)jointDTO.JointType);
-                Assert.AreEqual(joint.Value.TrackingState, (TrackingState)jointDTO.TrackingState);
+                Assert.AreEqual(joint.Value.TrackingState, (TrackingState)jointDTO.JointTrackingStateType);
+=======
+                var jointDTO = dataFameDTO.Details.Joints.FirstOrDefault(x => x.JointType.Value == (int)joint.Key);
 
-                Assert.AreEqual(joint.Value.Position.X, jointDTO.PositionX);
-                Assert.AreEqual(joint.Value.Position.Y, jointDTO.PositionY);
-                Assert.AreEqual(joint.Value.Position.Z, jointDTO.PositionZ);
+                Assert.AreEqual(joint.Value.JointType, (JointType)Enum.ToObject(typeof(JointType) ,jointDTO.JointType.Value));
+                Assert.AreEqual(joint.Value.TrackingState, (TrackingState)Enum.ToObject(typeof(JointType), jointDTO.TrackingState.Value));
+>>>>>>> develop
+
+                Assert.AreEqual(joint.Value.Position.X, jointDTO.X);
+                Assert.AreEqual(joint.Value.Position.Y, jointDTO.Y);
+                Assert.AreEqual(joint.Value.Position.Z, jointDTO.Z);
             }
         }
 
@@ -74,9 +76,8 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 TimeOfFrame = DateTime.Now,
             };
 
-            var dataFrame = BodyDataFrame.CreateFromDTO(dataFrameDTO);
-
-            Assert.AreEqual(dataFrameDTO.ID, dataFrame.ID);
+            var dataFrame = BodyDataFrame.CreateFromDTO(dataFrameDTO, new Shared.DTOTransformable.Core.ConvertConfig() { Infinite = true});
+            
             Assert.AreEqual(dataFrameDTO.TimeOfFrame, dataFrame.TimeOfFrame);
         }
 
@@ -89,26 +90,40 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 TimeOfFrame = DateTime.Now,
                 Details = new BodyDataFrameDetailDTO()
                 {
-                    Joints = new Dictionary<DTOJointType, JointDTO>()
+                    Joints = new List<JointDTO>()
                     {
-                        {(DTOJointType)0, new JointDTO {JointType = (DTOJointType)0, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = (DTOTrackingState)2} },
-                        {(DTOJointType)1, new JointDTO {JointType = (DTOJointType)1, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = (DTOTrackingState)2} }
+<<<<<<< HEAD
+                        {(DTOJointType)0, new JointDTO {JointType = (DTOJointType)0, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} },
+                        {(DTOJointType)1, new JointDTO {JointType = (DTOJointType)1, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} }
+=======
+                        { new JointDTO {JointType = new JointTypeDTO() { Value = 0}, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = new TrackingStateDTO() { Value = 2} } },
+                        {new JointDTO {JointType = new JointTypeDTO() { Value = 1}, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = new TrackingStateDTO() { Value = 2} } }
+>>>>>>> develop
                     }
                 }
             };
 
             var dataFrame = BodyDataFrame.CreateFromDTO(dataFrameDTO);
 
-            foreach(KeyValuePair<DTOJointType, JointDTO> jointDTO in dataFrameDTO.Details.Joints)
+            foreach(JointDTO jointDTO in dataFrameDTO.Details.Joints)
             {
-                var joint = dataFrame.Joints[(JointType)jointDTO.Key];
+                var joint = dataFrame.Joints[(JointType)jointDTO.JointType.Value];
 
+<<<<<<< HEAD
                 Assert.AreEqual(joint.JointType, (JointType)jointDTO.Value.JointType);
-                Assert.AreEqual(joint.TrackingState, (TrackingState)jointDTO.Value.TrackingState);
+                Assert.AreEqual(joint.TrackingState, (TrackingState)jointDTO.Value.JointTrackingStateType);
 
-                Assert.AreEqual(joint.Position.X, jointDTO.Value.PositionX);
-                Assert.AreEqual(joint.Position.Y, jointDTO.Value.PositionY);
-                Assert.AreEqual(joint.Position.Z, jointDTO.Value.PositionZ);
+                Assert.AreEqual(joint.Position.X, jointDTO.Value.X);
+                Assert.AreEqual(joint.Position.Y, jointDTO.Value.Y);
+                Assert.AreEqual(joint.Position.Z, jointDTO.Value.Z);
+=======
+                Assert.AreEqual(joint.JointType, (JointType)Enum.ToObject(typeof(JointType),jointDTO.JointType.Value));
+                Assert.AreEqual(joint.TrackingState, (TrackingState)Enum.ToObject(typeof(TrackingState),jointDTO.TrackingState.Value));
+
+                Assert.AreEqual(joint.Position.X, jointDTO.PositionX);
+                Assert.AreEqual(joint.Position.Y, jointDTO.PositionY);
+                Assert.AreEqual(joint.Position.Z, jointDTO.PositionZ);
+>>>>>>> develop
             }
         }
     }

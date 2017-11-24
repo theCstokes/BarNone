@@ -1,6 +1,6 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
 using BarNone.Shared.DataTransfer.Response;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.Core;
 using Newtonsoft.Json;
 using System;

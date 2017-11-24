@@ -1,42 +1,54 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DomainModel.Core;
+using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using BarNone.TheRack.DomainModel.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static BarNone.TheRack.Repository.Core.Resolvers;
+using BarNone.Shared.DataConverter;
+using BarNone.TheRack.DataConverters;
 
 namespace BarNone.TheRack.Repository.Core
 {
-    public class DefaultDetailRepository<TDTO, TDomainModel> : BaseRepository<TDTO, TDomainModel>
-        where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : DomainModel<TDomainModel, TDTO>, new()
+    public abstract class DefaultDetailRepository<TDomainModel, TDTO, TDetailDTO> : BaseRepository<TDomainModel, TDTO>
+        where TDTO : BaseParentDTO<TDTO, TDetailDTO>, new()
+        where TDetailDTO : BaseDetailDTO<TDetailDTO>, new()
+        where TDomainModel : class, IDomainModel<TDomainModel>, new()
     {
 
         #region Public Delegate Definition(s).
         public delegate DbSet<TDomainModel> DbSetResolver(DomainContext context);
 
         public delegate IQueryable<TDomainModel> DetailResolver(IQueryable<TDomainModel> set);
+
+        public delegate BaseDetailDataConverter<TDomainModel, TDTO, TDetailDTO, Converters> ConverterResolver();
         #endregion
 
         #region Private Field(s).
         private DbSetResolver _resolver;
         private DetailResolver[] _detailResolvers;
+        private ConfigResolver _configResolver;
+        protected abstract ConverterResolver DetailDataConverterResolver { get; }
+        protected abstract DetailResolver DetailDataResolver { get; }
         #endregion
 
         #region Public Constructor(s).
-        public DefaultDetailRepository(DbSetResolver resolver, params DetailResolver[] detailResolvers)
+        public DefaultDetailRepository(ConfigResolver configResolver, DbSetResolver resolver, params DetailResolver[] detailResolvers)
             : base(new DomainContext())
         {
+            _configResolver = configResolver;
             _resolver = resolver;
             _detailResolvers = detailResolvers;
         }
 
-        public DefaultDetailRepository(DomainContext context, DbSetResolver resolver,
+        public DefaultDetailRepository(DomainContext context, ConfigResolver configResolver, DbSetResolver resolver,
             params DetailResolver[] detailResolvers)
             : base(context)
         {
+            _configResolver = configResolver;
             _resolver = resolver;
             _detailResolvers = detailResolvers;
         }
@@ -44,11 +56,28 @@ namespace BarNone.TheRack.Repository.Core
 
         public override TDomainModel Create(TDTO dto)
         {
-            var dm = DomainModel<TDomainModel, TDTO>.CreateFromDTO(dto);
-            var result = _resolver(context).Add(dm);
+            var config = _configResolver();
+
+            var dm = DetailDataConverterResolver().CreateDataModel(dto);
+
+            //var result = _resolver(context).Add(dm);
+
+            var dataSet = _resolver(context);
+
+            //var q = dataSet.AsQueryable();
+
+            //if (_detailResolvers.Count() > 0)
+            //{
+            //    q = _detailResolvers.Aggregate(q, (result, resolver) =>
+            //    {
+            //        return resolver(result);
+            //    });
+            //}
+
+            var createResult = dataSet.Add(dm);
 
             context.SaveChanges();
-            return result.Entity;
+            return createResult.Entity;
         }
 
         public override List<TDomainModel> Get(FilterDTO.WhereFunc where = null)
@@ -102,7 +131,11 @@ namespace BarNone.TheRack.Repository.Core
 
             dto.ID = id;
 
-            var dm = DomainModel<TDomainModel, TDTO>.CreateFromDTO(dto);
+            var config = _configResolver();
+
+            //var dm = DTOTransformable<TDomainModel, TDTO>.CreateFromDTO(dto, config);
+
+            var dm = DetailDataConverterResolver().CreateDataModel(dto);
             var result = _resolver(context).Update(dm);
 
             context.SaveChanges();

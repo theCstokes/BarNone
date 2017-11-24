@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BarNone.DataLift.UI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
@@ -30,8 +31,9 @@ namespace BarNone.DataLift.UI.Views
             if (this.DataContext != null)
             {
                 ((dynamic)this.DataContext).Password = new SecureString();
+                var vm = (ViewModelBase)DataContext;
+                Loaded += (a, b) => vm.Loaded();
             }
-
         }
 
         private void PasswordBoxChangedEvent(object sender, RoutedEventArgs e)
