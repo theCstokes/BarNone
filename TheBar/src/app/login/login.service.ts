@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter  } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface LoginResponse {
   authorized : boolean,
@@ -24,14 +24,19 @@ export class LoginService {
 
 authenticate(username: string, password: string){
   let request : LoginRequest = {userName : username, password : password}
-  if (request.userName == "u" && request.password =="p"){
-    this.user_authenticated.emit();
-    console.log("Emitting");
-    return;    
-  }
-  this.http.post<LoginResponse>('/api/v1/Authorization/Login', request).subscribe(response => {
-    if (response.authorized){
+  let body = new URLSearchParams();
+  body.set('userName', username);
+  body.set('password', password);
+  
+  let options = {
+      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+  };
+  
+  this.http.post<LoginResponse>('/api/v1/Authorization/Login', body.toString(), options).subscribe(response => {
+  console.log(response);  
+  if (response.authorized){
       this.access_token = response.access_token;
+      this.user_authenticated.emit();
     }
   });
 }
