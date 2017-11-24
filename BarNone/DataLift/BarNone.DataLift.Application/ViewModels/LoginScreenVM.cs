@@ -86,24 +86,7 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         #endregion
-
-        #region Helpers
-        static string ConvertSecure(SecureString value)
-        {
-            IntPtr bstr = Marshal.SecureStringToBSTR(value);
-
-            try
-            {
-                return Marshal.PtrToStringBSTR(bstr);
-            }
-            finally
-            {
-                Marshal.FreeBSTR(bstr);
-            }
-        }
-
-        #endregion
-
+        
         #region CleanUp
         //Destructor to ensure the password is removed from the system
         ~LoginScreenVM()

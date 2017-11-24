@@ -56,7 +56,7 @@
 
                         <!--Password Input Area-->
                         <!--<PasswordChanged="PasswordBoxChangedEvent"-->
-                        <PasswordBox x:Name="LoginPassword"  Grid.Row="1"  Margin="40,0,40,0" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" HorizontalAlignment="Stretch" FontSize="18" VerticalAlignment="Top" >
+                        <PasswordBox x:Name="LoginPassword" Grid.Row="1"  Margin="40,0,40,0" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" PasswordChanged="PasswordBoxChangedEvent" HorizontalAlignment="Stretch" FontSize="18" VerticalAlignment="Top" >
                             <materialDesign:HintAssist.Hint>
                                 <StackPanel Orientation="Horizontal" >
                                     <materialDesign:PackIcon Kind="Key" />
@@ -65,7 +65,7 @@
                             </materialDesign:HintAssist.Hint>
                         </PasswordBox>
 
-                        <PasswordBox x:Name="ConfirmPassword"  Grid.Row="2"  Margin="40,0,40,0" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" HorizontalAlignment="Stretch" FontSize="18" VerticalAlignment="Top" >
+                        <PasswordBox x:Name="ConfirmPassword" Grid.Row="2"  Margin="40,0,40,0" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"  PasswordChanged="PasswordConfirmBoxChangedEvent" HorizontalAlignment="Stretch" FontSize="18" VerticalAlignment="Top" >
                             <materialDesign:HintAssist.Hint>
                                 <StackPanel Orientation="Horizontal" >
                                     <materialDesign:PackIcon Kind="Key" />

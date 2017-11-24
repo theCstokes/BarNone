@@ -1,4 +1,6 @@
-﻿using BarNone.DataLift.UI.ViewModels;
+﻿using BarNone.DataLift.APIRequest;
+using BarNone.DataLift.UI.ViewModels;
+using BarNone.Shared.DataTransfer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +29,25 @@ namespace BarNone.DataLift.UI.Views
 
             var vm = DataContext as ViewModelBase;
             Loaded += (a, b) => vm.Loaded();
+            Loaded += (a, b) => LoginPassword.Clear();
+            Loaded += (a, b) => ConfirmPassword.Clear();
 
+        }
+
+        private void PasswordBoxChangedEvent(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                ((dynamic)DataContext).Password = ((PasswordBox)sender).SecurePassword;
+            }
+        }
+        
+        private void PasswordConfirmBoxChangedEvent(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                ((dynamic)DataContext).ConfirmPassword = ((PasswordBox)sender).SecurePassword;
+            }
         }
     }
 }

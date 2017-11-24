@@ -7,16 +7,90 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.ComponentModel;
+using System.Security;
+using BarNone.DataLift.APIRequest;
+using BarNone.Shared.DataTransfer;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
     public class RegisterScreenVM : ViewModelBase
     {
-        public string Username { get; set; }
+        #region Bound Properties
+        internal static string _Username = "";
+        public string Username
+        {
+            get => _Username;
+            set
+            {
+                if (_Username != value)
+                {
+                    _Username = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("Username"));
+                }
+            }
+        }
+
+        private SecureString _Password = new SecureString();
+        public SecureString Password
+        {
+            get => _Password;
+            set
+            {
+                if (_Password != value)
+                {
+                    _Password = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("Password"));
+                }
+            }
+        }
+
+
+        private SecureString _ConfirmPassword = new SecureString();
+        public SecureString ConfirmPassword
+        {
+            get => _ConfirmPassword;
+            set
+            {
+                if (_ConfirmPassword != value)
+                {
+                    _ConfirmPassword = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("ConfirmPassword"));
+                }
+            }
+        }
+
+
+        #endregion
+
+        #region Commands
 
         public ICommand BackCommand { get; } = new RelayCommand(action => PageManager.SwitchPage(UIPages.LoginView));
 
-        public ICommand RegisterCommand { get; } = new RelayCommand(action => System.Diagnostics.Debug.WriteLine("Not Implemented Register Command!"));
-        
+        public RelayCommand _RegisterCommand;
+
+        public ICommand RegisterCommand
+        {
+            get
+            {
+                if (_RegisterCommand == null)
+                {
+                    _RegisterCommand = new RelayCommand(async action => 
+                    {
+                        await TMP();
+                    });
+                }
+                return _RegisterCommand;
+            }
+        }
+
+        public async Task TMP()
+        {
+            var a = await DataManager.Users.Post(new UserDTO() { UserName = Username, Password = ConvertSecure(Password) });
+            PageManager.SwitchPage(UIPages.LoginView);
+        }
+
+
+        #endregion
+
     }
 }
