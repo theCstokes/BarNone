@@ -15,30 +15,21 @@ namespace BarNone.TheRack.Repository
 {
     public class BodyDataRepository : DefaultDetailRepository<BodyData, BodyDataDTO, BodyDataDetailDTO>
     {
-        public BodyDataRepository() : base(
-            () => new ConvertConfig(),
-            c => c.Bodies,
-            s => s.Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointType))
+        public BodyDataRepository() : base()
         {
         }
 
-        public BodyDataRepository(DomainContext context) : base(
-            context,
-            () => new ConvertConfig(),
-            c => c.Bodies,
-            s => s.Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointType))
+        public BodyDataRepository(DomainContext context) : base(context)
         {
 
         }
 
         protected override ConverterResolver DetailDataConverterResolver => () => Converters.Convert.BodyData;
 
-        protected override DetailResolver DetailDataResolver => (s) =>
-        {
-            var q = s.Include(b => b.BodyDataFrames).ThenInclude(f => f.Joints);
-            q.ThenInclude(j => j.JointType);
-            q.ThenInclude(j => j.JointTrackingStateType);
-            return q;
-        };
+        protected override DbSetResolver SetResolver => (context) => context.Bodies;
+
+        protected override Resolver DetailDataResolver => (s) => s
+                .Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointType)
+                .Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointTrackingStateType);
     }
 }

@@ -24,21 +24,12 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
 
         #region Private Field(s).
         private RepoBuilder _builder;
-
-        private ConfigResolver _configResolver;
         #endregion
 
         #region Public Constructor(s).
-        public DefaultDetailController(RepoBuilder builder, ConfigResolver configResolver = null)
+        public DefaultDetailController(RepoBuilder builder)
         {
             _builder = builder;
-            if (configResolver != null)
-            {
-                _configResolver = configResolver;
-            } else
-            {
-                _configResolver = () => new ConvertConfig(1);
-            }
         }
         #endregion
 
@@ -71,7 +62,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
         {
             using (var repo = _builder())
             {
-                return EntityResponse.DetailResponse(repo.GetWithDetails(id), config: _configResolver());
+                return EntityResponse.DetailResponse(repo.GetWithDetails(id));
             }
         }
 
@@ -79,7 +70,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
         {
             using (var repo = _builder())
             {
-                return EntityResponse.DetailResponse(repo.Create(dto), config: _configResolver());
+                return EntityResponse.DetailResponse(repo.Create(dto));
             }
         }
 

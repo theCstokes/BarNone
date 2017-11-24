@@ -22,57 +22,42 @@ namespace BarNone.TheRack.Repository.Core
         #region Public Delegate Definition(s).
         public delegate DbSet<TDomainModel> DbSetResolver(DomainContext context);
 
-        public delegate IQueryable<TDomainModel> DetailResolver(IQueryable<TDomainModel> set);
+        //public delegate IQueryable<TDomainModel> DetailResolver(IQueryable<TDomainModel> set);
 
         public delegate BaseDetailDataConverter<TDomainModel, TDTO, TDetailDTO, Converters> ConverterResolver();
+
+        public delegate IQueryable<TDomainModel> Resolver(DbSet<TDomainModel> set);
         #endregion
 
         #region Private Field(s).
-        private DbSetResolver _resolver;
-        private DetailResolver[] _detailResolvers;
-        private ConfigResolver _configResolver;
+        //private DbSetResolver _resolver;
+        //private DetailResolver[] _detailResolvers;
+        //private ConfigResolver _configResolver;
+
+
         protected abstract ConverterResolver DetailDataConverterResolver { get; }
-        protected abstract DetailResolver DetailDataResolver { get; }
+        protected abstract DbSetResolver SetResolver { get; }
+        protected abstract Resolver DetailDataResolver { get; }
         #endregion
 
         #region Public Constructor(s).
-        public DefaultDetailRepository(ConfigResolver configResolver, DbSetResolver resolver, params DetailResolver[] detailResolvers)
-            : base(new DomainContext())
+
+
+        public DefaultDetailRepository() : base(new DomainContext())
         {
-            _configResolver = configResolver;
-            _resolver = resolver;
-            _detailResolvers = detailResolvers;
         }
 
-        public DefaultDetailRepository(DomainContext context, ConfigResolver configResolver, DbSetResolver resolver,
-            params DetailResolver[] detailResolvers)
-            : base(context)
+        public DefaultDetailRepository(DomainContext context) : base(context)
         {
-            _configResolver = configResolver;
-            _resolver = resolver;
-            _detailResolvers = detailResolvers;
         }
         #endregion
 
         public override TDomainModel Create(TDTO dto)
         {
-            var config = _configResolver();
 
             var dm = DetailDataConverterResolver().CreateDataModel(dto);
 
-            //var result = _resolver(context).Add(dm);
-
-            var dataSet = _resolver(context);
-
-            //var q = dataSet.AsQueryable();
-
-            //if (_detailResolvers.Count() > 0)
-            //{
-            //    q = _detailResolvers.Aggregate(q, (result, resolver) =>
-            //    {
-            //        return resolver(result);
-            //    });
-            //}
+            var dataSet = SetResolver(context);
 
             var createResult = dataSet.Add(dm);
 
@@ -82,33 +67,28 @@ namespace BarNone.TheRack.Repository.Core
 
         public override List<TDomainModel> Get(FilterDTO.WhereFunc where = null)
         {
+            var set = SetResolver(context);
+
             if (where != null)
             {
-                return _resolver(context)
+                return set
                     .Where(b => where(b))
                     .ToList();
             }
-            return _resolver(context).ToList();
+
+            return set.ToList();
         }
 
         public override TDomainModel Get(int id)
         {
-            return _resolver(context).Where(b => b.ID == id).FirstOrDefault();
+            return SetResolver(context).Where(b => b.ID == id).FirstOrDefault();
         }
 
         public override TDomainModel GetWithDetails(int id)
         {
-            var dataSet = _resolver(context);
+            var set = SetResolver(context);
 
-            var q = dataSet.AsQueryable();
-
-            if (_detailResolvers.Count() > 0)
-            {
-                q = _detailResolvers.Aggregate(q, (result, resolver) =>
-                {
-                    return resolver(result);
-                });
-            }
+            var q = DetailDataResolver(set);
 
             return q
                 .Where(b => b.ID == id)
@@ -131,12 +111,8 @@ namespace BarNone.TheRack.Repository.Core
 
             dto.ID = id;
 
-            var config = _configResolver();
-
-            //var dm = DTOTransformable<TDomainModel, TDTO>.CreateFromDTO(dto, config);
-
             var dm = DetailDataConverterResolver().CreateDataModel(dto);
-            var result = _resolver(context).Update(dm);
+            var result = SetResolver(context).Update(dm);
 
             context.SaveChanges();
             return result.Entity;

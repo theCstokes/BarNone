@@ -11,12 +11,13 @@ using System.Text;
 using System.Transactions;
 using System.Xml.Linq;
 using static BarNone.Shared.DataTransfer.Core.FilterDTO;
+using BarNone.Shared.DTOTransformable.Core;
 
 namespace BarNone.TheRack.Repository
 {
-    public class LiftRepository : BaseRepository<Lift, LiftDTO>
+    public class LiftRepository : DefaultDetailRepository<Lift, LiftDTO, LiftDetailDTO>
     {
-        public LiftRepository() : base(new DomainContext())
+        public LiftRepository() : base()
         {
         }
 
@@ -25,73 +26,13 @@ namespace BarNone.TheRack.Repository
 
         }
 
-        public override List<Lift> Get(WhereFunc where = null)
-        {
-            if (where != null)
-            {
-                return context.Lifts
-                    .Where((l) => where(l))
-                    .ToList();
-            }
-            return context.Lifts.ToList();
-        }
+        protected override ConverterResolver DetailDataConverterResolver => () => Converters.Convert.Lift;
 
-        public override Lift Get(int id)
-        {
-            var result = context.Lifts.Where(c => c.ID == id).First();
+        protected override DbSetResolver SetResolver => (context) => context.Lifts;
 
-            context.SaveChanges();
-
-            return result;
-        }
-
-        public override Lift GetWithDetails(int id)
-        {
-            var result = context
-                .Lifts
-                .Include(u => u.Parent)
+        protected override Resolver DetailDataResolver => (s) => s.Include(u => u.Parent)
                 .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints)
                 .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointType)
-                .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointTrackingStateType)
-                .Where(c => c.ID == id).First();
-
-            context.SaveChanges();
-
-            return result;
-        }
-
-        public override Lift Create(LiftDTO dto)
-        {
-            var entity = Converters.Convert.Lift.CreateDataModel(dto);
-            var result = context.Lifts.Add(entity);
-
-            context.SaveChanges();
-
-            return result.Entity;
-        }
-
-        public override Lift Update(int id, LiftDTO dto)
-        {
-            //var entity = _adapter.GetDomainModel(dto);
-            //entity.ID = id;
-            //var result = context.Lifts.Update(entity);
-
-            //context.SaveChanges();
-
-            //return result.Entity;
-            return null;
-        }
-
-        public override Lift Remove(int id)
-        {
-            var result = context.Lifts.Remove(new Lift
-            {
-                ID = id
-            });
-
-            context.SaveChanges();
-
-            return result.Entity;
-        }
+                .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointTrackingStateType);
     }
 }
