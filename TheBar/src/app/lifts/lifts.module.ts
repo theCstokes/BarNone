@@ -5,6 +5,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import {LiftsComponent } from './lifts.component';
 
+import {LiftsService} from './lifts.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -12,8 +14,9 @@ import {LiftsComponent } from './lifts.component';
     MatGridListModule,
     MatButtonModule 
   ],
+  providers: [LiftsService],
   declarations: [
-    LiftsComponent
+  LiftsComponent
   ]
 })
 export class LiftsModule { }
