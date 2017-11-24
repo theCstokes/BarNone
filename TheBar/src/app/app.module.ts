@@ -10,7 +10,9 @@ import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule, Routes } from '@angular/router';
 import { UserComponent } from './user/user.component';
-import { LiftsComponent } from './lifts/lifts.component';
+import { UserModule } from './user/user.module';
+import { LiftsComponent} from './lifts/lifts.component';
+import { LiftsModule} from './lifts/lifts.module';
 import { WelcomeComponent } from './welcome/welcome.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
@@ -24,8 +26,6 @@ const routes = [
   declarations: [
     AppComponent,
     LoginDialogComponent,
-    UserComponent,
-    LiftsComponent,
     WelcomeComponent
   ],
   imports: [
@@ -37,6 +37,8 @@ const routes = [
     MatIconModule,
     MatListModule,
     MatToolbarModule,
+    UserModule,
+    LiftsModule,
     RouterModule.forRoot(routes,{ enableTracing: true })
   ],
   providers: [MatIconRegistry],

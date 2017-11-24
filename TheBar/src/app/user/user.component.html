@@ -1,3 +1,15 @@
-<p>
-  user works!
-</p>
+<mat-card>
+  <mat-card-title>
+      <span>User Profile</span>
+  </mat-card-title>
+  <mat-tab-group>
+      <mat-tab label="User Information">  <mat-card-content >
+          <img src="assets/Default.png" alt="Default User" width="300" height="300">
+          <div><h4>Name: {{User}}</h4>
+            <h4>Sex: {{User}}</h4>
+            
+            </div>
+    </mat-card-content></mat-tab>
+      <mat-tab label="Account Settings">Content 2</mat-tab>
+    </mat-tab-group>
+</mat-card>
