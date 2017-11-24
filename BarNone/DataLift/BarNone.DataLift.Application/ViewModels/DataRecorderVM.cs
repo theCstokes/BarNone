@@ -599,21 +599,23 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             //var _bodyData = 
 
-            var toSend = new LiftDTO()
-            {
-                Name = "This is a new lift",
-                Details = new LiftDetailDTO()
-                {
-                    BodyData = new BodyDataDTO()
-                }
+            //var toSend = new LiftDTO()
+            //{
+            //    Name = "This is a new lift",
+            //    Details = new LiftDetailDTO()
+            //    {
+            //        BodyData = new BodyDataDTO()
+            //    }
                 
-            };
+            //};
 
-            toSend.Details.BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
+           //var bodyData = ;
 
-            var send = await DataManager.Lifts.Post(toSend);
+            var send = await DataManager.Bodies.Post(Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData));
 
-            System.Diagnostics.Debug.WriteLine("The lift with the name {0} was sent to the server", toSend.Name);
+            System.Diagnostics.Debug.WriteLine("The lift with the name was sent to the server");
+
+            StartNewRecording();
         }
 
         #endregion
