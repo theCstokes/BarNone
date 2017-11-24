@@ -24,21 +24,12 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
 
         #region Private Field(s).
         private RepoBuilder _builder;
-
-        //private ConfigResolver _configResolver;
         #endregion
 
         #region Public Constructor(s).
         public DefaultDetailController(RepoBuilder builder)
         {
             _builder = builder;
-            //if (configResolver != null)
-            //{
-            //    _configResolver = configResolver;
-            //} else
-            //{
-            //    _configResolver = () => new ConvertConfig(1);
-            //}
         }
         #endregion
 

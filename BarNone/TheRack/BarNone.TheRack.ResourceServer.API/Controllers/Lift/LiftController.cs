@@ -13,6 +13,9 @@ using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.DomainModel;
 using BarNone.TheRack.ResourceServer.API.Controllers;
 using BarNone.TheRack.ResourceServer.API.Controllers.Core;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
@@ -20,115 +23,36 @@ namespace TheRack.ResourceServer.API.Controllers
     [Authorize(Policy = "User")]
     public class LiftController : DefaultDetailController<LiftDTO, Lift, LiftRepository>
     {
-        public LiftController(): base(() => new LiftRepository())
+        public LiftController() : base(() => new LiftRepository())
         {
 
         }
+
+        [HttpPost]
+        public override IActionResult Post([FromBody] LiftDTO dto)
+        {
+            if (dto == null)
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    HttpContext.Request.Body.CopyTo(ms);
+                    byte[] data = ms.ToArray();
+                    var jsonString = Encoding.ASCII.GetString(data);
+                    dto = JsonConvert.DeserializeObject<LiftDTO>(jsonString);
+                }
+            }
+
+            try
+            {
+                using (LiftRepository repository = new LiftRepository())
+                {
+                    return EntityResponse.Response(repository.Create(dto));
+                }
+            }
+            catch (Exception e)
+            {
+                return EntityResponse.Error(e);
+            }
+        }
     }
-
-    //    : BaseController
-    //{
-    //    [HttpGet]
-    //    public IActionResult GetAll()
-    //    {
-    //        try
-    //        {
-    //            using (LiftRepository repository = new LiftRepository())
-    //            {
-    //                var filter = FilterRequest;
-    //                if (filter != null)
-    //                {
-    //                    return EntityResponse.Response(repository.Get(filter.GetWhere()));
-    //                }
-
-    //                return EntityResponse.Response(repository.Get());
-    //            }
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            return EntityResponse.Error(e);
-    //        }
-    //    }
-
-    //    [HttpGet("{id}")]
-    //    public IActionResult Get(int id)
-    //    {
-    //        try
-    //        {
-    //            using (LiftRepository repository = new LiftRepository())
-    //            {
-    //                return EntityResponse.Response(repository.Get(id));
-    //            }
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            return EntityResponse.Error(e);
-    //        }
-    //    }
-
-    //    [HttpGet("{id}/Detail")]
-    //    public IActionResult GetWithDetails(int id)
-    //    {
-    //        try
-    //        {
-    //            using (LiftRepository repository = new LiftRepository())
-    //            {
-    //                var lift = repository.GetWithDetails(id);
-    //                return EntityResponse.DetailResponse(lift);
-    //            }
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            return EntityResponse.Error(e);
-    //        }
-    //    }
-
-    //    [HttpPost]
-    //    public IActionResult Post([FromBody] LiftDTO value)
-    //    {
-    //        try
-    //        {
-    //            using (LiftRepository repository = new LiftRepository())
-    //            {
-    //                    return EntityResponse.Response(repository.Create(value));
-    //            }
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            return EntityResponse.Error(e);
-    //        }
-    //    }
-
-    //    [HttpPut("{id}")]
-    //    public IActionResult Put(int id, [FromBody] LiftDTO value)
-    //    {
-    //        try
-    //        {
-    //            using (LiftRepository repository = new LiftRepository())
-    //            {
-    //                return EntityResponse.Response(repository.Update(id, value));
-    //            }
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            return EntityResponse.Error(e);
-    //        }
-    //    }
-
-    //    [HttpDelete("{id}")]
-    //    public IActionResult Delete(int id)
-    //    {
-    //        try
-    //        {
-    //            using (LiftRepository repository = new LiftRepository())
-    //            {
-    //                return EntityResponse.Response(repository.Remove(id));
-    //            }
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            return EntityResponse.Error(e);
-    //        }
-    //    }
-    //}
 }

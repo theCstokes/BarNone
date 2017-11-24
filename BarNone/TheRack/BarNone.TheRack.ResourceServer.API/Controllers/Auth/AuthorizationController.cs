@@ -123,6 +123,7 @@ namespace TheRack.ResourceServer.API.Controllers
             // Serialize and return the response
             var response = new
             {
+                authorized = true,
                 access_token = encodedJwt,
                 expires_in = (int)_jwtOptions.ValidFor.TotalSeconds
             };
