@@ -12,22 +12,22 @@ namespace BarNone.TheRack.Repository.Core
 {
     public interface IRepository
     {
-        List<IDTOTransformable> Get(WhereFunc where = null);
+        List<IDomainModel> Get(WhereFunc where = null);
 
-        IDTOTransformable Get(int id);
+        IDomainModel Get(int id);
 
-        IDTOTransformable GetWithDetails(int id);
+        IDomainModel GetWithDetails(int id);
 
-        IDTOTransformable Create(dynamic dto);
+        IDomainModel Create(dynamic dto);
 
-        IDTOTransformable Update(int id, dynamic dto);
+        IDomainModel Update(int id, dynamic dto);
 
-        IDTOTransformable Remove(int id);
+        IDomainModel Remove(int id);
     }
 
-    public interface IRepository<TDTO, TDomainModel> : IRepository
+    public interface IRepository<TDomainModel, TDTO> : IRepository
         where TDTO : BaseDTO<TDTO>, new()
-        where TDomainModel : class, IDomainModel<TDomainModel, TDTO>, new()
+        where TDomainModel : class, IDomainModel<TDomainModel>, new()
     {
         new List<TDomainModel> Get(WhereFunc where = null);
 
@@ -42,17 +42,17 @@ namespace BarNone.TheRack.Repository.Core
         new TDomainModel Remove(int id);
     }
 
-    public interface ITest
-    {
-        dynamic Create<TDTO>(TDTO dto) where TDTO : BaseDTO<TDTO>, new();
-    }
+    //public interface ITest
+    //{
+    //    dynamic Create<TDTO>(TDTO dto) where TDTO : BaseDTO<TDTO>, new();
+    //}
 
-    public class BaseTest<TDTO> : ITest
-        where TDTO : BaseDTO<TDTO>, new()
-    {
-        public dynamic Create<TDTO>(TDTO dto) where TDTO : BaseDTO<TDTO>, new()
-        {
-            throw new NotImplementedException();
-        }
-    }
+    //public class BaseTest<TDTO> : ITest
+    //    where TDTO : BaseDTO<TDTO>, new()
+    //{
+    //    public dynamic Create<TDTO>(TDTO dto) where TDTO : BaseDTO<TDTO>, new()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 }

@@ -1,6 +1,8 @@
-﻿using BarNone.DataLift.DataModel.KinectData;
+﻿using BarNone.DataLift.DataConverters;
+using BarNone.DataLift.DataModel.KinectData;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.LiftData;
+using BarNone.Shared.DTOTransformable.Core;
 using Microsoft.Kinect;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -15,7 +17,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
         public void BuildBodyData_Test()
         {
             var bodyData = new BodyData();
-            var bodyDataDTO = bodyData.CreateDTO();
+            var bodyDataDTO = Converters.Convert.BodyData.CreateDTO(bodyData); //.CreateDTO(new ConvertConfig());
 
             Assert.IsNotNull(bodyDataDTO);
         }
@@ -29,7 +31,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 DataFrames = null
             };
 
-            var bodyDataDTO = bodyData.CreateDTO();
+            var bodyDataDTO = Converters.Convert.BodyData.CreateDTO(bodyData);
 
             Assert.AreEqual(bodyData.RecordDate, bodyDataDTO.RecordTimeStamp);
         }
@@ -53,7 +55,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 }
             };
 
-            var bodyDataDTO = bodyData.CreateDTO();
+            var bodyDataDTO = Converters.Convert.BodyData.CreateDTO(bodyData);
 
             Assert.AreEqual(bodyData.RecordDate, bodyDataDTO.RecordTimeStamp);
 
@@ -76,7 +78,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 Details = null
             };
 
-            var bodyData = BodyData.CreateFromDTO(bodyDataDTO);
+            var bodyData = Converters.Convert.BodyData.CreateDataModel(bodyDataDTO);
 
             Assert.AreEqual(bodyDataDTO.RecordTimeStamp, bodyData.RecordDate);
         }
@@ -101,7 +103,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                                 Joints = new List<JointDTO>()
                                 {
                                     { new JointDTO {JointType = new JointTypeDTO() { Value = 0}, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = new TrackingStateDTO() { Value = 2} } },
-                                    {new JointDTO {JointType = new JointTypeDTO() { Value = 1}, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = new TrackingStateDTO() { Value = 2} } }
+                                    { new JointDTO {JointType = new JointTypeDTO() { Value = 1}, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = new TrackingStateDTO() { Value = 2} } }
                                 }
                             }
                         },
@@ -122,7 +124,7 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 }
             };
 
-            var bodyData = BodyData.CreateFromDTO(bodyDataDTO);
+            var bodyData = Converters.Convert.BodyData.CreateDataModel(bodyDataDTO);
             
             Assert.AreEqual(bodyData.RecordDate, bodyDataDTO.RecordTimeStamp);
 

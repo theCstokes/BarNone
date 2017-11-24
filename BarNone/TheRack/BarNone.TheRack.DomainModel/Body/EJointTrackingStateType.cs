@@ -1,6 +1,6 @@
 ﻿namespace BarNone.TheRack.DomainModel.Body
 {
-    public enum EJointTrackingState
+    public enum EJointTrackingStateType
     {
         //
         // Summary:

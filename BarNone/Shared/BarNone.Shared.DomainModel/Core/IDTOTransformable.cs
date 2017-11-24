@@ -4,7 +4,7 @@ namespace BarNone.Shared.DTOTransformable.Core
 {
     public interface IDTOTransformable
     {
-        dynamic CreateDTO(ConvertConfig config = null);
+        dynamic CreateDTO(ConvertConfig config);
     }
 
     public interface IDTOTransformable<TDTO> : IDTOTransformable
@@ -12,6 +12,6 @@ namespace BarNone.Shared.DTOTransformable.Core
     {
         new TDTO CreateDTO(ConvertConfig config = null);
 
-        void PopulateFromDTO(TDTO dto, ConvertConfig config = null);
+        void PopulateFromDTO(TDTO dto, ConvertConfig config);
     }
 }

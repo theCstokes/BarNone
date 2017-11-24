@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release;DL</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BarNone.Shared.Core\BarNone.Shared.Core.csproj" />
+    <ProjectReference Include="..\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj" />
+  </ItemGroup>
+
+</Project>

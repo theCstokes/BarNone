@@ -11,41 +11,41 @@ using System.Linq;
 namespace BarNone.TheRack.DomainModel
 {
     [Table("BodyData", Schema = "public")]
-    public class BodyData : BaseDetailDomainModel<BodyData, BodyDataDTO, BodyDataDetailDTO>
+    public class BodyData : IDomainModel<BodyData>
     {
         [Key]
-        public override int ID { get; set; }
+        public int ID { get; set; }
 
         public DateTime RecordDate { get; set; }
 
         public List<BodyDataFrame> BodyDataFrames { get; set; }
 
-        protected override BodyDataDTO OnBuildDTO()
-        {
-            return new BodyDataDTO
-            {
-                ID = ID,
-                RecordTimeStamp = RecordDate
-            };
-        }
+        //protected override BodyDataDTO OnBuildDTO()
+        //{
+        //    return new BodyDataDTO
+        //    {
+        //        ID = ID,
+        //        RecordTimeStamp = RecordDate
+        //    };
+        //}
 
-        protected override BodyDataDetailDTO OnBuildDetailDTO(ConvertConfig config)
-        {
-            return new BodyDataDetailDTO
-            {
-                OrderedFrames = BodyDataFrames.Select(frame => frame.CreateDTO(config)).ToList()
-            };
-        }
+        //protected override BodyDataDetailDTO OnBuildDetailDTO(ConvertConfig config)
+        //{
+        //    return new BodyDataDetailDTO
+        //    {
+        //        OrderedFrames = BodyDataFrames.Select(frame => frame.CreateDTO(config)).ToList()
+        //    };
+        //}
 
-        protected override void OnPopulate(BodyDataDTO dto, ConvertConfig config = null)
-        {
-            ID = dto.ID;
-            RecordDate = dto.RecordTimeStamp;
-        }
+        //protected override void OnPopulate(BodyDataDTO dto, ConvertConfig config = null)
+        //{
+        //    ID = dto.ID;
+        //    RecordDate = dto.RecordTimeStamp;
+        //}
 
-        protected override void OnDetailPopulate(BodyDataDetailDTO dto, ConvertConfig config = null)
-        {
-            BodyDataFrames = dto.OrderedFrames?.Select(frame => BodyDataFrame.CreateFromDTO(frame)).ToList();
-        }
+        //protected override void OnDetailPopulate(BodyDataDetailDTO dto, ConvertConfig config = null)
+        //{
+        //    BodyDataFrames = dto.OrderedFrames?.Select(frame => BodyDataFrame.CreateFromDTO(frame, config)).ToList();
+        //}
     }
 }

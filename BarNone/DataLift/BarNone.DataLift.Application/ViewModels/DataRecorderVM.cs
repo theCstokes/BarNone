@@ -10,6 +10,9 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using BarNone.DataLift.APIRequest;
+using BarNone.Shared.DataTransfer;
+using BarNone.DataLift.DataConverters;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -185,6 +188,10 @@ namespace BarNone.DataLift.UI.ViewModels
         public bool IsNewRecording { get; private set; } = true; //TODO REMOVE = true and actually control
 
         private BodyData CurrentRecordingBodyData { get; set; }
+
+        private UserDTO CurrentUser { get; set; }
+
+        private int currentID;
 
         #endregion
 
@@ -546,11 +553,78 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
+        #region Start and Finish Recording
+
+        public RelayCommand _StartRecording { get; private set; }
+        public ICommand StartRecording
+        {
+            get
+            {
+                if(_StartRecording == null)
+                {
+                    _StartRecording = new RelayCommand(action => StartNewRecording());
+                }
+                return _StartRecording;
+            }
+        }
+        /// <summary>
+        /// Resets the current recording body when the user wants to begin a lift
+        /// </summary>
+        private void StartNewRecording()
+        {
+            CurrentRecordingBodyData = new BodyData
+            {
+                DataFrames = new List<BodyDataFrame>(),
+                RecordDate = DateTime.Now
+            };
+        }
+
+        public RelayCommand _EndRecording { get; private set; }
+        public ICommand EndRecording
+        {
+            get
+            {
+                if (_EndRecording == null)
+                {
+                    _EndRecording = new RelayCommand(async action => await EndCurrentRecording());
+                }
+                return _EndRecording;
+            }
+        }
+        /// <summary>
+        /// Posts the recorded lift to the server when the user denotes a lift has been completed.
+        /// </summary>
+        /// <returns></returns>
+        private async Task EndCurrentRecording()
+        {
+            //var _bodyData = 
+
+            var toSend = new LiftDTO()
+            {
+                Name = "This is a new lift",
+                Details = new LiftDetailDTO()
+                {
+                    BodyData = new BodyDataDTO()
+                }
+                
+            };
+
+            var temp = await DataManager.Bodies.Post(Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData));
+
+            System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp);
+
+            StartNewRecording();
+        }
+
+        #endregion
 
         public string KinectConnected;
 
         internal DataRecorderVM()
         {
+            Task.Run(() => SetUser());
+            //Task.Run(() => GetAllLifts());
+
             // one sensor is currently supported
             kinectSensor = KinectSensor.GetDefault();
 
@@ -585,6 +659,24 @@ namespace BarNone.DataLift.UI.ViewModels
 
             // Create an image source that we can use in our image control
             imageSourceSide = new DrawingImage(SideProfileDrawingGroup);
+        }
+
+        private async Task SetUser()
+        {
+            var user = await DataManager.Users.GetAll();
+
+            foreach (UserDTO singleUser in user)
+            {
+                if (LoginScreenVM.Username == singleUser.UserName)
+                    CurrentUser = singleUser;
+            }
+        }
+
+        private async Task GetAllLifts()
+        {
+            var lifts = await DataManager.Lifts.GetAll();
+
+            int currentID = lifts.Count();
         }
 
         private void Reader_MultiSourceFrameArrived(object sender, MultiSourceFrameArrivedEventArgs e)

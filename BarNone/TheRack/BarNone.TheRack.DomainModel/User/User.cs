@@ -3,14 +3,15 @@ using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DomainModel.Core;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System;
 
 namespace BarNone.TheRack.DomainModel
 {
     [Table("User", Schema = "public")]
-    public class User : BaseDomainModel<User, UserDTO>
+    public class User : IDomainModel<User>
     {
         [Key]
-        public override int ID { get; set; }
+        public int ID { get; set; }
 
         public string Name { get; set; }
 
@@ -18,23 +19,28 @@ namespace BarNone.TheRack.DomainModel
 
         public string Password { get; set; }
 
-        protected override UserDTO OnBuildDTO()
+        public static void CreateFromDTO(UserDTO dto, ConvertConfig config)
         {
-            return new UserDTO
-            {
-                ID = ID,
-                Name = Name,
-                UserName = UserName,
-                Password = Password
-            };
+            throw new NotImplementedException();
         }
 
-        protected override void OnPopulate(UserDTO dto, ConvertConfig config = null)
-        {
-            ID = dto.ID;
-            Name = dto.Name;
-            UserName = dto.UserName;
-            Password = dto.Password;
-        }
+        //protected override UserDTO OnBuildDTO()
+        //{
+        //    return new UserDTO
+        //    {
+        //        ID = ID,
+        //        Name = Name,
+        //        UserName = UserName,
+        //        Password = Password
+        //    };
+        //}
+
+        //protected override void OnPopulate(UserDTO dto, ConvertConfig config = null)
+        //{
+        //    ID = dto.ID;
+        //    Name = dto.Name;
+        //    UserName = dto.UserName;
+        //    Password = dto.Password;
+        //}
     }
 }

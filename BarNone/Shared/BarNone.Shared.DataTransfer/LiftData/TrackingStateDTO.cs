@@ -2,7 +2,7 @@
 
 namespace BarNone.Shared.DataTransfer.LiftData
 {
-    public class TrackingStateDTO : BaseTypeDTO<TrackingStateDTO>
+    public class JointTrackingStateTypeDTO : BaseTypeDTO<JointTrackingStateTypeDTO>
     {
         #region Public Property(s).
         public override int ID { get; set; }

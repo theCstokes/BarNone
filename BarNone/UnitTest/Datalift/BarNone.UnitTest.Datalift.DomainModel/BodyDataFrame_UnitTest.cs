@@ -51,14 +51,19 @@ namespace BarNone.UnitTest.DataLift.DomainModel
             foreach (KeyValuePair<JointType,Joint> joint in dataFame.Joints)
             {
 
+<<<<<<< HEAD
+                Assert.AreEqual(joint.Value.JointType, (JointType)jointDTO.JointType);
+                Assert.AreEqual(joint.Value.TrackingState, (TrackingState)jointDTO.JointTrackingStateType);
+=======
                 var jointDTO = dataFameDTO.Details.Joints.FirstOrDefault(x => x.JointType.Value == (int)joint.Key);
 
                 Assert.AreEqual(joint.Value.JointType, (JointType)Enum.ToObject(typeof(JointType) ,jointDTO.JointType.Value));
                 Assert.AreEqual(joint.Value.TrackingState, (TrackingState)Enum.ToObject(typeof(JointType), jointDTO.TrackingState.Value));
+>>>>>>> develop
 
-                Assert.AreEqual(joint.Value.Position.X, jointDTO.PositionX);
-                Assert.AreEqual(joint.Value.Position.Y, jointDTO.PositionY);
-                Assert.AreEqual(joint.Value.Position.Z, jointDTO.PositionZ);
+                Assert.AreEqual(joint.Value.Position.X, jointDTO.X);
+                Assert.AreEqual(joint.Value.Position.Y, jointDTO.Y);
+                Assert.AreEqual(joint.Value.Position.Z, jointDTO.Z);
             }
         }
 
@@ -87,8 +92,13 @@ namespace BarNone.UnitTest.DataLift.DomainModel
                 {
                     Joints = new List<JointDTO>()
                     {
+<<<<<<< HEAD
+                        {(DTOJointType)0, new JointDTO {JointType = (DTOJointType)0, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} },
+                        {(DTOJointType)1, new JointDTO {JointType = (DTOJointType)1, X = 111, Y = 222, Z = 333, JointTrackingStateType = (DTOTrackingState)2} }
+=======
                         { new JointDTO {JointType = new JointTypeDTO() { Value = 0}, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = new TrackingStateDTO() { Value = 2} } },
                         {new JointDTO {JointType = new JointTypeDTO() { Value = 1}, PositionX = 111, PositionY = 222, PositionZ = 333, TrackingState = new TrackingStateDTO() { Value = 2} } }
+>>>>>>> develop
                     }
                 }
             };
@@ -99,12 +109,21 @@ namespace BarNone.UnitTest.DataLift.DomainModel
             {
                 var joint = dataFrame.Joints[(JointType)jointDTO.JointType.Value];
 
+<<<<<<< HEAD
+                Assert.AreEqual(joint.JointType, (JointType)jointDTO.Value.JointType);
+                Assert.AreEqual(joint.TrackingState, (TrackingState)jointDTO.Value.JointTrackingStateType);
+
+                Assert.AreEqual(joint.Position.X, jointDTO.Value.X);
+                Assert.AreEqual(joint.Position.Y, jointDTO.Value.Y);
+                Assert.AreEqual(joint.Position.Z, jointDTO.Value.Z);
+=======
                 Assert.AreEqual(joint.JointType, (JointType)Enum.ToObject(typeof(JointType),jointDTO.JointType.Value));
                 Assert.AreEqual(joint.TrackingState, (TrackingState)Enum.ToObject(typeof(TrackingState),jointDTO.TrackingState.Value));
 
                 Assert.AreEqual(joint.Position.X, jointDTO.PositionX);
                 Assert.AreEqual(joint.Position.Y, jointDTO.PositionY);
                 Assert.AreEqual(joint.Position.Z, jointDTO.PositionZ);
+>>>>>>> develop
             }
         }
     }
