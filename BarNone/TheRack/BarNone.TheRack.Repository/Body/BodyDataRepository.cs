@@ -32,5 +32,13 @@ namespace BarNone.TheRack.Repository
         }
 
         protected override ConverterResolver DetailDataConverterResolver => () => Converters.Convert.BodyData;
+
+        protected override DetailResolver DetailDataResolver => (s) =>
+        {
+            var q = s.Include(b => b.BodyDataFrames).ThenInclude(f => f.Joints);
+            q.ThenInclude(j => j.JointType);
+            q.ThenInclude(j => j.JointTrackingStateType);
+            return q;
+        };
     }
 }

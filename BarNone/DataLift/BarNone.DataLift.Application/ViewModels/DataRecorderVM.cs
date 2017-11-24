@@ -14,6 +14,7 @@ using BarNone.DataLift.APIRequest;
 using BarNone.Shared.DataTransfer;
 using BarNone.DataLift.UI.Nav;
 using System.ComponentModel;
+using BarNone.DataLift.DataConverters;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -578,7 +579,7 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             get
             {
-                if(_StartRecording == null)
+                if (_StartRecording == null)
                 {
                     _StartRecording = new RelayCommand(action => StartNewRecording());
                 }
@@ -592,7 +593,6 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             CurrentRecordingBodyData = new BodyData
             {
-                ID = currentID + 1,
                 DataFrames = new List<BodyDataFrame>(),
                 RecordDate = DateTime.Now
             };
@@ -618,34 +618,33 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <returns></returns>
         private async Task EndCurrentRecording()
         {
-
+            //var _bodyData = 
 
             var toSend = new LiftDTO()
             {
-                ID = 2,
                 Name = "This is a new lift",
-                Details =
+                Details = new LiftDetailDTO()
                 {
-                    //TODO: When chris fixes DTOs send this shit to the server.
-                    //BodyData = CurrentRecordingBodyData.BuildDTO()
-
-
+                    BodyData = new BodyDataDTO()
                 }
+
             };
 
-            var send = await DataManager.Lifts.Post(toSend);
+            var temp = await DataManager.Bodies.Post(Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData));
 
-            System.Diagnostics.Debug.WriteLine("The lift with the name {0} was sent to the server", toSend.Name);
+            System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp);
+
+            StartNewRecording();
         }
 
         #endregion
 
         public string KinectConnected;
-        
+
         public DataRecorderVM()
         {
             Task.Run(() => SetUser());
-            Task.Run(() => GetAllLifts());
+            //Task.Run(() => GetAllLifts());
 
             // one sensor is currently supported
             kinectSensor = KinectSensor.GetDefault();

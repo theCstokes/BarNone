@@ -5,11 +5,17 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <ApplicationIcon />
     <StartupObject />
+    <Configurations>Debug;Release;DL</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BarNone.DataLift.DataConverters\BarNone.DataLift.DataConverters.csproj" />
     <ProjectReference Include="..\..\Shared\BarNone.Shared.Core\BarNone.Shared.Core.csproj" />
-    <ProjectReference Include="..\..\Shared\BarNone.Shared.DataConverter\BarNone.Shared.DataConverter.csproj" />
+    <ProjectReference Include="..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj" />
     <ProjectReference Include="..\BarNone.TheRack.DomainModel\BarNone.TheRack.DomainModel.csproj" />
   </ItemGroup>
 

@@ -48,6 +48,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WorkingWithTheRack|AnyCPU'">
     <OutputPath>bin\WorkingWithTheRack\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DL|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DL\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
@@ -164,9 +174,17 @@
     <Folder Include="res\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\BarNone.DataLift.DataConverters\BarNone.DataLift.DataConverters.csproj">
+      <Project>{c8aac2c2-b0e1-4814-b15e-f2db1f4c897f}</Project>
+      <Name>BarNone.DataLift.DataConverters</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Shared\BarNone.Shared.Core\BarNone.Shared.Core.csproj">
       <Project>{1C1D8D67-DBAC-484B-8631-CD28AD0499F1}</Project>
       <Name>BarNone.Shared.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\BarNone.Shared.DataConverter\BarNone.Shared.DataConverter.csproj">
+      <Project>{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108}</Project>
+      <Name>BarNone.Shared.DataConverter</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj">
       <Project>{dc7c09e7-27e2-496c-9823-f048bb031174}</Project>
