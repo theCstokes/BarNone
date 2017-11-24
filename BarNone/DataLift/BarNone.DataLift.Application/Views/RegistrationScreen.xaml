@@ -43,6 +43,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
                         <TextBox x:Name="LoginUsername" Grid.Row="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="40 0 40 0" HorizontalAlignment="Stretch" Height="40" Text="{Binding Path=Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="18" VerticalAlignment="Center">

@@ -204,7 +204,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// New Recordings refresh the locally stored data
         /// </summary>
         public bool IsNewRecording { get; private set; } = true; //TODO REMOVE = true and actually control
-
+        public bool IsRecording { get; private set; } = false;
         private BodyData CurrentRecordingBodyData { get; set; }
 
         private UserDTO CurrentUser { get; set; }
@@ -219,6 +219,7 @@ namespace BarNone.DataLift.UI.ViewModels
         internal override void Loaded()
         {
             LiftName = "";
+            IsRecording = false;
         }
 
         internal override void Closed()
@@ -581,16 +582,23 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_StartRecording == null)
                 {
-                    _StartRecording = new RelayCommand(action => StartNewRecording());
+                    _StartRecording = new RelayCommand(action => StartNewRecording(), pred => true);
                 }
                 return _StartRecording;
             }
         }
+
+        private bool CanStartReccording()
+        {
+            return !string.IsNullOrWhiteSpace(LiftName) && !IsRecording;
+        }
+
         /// <summary>
         /// Resets the current recording body when the user wants to begin a lift
         /// </summary>
         private void StartNewRecording()
         {
+            IsRecording = true;
             CurrentRecordingBodyData = new BodyData
             {
                 DataFrames = new List<BodyDataFrame>(),
@@ -608,7 +616,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 if (_EndRecording == null)
                 {
                     //_EndRecording = new RelayCommand(action => EndCurrentRecording());
-                    _EndRecording = new RelayCommand(async action => await EndCurrentRecording());
+                    _EndRecording = new RelayCommand(async action => await EndCurrentRecording(), pred => true);
                 }
                 return _EndRecording;
             }
@@ -629,8 +637,12 @@ namespace BarNone.DataLift.UI.ViewModels
                 {
                     BodyData = new BodyDataDTO()
                 }
-
+                
             };
+
+
+            IsRecording = false;
+
 
             var bodyDto = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
             toSend.Details.BodyData = bodyDto;
@@ -640,6 +652,7 @@ namespace BarNone.DataLift.UI.ViewModels
             //System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp.ToString());
 
             StartNewRecording();
+
         }
 
         #endregion
