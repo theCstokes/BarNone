@@ -42,6 +42,28 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+
+        enum LoginStates
+        {
+            NoShow = 0, Spinner = 1, BadLogin = 2, GoodLogin = 3
+        }
+
+        private int _LoginStateDisplayIndex = (int)LoginStates.NoShow;
+
+        public int LoginStateDisplayIndex
+        {
+            get => _LoginStateDisplayIndex;
+            set
+            {
+                if(_LoginStateDisplayIndex != value && value >= 0 && value <= 3)
+                {
+                    _LoginStateDisplayIndex = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("LoginStateDisplayIndex"));
+                } 
+
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -53,17 +75,23 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_loginCommand == null)
                 {
-                    _loginCommand = new RelayCommand(async action => await LoginAsync());
+                    _loginCommand = new RelayCommand(async action => await LoginAsync(), pred => IsLoginStateUserModifiable());
                 }
                 return _loginCommand;
             }
         }
 
+        private bool IsLoginStateUserModifiable()
+        {
+            return LoginStateDisplayIndex != (int)LoginStates.Spinner; 
+        }
+        
+
         public ICommand RegisterCommand
         {
             get
             {
-                return new RelayCommand(action => PageManager.SwitchPage(UIPages.RegistrationView));
+                return new RelayCommand(action => PageManager.SwitchPage(UIPages.RegistrationView), pred => IsLoginStateUserModifiable());
             }
         }
 
@@ -71,9 +99,18 @@ namespace BarNone.DataLift.UI.ViewModels
 
         private async Task LoginAsync()
         {
+            LoginStateDisplayIndex = (int)LoginStates.NoShow;
+            LoginStateDisplayIndex = (int)LoginStates.Spinner;
             if (await CanLogin())
+            {
                 //Login server calls here to get a valid token and shift to data recorder or notify bad user pass combo
                 PageManager.SwitchPage(UIPages.DataRecorderView);
+                LoginStateDisplayIndex = (int)LoginStates.NoShow;
+            }
+            else
+            {
+                LoginStateDisplayIndex = (int)LoginStates.BadLogin;
+            }
         }
 
         private async Task<bool> CanLogin()
@@ -97,7 +134,8 @@ namespace BarNone.DataLift.UI.ViewModels
         internal override void Loaded()
         {
             Username = "";
-            Password = new SecureString();
+            Password.Clear();
+            //LoginStateDisplayIndex = (int)LoginStates.NoShow;
 
         }
 
