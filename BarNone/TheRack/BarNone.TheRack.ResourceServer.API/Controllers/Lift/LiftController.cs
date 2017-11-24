@@ -82,7 +82,7 @@ namespace TheRack.ResourceServer.API.Controllers
             {
                 using (LiftRepository repository = new LiftRepository())
                 {
-                    return EntityResponse.Response(repository.Create(value));
+                        return EntityResponse.Response(repository.Create(value));
                 }
             }
             catch (Exception e)

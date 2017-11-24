@@ -601,15 +601,15 @@ namespace BarNone.DataLift.UI.ViewModels
 
             var toSend = new LiftDTO()
             {
-                Name = "This is a new lift",
-                Details = new LiftDetailDTO()
-                {
-                    BodyData = new BodyDataDTO()
-                }
-                
+                Name = "This is a new lift 123123213",
+                //Details = new LiftDetailDTO()
+                //{
+                //    BodyData = new BodyDataDTO()
+                //},
+                ParentID = 1
             };
 
-            toSend.Details.BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
+            //toSend.Details.BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
 
             var send = await DataManager.Lifts.Post(toSend);
 
