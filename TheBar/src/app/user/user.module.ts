@@ -6,6 +6,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import {UserComponent} from './user.component';
 import { RouterModule, Routes } from '@angular/router';
 
+import {UserService} from './user.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -13,6 +15,7 @@ import { RouterModule, Routes } from '@angular/router';
     MatTabsModule,
     RouterModule.forChild([{path: 'user',  component: UserComponent }])
   ],
+  providers: [UserService],
   declarations: [
 
 

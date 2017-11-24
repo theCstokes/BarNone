@@ -16,7 +16,7 @@ import {LiftsService} from './lifts.service';
   ],
   providers: [LiftsService],
   declarations: [
-  LiftsComponent
+    LiftsComponent
   ]
 })
 export class LiftsModule { }
