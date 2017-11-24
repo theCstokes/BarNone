@@ -19,20 +19,23 @@ namespace BarNone.TheRack.DataConverters
             {
                 ID = dto.ID,
                 Name = dto.Name,
-                ParentID = dto.ParentID
+                ParentID = dto.ParentID,
+                BodyDataID = dto.BodyDataID
             };
         }
 
         public override void OnCreateDetailDataModel(Lift data, LiftDetailDTO dto)
         {
             data.Parent = converterContext.LiftFolder.CreateDataModel(dto.Parent);
+            data.BodyData = converterContext.BodyData.CreateDataModel(dto.BodyData);
         }
 
         public override LiftDetailDTO OnCreateDetailDTO(Lift data)
         {
             return new LiftDetailDTO
             {
-                Parent = converterContext.LiftFolder.CreateDTO(data.Parent)
+                Parent = converterContext.LiftFolder.CreateDTO(data.Parent),
+                BodyData = converterContext.BodyData.CreateDTO(data.BodyData)
             };
         }
 
@@ -42,7 +45,8 @@ namespace BarNone.TheRack.DataConverters
             {
                 ID = data.ID,
                 Name = data.Name,
-                ParentID = data.ParentID
+                ParentID = data.ParentID,
+                BodyDataID = data.BodyDataID
             };
         }
     }

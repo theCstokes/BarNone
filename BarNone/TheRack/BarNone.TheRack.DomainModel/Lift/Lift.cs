@@ -19,32 +19,8 @@ namespace BarNone.TheRack.DomainModel
         [ForeignKey("ParentID")]
         public LiftFolder Parent { get; set; }
 
-        //protected override LiftDetailDTO OnBuildDetailDTO(ConvertConfig config)
-        //{
-        //    return new LiftDetailDTO
-        //    {
-        //        Parent = Parent.CreateDTO(config)
-        //    };
-        //}
+        public int BodyDataID { get; set; }
 
-        //protected override LiftDTO OnBuildDTO()
-        //{
-        //    return new LiftDTO
-        //    {
-        //        ID = ID,
-        //        Name = Name
-        //    };
-        //}
-
-        //protected override void OnPopulate(LiftDTO dto, ConvertConfig config = null)
-        //{
-        //    ID = dto.ID;
-        //    Name = dto.Name;
-        //}
-
-        //protected override void OnDetailPopulate(LiftDetailDTO dto, ConvertConfig config = null)
-        //{
-        //    Parent = LiftFolder.CreateFromDTO(config?.Parent, config);
-        //}
+        public BodyData BodyData { get; set; }
     }
 }
