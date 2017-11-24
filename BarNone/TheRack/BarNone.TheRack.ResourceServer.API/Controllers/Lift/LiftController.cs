@@ -66,7 +66,7 @@ namespace TheRack.ResourceServer.API.Controllers
                 using (LiftRepository repository = new LiftRepository())
                 {
                     var lift = repository.GetWithDetails(id);
-                    return EntityResponse.Response(lift);
+                    return EntityResponse.DetailResponse(lift);
                 }
             }
             catch (Exception e)

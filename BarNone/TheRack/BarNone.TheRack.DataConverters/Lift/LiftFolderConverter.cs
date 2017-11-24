@@ -37,8 +37,8 @@ namespace BarNone.TheRack.DataConverters
             return new LiftFolderDetailDTO
             {
                 Parent = converterContext.LiftFolder.CreateDTO(data.Parent),
-                Lifts = data.Lifts.Select(l => converterContext.Lift.CreateDTO(l)).ToList(),
-                SubFolders = data.SubFolders.Select(f => converterContext.LiftFolder.CreateDTO(f)).ToList()
+                Lifts = data.Lifts?.Select(l => converterContext.Lift.CreateDTO(l)).ToList(),
+                SubFolders = data.SubFolders?.Select(f => converterContext.LiftFolder.CreateDTO(f)).ToList()
             };
         }
 
