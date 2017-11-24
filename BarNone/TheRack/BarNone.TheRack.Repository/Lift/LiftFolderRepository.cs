@@ -13,9 +13,9 @@ using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace BarNone.TheRack.Repository
 {
-    public class LiftFolderRepository : BaseRepository<LiftFolder, LiftFolderDTO>
+    public class LiftFolderRepository : DefaultDetailRepository<LiftFolder, LiftFolderDTO, LiftFolderDetailDTO>
     {
-        public LiftFolderRepository() : base(new DomainContext())
+        public LiftFolderRepository() : base()
         {
         }
 
@@ -24,49 +24,69 @@ namespace BarNone.TheRack.Repository
 
         }
 
-        public override LiftFolder Create(LiftFolderDTO dto)
-        {
-            var folder = Converters.Convert.LiftFolder.CreateDataModel(dto);
-            var result = context.LiftFolders.Add(folder);
+        protected override ConverterResolver DetailDataConverterResolver => () => Converters.Convert.LiftFolder;
 
-            context.SaveChanges();
-            return result.Entity;
-        }
+        protected override DbSetResolver SetResolver => (context) => context.LiftFolders;
 
-        public override List<LiftFolder> Get(WhereFunc where = null)
-        {
-            if (where != null)
-            {
-                return context.LiftFolders
-                    .Where((lf) => where(lf))
-                    .ToList();
-            }
-            return context.LiftFolders.ToList();
-        }
-
-        public override LiftFolder Get(int id)
-        {
-            return context.LiftFolders.Where(lf => lf.ID == id).First();
-        }
-
-        public override LiftFolder GetWithDetails(int id)
-        {
-            return context.LiftFolders
-                .Include(lf => lf.Parent)
-                .Include(lf => lf.Lifts)
-                .Include(lf => lf.SubFolders)
-                .Where(lf => lf.ID == id)
-                .First();
-        }
-
-        public override LiftFolder Remove(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override LiftFolder Update(int id, LiftFolderDTO dto)
-        {
-            throw new NotImplementedException();
-        }
+        protected override Resolver DetailDataResolver => (s) => s.Include(l => l.Parent)
+                .Include(l => l.SubFolders)
+                .Include(l => l.Lifts);
     }
+
+    //    : BaseRepository<LiftFolder, LiftFolderDTO>
+    //{
+    //    public LiftFolderRepository() : base(new DomainContext())
+    //    {
+    //    }
+
+    //    public LiftFolderRepository(DomainContext context) : base(context)
+    //    {
+
+    //    }
+
+    //    public override LiftFolder Create(LiftFolderDTO dto)
+    //    {
+    //        var folder = Converters.Convert.LiftFolder.CreateDataModel(dto);
+    //        var result = context.LiftFolders.Add(folder);
+
+    //        context.SaveChanges();
+    //        return result.Entity;
+    //    }
+
+    //    public override List<LiftFolder> Get(WhereFunc where = null)
+    //    {
+    //        if (where != null)
+    //        {
+    //            return context.LiftFolders
+    //                .Where((lf) => where(lf))
+    //                .ToList();
+    //        }
+    //        return context.LiftFolders.ToList();
+    //    }
+
+    //    public override LiftFolder Get(int id)
+    //    {
+    //        return context.LiftFolders.Where(lf => lf.ID == id).First();
+    //    }
+
+    //    public override LiftFolder GetWithDetails(int id)
+    //    {
+    //        return context.LiftFolders
+    //            .Include(lf => lf.Parent)
+    //            .Include(lf => lf.Lifts)
+    //            .Include(lf => lf.SubFolders)
+    //            .Where(lf => lf.ID == id)
+    //            .First();
+    //    }
+
+    //    public override LiftFolder Remove(int id)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+
+    //    public override LiftFolder Update(int id, LiftFolderDTO dto)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 }

@@ -16,9 +16,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Body
     [Authorize(Policy = "User")]
     public class JointController : DefaultDetailController<JointDTO, Joint, JointRepository>
     {
-        public JointController(): base(
-            () => new JointRepository(),
-            () => new ConvertConfig(2))
+        public JointController(): base(() => new JointRepository())
         {
 
         }
