@@ -1,5 +1,8 @@
 ﻿using BarNone.DataLift.UI.Nav;
+using System;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Security;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -22,6 +25,23 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             //Do Nothing by default
         }
+
+        #region Helpers
+        protected static string ConvertSecure(SecureString value)
+        {
+            IntPtr bstr = Marshal.SecureStringToBSTR(value);
+
+            try
+            {
+                return Marshal.PtrToStringBSTR(bstr);
+            }
+            finally
+            {
+                Marshal.FreeBSTR(bstr);
+            }
+        }
+
+        #endregion
 
     }
 }
