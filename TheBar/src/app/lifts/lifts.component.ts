@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {LiftsService} from './lifts.service';
 
 @Component({
   selector: 'app-lifts',
@@ -11,9 +12,14 @@ export class LiftsComponent implements OnInit {
   {title: "Lift3", type:"Squat", date:"21-07-17", duration: "7:00", link:"/lift3"},  {title: "Lift5", type:"Snatch", date:"21-07-17", duration: "5:00", link:"/lift5"}
   ];
   
-  constructor() { }
+  constructor(private liftsService : LiftsService) {
+
+   }
 
   ngOnInit() {
   }
 
+  buttonClicked(){
+    this.liftsService.getLifts();
+  }
 }
