@@ -52,13 +52,13 @@ export class LiftsComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     if (this.loginService.access_token != null) {
-      this.liftsService.getLifts().subscribe(value => this.lifts = value['entities']);
+      this.liftsService.getLifts().subscribe(value => {this.lifts = value; console.log(this.lifts)});
     }
     else {
       this.loginService.user_authenticated.subscribe(() => {
         this.liftsService.getLifts().subscribe(value => {
           console.log(value);
-          this.lifts = value['entities'];
+          this.lifts = value;
         });
       })
 

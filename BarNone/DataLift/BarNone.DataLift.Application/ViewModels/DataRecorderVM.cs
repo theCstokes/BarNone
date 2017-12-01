@@ -316,7 +316,7 @@ namespace BarNone.DataLift.UI.ViewModels
                     }
 
                     DepthSpacePoint depthSpacePoint = coordinateMapper.MapCameraPointToDepthSpace(position);
-                    jointPoints[jointType] = new Point(position.X * -153.34 + displayWidth / 2, position.Y * -153.34 + displayHeight / 2);
+                    jointPoints[jointType] = new Point((position.X - lifter.Joints[JointType.SpineBase].Position.X) * -153.34 + displayWidth / 2, position.Y * -153.34 + displayHeight / 2);
                 }
 
                 DrawBody(frame.Joints, jointPoints, dc, bodyColor);
