@@ -197,8 +197,6 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
-
-
         #region Reccording Data Variables
         /// <summary>
         /// New Recordings refresh the locally stored data
@@ -220,21 +218,6 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             LiftName = "";
             IsRecording = false;
-        }
-
-        internal override void Closed()
-        {
-            if (Reader != null)
-            {
-                Reader.Dispose();
-                Reader = null;
-            }
-
-            if (kinectSensor != null)
-            {
-                kinectSensor.Close();
-                kinectSensor = null;
-            }
         }
 
         #endregion
@@ -658,6 +641,21 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         public string KinectConnected;
+
+        ~DataRecorderVM()
+        {
+            if (Reader != null)
+            {
+                Reader?.Dispose();
+                Reader = null;
+            }
+
+            if (kinectSensor != null)
+            {
+                kinectSensor?.Close();
+                kinectSensor = null;
+            }
+        }
 
         public DataRecorderVM()
         {
