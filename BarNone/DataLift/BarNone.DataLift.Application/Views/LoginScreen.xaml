@@ -35,6 +35,7 @@
                 <Setter Property="Margin" Value="4 0 4 0" />
             </Style>
             <vms:LoginScreenVM x:Key="vm"/>
+            <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.DataContext>
@@ -82,29 +83,37 @@
                         </PasswordBox>
 
                         <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <materialDesign:Transitioner  SelectedIndex="{Binding LoginStateDisplayIndex}" FontSize="16">
-                                <materialDesign:TransitioningContent >
+                            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                     Width = "40"
+                                     Height= "40"
+                                     Value="0"
+                                     IsIndeterminate="True" HorizontalAlignment="Center"
+                                     Visibility="{Binding Path=IsProgressBarVisible, Converter={StaticResource BoolToVisConverter}}"    />
+                            <Label Visibility="{Binding Path=IsBadLogin, Converter={StaticResource BoolToVisConverter}}" Foreground="Red" Content="Invalid Username/Password Combination"/>
+
+                            <!--<materialDesign:Transitioner  SelectedIndex="{Binding LoginStateDisplayIndex}" FontSize="16">
+                                
+                                <materialDesign:TransitioningContent>
                                 </materialDesign:TransitioningContent>
-                                <materialDesign:TransitioningContent OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
+                                <materialDesign:TransitioningContent>
                                     <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                                      Width = "40"
                                      Height= "40"
                                      Value="0"
                                      IsIndeterminate="True" HorizontalAlignment="Center"/>
                                 </materialDesign:TransitioningContent>
-                                <materialDesign:TransitionerSlide>
-                                    <materialDesign:TransitioningContent>
-                                        <Label Foreground="Red" Content="Invalid Username/Password Combination"/>
-                                    </materialDesign:TransitioningContent>
-                                </materialDesign:TransitionerSlide>
-                                <materialDesign:TransitionerSlide >
-                                    <materialDesign:TransitioningContent>
-                                        <materialDesign:PackIcon HorizontalAlignment="Center" Kind="Check" Height="40" Width="40"/>
-                                    </materialDesign:TransitioningContent>
-                                </materialDesign:TransitionerSlide>
-                            </materialDesign:Transitioner>
+                                <materialDesign:TransitioningContent>
+                                    <Label Foreground="Red" Content="Invalid Username/Password Combination"/>
+                                </materialDesign:TransitioningContent>
+
+
+                                <materialDesign:TransitioningContent>
+                                    <materialDesign:PackIcon HorizontalAlignment="Center" Kind="Check" Height="40" Width="40"/>
+                                </materialDesign:TransitioningContent>
+                                <materialDesign:TransitioningContent ></materialDesign:TransitioningContent>
+                            </materialDesign:Transitioner>-->
                         </StackPanel>
-                            
+
                         <DockPanel Grid.Row="3" VerticalAlignment="Top" Margin="0,10">
                             <Button x:Name="RegisterButton" DockPanel.Dock="Left" Command="{Binding RegisterCommand}" Margin="40,0,0,0" Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="Register" Width="140"/>
                             <Button x:Name="LoginButton" DockPanel.Dock="Right" Command="{Binding LoginCommand}" Margin="0,0,30,0" Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="Login" Width="140"/>
