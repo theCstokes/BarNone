@@ -1,5 +1,4 @@
-﻿using BarNone.DataLift.UI.Nav;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security;

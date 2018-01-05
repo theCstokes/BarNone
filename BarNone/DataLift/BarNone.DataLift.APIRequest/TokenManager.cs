@@ -37,6 +37,10 @@ namespace BarNone.DataLift.APIRequest
                     {
                         Token = auth.Access_Token;
                     }
+                    else
+                    {
+                        auth = new AuthDTO { Authorized = false };
+                    }
                     return auth;
                 }
             }
@@ -67,6 +71,10 @@ namespace BarNone.DataLift.APIRequest
                     if (auth != null)
                     {
                         Token = auth.Access_Token;
+                    }
+                    else
+                    {
+                        auth = new AuthDTO { Authorized = false };
                     }
                     return auth;
                 }
