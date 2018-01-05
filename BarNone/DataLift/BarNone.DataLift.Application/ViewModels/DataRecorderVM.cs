@@ -1,20 +1,19 @@
-﻿using BarNone.DataLift.DataModel.KinectData;
+﻿using BarNone.DataLift.APIRequest;
+using BarNone.DataLift.DataConverters;
+using BarNone.DataLift.DataModel.KinectData;
 using BarNone.DataLift.UI.Commands;
+using BarNone.DataLift.UI.Nav;
+using BarNone.Shared.DataTransfer;
 using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using BarNone.DataLift.APIRequest;
-using BarNone.Shared.DataTransfer;
-using BarNone.DataLift.UI.Nav;
-using System.ComponentModel;
-using BarNone.DataLift.DataConverters;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -706,7 +705,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             foreach (UserDTO singleUser in user)
             {
-                if (LoginScreenVM._Username == singleUser.UserName)
+                if (LoginScreenVM._username == singleUser.UserName)
                     CurrentUser = singleUser;
             }
         }

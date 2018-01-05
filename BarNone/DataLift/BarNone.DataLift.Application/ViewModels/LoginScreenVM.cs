@@ -1,9 +1,7 @@
 ﻿using BarNone.DataLift.APIRequest;
 using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Nav;
-using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -12,58 +10,66 @@ namespace BarNone.DataLift.UI.ViewModels
 {
     public class LoginScreenVM : ViewModelBase
     {
+        #region Types
+        private enum LoginStates
+        {
+            NoShow = 0, Spinner = 1, BadLogin = 2, GoodLogin = 3
+        }
+
+        #endregion
+
         #region Bound Properties
-        internal static string _Username = "";
+        internal static string _username = "";
         public string Username
         {
-            get => _Username;
+            get => _username;
             set
             {
-                if (_Username != value)
+                if (_username != value)
                 {
-                    _Username = value;
+                    _username = value;
                     OnPropertyChanged(new PropertyChangedEventArgs("Username"));
                 }
             }
         }
 
 
-        private SecureString _Password = new SecureString();
+        private SecureString _password = new SecureString();
         public SecureString Password
         {
-            get => _Password;
+            get => _password;
             set
             {
-                if (_Password != value)
+                if (_password != value)
                 {
-                    _Password = value;
+                    _password = value;
                     OnPropertyChanged(new PropertyChangedEventArgs("Password"));
                 }
             }
         }
-
-
-        enum LoginStates
+        
+        private LoginStates _loginState;
+        
+        private LoginStates LoginState
         {
-            NoShow = 0, Spinner = 1, BadLogin = 2, GoodLogin = 3
-        }
-
-        private int _LoginStateDisplayIndex = (int)LoginStates.NoShow;
-
-        public int LoginStateDisplayIndex
-        {
-            get => _LoginStateDisplayIndex;
+            get => _loginState;
             set
             {
-                if(_LoginStateDisplayIndex != value && value >= 0 && value <= 3)
-                {
-                    _LoginStateDisplayIndex = value;
-                    OnPropertyChanged(new PropertyChangedEventArgs("LoginStateDisplayIndex"));
-                } 
-
+                _loginState = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("LoginState"));
+                OnPropertyChanged(new PropertyChangedEventArgs("IsBadLogin"));
+                OnPropertyChanged(new PropertyChangedEventArgs("IsProgressBarVisible"));
             }
         }
 
+        public bool IsProgressBarVisible {
+            get { return LoginState == LoginStates.Spinner; }
+        }
+        
+        public bool IsBadLogin
+        {
+            get { return LoginState == LoginStates.BadLogin; }
+        }
         #endregion
 
         #region Commands
@@ -83,7 +89,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
         private bool IsLoginStateUserModifiable()
         {
-            return LoginStateDisplayIndex != (int)LoginStates.Spinner; 
+            return LoginState != LoginStates.Spinner; 
         }
         
 
@@ -99,17 +105,16 @@ namespace BarNone.DataLift.UI.ViewModels
 
         private async Task LoginAsync()
         {
-            LoginStateDisplayIndex = (int)LoginStates.NoShow;
-            LoginStateDisplayIndex = (int)LoginStates.Spinner;
+            LoginState = LoginStates.Spinner;
             if (await CanLogin())
             {
                 //Login server calls here to get a valid token and shift to data recorder or notify bad user pass combo
                 PageManager.SwitchPage(UIPages.DataRecorderView);
-                LoginStateDisplayIndex = (int)LoginStates.NoShow;
+                LoginState = LoginStates.NoShow;
             }
             else
             {
-                LoginStateDisplayIndex = (int)LoginStates.BadLogin;
+                LoginState = LoginStates.BadLogin;
             }
         }
 
@@ -117,9 +122,6 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             var r = await TokenManager.Authorize(Username, ConvertSecure(Password));
             return r.Authorized;
-
-            //return r.Authorized;
-            //return ((!string.IsNullOrWhiteSpace(Username)) && (Password?.Length > 0));
         }
 
         #endregion
@@ -135,8 +137,7 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             Username = "";
             Password.Clear();
-            //LoginStateDisplayIndex = (int)LoginStates.NoShow;
-
+            LoginState = LoginStates.NoShow;
         }
 
         #endregion
