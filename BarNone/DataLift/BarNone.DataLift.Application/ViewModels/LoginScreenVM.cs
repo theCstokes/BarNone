@@ -70,6 +70,7 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             get { return LoginState == LoginStates.BadLogin; }
         }
+
         #endregion
 
         #region Commands
@@ -91,7 +92,6 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             return LoginState != LoginStates.Spinner; 
         }
-        
 
         public ICommand RegisterCommand
         {
@@ -100,9 +100,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 return new RelayCommand(action => PageManager.SwitchPage(UIPages.RegistrationView), pred => IsLoginStateUserModifiable());
             }
         }
-
-
-
+        
         private async Task LoginAsync()
         {
             LoginState = LoginStates.Spinner;
