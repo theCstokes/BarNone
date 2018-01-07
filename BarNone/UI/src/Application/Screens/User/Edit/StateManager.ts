@@ -1,7 +1,7 @@
-import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
-import { AppScreen } from "Vee/Screen/AppScreen";
-import StateBind from "Vee/Core/DataBind/StateBind";
-import { IDataBind } from "Vee/Core/DataBind/IDataBind";
+import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
+import { AppScreen } from "UEye/Screen/AppScreen";
+import StateBind from "UEye/Core/DataBind/StateBind";
+import { IDataBind } from "UEye/Core/DataBind/IDataBind";
 import DataManager from "Application/Data/DataManager";
 
 export class State {

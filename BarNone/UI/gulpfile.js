@@ -28,7 +28,7 @@ gulp.task('scripts', ['styles'], () => {
 
 gulp.task('styles', ['clean-scripts'], () => {
     return gulp
-        .src('src/Vee/Theme/main.less')
+        .src('src/UEye/Theme/main.less')
         .pipe(lessGlob())
         .pipe(less())
         .pipe(gulp.dest(getDest('Theme')));

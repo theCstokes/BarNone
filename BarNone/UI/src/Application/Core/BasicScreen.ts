@@ -1,7 +1,7 @@
-import { AppScreen } from "Vee/Screen/AppScreen";
-import ControlTypes from "Vee/ControlTypes";
-import { View } from "Vee/View/View";
-import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
+import { AppScreen } from "UEye/Screen/AppScreen";
+import ControlTypes from "UEye/ControlTypes";
+import { View } from "UEye/View/View";
+import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 
 export default class BasicScreen<TStateManager extends BaseStateManager<any>> extends AppScreen {
 	private _stateManager: TStateManager;

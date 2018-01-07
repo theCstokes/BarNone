@@ -46,7 +46,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
         {
             using (var repo = _builder())
             {
-                return EntityResponse.Enumerable(repo.Get());
+                return EntityResponse.Response(repo.Get());
             }
         }
 

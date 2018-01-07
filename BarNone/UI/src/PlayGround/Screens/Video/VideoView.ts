@@ -1,6 +1,6 @@
-import { View } from "Vee/View/View";
-import ControlTypes from "Vee/ControlTypes";
-import ContainerType from "Vee/ContainerType";
+import { View } from "UEye/View/View";
+import ControlTypes from "UEye/ControlTypes";
+import ContainerType from "UEye/ContainerType";
 
 export default class VideoView extends View {
 	public get content(): any[] {

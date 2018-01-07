@@ -1,4 +1,4 @@
-import { BaseDataOverride } from "Vee/Data/BaseDataOverride";
+import { BaseDataOverride } from "UEye/Data/BaseDataOverride";
 import User from "Application/Data/Models/User/User";
 
 export default class Users extends BaseDataOverride<User> {

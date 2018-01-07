@@ -1,5 +1,5 @@
 import EditScreen from "Application/Core/EditScreen";
-import ScreenBind from "Vee/Screen/ScreenBind";
+import ScreenBind from "UEye/Screen/ScreenBind";
 import LiftEditView from "Application/Screens/Lifts/Edit/LiftEditView";
 import { StateManager, State } from "Application/Screens/Lifts/Edit/StateManager";
 

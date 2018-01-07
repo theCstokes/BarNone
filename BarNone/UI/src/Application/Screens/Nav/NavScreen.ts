@@ -1,22 +1,22 @@
 import BasicScreen from "Application/Core/BasicScreen";
 import NavView from "Application/Screens/Nav/NavView";
-import ScreenBind from "Vee/Screen/ScreenBind";
+import ScreenBind from "UEye/Screen/ScreenBind";
 import { State, StateManager } from "Application/Screens/Nav/StateManager";
-import Vee from "Vee/Vee";
-import Loader from "Vee/Elements/Core/Loader";
+import UEye from "UEye/UEye";
+import Loader from "UEye/Elements/Core/Loader";
 
 export default class NavScreen extends BasicScreen<StateManager> {
 
 	public constructor() {
 		super(NavView, StateManager, true);
-		Vee.onBack.on(() => this._backAction());
+		UEye.onBack.on(() => this._backAction());
 	}
 
 	public userListBind = ScreenBind
 		.create<State>(this, "navList")
 		.onSelect(async data => {
 			// console.log(data);
-            Vee.popTo(this);
+            UEye.popTo(this);
             //console.warn(data.name);
             
 			this.stateManager.selectionChange.trigger({
@@ -39,12 +39,12 @@ export default class NavScreen extends BasicScreen<StateManager> {
                 //this.view.navBreadcrumbs.push({ value: navElement.name });
                 this.view.navBreadcrumbs.items = [{ value: navElement.name }];
 				var NextScreen = await Loader.sync(navElement.screenPath);
-				await Vee.push(NextScreen.default);
+				await UEye.push(NextScreen.default);
 			}
 		});
 
 	private _backAction() {
-		Vee.popTo(this);
+		UEye.popTo(this);
 		this.stateManager.navigateBack.trigger();
 	}
 

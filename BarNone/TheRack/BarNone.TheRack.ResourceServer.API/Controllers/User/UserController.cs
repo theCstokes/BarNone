@@ -29,9 +29,9 @@ namespace TheRack.ResourceServer.API.Controllers
                 var filter = FilterRequest;
                 if (filter != null)
                 {
-                    return EntityResponse.Enumerable(repository.Get(filter.GetWhere()));
+                    return EntityResponse.Response(repository.Get(filter.GetWhere()));
                 }
-                return EntityResponse.Enumerable(repository.Get());
+                return EntityResponse.Response(repository.Get());
             }
             catch(Exception e)
             {

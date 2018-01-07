@@ -1,6 +1,6 @@
 import 'mocha';
 import * as chai from "chai"
-import { FilterBuilder } from "Vee/Core/FilterBuilder"
+import { FilterBuilder } from "UEye/Core/FilterBuilder"
 
 let expect = chai.expect;
 

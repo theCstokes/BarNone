@@ -114,29 +114,41 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
-        public static IActionResult Enumerable(IEnumerable<IDTOTransformable> entities, HttpStatusCode code = HttpStatusCode.OK)
-        {
+        //public static IActionResult Enumerable(IEnumerable<IDTOTransformable> entities, HttpStatusCode code = HttpStatusCode.OK)
+        //{
 
-            var response = new EnumerableDTO
-            {
-                Count = entities.Count(),
-                Entities = entities
-            };
+        //    var response = new EnumerableDTO
+        //    {
+        //        Count = entities.Count(),
+        //        Entities = entities
+        //    };
 
-            return CreateResult(response, code);
-        }
+        //    return CreateResult(response, code);
+        //}
 
-        public static IActionResult Enumerable(dynamic result, HttpStatusCode code = HttpStatusCode.OK)
-        {
+        //public static IActionResult Enumerable(List<IDTOTransformable> entities, HttpStatusCode code = HttpStatusCode.OK)
+        //{
 
-            //var response = new EnumerableDTO
-            //{
-            //    Count = entities.Count(),
-            //    Entities = entities
-            //};
+        //    var response = new EnumerableDTO
+        //    {
+        //        Count = entities.Count(),
+        //        Entities = entities
+        //    };
 
-            return CreateResult(result, code);
-        }
+        //    return CreateResult(response, code);
+        //}
+
+        //public static IActionResult Enumerable(dynamic result, HttpStatusCode code = HttpStatusCode.OK)
+        //{
+
+        //    //var response = new EnumerableDTO
+        //    //{
+        //    //    Count = entities.Count(),
+        //    //    Entities = entities
+        //    //};
+
+        //    return CreateResult(result, code);
+        //}
 
         public static IActionResult Error(Exception e, HttpStatusCode code = HttpStatusCode.InternalServerError)
         {

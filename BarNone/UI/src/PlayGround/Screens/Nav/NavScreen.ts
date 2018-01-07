@@ -1,7 +1,7 @@
 import BasicScreen from "Application/Core/BasicScreen";
-import ScreenBind from "Vee/Screen/ScreenBind";
-import Vee from "Vee/Vee";
-import Loader from "Vee/Elements/Core/Loader";
+import ScreenBind from "UEye/Screen/ScreenBind";
+import UEye from "UEye/UEye";
+import Loader from "UEye/Elements/Core/Loader";
 import { StateManager, State } from "PlayGround/Screens/Nav/StateManager";
 import NavView from "PlayGround/Screens/Nav/NavView";
 
@@ -9,14 +9,14 @@ export default class NavScreen extends BasicScreen<StateManager> {
 
 	public constructor() {
 		super(NavView, StateManager, true);
-		Vee.onBack.on(() => this._backAction());
+		UEye.onBack.on(() => this._backAction());
 	}
 
 	public userListBind = ScreenBind
 		.create<State>(this, "navList")
 		.onSelect(async data => {
 			// console.log(data);
-			Vee.popTo(this);
+			UEye.popTo(this);
 			this.stateManager.selectionChange.trigger({
 				id: data.id
 			});
@@ -35,12 +35,12 @@ export default class NavScreen extends BasicScreen<StateManager> {
 			});
 			if (navElement !== undefined) {
 				var NextScreen = await Loader.sync(navElement.screenPath);
-				await Vee.push(NextScreen.default);
+				await UEye.push(NextScreen.default);
 			}
 		});
 
 	private _backAction() {
-		Vee.popTo(this);
+		UEye.popTo(this);
 		this.stateManager.navigateBack.trigger();
 	}
 

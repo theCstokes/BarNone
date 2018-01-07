@@ -1,7 +1,7 @@
-import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
-import StateBind from "Vee/Core/DataBind/StateBind";
-import { IDataBind } from "Vee/Core/DataBind/IDataBind";
-import { AppScreen } from "Vee/Screen/AppScreen";
+import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
+import StateBind from "UEye/Core/DataBind/StateBind";
+import { IDataBind } from "UEye/Core/DataBind/IDataBind";
+import { AppScreen } from "UEye/Screen/AppScreen";
 
 class NavElement {
 	public id: number;

@@ -1,4 +1,4 @@
-import { BaseDataOverride } from "Vee/Data/BaseDataOverride";
+import { BaseDataOverride } from "UEye/Data/BaseDataOverride";
 import Joint from "Application/Data/Models/Body/Joint";
 
 export default class JointsData extends BaseDataOverride<Joint> {

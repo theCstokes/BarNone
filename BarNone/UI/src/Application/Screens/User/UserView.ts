@@ -1,5 +1,5 @@
-import { View } from "Vee/View/View";
-import ControlTypes from "Vee/ControlTypes";
+import { View } from "UEye/View/View";
+import ControlTypes from "UEye/ControlTypes";
 
 export default class UserView extends View {
 	public get content(): any[] {

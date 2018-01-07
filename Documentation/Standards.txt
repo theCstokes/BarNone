@@ -1,0 +1,15 @@
+Programming standards:
+In ts there is no way to do the following:
+
+	var data = { person: undefined }
+
+	console.log(data.person?.name)
+
+This is a pain in the ass. The js spec states that one should do one of the following:
+
+	console.log(data.person && data.person.name) // if person is undefined undefined is returned else the name
+
+or 
+
+	console.log(data.person !== undefined ? data.person.name : '')
+

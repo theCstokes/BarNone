@@ -1,6 +1,6 @@
 import BasicScreen from "Application/Core/BasicScreen";
-import ScreenBind from "Vee/Screen/ScreenBind";
-import Vee from "Vee/Vee";
+import ScreenBind from "UEye/Screen/ScreenBind";
+import UEye from "UEye/UEye";
 import DataManager from "Application/Data/DataManager";
 import NavScreen from "Application/Screens/Nav/NavScreen";
 import CreateAccountView from "Application/Screens/Login/Create/CreateAccountView";
@@ -45,8 +45,8 @@ export default class CreateAccountScreen extends BasicScreen<StateManager> {
 	public createAccountBind = ScreenBind
 		.create<State>(this, "cancelButton")
 		.onClick(async () => {
-			Vee.pop();
-			await Vee.push(LoginScreen);
+			UEye.pop();
+			await UEye.push(LoginScreen);
 		});
 
 	public loginBind = ScreenBind
@@ -54,8 +54,8 @@ export default class CreateAccountScreen extends BasicScreen<StateManager> {
 		.onClick(async () => {
 			var currentState = this.stateManager.getCurrentState();
 			if (await DataManager.create(currentState.userName, currentState.password1)) {
-				Vee.pop();
-				await Vee.push(NavScreen);
+				UEye.pop();
+				await UEye.push(NavScreen);
 			}
 		})
 		.onRender((original, current) => {

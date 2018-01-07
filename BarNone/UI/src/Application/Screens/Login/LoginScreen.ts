@@ -1,6 +1,6 @@
 import BasicScreen from "Application/Core/BasicScreen";
-import ScreenBind from "Vee/Screen/ScreenBind";
-import Vee from "Vee/Vee";
+import ScreenBind from "UEye/Screen/ScreenBind";
+import UEye from "UEye/UEye";
 import DataManager from "Application/Data/DataManager";
 import LoginView from "Application/Screens/Login/LoginView";
 import NavScreen from "Application/Screens/Nav/NavScreen";
@@ -19,8 +19,8 @@ export default class LoginScreen extends BasicScreen<StateManager> {
 	public createAccountBind = ScreenBind
 		.create(this, "createButton")
 		.onClick(async () => {
-			Vee.pop();
-			await Vee.push(CreateAccountScreen);
+			UEye.pop();
+			await UEye.push(CreateAccountScreen);
 		});
 
 	public loginBind = ScreenBind
@@ -28,9 +28,9 @@ export default class LoginScreen extends BasicScreen<StateManager> {
 		.onClick(async () => {
 
 			if (await DataManager.authorize(this.view.usernameInput.text, this.view.passwordInput.text)) {
-				Vee.pop();
-				await Vee.push(NavScreen);
-				// await Vee.push(UserScreen);
+				UEye.pop();
+				await UEye.push(NavScreen);
+				// await UEye.push(UserScreen);
 			}
 		});
 

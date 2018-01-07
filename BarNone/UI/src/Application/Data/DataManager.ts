@@ -1,6 +1,6 @@
-import { BaseDataManager } from "Vee/Data/BaseDataManager";
+import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import User from "Application/Data/Models/User/User";
-import Resource from "Vee/Data/Resource";
+import Resource from "UEye/Data/Resource";
 import LiftFolder from "Application/Data/Models/LiftFolder/LiftFolder";
 import Joint from "Application/Data/Models/Body/Joint";
 

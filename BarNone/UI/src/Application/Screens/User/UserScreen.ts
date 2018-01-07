@@ -1,9 +1,9 @@
 import BasicScreen from "Application/Core/BasicScreen";
-import Vee from "Vee/Vee";
+import UEye from "UEye/UEye";
 import UserView from "Application/Screens/User/UserView";
 import UserEditScreen from "Application/Screens/User/Edit/UserEditScreen";
 import DataManager from "Application/Data/DataManager";
-import ScreenBind from "Vee/Screen/ScreenBind";
+import ScreenBind from "UEye/Screen/ScreenBind";
 import { State, StateManager } from "Application/Screens/User/StateManager";
 import EditScreen from "Application/Core/EditScreen";
 
@@ -18,7 +18,7 @@ export default class UserScreen extends BasicScreen<StateManager> {
 		.create<State>(this, "userList")
 		.onSelect(async data => {
 			// console.log(data);
-			// Vee.popTo(this);
+			// UEye.popTo(this);
 			this.stateManager.selectionChange.trigger({
 				id: data.id
 			});
@@ -36,11 +36,11 @@ export default class UserScreen extends BasicScreen<StateManager> {
 				return (item.id === current.selectionId);
 			});
 			this.subScreen.stateManager.resetState.trigger(userData);
-			// await Vee.push(UserEditScreen, userData);
+			// await UEye.push(UserEditScreen, userData);
 		});
 
 	public async onShow() {
-		this.subScreen = await Vee.push(UserEditScreen) as UserEditScreen;
+		this.subScreen = await UEye.push(UserEditScreen) as UserEditScreen;
 		this.stateManager.init();
 
 		this.subScreen.stateManager.saveEvent.on(() => {
@@ -55,6 +55,6 @@ export default class UserScreen extends BasicScreen<StateManager> {
 			this.subScreen.stateManager.resetState.trigger(userData);
 		});
 		
-		// Vee.push(UserEditScreen);
+		// UEye.push(UserEditScreen);
 	}
 }

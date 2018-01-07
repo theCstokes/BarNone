@@ -1,7 +1,8 @@
-import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
-import StateBind from "Vee/Core/DataBind/StateBind";
-import { IDataBind } from "Vee/Core/DataBind/IDataBind";
-import { AppScreen } from "Vee/Screen/AppScreen";
+import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
+import { IDataBind } from "UEye/Core/DataBind/IDataBind";
+import { AppScreen } from "UEye/Screen/AppScreen";
+import StateBind from "UEye/StateManager/StateBind";
+import { SelectionStateManager } from "Application/Core/StateManager/SelectionStateManager";
 
 class NavElement {
 	public id: number;
@@ -22,58 +23,42 @@ export class State {
 }
 
 export class StateManager extends BaseStateManager<State> {
-	public readonly _resetState = StateBind
-		.create<State>(this, true)
-		.onAction((state, data) => {
-			var nextState = Utils.clone(state);
-			nextState.currentScreenId = nextState.navElementList[0].id;
-			nextState.navHistory.push(nextState.currentScreenId);
-
-			return nextState;
-		});
-
-	public readonly _selectionChange = StateBind
-		.create<State>(this)
-		.onAction((state, data) => {
-			var nextState = Utils.clone(state);
-			nextState.currentScreenId = data.id;
-			nextState.navHistory.push(nextState.currentScreenId);
-
-			return nextState;
-		});
-
-	public readonly _navigateBack = StateBind
-		.create<State>(this)
-		.onAction((state, data) => {
-			var nextState = Utils.clone(state);
-			nextState.navHistory.pop();
-			
-			if (nextState.navHistory.length > 0) {
-				var lastIndex = (nextState.navHistory.length - 1);
-				nextState.currentScreenId = nextState.navHistory[lastIndex];
-			}
-
-			return nextState;
-		});
-
 	public constructor(screen: AppScreen) {
-		super(screen, new State());
+		super(new State());
 	}
 
-	public get resetState(): IDataBind {
-		return this._resetState.expose();
-	}
+	public readonly ResetState = StateBind.onCallable<State>(this, (state) => {
+		var nextState = Utils.clone(state);
+		nextState.currentScreenId = nextState.navElementList[0].id;
+		nextState.navHistory.push(nextState.currentScreenId);
 
-	public get selectionChange(): IDataBind {
-		return this._selectionChange.expose();
-	}
+		return nextState;
+	});
 
-	public get navigateBack(): IDataBind {
-		return this._navigateBack.expose();
-	}
+	public readonly SelectionChange = StateBind.onAction<State, {
+		id: number
+	}>(this, (state, data) => {
+		var nextState = Utils.clone(state);
+		nextState.currentScreenId = data.id;
+		nextState.navHistory.push(nextState.currentScreenId);
+
+		return nextState;
+	});
+
+	public readonly NavigateBack = StateBind.onCallable<State>(this, (state) => {
+		var nextState = Utils.clone(state);
+		nextState.navHistory.pop();
+
+		if (nextState.navHistory.length > 0) {
+			var lastIndex = (nextState.navHistory.length - 1);
+			nextState.currentScreenId = nextState.navHistory[lastIndex];
+		}
+
+		return nextState;
+	});
 
 	public init(): void {
-		this.resetState.trigger();
+		this.ResetState.trigger();
 	}
 
 	public onSave(): void {

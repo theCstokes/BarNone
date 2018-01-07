@@ -1,7 +1,7 @@
 import BasicScreen from "Application/Core/BasicScreen";
-import ScreenBind from "Vee/Screen/ScreenBind";
-import Vee from "Vee/Vee";
-import Loader from "Vee/Elements/Core/Loader";
+import ScreenBind from "UEye/Screen/ScreenBind";
+import UEye from "UEye/UEye";
+import Loader from "UEye/Elements/Core/Loader";
 import VideoView from "PlayGround/Screens/Video/VideoView";
 import { StateManager, State } from "PlayGround/Screens/Video/StateManager";
 
@@ -9,7 +9,7 @@ export default class VideoScreen extends BasicScreen<StateManager> {
 
 	public constructor() {
 		super(VideoView, StateManager, true);
-		// Vee.onBack.on(() => this._backAction());
+		// UEye.onBack.on(() => this._backAction());
 	}
 
 	public videoPlayerBind = ScreenBind

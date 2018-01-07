@@ -1,10 +1,10 @@
-import { AppScreen } from "Vee/Screen/AppScreen";
-import ControlTypes from "Vee/ControlTypes";
-import { View } from "Vee/View/View";
-import { BaseStateManager } from "Vee/StateManager/BaseStateManager";
-import ScreenBind from "Vee/Screen/ScreenBind";
-import DataEvent from "Vee/Core/DataEvent/DataEvent";
-import { IDataEvent } from "Vee/Core/DataEvent/IDataEvent";
+import { AppScreen } from "UEye/Screen/AppScreen";
+import ControlTypes from "UEye/ControlTypes";
+import { View } from "UEye/View/View";
+import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
+import ScreenBind from "UEye/Screen/ScreenBind";
+import DataEvent from "UEye/Core/DataEvent/DataEvent";
+import { IDataEvent } from "UEye/Core/DataEvent/IDataEvent";
 
 export default class EditScreen<TStateManager extends BaseStateManager<any>> extends AppScreen {
 	private _isDirty: boolean;

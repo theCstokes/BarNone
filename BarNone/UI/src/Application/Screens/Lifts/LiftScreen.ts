@@ -1,9 +1,9 @@
 import BasicScreen from "Application/Core/BasicScreen";
-import Vee from "Vee/Vee";
+import UEye from "UEye/UEye";
 import LiftView from "Application/Screens/Lifts/LiftView";
 import LiftEditScreen from "Application/Screens/Lifts/Edit/LiftEditScreen";
 import { StateManager, State } from "Application/Screens/Lifts/StateManager";
-import ScreenBind from "Vee/Screen/ScreenBind";
+import ScreenBind from "UEye/Screen/ScreenBind";
 
 export default class LiftScreen extends BasicScreen<StateManager> {
 	private subScreen: LiftEditScreen;
@@ -16,7 +16,7 @@ export default class LiftScreen extends BasicScreen<StateManager> {
 		.create<State>(this, "userList")
 		.onSelect(async data => {
 			// console.log(data);
-			// Vee.popTo(this);
+			// UEye.popTo(this);
 			this.stateManager.selectionChange.trigger({
 				id: data.id
 			});
@@ -34,11 +34,11 @@ export default class LiftScreen extends BasicScreen<StateManager> {
 				return (item.id === current.selectionId);
 			});
 			this.subScreen.stateManager.resetState.trigger(userData);
-			// await Vee.push(UserEditScreen, userData);
+			// await UEye.push(UserEditScreen, userData);
 		});
 
 	public async onShow() {
-		this.subScreen = await Vee.push(LiftEditScreen) as LiftEditScreen;
+		this.subScreen = await UEye.push(LiftEditScreen) as LiftEditScreen;
 		this.stateManager.init();
 
 		this.subScreen.stateManager.saveEvent.on(() => {
@@ -53,6 +53,6 @@ export default class LiftScreen extends BasicScreen<StateManager> {
 			this.subScreen.stateManager.resetState.trigger(userData);
 		});
 		
-		// Vee.push(UserEditScreen);
+		// UEye.push(UserEditScreen);
 	}
 }
