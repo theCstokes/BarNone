@@ -3,12 +3,24 @@ import StateBind, { StateCallableBind, StateCallable } from "UEye/StateManager/S
 type RenderCallback<TState> = (current: TState, original: TState) => void;
 
 export class StateTracker<TState> {
+	private _TStateType: { new(): TState };
     public current: TState;
 	public original: TState;
 	
 	public constructor(TStateType: { new(): TState }) {
+		this._TStateType = TStateType;
 		this.current = new TStateType();
 		this.original = new TStateType();
+	}
+
+	public empty(): StateTracker<TState> {
+		return new StateTracker<TState>(this._TStateType);
+	}
+
+	public initialize(): StateTracker<TState> {
+		var nextState = Utils.clone(this);
+		nextState.original = Utils.clone(this.current);
+		return nextState;
 	}
 }
 
@@ -39,7 +51,7 @@ export abstract class BaseStateManager<TState> {
     }
     
     public getState(): StateTracker<TState> {
-		return Object.freeze(this._stateTracker);
+		return Utils.clone(this._stateTracker);
 	}
 
 	public getCurrentState(): TState {

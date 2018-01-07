@@ -18,9 +18,9 @@ export class StateManager extends BaseStateManager<State> {
 
 	public readonly ResetState = StateBind
 		.onCallable<State>(this, (state) => {
-			var nextState = Utils.clone(state);
-			return nextState;
-		}, { resetState: true });
+			var nextState = state.empty();
+			return nextState.initialize();
+		});
 
 	public readonly UserNameChange = StateBind
 		.onAction<State, string>(this, (state, data) => {

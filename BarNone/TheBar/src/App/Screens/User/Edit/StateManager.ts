@@ -24,13 +24,13 @@ export class StateManager extends BaseStateManager<State> {
 			name: string,
 			age: number
 		}>(this, (state, data) => {
-			var nextState = Utils.clone(state);
+			var nextState = state.empty();
 			nextState.current.id = data.id;
 			nextState.current.name = data.name;
 			nextState.current.age = data.age;
 
-			return nextState;
-		}, { resetState: true });
+			return nextState.initialize();
+		});
 	// .create<State>(this, true)
 	// .onAction((state, data) => {
 	// 	var nextState = Utils.clone(state);

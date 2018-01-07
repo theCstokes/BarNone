@@ -1,6 +1,8 @@
 import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 import StateBind from "UEye/StateManager/StateBind";
 import DataManager from "App/Data/DataManager";
+import { start } from "repl";
+import { stat } from "fs";
 // import { AppScreen } from "UEye/Screen/AppScreen";
 // import StateBind from "UEye/Core/DataBind/StateBind";
 // import { IDataBind } from "UEye/Core/DataBind/IDataBind";
@@ -23,12 +25,12 @@ export class StateManager extends BaseStateManager<State> {
 			name: string,
 			age: number
 		}>(this, (state, data) => {
-			var nextState = Utils.clone(state);
+			var nextState = state.empty();
 			nextState.current.id = data.id;
 			nextState.current.name = data.name;
 			nextState.current.age = data.age;
 
-			return nextState;
+			return nextState.initialize();
 		});
 
 	public readonly NameChange = StateBind

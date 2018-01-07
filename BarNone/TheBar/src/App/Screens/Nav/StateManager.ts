@@ -53,12 +53,12 @@ export class StateManager extends BaseStateManager<State> {
 
 	public readonly ResetState = StateBind
 		.onCallable<State>(this, (state) => {
-			var nextState = Utils.clone(state);
+			var nextState = state.empty();
 
 			nextState.current.currentScreenId = nextState.current.navElementList[0].id;
 			nextState.current.navHistory.push(nextState.current.currentScreenId);
 
-			return nextState;
+			return nextState.initialize();
 		});
 
 	public readonly SelectionChange = StateBind
