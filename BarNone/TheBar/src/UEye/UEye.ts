@@ -1,6 +1,5 @@
 import { IUtils } from 'UEye/UEye.config';
 import Screen from 'UEye/Screen/Screen';
-import { inflate } from 'zlib';
 import DataEvent, { IDataEvent } from 'UEye/DataEvent/DataEvent';
 // import { AppScreen } from "UEye/Screen/AppScreen";
 // import Core from "UEye/Elements/Core/Core";
