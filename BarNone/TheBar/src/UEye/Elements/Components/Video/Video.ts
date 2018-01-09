@@ -40,6 +40,7 @@ export default class Video extends BaseComponent {
 
     public set frameData(value: FrameData[]) {
         if (this._context != null) {
+            this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
             this._context.lineWidth = 5;
 
             value.forEach(frame => {

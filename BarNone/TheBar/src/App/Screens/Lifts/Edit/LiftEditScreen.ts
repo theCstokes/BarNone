@@ -1,6 +1,7 @@
 import LiftEditView from "App/Screens/Lifts/Edit/LiftEditView";
 import EditScreen from "UEye/Screen/EditScreen";
 import { StateManager, State } from "App/Screens/Lifts/Edit/StateManager";
+import { SkeletonBuilder } from "App/Screens/Lifts/Edit/SkeletonBuilder";
 
 // import EditScreen from "Application/Core/EditScreen";
 // import ScreenBind from "UEye/Screen/ScreenBind";
@@ -14,8 +15,11 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 	}
 
 	private _onRender(current: State, original: State) {
+		console.log(current);
 		this.view.nameInput.text = current.name;
 		this.view.nameInput.modified = (original.name !== current.name);
+
+		this.view.liftPlayer.frameData = SkeletonBuilder.build(current.lift.details.bodyData)[0];
 
 		var isModified = (JSON.stringify(original) !== JSON.stringify(current));
 		this.view.editPanel.modified = isModified;

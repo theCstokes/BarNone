@@ -9,5 +9,5 @@ export default class BodyData {
 }
 
 class BodyDataDetails {
-    public orderedFrames: BodyDataFrame;
+    public orderedFrames: BodyDataFrame[];
 }
