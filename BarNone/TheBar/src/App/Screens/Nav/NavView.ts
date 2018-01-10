@@ -11,7 +11,6 @@ export default class NavView extends View {
 		return [
 			{
 				instance: ControlTypes.Frame,
-				statusTitle: "Christopher Stokes",
 				statusImageSource: "res/MacBarBell.jpg",
 				globalDock: {
 					instance: ControlTypes.OrderLayout,

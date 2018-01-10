@@ -7,6 +7,7 @@ import LiftScreen from "App/Screens/Lifts/LiftScreen";
 class NavElement {
 	public id: number;
 	public name: string;
+	public icon: string;
 	public screen: { new(): Screen<any> };
 }
 
@@ -17,16 +18,19 @@ export class State {
 		{
 			id: 1,
 			name: "Users",
+			icon: "fa-user",
 			screen: UserScreen
 		},
 		{
 			id: 2,
 			name: "Videos",
+			icon: "fa-video-camera",
 			screen: UserScreen
 		},
 		{
 			id: 3,
 			name: "Lifts",
+			icon: "fa-universal-access",
 			screen: LiftScreen
 		}
 	]

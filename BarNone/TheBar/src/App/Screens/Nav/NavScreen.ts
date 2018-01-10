@@ -22,7 +22,8 @@ export default class NavScreen extends Screen<NavView> {
 			return {
 				selected: (item.id === current.currentScreenId),
 				id: item.id,
-				name: item.name
+				name: item.name,
+				icon: item.icon
 			}
 		});
 
