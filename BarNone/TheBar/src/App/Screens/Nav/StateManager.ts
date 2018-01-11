@@ -3,6 +3,7 @@ import StateBind from "UEye/StateManager/StateBind";
 import Screen from "UEye/Screen/Screen";
 import UserScreen from "App/Screens/User/UserScreen";
 import LiftScreen from "App/Screens/Lifts/LiftScreen";
+import SettingsScreen from "App/Screens/Settings/SettingsScreen"
 
 class NavElement {
 	public id: number;
@@ -23,12 +24,18 @@ export class State {
 		},
 		{
 			id: 2,
+			name: "Settings",
+			icon: "fa-cog",
+			screen: SettingsScreen
+		},
+		{
+			id: 3,
 			name: "Videos",
 			icon: "fa-video-camera",
 			screen: UserScreen
 		},
 		{
-			id: 3,
+			id: 4,
 			name: "Lifts",
 			icon: "fa-universal-access",
 			screen: LiftScreen
