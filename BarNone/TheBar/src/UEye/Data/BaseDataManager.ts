@@ -1,4 +1,4 @@
-import Resource from "UEye/Data/Resource";
+// import Resource from "UEye/Data/Resource";
 
 const CREATE_URL = "/api/v1/Authorization/Create";
 const AUTH_URL = "/api/v1/Authorization/Login";

@@ -2,11 +2,13 @@ import ControlTypes from "UEye/ControlTypes";
 import { EditView } from "UEye/View/EditView";
 import Input from "UEye/Elements/Components/Input/Input";
 import Panel from "UEye/Elements/Containers/Panel/Panel";
+import Video from "UEye/Elements/Components/Video/Video";
 
 export default class LiftEditView extends EditView {
 	public nameInput: Input;
 	public ageInput: Input;
 	public editPanel: Panel;
+	public liftPlayer: Video;
 
 	public get content(): any[] {
 		return [
@@ -19,6 +21,10 @@ export default class LiftEditView extends EditView {
 						id: "nameInput",
 						instance: ControlTypes.Input,
 						hint: "Name"
+					},
+					{
+						id: "liftPlayer",
+						instance: ControlTypes.Video
 					},
 					{
 						id: "ageInput",

@@ -3,6 +3,7 @@ import StateBind from "UEye/StateManager/StateBind";
 import DataManager from "App/Data/DataManager";
 import { start } from "repl";
 import { stat } from "fs";
+import Lift from "App/Data/Models/Lift/Lift";
 // import { AppScreen } from "UEye/Screen/AppScreen";
 // import StateBind from "UEye/Core/DataBind/StateBind";
 // import { IDataBind } from "UEye/Core/DataBind/IDataBind";
@@ -12,6 +13,7 @@ export class State {
 	public id: number;
 	public name: string = "";
 	public age: number;
+	public lift: Lift;
 }
 
 export class StateManager extends BaseStateManager<State> {
@@ -20,12 +22,17 @@ export class StateManager extends BaseStateManager<State> {
 	}
 	
 	public readonly ResetState = StateBind
-		.onAction<State, {
+		.onAsyncAction<State, {
 			id: number,
 			name: string,
 			age: number
-		}>(this, (state, data) => {
+		}>(this, async (state, data) => {
 			var nextState = state.empty();
+
+			var lift = await DataManager.Lifts.single(data.id, { includeDetails: true });
+			console.log(lift);
+			nextState.current.lift = lift;
+
 			nextState.current.id = data.id;
 			nextState.current.name = data.name;
 			nextState.current.age = data.age;
@@ -54,7 +61,8 @@ export class StateManager extends BaseStateManager<State> {
 	// }
 
 	public init(): void {
-		// this.resetState.trigger();
+		// var data = await DataManager.Lifts.single()
+		// this.ResetState.trigger();
 	}
 
 	public async onSave(): Promise<void> {

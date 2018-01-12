@@ -9,6 +9,6 @@ export class State implements ISelectionState<User> {
 
 export class StateManager extends SelectionStateManager<User, State> {
 	public constructor() {
-		super(State, () => DataManager.Users.load());
+		super(State, () => DataManager.Users.all());
 	}
 }
