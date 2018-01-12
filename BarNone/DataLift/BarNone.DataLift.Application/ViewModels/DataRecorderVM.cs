@@ -7,6 +7,7 @@ using BarNone.Shared.DataTransfer;
 using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,6 +34,18 @@ namespace BarNone.DataLift.UI.ViewModels
                 }
             }
         }
+
+        private ObservableCollection<LiftDTO> _allLiftData = new ObservableCollection<LiftDTO>() { new LiftDTO() { ID= 9394 } };
+        public ObservableCollection<LiftDTO> allLiftData
+        {
+            get { return _allLiftData; }
+            set
+            {
+                _allLiftData = allLiftData;
+                OnPropertyChanged(new PropertyChangedEventArgs("allLiftData"));
+            }
+        }
+
         #endregion
 
         #region Private Properties
@@ -221,7 +234,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// All data that will be sent to the Rack.
         /// </summary>
-        private IList<BodyData> allLiftData;
+        //private IList<BodyData> _allLiftData;
 
         #endregion
 
@@ -238,7 +251,8 @@ namespace BarNone.DataLift.UI.ViewModels
 
             prevHandState = 0;
 
-            allLiftData = new List<BodyData>();
+            allLiftData.Clear();
+            //_allLiftData = new ObservableCollection<LiftDTO>();
         }
 
         internal override void Closed()
@@ -251,7 +265,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             prevHandState = 0;
 
-            allLiftData = null;
+            allLiftData.Clear();
         }
 
         #endregion
@@ -327,8 +341,22 @@ namespace BarNone.DataLift.UI.ViewModels
                     // If the user is in the middle of a lift and has indicated it is now finished.
                     if(isCurrentlyRecording == true)
                     {
+                        var toSend = new LiftDTO()
+                        {
+                            ParentID = 1,
+                            Name = String.Format("{0}_{1}_{2}_New_Lift_{3}", CurrentRecordingBodyData.RecordDate.Year, CurrentRecordingBodyData.RecordDate.Month, CurrentRecordingBodyData.RecordDate.Day,(allLiftData.Count+1)),
+                            Details = new LiftDetailDTO()
+                            {
+                                BodyData = new BodyDataDTO()
+                            }
+
+                        };
+
+                        var bodyDto = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
+                        toSend.Details.BodyData = bodyDto;
+
                         // Add the lift to the list of all lifts. 
-                        allLiftData.Add(CurrentRecordingBodyData);
+                        allLiftData.Add(toSend);
 
                         // Set is currently recording to false
                         isCurrentlyRecording = false;
@@ -731,29 +759,16 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             //var _bodyData = 
 
-            var toSend = new LiftDTO()
+            for(int i = 0; i < allLiftData.Count; i++)
             {
-                ParentID = 1,
-                Name = LiftName,
-                Details = new LiftDetailDTO()
-                {
-                    BodyData = new BodyDataDTO()
-                }
-                
-            };
+                var temp = await DataManager.LiftFlex.Post(allLiftData[i]);
+            }
 
-
-            IsRecording = false;
-
-
-            var bodyDto = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
-            toSend.Details.BodyData = bodyDto;
-
-            var temp = await DataManager.LiftFlex.Post(toSend);
+            allLiftData.Clear();
 
             //System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp.ToString());
 
-            StartNewRecording();
+            //StartNewRecording();
 
         }
 
