@@ -21,7 +21,6 @@ export default class NavigationListItem extends BaseListItem {
         this._nameElement.textContent = this._name;
     }
     public set icon(value: string) {
-        console.log(value);
 		if (this._icon !== value) {
            
 			this._icon = value;	

@@ -1,5 +1,8 @@
 import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 import StateBind from "UEye/StateManager/StateBind";
+import EditProfile from "App/Screens/Settings/EditProfile/EditProfileScreen";
+import ChangePassword from "App/Screens/Settings/ChangePassword/ChangePasswordScreen";
+import Screen from "UEye/Screen/Screen";
 // import { AppScreen } from "UEye/Screen/AppScreen";
 // import DataManager from "Application/Data/DataManager";
 // import User from "Application/Data/Models/User/User";
@@ -11,6 +14,7 @@ import StateBind from "UEye/StateManager/StateBind";
 class SettingsElement {
 	public id: number;
 	public name: string;
+	public screen: { new(): Screen<any> };
 }
 
 export class State {
@@ -20,21 +24,14 @@ export class State {
 		{
 			id: 1,
 			name: "Edit Profile",
+			screen: EditProfile
+
 			
 		},
 		{
 			id: 2,
 			name: "Change Password",
-			
-		},
-		{
-			id: 3,
-			name: "Edit Video Settings",
-			
-		},
-		{
-			id: 4,
-			name: "Manage Tags",
+			screen: ChangePassword
 			
 		}
 	]

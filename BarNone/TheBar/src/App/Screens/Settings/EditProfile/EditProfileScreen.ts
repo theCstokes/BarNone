@@ -1,15 +1,15 @@
-import SettingsEditView from "App/Screens/Settings/Edit/SettingsEditView";
+import EditProfileView from "App/Screens/Settings/EditProfile/EditProfileView";
 import EditScreen from "UEye/Screen/EditScreen";
-import { StateManager, State } from "App/Screens/Settings/Edit/StateManager";
+import { StateManager, State } from "App/Screens/Settings/EditProfile/StateManager";
 
 // import EditScreen from "Application/Core/EditScreen";
 // import ScreenBind from "UEye/Screen/ScreenBind";
 // import LiftEditView from "Application/Screens/Lifts/Edit/LiftEditView";
 // import { StateManager, State } from "Application/Screens/Lifts/Edit/StateManager";
 
-export default class SettingsEditScreen extends EditScreen<SettingsEditView, StateManager> {
+export default class SettingsEditScreen extends EditScreen<EditProfileView, StateManager> {
 	public constructor() {
-		super(SettingsEditView, StateManager);
+		super(EditProfileView, StateManager);
 		this.stateManager.bind(this._onRender.bind(this));
 	}
 
