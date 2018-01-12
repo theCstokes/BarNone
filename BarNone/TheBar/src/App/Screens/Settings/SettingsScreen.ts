@@ -7,13 +7,13 @@
 
 import Screen from "UEye/Screen/Screen"
 import SettingsView from "App/Screens/Settings/SettingsView";
-import SettingsEditScreen from "App/Screens/Settings/Edit/SettingsEditScreen";
+// import SettingsEditScreen from "App/Screens/Settings/Edit/SettingsEditScreen";
 import { StateManager, State } from "App/Screens/Settings/StateManager";
 import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import UEye from "UEye/UEye";
 
 export default class SettingsScreen extends Screen<SettingsView> {
-	private subScreen: SettingsEditScreen;
+	// private subScreen: SettingsSubScreen;
 	private _stateManager: StateManager;
 	
 	public constructor() {
@@ -31,16 +31,25 @@ export default class SettingsScreen extends Screen<SettingsView> {
 				name: item.name
 			}
 		});
-
+		var settingsElement = current.SettingsElementList.find(item => {
+			return (item.id === current.selectionId);
+		});
+		if (settingsElement !== undefined) {
+			//this.view.navBreadcrumbs.push({ value: navElement.name });
+			// var NextScreen = Loader.sync(navElement.screenPath);
+			UEye.push(settingsElement.screen);
+		}
 	
 	}
 
 	public onShow(): void {
 		this.view.userList.onSelect = (data: IListItem) => {
+			UEye.popTo(this);
 			this._stateManager.SelectionChange.trigger({ id: data.id });
+
 		};
 
-		this.subScreen = UEye.push(SettingsEditScreen) as SettingsEditScreen;
+		
 		this._stateManager.ResetState.trigger();
 		//this._stateManager.init();
 	}

@@ -3,7 +3,7 @@ import { EditView } from "UEye/View/EditView";
 import Input from "UEye/Elements/Components/Input/Input";
 import Panel from "UEye/Elements/Containers/Panel/Panel";
 
-export default class LiftEditView extends EditView {
+export default class EditProfileView extends EditView {
 	public nameInput: Input;
 	public ageInput: Input;
 	public editPanel: Panel;
