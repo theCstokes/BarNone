@@ -10,6 +10,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataConverters;
+using static BarNone.TheRack.Repository.Core.Resolvers;
 
 namespace BarNone.TheRack.Repository
 {
@@ -24,12 +25,32 @@ namespace BarNone.TheRack.Repository
 
         }
 
-        protected override ConverterResolver DetailDataConverterResolver => () => Converters.Convert.BodyData;
+        //protected override DetailConverterResolverDelegate<BodyData, BodyDataDTO, BodyDataDetailDTO, Converters> DetailDataConverterResolver =>
+        //    () => Converters.Convert.BodyData;
 
-        protected override DbSetResolver SetResolver => (context) => context.Bodies;
+        protected override ConverterResolverDelegate<BodyData, BodyDataDTO> DataConverter =>
+            (dto) =>
+            {
+                var dm = Converters.Convert.BodyData.CreateDataModel(dto);
+                dm.UserID = context.UserID;
+                return dm;
+            };
 
-        protected override Resolver DetailDataResolver => (s) => s
+        protected override DetailResolverDelegate<BodyData> DetailEntityResolver => (s) => s
                 .Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointType)
                 .Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointTrackingStateType);
+
+        protected override SetResolverDelegate<BodyData> SetResolver => (context) => context.Bodies;
+
+        protected override EntityResolverDelegate<BodyData> EntityResolver =>
+            (bodies) => bodies.Where(body => body.UserID == context.UserID);
+
+        //protected override ConverterResolver DetailDataConverterResolver => () => Converters.Convert.BodyData;
+
+        //protected override DbSetResolver SetResolver => (context) => context.Bodies;
+
+        //protected override Resolver DetailDataResolver => (s) => s
+        //        .Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointType)
+        //        .Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointTrackingStateType);
     }
 }

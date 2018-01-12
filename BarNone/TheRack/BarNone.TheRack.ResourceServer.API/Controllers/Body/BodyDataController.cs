@@ -18,7 +18,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Body
     public class BodyDataController : DefaultDetailController<BodyDataDTO, BodyData, BodyDataRepository>
     {
 
-        public BodyDataController(): base(() => new BodyDataRepository())
+        public BodyDataController(): base((context) => new BodyDataRepository(context))
         {
 
         }

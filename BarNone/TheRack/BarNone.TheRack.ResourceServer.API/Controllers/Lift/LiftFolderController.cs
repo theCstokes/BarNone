@@ -16,7 +16,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Lift
     [Authorize(Policy = "User")]
     public class LiftFolderController : DefaultDetailController<LiftFolderDTO, LiftFolder, LiftFolderRepository>
     {
-        public LiftFolderController(): base(() => new LiftFolderRepository())
+        public LiftFolderController(): base((context) => new LiftFolderRepository(context))
         {
 
         }

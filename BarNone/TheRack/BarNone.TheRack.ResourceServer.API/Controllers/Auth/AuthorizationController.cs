@@ -60,7 +60,8 @@ namespace TheRack.ResourceServer.API.Controllers
                 new Claim(JwtRegisteredClaimNames.Iat,
                 ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(),
                 ClaimValueTypes.Integer64),
-                identity.FindFirst("User")
+                identity.FindFirst("User"),
+                identity.FindFirst("UserID")
             };
 
             // Create the JWT security token and encode it.
@@ -106,7 +107,8 @@ namespace TheRack.ResourceServer.API.Controllers
                 new Claim(JwtRegisteredClaimNames.Iat,
                 ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(),
                 ClaimValueTypes.Integer64),
-                identity.FindFirst("User")
+                identity.FindFirst("User"),
+                identity.FindFirst("UserID")
             };
 
             // Create the JWT security token and encode it.
@@ -180,7 +182,8 @@ namespace TheRack.ResourceServer.API.Controllers
               new GenericIdentity(user.UserName, "Token"),
               new[]
               {
-                new Claim("User", "IAmMickey")
+                new Claim("User", "IAmMickey"),
+                new Claim("UserID", Convert.ToString(entity.ID))
               }));
 
         }

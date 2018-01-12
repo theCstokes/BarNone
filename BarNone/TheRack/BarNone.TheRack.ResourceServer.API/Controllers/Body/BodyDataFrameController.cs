@@ -17,7 +17,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Body
         BodyDataFrameRepository>
     {
 
-        public BodyDataFrameController(): base(() => new BodyDataFrameRepository())
+        public BodyDataFrameController(): base((context) => new BodyDataFrameRepository(context))
         {
         }
     }

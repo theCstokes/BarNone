@@ -9,10 +9,13 @@ using System.Linq;
 namespace BarNone.TheRack.DomainModel
 {
     [Table("LiftFolder", Schema = "public")]
-    public class LiftFolder : IDomainModel<LiftFolder>
+    public class LiftFolder : IDomainModel<LiftFolder>, IOwnedDomainModel
     {
         [Key]
         public int ID { get; set; }
+
+        //[Key]
+        public int UserID { get; set; }
 
         public string Name { get; set; }
 

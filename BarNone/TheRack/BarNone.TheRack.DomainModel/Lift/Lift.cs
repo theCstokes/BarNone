@@ -7,10 +7,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BarNone.TheRack.DomainModel
 {
     [Table("Lift", Schema = "public")]
-    public class Lift : IDomainModel<Lift>
+    public class Lift : IDomainModel<Lift>, IOwnedDomainModel
     {
         [Key]
         public int ID { get; set; }
+
+        //[Key]
+        public int UserID { get; set; }
 
         public string Name { get; set; }
 

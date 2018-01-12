@@ -5,7 +5,7 @@ import { OnChangeCallback } from "UEye/Elements/Core/EventCallbackTypes";
 type FrameData = { x1: number, y1: number, x2: number, y2: number };
 
 export default class Video extends BaseComponent {
-    private _content: HTMLElement;
+    // private _content: HTMLElement;
     private _hint: HTMLElement;
     private _canvas: HTMLCanvasElement;
     private _hintText: string;
@@ -28,6 +28,27 @@ export default class Video extends BaseComponent {
         if (c !== null) {
             this._context = c;
         }
+
+        this._canvas.onmouseover = (e) => {
+            console.log(e);
+
+            var rect = this._canvas.getBoundingClientRect();
+            var x = e.clientX - rect.left;
+            var y = e.clientY - rect.top;
+
+
+            this._context.beginPath();
+            this._context.arc(x, y, 4, 0, 2 * Math.PI);
+            this._context.strokeStyle = "yellow";
+            this._context.stroke();
+            this._context.fillStyle = 'yellow';
+            this._context.fill();
+            this._context.closePath();
+
+
+
+            // this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+        };
     }
 
     public set text(value: string) {

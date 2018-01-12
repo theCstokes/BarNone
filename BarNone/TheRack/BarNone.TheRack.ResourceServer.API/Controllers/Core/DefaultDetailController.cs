@@ -1,5 +1,6 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
 using BarNone.Shared.DTOTransformable.Core;
+using BarNone.TheRack.DataAccess;
 using BarNone.TheRack.DomainModel.Core;
 using BarNone.TheRack.Repository.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
     {
 
         #region Public Delegate Definition(s).
-        public delegate TRepo RepoBuilder();
+        public delegate TRepo RepoBuilder(DomainContext context);
         #endregion
 
         #region Private Field(s).
@@ -36,49 +37,67 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
         #region Public DetailController Implementation.
         public override IActionResult Delete(int id)
         {
-            using (var repo = _builder())
+            using (var context = new DomainContext(UserID))
             {
-                return EntityResponse.Response(repo.Remove(id));
+                using (var repo = _builder(context))
+                {
+                    return EntityResponse.Response(repo.Remove(id));
+                }
             }
         }
 
         public override IActionResult GetAll()
         {
-            using (var repo = _builder())
+            using (var context = new DomainContext(UserID))
             {
-                return EntityResponse.Response(repo.Get());
+                using (var repo = _builder(context))
+                {
+                    return EntityResponse.Response(repo.Get());
+                }
             }
         }
 
         public override IActionResult GetByID(int id)
         {
-            using (var repo = _builder())
+            using (var context = new DomainContext(UserID))
             {
-                return EntityResponse.Response(repo.Get(id));
+                using (var repo = _builder(context))
+                {
+                    return EntityResponse.Response(repo.Get(id));
+                }
             }
         }
 
         public override IActionResult GetWithDetailsByID(int id)
         {
-            using (var repo = _builder())
+            using (var context = new DomainContext(UserID))
             {
-                return EntityResponse.DetailResponse(repo.GetWithDetails(id));
+                using (var repo = _builder(context))
+                {
+                    return EntityResponse.DetailResponse(repo.GetWithDetails(id));
+                }
             }
         }
 
         public override IActionResult Post([FromBody]TDTO dto)
         {
-            using (var repo = _builder())
+            using (var context = new DomainContext(UserID))
             {
-                return EntityResponse.DetailResponse(repo.Create(dto));
+                using (var repo = _builder(context))
+                {
+                    return EntityResponse.DetailResponse(repo.Create(dto));
+                }
             }
         }
 
         public override IActionResult Put(int id, TDTO dto)
         {
-            using (var repo = _builder())
+            using (var context = new DomainContext(UserID))
             {
-                return EntityResponse.Response(repo.Update(id, dto));
+                using (var repo = _builder(context))
+                {
+                    return EntityResponse.Response(repo.Update(id, dto));
+                }
             }
         } 
         #endregion

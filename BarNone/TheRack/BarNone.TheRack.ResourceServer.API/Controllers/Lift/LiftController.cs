@@ -23,7 +23,7 @@ namespace TheRack.ResourceServer.API.Controllers
     [Authorize(Policy = "User")]
     public class LiftController : DefaultDetailController<LiftDTO, Lift, LiftRepository>
     {
-        public LiftController() : base(() => new LiftRepository())
+        public LiftController() : base((context) => new LiftRepository(context))
         {
 
         }

@@ -12,6 +12,7 @@ using BarNone.TheRack.Repository;
 using TheRack.ResourceServer.API.Response;
 using BarNone.TheRack.DomainModel;
 using BarNone.TheRack.ResourceServer.API.Controllers.Core;
+using System.Security.Claims;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
