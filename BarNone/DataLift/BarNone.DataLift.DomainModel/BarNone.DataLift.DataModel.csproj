@@ -61,7 +61,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\BaseDataModel.cs" />
     <Compile Include="Core\IDataModel.cs" />
     <Compile Include="KinectData\Skeleton.cs" />
     <Compile Include="KinectData\BodyData.cs" />
