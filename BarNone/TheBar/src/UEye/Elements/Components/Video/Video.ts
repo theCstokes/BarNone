@@ -5,37 +5,36 @@ import { OnChangeCallback } from "UEye/Elements/Core/EventCallbackTypes";
 type FrameData = { x1: number, y1: number, x2: number, y2: number };
 
 export default class Video extends BaseComponent {
-    // private _content: HTMLElement;
-    private _hint: HTMLElement;
+    
     private _canvas: HTMLCanvasElement;
-    private _hintText: string;
-    private _text: string;
     private _context: CanvasRenderingContext2D;
+    private _video: HTMLVideoElement;
+    private _source: HTMLSourceElement;
     private _src: string;
-    /** private _frames: frameJSON[]; */
-    private _currentFrame: number;
-
-    private _onChangeCallback: OnChangeCallback;
 
     constructor(parent: HTMLElement) {
-        super(parent);
-        Core.addClass(this.element, "UEye-Video");
+        super(parent, "UEye-Video");
+        
         this._canvas = Core.create("canvas", this.element, "Canvas") as HTMLCanvasElement;
         this._canvas.width = this._canvas.offsetWidth;
         this._canvas.height = this._canvas.offsetHeight;
-        this._currentFrame = 0;
+        
+        this._video = Core.create("video", this.element, "Video") as HTMLVideoElement;
+        this._video.width = 200;
+        this._video.controls = true;
+        
+        this._source = Core.create("source", this._video, "Source") as HTMLSourceElement;
+        this._source.type = "video/mp4";
+        
         var c = this._canvas.getContext('2d');
         if (c !== null) {
             this._context = c;
         }
 
         this._canvas.onmouseover = (e) => {
-            console.log(e);
-
             var rect = this._canvas.getBoundingClientRect();
             var x = e.clientX - rect.left;
             var y = e.clientY - rect.top;
-
 
             this._context.beginPath();
             this._context.arc(x, y, 4, 0, 2 * Math.PI);
@@ -44,19 +43,16 @@ export default class Video extends BaseComponent {
             this._context.fillStyle = 'yellow';
             this._context.fill();
             this._context.closePath();
-
-
-
-            // this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
         };
-    }
 
-    public set text(value: string) {
-        this._text = value;
-        this.element.textContent = this._text;
-    }
-    public get text(): string {
-        return this._text;
+        var cw = Math.floor(this._canvas.clientWidth / 100);
+        var ch = Math.floor(this._canvas.clientHeight / 100);
+        this._canvas.width = cw;
+        this._canvas.height = ch;
+
+        this._video.addEventListener('play', () => {
+            this.draw(cw, ch);
+        }, false);
     }
 
     public set frameData(value: FrameData[]) {
@@ -101,12 +97,45 @@ export default class Video extends BaseComponent {
         return this._canvas.width;
     }
 
-    public get onChange(): OnChangeCallback {
-        return this._onChangeCallback;
+    private draw(w: number, h: number) {
+        if (this._video.paused || this._video.ended) return false;
+        // this._context.drawImage(this._video, 0, 0, w, h);
+        setTimeout(this.draw, 20, w, h);
+
+        var x = 20;
+        var y = 20;
+
+        this._context.beginPath();
+        this._context.arc(x, y, 4, 0, 2 * Math.PI);
+        this._context.strokeStyle = "yellow";
+        this._context.stroke();
+        this._context.fillStyle = 'yellow';
+        this._context.fill();
+        this._context.closePath();
+
+        return true;
     }
-    public set onChange(value: OnChangeCallback) {
-        this._onChangeCallback = value;
+
+    public get src(): string {
+        return this._src;
     }
+    public set src(value: string) {
+        if (this._src !== value) {
+            this._src = value;
+            this._source.src = this._src;
+        }
+    }
+
+    public play(): void {
+        this._video.play();
+    }
+
+    // public get onChange(): OnChangeCallback {
+    //     return this._onChangeCallback;
+    // }
+    // public set onChange(value: OnChangeCallback) {
+    //     this._onChangeCallback = value;
+    // }
 
     public onModifiedChange(): void {
         throw new Error("Method not implemented.");

@@ -19,7 +19,7 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		this.view.nameInput.text = current.name;
 		this.view.nameInput.modified = (original.name !== current.name);
 
-		this.view.liftPlayer.frameData = SkeletonBuilder.build(current.lift.details.bodyData)[0];
+		this.view.streamPlayer.frameData = SkeletonBuilder.build(current.lift.details.bodyData)[0];
 
 		var isModified = (JSON.stringify(original) !== JSON.stringify(current));
 		this.view.editPanel.modified = isModified;
@@ -29,6 +29,8 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		this.view.nameInput.onChange = (data) => {
 			this.stateManager.NameChange.trigger(data);
 		};
+
+		this.view.streamPlayer.play();
 	}
 
 	// public nameBind = ScreenBind
