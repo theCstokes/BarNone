@@ -15,6 +15,8 @@ namespace BarNone.DataLift.UI.Nav
         public static readonly UIPages LoginView = new UIPages(new LoginScreen());
         public static readonly UIPages DataRecorderView = new UIPages(new DataRecorderScreen());
         public static readonly UIPages RegistrationView = new UIPages(new RegistrationScreen());
+        public static readonly UIPages WorkflowView = new UIPages(new WorkflowScreen());
+        public static readonly UIPages ControlHolderView = new UIPages(new ControlHolderScreen());
 
         private UIPages(UserControl page)
         {

@@ -107,7 +107,7 @@ namespace BarNone.DataLift.UI.ViewModels
             if (await CanLogin())
             {
                 //Login server calls here to get a valid token and shift to data recorder or notify bad user pass combo
-                PageManager.SwitchPage(UIPages.DataRecorderView);
+                PageManager.SwitchPage(UIPages.ControlHolderView);
                 LoginState = LoginStates.NoShow;
             }
             else

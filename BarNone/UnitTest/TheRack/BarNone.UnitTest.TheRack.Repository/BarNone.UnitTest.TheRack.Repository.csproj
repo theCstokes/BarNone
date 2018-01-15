@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <Configurations>Debug;Release;WorkingWithTheRack;DL</Configurations>
+    <Configurations>Debug;Release;WorkingWithTheRack;DL;DL- DB</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="BarNone.DataLift.UI.Views.ControlHolderScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:BarNone.DataLift.UI.Views"
+             xmlns:vms="clr-namespace:BarNone.DataLift.UI.ViewModels"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <vms:ControlHolderVM x:Key="vm"/>
+            <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+            <Style x:Key="MaterialDesignFlatButton" BasedOn="{StaticResource MaterialDesignFlatButton}" TargetType="{x:Type Button}">
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidForegroundBrush}" />
+                <Setter Property="Width" Value="Auto" />
+                <Setter Property="Height" Value="Auto" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource vm}"/>
+    </UserControl.DataContext>
+    <DockPanel>
+
+        <materialDesign:ColorZone Height="50" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <DockPanel Grid.Column="2" >
+                    <Button Style="{StaticResource MaterialDesignFlatButton}" DockPanel.Dock="Right" VerticalAlignment="Stretch"  HorizontalAlignment="Right" Command="{Binding LogoutCommand}" >
+                        <materialDesign:PackIcon Kind="ExitToApp" Height="36" Width="36" Margin="0"/>
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFlatButton}" DockPanel.Dock="Right" VerticalAlignment="Stretch"  HorizontalAlignment="Right" Command="{Binding TestStrategy1}">
+                        <materialDesign:PackIcon Kind="Replay" Height="36" Width="36" Margin="0,0,10,0"/>
+                    </Button>
+                </DockPanel>
+
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <Grid VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+
+            <local:WorkflowScreen Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" IsStepTwoEnabled="{Binding Path=IsStepTwoEnabledController}" />
+            <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsRecorderVisible, Converter={StaticResource BoolToVisConverter} }">
+                    <local:DataRecorderScreen />
+                </Border>
+
+                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsEditorVisible, Converter={StaticResource BoolToVisConverter} }">
+                    <TextBlock FontSize="36">
+                        Placeholder For Editing Screen.
+                    </TextBlock>    
+                </Border>
+
+                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsSavingVisible, Converter={StaticResource BoolToVisConverter} }">
+                    <TextBlock FontSize="36">
+                        Placeholder For Saving Screen.
+                    </TextBlock>
+                </Border>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <!--<ColumnDefinition Width="10" />-->
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Width="200" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Content="Previous Step" IsEnabled="{Binding IsBackwardsEnabled}" Command="{Binding MoveWorflowBackwardCmd}" />
+                    <Button Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Content="Next Step" Command="{Binding MoveWorflowForwardCmd}" />
+
+                </Grid>
+            </StackPanel>
+            
+                        
+        </Grid>
+    </DockPanel>
+</UserControl>

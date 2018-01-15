@@ -21,6 +21,7 @@ namespace BarNone.DataLift.UI.ViewModels
     public class DataRecorderVM : ViewModelBase
     {
         #region Bound Properties
+
         private string _LiftName = "";
         public string LiftName
         {
@@ -336,7 +337,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 var body = GetPrimaryBody(Bodies);
 
                 // If the right hand goes from some hand position (other than open) to open.
-                if ((body.HandRightState == HandState.Open) && (prevHandState != HandState.Open))
+                if ((body.HandRightState == HandState.Lasso) && (prevHandState != HandState.Lasso))
                 {
                     // If the user is in the middle of a lift and has indicated it is now finished.
                     if(isCurrentlyRecording == true)
@@ -786,7 +787,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             if (kinectSensor != null)
             {
-                kinectSensor?.Close();
+                //kinectSensor?.Close();
                 kinectSensor = null;
             }
         }

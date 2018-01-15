@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5ACBD133-8068-4F2B-B778-2121646935A7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>BarNone.DataLift.Application</RootNamespace>
+    <RootNamespace>BarNone.DataLift.UI</RootNamespace>
     <AssemblyName>e</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -58,6 +58,16 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DL- DB|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DL- DB\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
@@ -92,10 +102,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Drawing\KinectToImage.cs" />
+    <Compile Include="ViewModels\ControlHolderVM.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\DataRecorderVM.cs" />
     <Compile Include="ViewModels\LoginScreenVM.cs" />
     <Compile Include="ViewModels\RegisterScreenVM.cs" />
+    <Compile Include="ViewModels\WorkflowVM.cs" />
+    <Compile Include="Views\ControlHolderScreen.xaml.cs">
+      <DependentUpon>ControlHolderScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DataRecorderScreen.xaml.cs">
       <DependentUpon>DataRecorderScreen.xaml</DependentUpon>
     </Compile>
@@ -104,6 +119,9 @@
     </Compile>
     <Compile Include="Views\RegistrationScreen.xaml.cs">
       <DependentUpon>RegistrationScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WorkflowScreen.xaml.cs">
+      <DependentUpon>WorkflowScreen.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -119,6 +137,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ControlHolderScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DataRecorderScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -128,6 +150,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\RegistrationScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WorkflowScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
