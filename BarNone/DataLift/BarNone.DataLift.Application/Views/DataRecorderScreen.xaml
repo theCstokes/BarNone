@@ -38,7 +38,7 @@
 
             </Grid>
         </materialDesign:ColorZone>
-        
+
         <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
             <Grid>
                 <Grid.RowDefinitions>
@@ -105,17 +105,12 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-
-                    
-
-                    <StackPanel>
-
-                    
-
-                    </StackPanel>
                 </DockPanel>
 
-                <Button Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Content="Send recordings to Rack." DockPanel.Dock="Bottom" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button Content="Start Recording." DockPanel.Dock="Bottom" Command="{Binding StartRecording}" Margin="10" Width="300" FontSize="16" />
+                    <Button Content="Send recordings to Rack." DockPanel.Dock="Bottom" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
+                </StackPanel>
             </Grid>
         </materialDesign:Card>
     </DockPanel>

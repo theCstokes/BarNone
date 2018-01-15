@@ -6,10 +6,12 @@ using BarNone.DataLift.UI.Drawing;
 using BarNone.DataLift.UI.Nav;
 using BarNone.Shared.DataTransfer;
 using Microsoft.Kinect;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,21 +24,8 @@ namespace BarNone.DataLift.UI.ViewModels
     public class DataRecorderVM : ViewModelBase
     {
         #region Bound Properties
-        private string _LiftName = "";
-        public string LiftName
-        {
-            get => _LiftName;
-            set
-            {
-                if (_LiftName != value)
-                {
-                    _LiftName = value;
-                    OnPropertyChanged(new PropertyChangedEventArgs("LiftName"));
-                }
-            }
-        }
-
-        private ObservableCollection<LiftDTO> _allLiftData = new ObservableCollection<LiftDTO>() { new LiftDTO() { ID= 9394 } };
+        
+        private ObservableCollection<LiftDTO> _allLiftData = new ObservableCollection<LiftDTO>();
         public ObservableCollection<LiftDTO> allLiftData
         {
             get { return _allLiftData; }
@@ -48,7 +37,7 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         #endregion
-        
+
         #region Color Drawing Details
         /// <summary>
         /// Bitmap to display
@@ -77,6 +66,41 @@ namespace BarNone.DataLift.UI.ViewModels
         /// Drawing image that we will display
         /// </summary>
         private DrawingImage imageSourceSide;
+        
+        /// <summary>
+        /// Width of display (depth space)
+        /// </summary>
+        private int displayWidth;
+
+        /// <summary>
+        /// Height of display (depth space)
+        /// </summary>
+        private int displayHeight;
+
+        /// <summary>
+        /// Array for the bodies
+        /// </summary>
+        private IList<Body> Bodies { get; set; }
+
+        /// <summary>
+        /// Gets the bitmap to display
+        /// </summary>
+        public ImageSource ImageSourceFront { get => imageSourceFront; }
+
+        /// <summary>
+        /// Gets the bitmap to display
+        /// </summary>
+        public ImageSource ImageSourceSide { get => imageSourceSide; }
+
+        /// <summary>
+        /// Gets the bitmap to display
+        /// </summary>
+        public ImageSource ImageSourceColor { get => colorBitmap; }
+
+        #endregion
+
+        #region Kinect Properties
+        private MultiSourceFrameReader Reader;
 
         /// <summary>
         /// Active Kinect sensor
@@ -87,60 +111,6 @@ namespace BarNone.DataLift.UI.ViewModels
         /// Coordinate mapper to map one type of point to another
         /// </summary>
         private CoordinateMapper coordinateMapper = null;
-
-        /// <summary>
-        /// Width of display (depth space)
-        /// </summary>
-        private int displayWidth;
-
-        /// <summary>
-        /// Height of display (depth space)
-        /// </summary>
-        private int displayHeight;
-        
-        /// <summary>
-        /// Array for the bodies
-        /// </summary>
-        private IList<Body> Bodies { get; set; }
-        
-        /// <summary>
-        /// Gets the bitmap to display
-        /// </summary>
-        public ImageSource ImageSourceFront
-        {
-            get
-            {
-                return imageSourceFront;
-            }
-        }
-
-        /// <summary>
-        /// Gets the bitmap to display
-        /// </summary>
-        public ImageSource ImageSourceSide
-        {
-            get
-            {
-                return imageSourceSide;
-            }
-        }
-
-        /// <summary>
-        /// Gets the bitmap to display
-        /// </summary>
-        public ImageSource ImageSourceColor
-        {
-            get
-            {
-                return colorBitmap;
-            }
-        }
-
-        #endregion
-
-        #region Frame Reader
-        MultiSourceFrameReader Reader;
-
         #endregion
 
         #region Reccording Data Variables
@@ -152,12 +122,12 @@ namespace BarNone.DataLift.UI.ViewModels
         private BodyData CurrentRecordingBodyData { get; set; }
 
         private UserDTO CurrentUser { get; set; }
-        
+
         /// <summary>
         /// Is the user in the middle of a lift that is recorded.
         /// </summary>
-        private bool isCurrentlyRecording;
-        
+        private bool isCurrentlyRecording = false;
+
         /// <summary>
         /// The last state of the users hand.  To track a change in hand state.
         /// </summary>
@@ -169,12 +139,10 @@ namespace BarNone.DataLift.UI.ViewModels
         //private IList<BodyData> _allLiftData;
 
         #endregion
-            
+
         #region User Control events
         internal override void Loaded()
         {
-            LiftName = "";
-
             IsRecording = false;
 
             isCurrentlyRecording = false;
@@ -182,13 +150,10 @@ namespace BarNone.DataLift.UI.ViewModels
             prevHandState = 0;
 
             allLiftData.Clear();
-            //_allLiftData = new ObservableCollection<LiftDTO>();
         }
 
         internal override void Closed()
         {
-            LiftName = "";
-
             IsRecording = false;
 
             isCurrentlyRecording = false;
@@ -212,7 +177,8 @@ namespace BarNone.DataLift.UI.ViewModels
 
             if (frame != null)
             {
-                if (Bodies == null) {
+                if (Bodies == null)
+                {
                     Bodies = new Body[frame.BodyFrameSource.BodyCount];
                 }
 
@@ -222,19 +188,14 @@ namespace BarNone.DataLift.UI.ViewModels
                 frame.GetAndRefreshBodyData(Bodies);
                 dataReceived = true;
             }
-            
+
             if (dataReceived)
             {
-                CurrentRecordingBodyData = new BodyData()
-                {
-                    RecordDate = DateTime.Now
-                };
-
                 // Gets the closest body to the kinect sensor
                 var body = GetPrimaryBody(Bodies);
 
                 // If the right hand goes from some hand position (other than open) to open.
-                if ((body.HandRightState == HandState.Open) && (prevHandState != HandState.Open))
+                /*if ((body.HandRightState == HandState.Open) && (prevHandState != HandState.Open))
                 {
                     // If the user is in the middle of a lift and has indicated it is now finished.
                     if(isCurrentlyRecording)
@@ -273,16 +234,16 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 // Save the status of the hand (so that when it is called the following iteration it will be the prev. one).
                 prevHandState = body.HandRightState;
-
+                */
                 var dataframe = new BodyDataFrame() { TimeOfFrame = DateTime.Now, Joints = body.Joints.ToDictionary(k => k.Key, v => v.Value) };
-                CurrentRecordingBodyData.AddNewFrame(dataframe);
-                //Update The Side And Front Views
-                //KinectToImage.DrawFrameFrontProfile(dataframe, FrontProfileDrawingGroup, displayHeight, displayWidth);
+                if (isCurrentlyRecording)
+                    CurrentRecordingBodyData.AddNewFrame(dataframe);
 
+                //Update The Side And Front Views
                 KinectToImage.DrawFrameSideView(
                     dataframe
                     .Joints
-                    .Select( x=> new JointDTO() { JointTypeID = (int)x.Key, X = x.Value.Position.X, Y = x.Value.Position.Y, Z = x.Value.Position.Z, JointTrackingStateTypeID = (int)x.Value.TrackingState }).ToList(),
+                    .Select(x => new JointDTO() { JointTypeID = (int)x.Key, X = x.Value.Position.X, Y = x.Value.Position.Y, Z = x.Value.Position.Z, JointTrackingStateTypeID = (int)x.Value.TrackingState }).ToList(),
                     SideProfileDrawingGroup, displayHeight, displayWidth);
                 KinectToImage.DrawFrameFrontView(
                     dataframe
@@ -300,16 +261,16 @@ namespace BarNone.DataLift.UI.ViewModels
         private static Body GetPrimaryBody(IList<Body> bodies_in)
         {
             Body primaryBody = null;
-            
+
             // for all the bodies the Kinect is currently tracking.
-            foreach(Body body in bodies_in)
+            foreach (Body body in bodies_in)
             {
                 /// If the position of spinebase (the enum value 0) is not 0.
                 /// Because for some godforsaken reason MS initiliazes position data to (0,0,0) 
-                if(body.Joints[JointType.SpineBase].Position.Z != 0)
+                if (body.Joints[JointType.SpineBase].Position.Z != 0)
                 {
                     // If there is currently no body compare against then it is the one use by default.
-                    if(primaryBody == null)
+                    if (primaryBody == null)
                     {
                         primaryBody = body;
                     }
@@ -322,7 +283,7 @@ namespace BarNone.DataLift.UI.ViewModels
             }
 
             // We cannot return a null body, so we just assign the first body as the one we return.
-            if(primaryBody == null)
+            if (primaryBody == null)
             {
                 primaryBody = bodies_in[0];
             }
@@ -330,7 +291,7 @@ namespace BarNone.DataLift.UI.ViewModels
             return primaryBody;
         }
         #endregion
-        
+
         #region Draw Color
         /// <summary>
         /// Handles the color frame data arriving from the sensor
@@ -365,7 +326,7 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
-        #region TEST_TEMP
+        #region Reset Option
         public RelayCommand _TestStrategy1 { get; private set; }
 
 
@@ -397,15 +358,10 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_StartRecording == null)
                 {
-                    _StartRecording = new RelayCommand(action => StartNewRecording(), pred => true);
+                    _StartRecording = new RelayCommand(action => StartNewRecording(), pred => !isCurrentlyRecording);
                 }
                 return _StartRecording;
             }
-        }
-
-        private bool CanStartReccording()
-        {
-            return !string.IsNullOrWhiteSpace(LiftName) && !IsRecording;
         }
 
         /// <summary>
@@ -413,12 +369,16 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private void StartNewRecording()
         {
-            IsRecording = true;
+            if (isCurrentlyRecording)
+                TempAddCurrentLift();
+
             CurrentRecordingBodyData = new BodyData
             {
                 DataFrames = new List<BodyDataFrame>(),
                 RecordDate = DateTime.Now
+
             };
+            isCurrentlyRecording = true;
         }
 
         public ICommand LogoutCommand { get; } = new RelayCommand(action => PageManager.SwitchPage(UIPages.LoginView));
@@ -430,26 +390,47 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_EndRecording == null)
                 {
-                    //_EndRecording = new RelayCommand(action => EndCurrentRecording());
-                    _EndRecording = new RelayCommand(async action => await EndCurrentRecording(), pred => true);
+                    _EndRecording = new RelayCommand(async action => await EndCurrentRecording(), pred => isCurrentlyRecording);
                 }
                 return _EndRecording;
             }
         }
+
         /// <summary>
         /// Posts the recorded lift to the server when the user denotes a lift has been completed.
         /// </summary>
         /// <returns></returns>
         private async Task EndCurrentRecording()
         {
-            //var _bodyData = 
 
-            for(int i = 0; i < allLiftData.Count; i++)
+            isCurrentlyRecording = false;
+            TempAddCurrentLift();
+
+            foreach (var l in allLiftData)
             {
-                var temp = await DataManager.LiftFlex.Post(allLiftData[i]);
+                var temp = await DataManager.LiftFlex.Post(l);
+                    File.WriteAllText(l.Name + ".json", JsonConvert.SerializeObject(l));
+                
             }
 
             allLiftData.Clear();
+        }
+
+        private void TempAddCurrentLift()
+        {
+            var toSend = new LiftDTO()
+            {
+                ParentID = 1,
+                Name = String.Format("{0}_{1}_{2}_New_Lift_{3}", CurrentRecordingBodyData.RecordDate.Year, CurrentRecordingBodyData.RecordDate.Month, CurrentRecordingBodyData.RecordDate.Day, (allLiftData.Count + 1)),
+                Details = new LiftDetailDTO()
+                {
+                    BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData)
+                }
+
+            };
+
+            // Add the lift to the list of all lifts. 
+            allLiftData.Add(toSend);
         }
 
         #endregion
@@ -463,20 +444,18 @@ namespace BarNone.DataLift.UI.ViewModels
                 Reader?.Dispose();
                 Reader = null;
             }
-            
+
         }
 
         public DataRecorderVM()
         {
             Task.Run(() => SetUser());
-            //Task.Run(() => GetAllLifts());
-
+            
             // one sensor is currently supported
             kinectSensor = KinectSensor.GetDefault();
 
             // get the coordinate mapper
             coordinateMapper = kinectSensor.CoordinateMapper;
-            // get the depth (display) extents
 
             Reader = kinectSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color |
                                                  FrameSourceTypes.Body);
@@ -549,8 +528,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 }
             }
         }
-
-
+        
         /// <summary>
         /// Handles the event which the sensor becomes unavailable (E.g. paused, closed, unplugged).
         /// </summary>
