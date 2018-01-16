@@ -10,8 +10,8 @@ export default class LiftEditView extends EditView {
 	public nameInput: Input;
 	public ageInput: Input;
 	public editPanel: Panel;
-	public liftPlayer: Video;
-	public streamPlayer: Video;
+	// public liftPlayer: Video;
+	public player: Video;
 
 	public get content(): any[] {
 		return [
@@ -30,9 +30,8 @@ export default class LiftEditView extends EditView {
 					// 	instance: ControlTypes.Video
 					// },
 					{
-						id: "streamPlayer",
-						instance: ControlTypes.Video,
-						src: "http://localhost:58428/api/v1/LiftVideo?access_token=" + BaseDataManager.auth.access_token
+						id: "player",
+						instance: ControlTypes.Video
 					},
 					{
 						id: "ageInput",

@@ -25,5 +25,10 @@ namespace BarNone.TheRack.DomainModel
         public int? BodyDataID { get; set; }
 
         public BodyData BodyData { get; set; }
+
+        public int VideoID { get; set; }
+
+        [ForeignKey("VideoID")]
+        public VideoRecord Video { get; set; }
     }
 }

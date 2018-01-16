@@ -2,6 +2,8 @@ import LiftEditView from "App/Screens/Lifts/Edit/LiftEditView";
 import EditScreen from "UEye/Screen/EditScreen";
 import { StateManager, State } from "App/Screens/Lifts/Edit/StateManager";
 import { SkeletonBuilder } from "App/Screens/Lifts/Edit/SkeletonBuilder";
+import { BaseDataManager } from "UEye/Data/BaseDataManager";
+import StringUtils from "UEye/Core/StringUtils";
 
 // import EditScreen from "Application/Core/EditScreen";
 // import ScreenBind from "UEye/Screen/ScreenBind";
@@ -19,18 +21,22 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		this.view.nameInput.text = current.name;
 		this.view.nameInput.modified = (original.name !== current.name);
 
-		this.view.streamPlayer.frameData = SkeletonBuilder.build(current.lift.details.bodyData);
+		this.view.player.src = StringUtils.format("http://localhost:58428/api/v1/Lift/{0}/Video?access_token={1}",
+			current.lift.id,
+			BaseDataManager.auth.access_token);
+
+		this.view.player.frameData = SkeletonBuilder.build(current.lift.details.bodyData);
 
 		var isModified = (JSON.stringify(original) !== JSON.stringify(current));
 		this.view.editPanel.modified = isModified;
 	}
-	
+
 	public onShow(): void {
 		this.view.nameInput.onChange = (data) => {
 			this.stateManager.NameChange.trigger(data);
 		};
 
-		this.view.streamPlayer.play();
+		// this.view.player.play();
 	}
 
 	// public nameBind = ScreenBind

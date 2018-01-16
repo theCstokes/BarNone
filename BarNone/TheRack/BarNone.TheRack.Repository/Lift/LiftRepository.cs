@@ -51,7 +51,9 @@ namespace BarNone.TheRack.Repository
         //        .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointType)
         //        .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointTrackingStateType);
 
-        protected override DetailResolverDelegate<Lift> DetailEntityResolver => (lifts) => lifts.Include(u => u.Parent)
+        protected override DetailResolverDelegate<Lift> DetailEntityResolver => (lifts) => lifts
+                .Include(u => u.Parent)
+                .Include(u => u.Video)
                 .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints)
                 .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointType)
                 .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointTrackingStateType);

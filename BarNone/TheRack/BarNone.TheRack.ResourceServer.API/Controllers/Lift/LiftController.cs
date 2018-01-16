@@ -16,6 +16,7 @@ using BarNone.TheRack.ResourceServer.API.Controllers.Core;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
+using BarNone.TheRack.DataAccess;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
@@ -53,6 +54,30 @@ namespace TheRack.ResourceServer.API.Controllers
             {
                 return EntityResponse.Error(e);
             }
+        }
+
+        [HttpGet("{id}/Video")]
+        public void Get(int id)
+        {
+            using (var context = new DomainContext(UserID))
+            {
+                using (var repo = new LiftRepository(context))
+                {
+                    var lift = repo.GetWithDetails(id);
+
+                    HttpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={lift.Video.Path}");
+                    var file = new FileInfo(lift.Video.Path);
+                    //Check the file exist,  it will be written into the response 
+                    if (file.Exists)
+                    {
+                        var stream = file.OpenRead();
+                        var bytesinfile = new byte[stream.Length];
+                        stream.Read(bytesinfile, 0, (int)file.Length);
+                        HttpContext.Response.Body.Write(bytesinfile, 0, bytesinfile.Length);
+                    }
+                }
+            }
+            //return null;
         }
     }
 }
