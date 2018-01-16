@@ -10,7 +10,7 @@ import Label from "UEye/Elements/Components/Label/Label";
 import List from "UEye/Elements/Components/List/List";
 import Breadcrumb from "UEye/Elements/Components/Breadcrumb/Breadcrumb";
 import Video from "UEye/Elements/Components/Video/Video";
-import Stream from "UEye/Elements/Components/Stream/Stream";
+// import Stream from "UEye/Elements/Components/Stream/Stream";
 import Range from "UEye/Elements/Components/Range/Range";
 
 import Column from "UEye/Elements/Containers/Column/Column";
@@ -33,7 +33,7 @@ export default class ControlTypes {
 	public static readonly List = new ComponentType(p => new List(p));
 	public static readonly Breadcrumb = new ComponentType(p => new Breadcrumb(p));
 	public static readonly Video = new ComponentType(p => new Video(p));
-	public static readonly Stream = new ComponentType(p => new Stream(p));
+	// public static readonly Stream = new ComponentType(p => new Stream(p));
 	public static readonly Range = new ComponentType(p => new Range(p));
 
 

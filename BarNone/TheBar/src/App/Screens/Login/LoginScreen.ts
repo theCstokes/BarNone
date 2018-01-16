@@ -24,6 +24,11 @@ export default class LoginScreen extends Screen<LoginView> {
 	}
 
 	public onShow(): void {
+		// TODO - remove hard code login.
+		this.view.usernameInput.text = "admin";
+		this.view.passwordInput.text = "admin";
+
+
 		this.view.createButton.onClick = () => {
 			UEye.pop();
 			UEye.push(CreateAccountScreen);
@@ -31,10 +36,12 @@ export default class LoginScreen extends Screen<LoginView> {
 
 		this.view.loginButton.onClick = async () => {
 			if (await DataManager.authorize(this.view.usernameInput.text, this.view.passwordInput.text)) {
+				this.view.statusLabel.text = "Success!";
 				UEye.pop();
 				await UEye.push(NavScreen);
 				// await UEye.push(UserScreen);
 			}
+			this.view.statusLabel.text = "Password or Username incorrect.";
 		};
 	}
 

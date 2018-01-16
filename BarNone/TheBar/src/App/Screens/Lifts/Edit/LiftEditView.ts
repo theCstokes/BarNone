@@ -3,7 +3,7 @@ import { EditView } from "UEye/View/EditView";
 import Input from "UEye/Elements/Components/Input/Input";
 import Panel from "UEye/Elements/Containers/Panel/Panel";
 import Video from "UEye/Elements/Components/Video/Video";
-import Stream from "UEye/Elements/Components/Stream/Stream";
+// import Stream from "UEye/Elements/Components/Stream/Stream";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
 
 export default class LiftEditView extends EditView {
