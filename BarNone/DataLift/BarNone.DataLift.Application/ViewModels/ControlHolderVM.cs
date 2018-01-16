@@ -1,5 +1,6 @@
 ﻿using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Nav;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,11 +10,27 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
+using BarNone.DataLift.UI.Views;
+
 namespace BarNone.DataLift.UI.ViewModels
 {
     public class ControlHolderVM : ViewModelBase
     {
         #region Public Commands
+        private async void ExecuteRunDialog(object o)
+        {
+            var view = new YesNoDialogScreen();
+
+            //let's set up a little MVVM, cos that's what the cool kids are doing:
+            var result = await DialogHost.Show(view, "RootDialog");
+
+            if (Equals(result, false))
+            {
+                MoveWorkflowBackward();
+            }
+        }
+        public ICommand RunDialogCommand => new RelayCommand(ExecuteRunDialog);
+
         public RelayCommand _TestStrategy1 { get; private set; }
         public ICommand TestStrategy1
         {
@@ -76,7 +93,7 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         #endregion
-        
+
         #region Public Properties
         /// <summary>
         /// Variable that controls the visibility of the Editor Screen.
@@ -118,8 +135,8 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
-        private bool _isStepTwoEnabledController = false;
-        public bool IsStepTwoEnabledController
+        private double _isStepTwoEnabledController = 0.5;
+        public double IsStepTwoEnabledController
         {
             get => _isStepTwoEnabledController;
             set
@@ -128,16 +145,38 @@ namespace BarNone.DataLift.UI.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs("IsStepTwoEnabledController"));
             }
         }
-
-
-        private bool _isStepThreeEnabledController = false;
-        public bool IsStepThreeEnabledController
+        
+        private double _isStepThreeEnabledController = 0.5;
+        public double IsStepThreeEnabledController
         {
             get => _isStepThreeEnabledController;
             set
             {
                 _isStepThreeEnabledController = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("IsStepThreeEnabledController"));
+            }
+        }
+
+        //TODO story board
+        private int _stepTwoProgressController = 0;
+        public int StepTwoProgressController
+        {
+            get => _stepTwoProgressController;
+            set
+            {
+                _stepTwoProgressController = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("StepTwoProgressController"));
+            }
+        }
+
+        private int _stepThreeProgressController = 0;
+        public int StepThreeProgressController
+        {
+            get => _stepThreeProgressController;
+            set
+            {
+                _stepThreeProgressController = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("StepThreeProgressController"));
             }
         }
 
@@ -155,7 +194,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Enumeration defininng which state DataLift is in.
         /// </summary>
-        private enum State {Recording, Editing, Saving};
+        private enum State { Recording, Editing, Saving };
         #endregion
 
         #region Private Functions
@@ -196,20 +235,10 @@ namespace BarNone.DataLift.UI.ViewModels
                     // Do nothing.  Button should be disabled.
                     break;
                 case State.Editing:
-                    // TODO Prompt user they may loose data. Implmementation may be wrong.
-                    result = MessageBox.Show("You may loose editing data if you choose to return to the recording page.  Do you wish to continue?", "Warning:  Data may be lost", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if(result == MessageBoxResult.Yes)
-                    {
-                        GotoRecordingState();
-                    }
+                    GotoRecordingState();
                     break;
                 case State.Saving:
-                    // TODO Prompt user they may loose data.  Implmementation may be wrong.
-                    result = MessageBox.Show("You may loose lift information data if you choose to return to the editing page.  Do you wish to continue?", "Warning:  Data may be lost", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        GotoEditingState();
-                    }
+                    GotoEditingState();
                     break;
             }
         }
@@ -222,7 +251,12 @@ namespace BarNone.DataLift.UI.ViewModels
             _currentState = State.Recording;
 
             IsBackwardsEnabled = false;
+            
+            IsStepTwoEnabledController = 0.5;
+            IsStepThreeEnabledController = 0.5;
 
+            StepTwoProgressController = 0;
+            
             IsRecorderVisible = true;
             IsEditorVisible = false;
             IsSavingVisible = false;
@@ -236,8 +270,12 @@ namespace BarNone.DataLift.UI.ViewModels
             _currentState = State.Editing;
 
             IsBackwardsEnabled = true;
-            IsStepTwoEnabledController = true;
-            IsStepThreeEnabledController = true;
+
+            IsStepTwoEnabledController = 1;
+            IsStepThreeEnabledController = 0.5;
+
+            StepTwoProgressController = 100;
+            StepThreeProgressController = 0;
 
             IsRecorderVisible = false;
             IsEditorVisible = true;
@@ -250,7 +288,12 @@ namespace BarNone.DataLift.UI.ViewModels
         private void GotoSavingState()
         {
             _currentState = State.Saving;
+            
+            StepThreeProgressController = 100;
 
+            IsStepTwoEnabledController = 1;
+            IsStepThreeEnabledController = 1;
+            
             IsRecorderVisible = false;
             IsEditorVisible = false;
             IsSavingVisible = true;

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace BarNone.DataLift.UI.Views
 {
     /// <summary>
-    /// Interaction logic for ControlHolderScreen.xaml
+    /// Interaction logic for YesNoDialogScreen.xaml
     /// </summary>
-    public partial class ControlHolderScreen : UserControl
+    public partial class YesNoDialogScreen : UserControl
     {
-        public ControlHolderScreen()
+        public YesNoDialogScreen()
         {
             InitializeComponent();
         }
