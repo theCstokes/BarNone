@@ -6,6 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:BarNone.DataLift.UI.Views"
              xmlns:vms="clr-namespace:BarNone.DataLift.UI.ViewModels"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -81,7 +82,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" Width="200" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Content="Previous Step" IsEnabled="{Binding IsBackwardsEnabled}" Command="{Binding MoveWorflowBackwardCmd}" />
+                    <Button Grid.Column="0" Width="200" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" />
                     <Button Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Content="Next Step" Command="{Binding MoveWorflowForwardCmd}" />
 
                 </Grid>

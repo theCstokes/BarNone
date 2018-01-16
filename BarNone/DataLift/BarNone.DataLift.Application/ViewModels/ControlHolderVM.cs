@@ -1,5 +1,6 @@
 ﻿using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Nav;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,12 @@ namespace BarNone.DataLift.UI.ViewModels
     {
         #region Public Properties
         public RelayCommand _TestStrategy1 { get; private set; }
+
+        //public ICommand blargh(object sender, DialogClosingEventArgs eventArgs)
+        //{
+             
+
+        //}
 
         public ICommand TestStrategy1
         {
@@ -48,16 +55,19 @@ namespace BarNone.DataLift.UI.ViewModels
         /// Bound command to move wordlow backwards in XAML.
         /// </summary>
         public RelayCommand _MoveWorflowBackwardCmd { get; private set; }
-        public ICommand MoveWorflowBackwardCmd
+        public ICommand MoveWorflowBackwardCmd(object sender, DialogClosingEventArgs eventArgs)
         {
-            get
-            {
-                if (_MoveWorflowBackwardCmd == null)
+                if ((Equals(eventArgs.Parameter, true)) && (_MoveWorflowBackwardCmd == null))
                 {
                     _MoveWorflowBackwardCmd = new RelayCommand(action => MoveWorkflowBackward());
+
                 }
                 return _MoveWorflowBackwardCmd;
-            }
+                //if (_MoveWorflowBackwardCmd == null)
+                //{
+                //    _MoveWorflowBackwardCmd = new RelayCommand(action => MoveWorkflowBackward());
+                //}
+                //return _MoveWorflowBackwardCmd;
         }
 
         public ICommand LogoutCommand { get; } = new RelayCommand(action => PageManager.SwitchPage(UIPages.LoginView));
