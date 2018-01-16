@@ -113,6 +113,9 @@
     <Compile Include="Views\DataRecorderScreen.xaml.cs">
       <DependentUpon>DataRecorderScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LiftListViewScreen.xaml.cs">
+      <DependentUpon>LiftListViewScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
@@ -146,6 +149,10 @@
     <Page Include="Views\DataRecorderScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LiftListViewScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LoginScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
