@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BarNone.DataLift.Application.Views.CustomComponents
+namespace BarNone.DataLift.UI.Views.CustomComponents
 {
     /// <summary>
     /// Interaction logic for Scrubber.xaml

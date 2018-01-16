@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5ACBD133-8068-4F2B-B778-2121646935A7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>BarNone.DataLift.Application</RootNamespace>
-    <AssemblyName>e</AssemblyName>
+    <RootNamespace>BarNone.DataLift.UI</RootNamespace>
+    <AssemblyName>BarNone.DataLift.UI</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -58,6 +58,16 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DL- DB|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DL- DB\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
@@ -74,6 +84,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -92,6 +103,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Drawing\KinectToImage.cs" />
+    <Compile Include="SharedViewData\CurrentLiftData.cs" />
+    <Compile Include="ViewModels\ControlHolderVM.cs" />
+    <Compile Include="ViewModels\EditLiftsScreenVM.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\DataRecorderVM.cs" />
     <Compile Include="ViewModels\LoginScreenVM.cs" />
@@ -99,14 +113,29 @@
     <Compile Include="Views\CustomComponents\Scrubber.xaml.cs">
       <DependentUpon>Scrubber.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ControlHolderScreen.xaml.cs">
+      <DependentUpon>ControlHolderScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomComponents\VideoControlsBar.xaml.cs">
+      <DependentUpon>VideoControlsBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomComponents\VideoViewer.xaml.cs">
+      <DependentUpon>VideoViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DataRecorderScreen.xaml.cs">
       <DependentUpon>DataRecorderScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditLiftsScreen.xaml.cs">
+      <DependentUpon>EditLiftsScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RegistrationScreen.xaml.cs">
       <DependentUpon>RegistrationScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WorkflowScreen.xaml.cs">
+      <DependentUpon>WorkflowScreen.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -126,15 +155,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ControlHolderScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomComponents\VideoControlsBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomComponents\VideoViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\DataRecorderScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\EditLiftsScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LoginScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\RegistrationScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WorkflowScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -202,6 +251,9 @@
       <Project>{707ade0d-0c8d-4edf-81b9-889b4538efa1}</Project>
       <Name>BarNone.DataLift.DataModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

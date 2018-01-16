@@ -24,7 +24,6 @@ namespace BarNone.DataLift.UI.ViewModels
     public class DataRecorderVM : ViewModelBase
     {
         #region Bound Properties
-        
         private ObservableCollection<LiftDTO> _allLiftData = new ObservableCollection<LiftDTO>();
         public ObservableCollection<LiftDTO> allLiftData
         {
@@ -444,7 +443,12 @@ namespace BarNone.DataLift.UI.ViewModels
                 Reader?.Dispose();
                 Reader = null;
             }
-
+            
+            if (kinectSensor != null)
+            {
+                //kinectSensor?.Close();
+                kinectSensor = null;
+            }
         }
 
         public DataRecorderVM()

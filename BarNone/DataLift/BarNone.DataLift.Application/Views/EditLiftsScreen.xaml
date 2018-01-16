@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="BarNone.DataLift.UI.Views.EditLiftsScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BarNone.DataLift.UI.Views"
+             xmlns:vms="clr-namespace:BarNone.DataLift.UI.ViewModels"
+             xmlns:cmpnts="clr-namespace:BarNone.DataLift.UI.Views.CustomComponents"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="500">
+    <UserControl.Resources>
+        <vms:EditLiftsScreenVM x:Key="vm"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource vm}"/>
+    </UserControl.DataContext>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <cmpnts:VideoViewer/>
+        <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}"/>
+    </StackPanel>
+</UserControl>

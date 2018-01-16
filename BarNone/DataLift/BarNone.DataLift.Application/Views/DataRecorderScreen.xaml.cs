@@ -37,5 +37,23 @@ namespace BarNone.DataLift.UI.Views
 
         #endregion
 
+        //#region dependancy properties
+        //public bool IsRecorderVisible
+        //{
+        //    get { return (bool)GetValue(IsRecorderVisibleProperty); }
+        //    set { SetValue(IsRecorderVisibleProperty, value); }
+        //}
+
+
+        //// Using a DependencyProperty as the backing store for IsRecorderVisible.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty IsRecorderVisibleProperty =
+        //    DependencyProperty.Register("IsRecorderVisible", typeof(bool), typeof(DataRecorderScreen), new PropertyMetadata());
+
+        //private static void OnIsRecorderVisibleChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        //{
+
+        //}
+        //#endregion
     }
+
 }

@@ -18,28 +18,8 @@
     <UserControl.DataContext>
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
-    <DockPanel>
-
-        <materialDesign:ColorZone Height="50" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <DockPanel Grid.Column="2" >
-                    <Button Style="{StaticResource MaterialDesignFlatButton}" DockPanel.Dock="Right" VerticalAlignment="Stretch"  HorizontalAlignment="Right" Command="{Binding LogoutCommand}">
-                        <materialDesign:PackIcon Kind="ExitToApp" Height="36" Width="36" Margin="0"/>
-                    </Button>
-                    <Button Style="{StaticResource MaterialDesignFlatButton}" DockPanel.Dock="Right" VerticalAlignment="Stretch"  HorizontalAlignment="Right" Command="{Binding TestStrategy1}">
-                        <materialDesign:PackIcon Kind="Replay" Height="36" Width="36" Margin="0,0,10,0"/>
-                    </Button>
-                </DockPanel>
-
-            </Grid>
-        </materialDesign:ColorZone>
-
-        <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+    <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Center">
+        <DockPanel>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20"/>
@@ -56,28 +36,21 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Skeleton Draws-->
-                <materialDesign:Card Grid.Column="1" Grid.Row="1">
-                    <Viewbox HorizontalAlignment="Center">
-                        <Image Source="{Binding ImageSourceFront}"/>
-                    </Viewbox>
-                </materialDesign:Card>
-
-                <materialDesign:Card Grid.Column="1" Grid.Row="2">
-                    <Viewbox HorizontalAlignment="Center">
-                        <Image Source="{Binding ImageSourceSide}"/>
-                    </Viewbox>
-                </materialDesign:Card>
+                <Viewbox HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1">
+                    <Image Source="{Binding ImageSourceFront}"/>
+                </Viewbox>
+                <Viewbox HorizontalAlignment="Center" Grid.Column="1" Grid.Row="2">
+                    <Image Source="{Binding ImageSourceSide}"/>
+                </Viewbox>
 
                 <!--Color Draws-->
-                <materialDesign:Card Grid.Column="2" Grid.Row="1">
-                    <Viewbox HorizontalAlignment="Center">
-                        <Image Source="{Binding ImageSourceColor}" RenderTransformOrigin="0.5,0.5">
-                            <Image.RenderTransform>
-                                <ScaleTransform ScaleX="-1"/>
-                            </Image.RenderTransform>
-                        </Image>
-                    </Viewbox>
-                </materialDesign:Card>
+                <Viewbox HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1">
+                    <Image Source="{Binding ImageSourceColor}" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <ScaleTransform ScaleX="-1"/>
+                        </Image.RenderTransform>
+                    </Image>
+                </Viewbox>
 
                 <DockPanel Grid.Column="2" Grid.Row="2" Margin="10">
                     <!--<TextBox x:Name="LiftName" Grid.Row="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Width="300" DockPanel.Dock="Top" Margin="40 0 40 0" HorizontalAlignment="Stretch" Height="40" Text="{Binding Path=LiftName, Mode=TwoWay}" FontSize="18" VerticalAlignment="Center">
@@ -88,11 +61,11 @@
                             </StackPanel>
 
                         </materialDesign:HintAssist.Hint>
-                    </TextBox>-->
-                    <!--<Button Content="Test Strategy 1 - Reset Kinect, Thats it" DockPanel.Dock="Top"  Command="{Binding TestStrategy1}" Margin="10" Width="300"  FontSize="16" />-->
-                    <!--<Button Content="Start" DockPanel.Dock="Top" Command="{Binding StartRecording}" Margin="10"  Width="300"  FontSize="16" />
-                    
-                    <Button Content="Stop" DockPanel.Dock="Top" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />-->
+                    </TextBox>
+                    <Button Content="Test Strategy 1 - Reset Kinect, Thats it" DockPanel.Dock="Top"  Command="{Binding TestStrategy1}" Margin="10" Width="300"  FontSize="16" />
+                    <Button Content="Start" DockPanel.Dock="Top" Command="{Binding StartRecording}" Margin="10"  Width="300"  FontSize="16" />-->
+
+                    <Button Content="Stop" DockPanel.Dock="Top" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
 
                     <ListView DockPanel.Dock="Top" Margin="10"  ItemsSource="{Binding allLiftData}">
                         <ListView.ItemTemplate>
@@ -111,7 +84,9 @@
                     <Button Content="Start Recording." DockPanel.Dock="Bottom" Command="{Binding StartRecording}" Margin="10" Width="300" FontSize="16" />
                     <Button Content="Send recordings to Rack." DockPanel.Dock="Bottom" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
                 </StackPanel>
+
+                <!--<Button Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Content="Send recordings to Rack." DockPanel.Dock="Bottom" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />-->
             </Grid>
-        </materialDesign:Card>
-    </DockPanel>
+        </DockPanel>
+    </materialDesign:Card>
 </UserControl>

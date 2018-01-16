@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <Configurations>Debug;Release;DataLift - Debug;WorkingWithTheRack;DL</Configurations>
+    <Configurations>Debug;Release;DataLift - Debug;WorkingWithTheRack;DL;DL- DB</Configurations>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
 
