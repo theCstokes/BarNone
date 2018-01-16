@@ -5,22 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:BarNone.DataLift.UI.Views"
-             xmlns:vms="clr-namespace:BarNone.DataLift.UI.ViewModels"
              mc:Ignorable="d">
-
     <UserControl.Resources>
         <ResourceDictionary>
-            <vms:WorkflowVM x:Key="vm"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-
-    <UserControl.DataContext>
-        <Binding Source="{StaticResource vm}"/>
-    </UserControl.DataContext>
     <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
@@ -32,15 +25,13 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="20" />
             </Grid.RowDefinitions>
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="20" />
             </Grid.ColumnDefinitions>
-
-
+            <!-- Record Lifts -->
             <Button Grid.Column="1" Grid.Row="1"  Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
                         Margin="10" HorizontalAlignment="Center"
                         ToolTip="Step 1: Record Lift">
@@ -51,14 +42,9 @@
             </TextBlock>
             <ProgressBar Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Orientation="Vertical" Height="5" Value="0"  FlowDirection="RightToLeft" />
 
-            <!--<Rectangle Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Width="5" />-->
-
-            <Button Grid.Column="1" Grid.Row="3"  
-                        DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
-                        Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                        Margin="10,11.4,10,8.6" HorizontalAlignment="Center"
-                        ToolTip="Step 2: Trim Lifts"
-                        IsEnabled="{Binding IsStepTwoEnabled}">
+            <!-- Trim Lifts -->
+            <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" HorizontalAlignment="Center" ToolTip="Step 2: Trim Lifts" Margin="10"
+                        IsEnabled="{Binding Path=IsStepTwoEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
                 <materialDesign:PackIcon Kind="Pokeball" Height="24" Width="24" />
             </Button>
             <TextBlock Grid.Column="2" Grid.Row="3" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="0 0 8 0" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -67,17 +53,15 @@
 
             <ProgressBar Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Orientation="Vertical" Height="5" Value="0" FlowDirection="RightToLeft"  />
 
-            <Button Grid.Column="1" Grid.Row="5"  Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                        Margin="10" HorizontalAlignment="Center"
-                        ToolTip="Step 3: Save Lifts">
+            <!-- Save Lifts -->
+            <Button Grid.Column="1" Grid.Row="5"  Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Margin="10" HorizontalAlignment="Center"
+                        ToolTip="Step 3: Save Lifts"
+                        IsEnabled="{Binding Path=IsStepThreeEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
                 <materialDesign:PackIcon Kind="Floppy" Height="24" Width="24" />
             </Button>
             <TextBlock Grid.Column="2" Grid.Row="5" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="0 0 8 0" HorizontalAlignment="Center" VerticalAlignment="Center">
             Step 3: Save Lifts
             </TextBlock>
         </Grid>
-
     </materialDesign:Card>
-
-
 </UserControl>

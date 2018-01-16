@@ -14,15 +14,8 @@ namespace BarNone.DataLift.UI.ViewModels
 {
     public class ControlHolderVM : ViewModelBase
     {
-        #region Public Properties
+        #region Public Commands
         public RelayCommand _TestStrategy1 { get; private set; }
-
-        //public ICommand blargh(object sender, DialogClosingEventArgs eventArgs)
-        //{
-             
-
-        //}
-
         public ICommand TestStrategy1
         {
             get
@@ -76,36 +69,29 @@ namespace BarNone.DataLift.UI.ViewModels
         /// Variable that controls the visibility of the Recorder Screen.
         /// </summary>
         private bool _isRecorderVisible = true;
-
         public bool IsRecorderVisible
         {
-            get
-            {
-                return _isRecorderVisible;
-            }
+            get => _isRecorderVisible;
             set
             {
                 _isRecorderVisible = value;
-
                 OnPropertyChanged(new PropertyChangedEventArgs("IsRecorderVisible"));
             }
         }
 
+        #endregion
+        
+        #region Public Properties
         /// <summary>
         /// Variable that controls the visibility of the Editor Screen.
         /// </summary>
         private bool _isEditorVisible = false;
-
         public bool IsEditorVisible
         {
-            get
-            {
-                return _isEditorVisible;
-            }
+            get => _isEditorVisible;
             set
             {
                 _isEditorVisible = value;
-
                 OnPropertyChanged(new PropertyChangedEventArgs("IsEditorVisible"));
             }
         }
@@ -114,17 +100,12 @@ namespace BarNone.DataLift.UI.ViewModels
         /// Variable that controls the visibility of the Saving Screen.
         /// </summary>
         private bool _isSavingVisible = false;
-
         public bool IsSavingVisible
         {
-            get
-            {
-                return _isSavingVisible;
-            }
+            get => _isSavingVisible;
             set
             {
                 _isSavingVisible = value;
-
                 OnPropertyChanged(new PropertyChangedEventArgs("IsSavingVisible"));
             }
         }
@@ -133,31 +114,34 @@ namespace BarNone.DataLift.UI.ViewModels
 
         public bool IsBackwardsEnabled
         {
-            get
-            {
-                return _isBackwardsEnabled;
-            }
+            get => _isBackwardsEnabled;
             set
             {
                 _isBackwardsEnabled = value;
-
                 OnPropertyChanged(new PropertyChangedEventArgs("IsBackwardsEnabled"));
             }
         }
 
         private bool _isStepTwoEnabledController = false;
-
         public bool IsStepTwoEnabledController
         {
-            get
-            {
-                return _isStepTwoEnabledController;
-            }
+            get => _isStepTwoEnabledController;
             set
             {
                 _isStepTwoEnabledController = value;
-
                 OnPropertyChanged(new PropertyChangedEventArgs("IsStepTwoEnabledController"));
+            }
+        }
+
+
+        private bool _isStepThreeEnabledController = false;
+        public bool IsStepThreeEnabledController
+        {
+            get => _isStepThreeEnabledController;
+            set
+            {
+                _isStepThreeEnabledController = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("IsStepThreeEnabledController"));
             }
         }
 
@@ -257,6 +241,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             IsBackwardsEnabled = true;
             IsStepTwoEnabledController = true;
+            IsStepThreeEnabledController = true;
 
             IsRecorderVisible = false;
             IsEditorVisible = true;
@@ -276,7 +261,6 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         #endregion 
-
 
     }
 
