@@ -16,6 +16,10 @@
     </UserControl.DataContext>
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <cmpnts:VideoViewer/>
-        <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}"/>
+        <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}" 
+                                 CommandPause="{Binding CommandPauseVideo}" 
+                                 CommandResetInterval="{Binding CommandResetVideo}" 
+                                 CommandSlowMo="{Binding CommandSlowMotionVideo}" 
+                                 CommandFastForward="{Binding CommandFastForwardVideo}"/>
     </StackPanel>
 </UserControl>

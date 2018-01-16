@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BarNone.Shared.DataTransfer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace BarNone.DataLift.UI.SharedViewData
 {
     internal static class CurrentLiftData
     {
-        
+        internal static List<LiftDTO> CurrentRecordedData = new List<LiftDTO>();
     }
 }

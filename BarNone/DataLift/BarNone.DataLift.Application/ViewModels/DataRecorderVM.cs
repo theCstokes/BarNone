@@ -24,13 +24,14 @@ namespace BarNone.DataLift.UI.ViewModels
     public class DataRecorderVM : ViewModelBase
     {
         #region Bound Properties
+        //TODO Make this deprecated
         private ObservableCollection<LiftDTO> _allLiftData = new ObservableCollection<LiftDTO>();
-        public ObservableCollection<LiftDTO> allLiftData
+        public ObservableCollection<LiftDTO> AllLiftData
         {
             get { return _allLiftData; }
             set
             {
-                _allLiftData = allLiftData;
+                _allLiftData = AllLiftData;
                 OnPropertyChanged(new PropertyChangedEventArgs("allLiftData"));
             }
         }
@@ -148,7 +149,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             prevHandState = 0;
 
-            allLiftData.Clear();
+            AllLiftData.Clear();
         }
 
         internal override void Closed()
@@ -159,7 +160,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             prevHandState = 0;
 
-            allLiftData.Clear();
+            AllLiftData.Clear();
         }
 
         #endregion
@@ -405,14 +406,14 @@ namespace BarNone.DataLift.UI.ViewModels
             isCurrentlyRecording = false;
             TempAddCurrentLift();
 
-            foreach (var l in allLiftData)
+            foreach (var l in AllLiftData)
             {
                 var temp = await DataManager.LiftFlex.Post(l);
                     File.WriteAllText(l.Name + ".json", JsonConvert.SerializeObject(l));
                 
             }
 
-            allLiftData.Clear();
+            AllLiftData.Clear();
         }
 
         private void TempAddCurrentLift()
@@ -420,7 +421,7 @@ namespace BarNone.DataLift.UI.ViewModels
             var toSend = new LiftDTO()
             {
                 ParentID = 1,
-                Name = String.Format("{0}_{1}_{2}_New_Lift_{3}", CurrentRecordingBodyData.RecordDate.Year, CurrentRecordingBodyData.RecordDate.Month, CurrentRecordingBodyData.RecordDate.Day, (allLiftData.Count + 1)),
+                Name = String.Format("{0}_{1}_{2}_New_Lift_{3}", CurrentRecordingBodyData.RecordDate.Year, CurrentRecordingBodyData.RecordDate.Month, CurrentRecordingBodyData.RecordDate.Day, (AllLiftData.Count + 1)),
                 Details = new LiftDetailDTO()
                 {
                     BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData)
@@ -429,7 +430,7 @@ namespace BarNone.DataLift.UI.ViewModels
             };
 
             // Add the lift to the list of all lifts. 
-            allLiftData.Add(toSend);
+            AllLiftData.Add(toSend);
         }
 
         #endregion

@@ -67,7 +67,7 @@
 
                     <Button Content="Stop" DockPanel.Dock="Top" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
 
-                    <ListView DockPanel.Dock="Top" Margin="10"  ItemsSource="{Binding allLiftData}">
+                    <ListView DockPanel.Dock="Top" Margin="10"  ItemsSource="{Binding AllLiftData}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <TextBox Name="Dbc_File" Grid.Column="0" Grid.Row="0" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="10,0" VerticalAlignment="Center">

@@ -28,9 +28,13 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
         public ICommand CommandPlay
         {
             get { return (ICommand)GetValue(CommandPlayProperty); }
-            set { SetValue(CommandPlayProperty, value); }
+            set
+            {
+                Console.WriteLine("Help");
+                SetValue(CommandPlayProperty, value);
+            }
         }
-        
+
         public static readonly DependencyProperty CommandPlayProperty =
             DependencyProperty.Register("CommandPlay", typeof(ICommand), typeof(VideoControlsBar));
 
@@ -39,7 +43,7 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
             get { return (ICommand)GetValue(CommandPauseProperty); }
             set { SetValue(CommandPauseProperty, value); }
         }
-        
+
         public static readonly DependencyProperty CommandPauseProperty =
             DependencyProperty.Register("CommandPause", typeof(ICommand), typeof(VideoControlsBar));
 
