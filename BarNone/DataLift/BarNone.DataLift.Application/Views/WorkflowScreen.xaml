@@ -31,32 +31,34 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="20" />
             </Grid.ColumnDefinitions>
-            <!-- Record Lifts -->
+             
             <Button Grid.Column="1" Grid.Row="1"  Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                        Margin="10" HorizontalAlignment="Center"
-                        ToolTip="Step 1: Record Lift">
+                        Margin="10" HorizontalAlignment="Center" 
+                        ToolTip="Step 1: Record Lift" IsEnabled="False" Opacity="100">
                 <materialDesign:PackIcon Kind="Video" Height="24" Width="24" />
             </Button>
             <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="0 0 8 0" HorizontalAlignment="Center" VerticalAlignment="Center">
             Step 1: Record Lift
             </TextBlock>
-            <ProgressBar Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Orientation="Vertical" Height="5" Value="0"  FlowDirection="RightToLeft" />
+            <ProgressBar Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Orientation="Vertical" Height="5" FlowDirection="RightToLeft"
+                         Value="{Binding Path=StepTwoProgress, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"/>
 
             <!-- Trim Lifts -->
             <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" HorizontalAlignment="Center" ToolTip="Step 2: Trim Lifts" Margin="10"
-                        IsEnabled="{Binding Path=IsStepTwoEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
+                        IsEnabled="False" Opacity="{Binding Path=IsStepTwoEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
                 <materialDesign:PackIcon Kind="Pokeball" Height="24" Width="24" />
             </Button>
             <TextBlock Grid.Column="2" Grid.Row="3" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="0 0 8 0" HorizontalAlignment="Center" VerticalAlignment="Center">
             Step 2: Trim Lifts
             </TextBlock>
 
-            <ProgressBar Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Orientation="Vertical" Height="5" Value="0" FlowDirection="RightToLeft"  />
+            <ProgressBar Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Orientation="Vertical" Height="5" FlowDirection="RightToLeft" 
+                         Value="{Binding Path=StepThreeProgress, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"/>
 
             <!-- Save Lifts -->
             <Button Grid.Column="1" Grid.Row="5"  Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Margin="10" HorizontalAlignment="Center"
-                        ToolTip="Step 3: Save Lifts"
-                        IsEnabled="{Binding Path=IsStepThreeEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
+                        ToolTip="Step 3: Save Lifts" IsEnabled="False"
+                        Opacity="{Binding Path=IsStepThreeEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
                 <materialDesign:PackIcon Kind="Floppy" Height="24" Width="24" />
             </Button>
             <TextBlock Grid.Column="2" Grid.Row="5" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="0 0 8 0" HorizontalAlignment="Center" VerticalAlignment="Center">

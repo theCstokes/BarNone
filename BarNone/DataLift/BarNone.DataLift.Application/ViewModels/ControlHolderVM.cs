@@ -135,8 +135,8 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
-        private bool _isStepTwoEnabledController = false;
-        public bool IsStepTwoEnabledController
+        private double _isStepTwoEnabledController = 0.5;
+        public double IsStepTwoEnabledController
         {
             get => _isStepTwoEnabledController;
             set
@@ -147,14 +147,35 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
 
-        private bool _isStepThreeEnabledController = false;
-        public bool IsStepThreeEnabledController
+        private double _isStepThreeEnabledController = 0.5;
+        public double IsStepThreeEnabledController
         {
             get => _isStepThreeEnabledController;
             set
             {
                 _isStepThreeEnabledController = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("IsStepThreeEnabledController"));
+            }
+        }
+        private int _stepTwoProgressController = 0;
+        public int StepTwoProgressController
+        {
+            get => _stepTwoProgressController;
+            set
+            {
+                _stepTwoProgressController = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("StepTwoProgressController"));
+            }
+        }
+
+        private int _stepThreeProgressController = 0;
+        public int StepThreeProgressController
+        {
+            get => _stepThreeProgressController;
+            set
+            {
+                _stepThreeProgressController = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("StepThreeProgressController"));
             }
         }
 
@@ -229,8 +250,11 @@ namespace BarNone.DataLift.UI.ViewModels
             _currentState = State.Recording;
 
             IsBackwardsEnabled = false;
-            IsStepTwoEnabledController = false;
-            IsStepThreeEnabledController = false;
+
+            IsStepTwoEnabledController = 0.5;
+            IsStepThreeEnabledController = 0.5;
+
+            StepTwoProgressController = 0;
 
             IsRecorderVisible = true;
             IsEditorVisible = false;
@@ -245,8 +269,12 @@ namespace BarNone.DataLift.UI.ViewModels
             _currentState = State.Editing;
 
             IsBackwardsEnabled = true;
-            IsStepTwoEnabledController = true;
-            IsStepThreeEnabledController = false;
+
+            IsStepTwoEnabledController = 1;
+            IsStepThreeEnabledController = 0.5;
+
+            StepTwoProgressController = 100;
+            StepThreeProgressController = 0;
 
             IsRecorderVisible = false;
             IsEditorVisible = true;
@@ -260,8 +288,10 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             _currentState = State.Saving;
 
-            IsStepTwoEnabledController = true;
-            IsStepThreeEnabledController = true;
+            StepThreeProgressController = 100;
+
+            IsStepTwoEnabledController = 1;
+            IsStepThreeEnabledController = 1;
 
             IsRecorderVisible = false;
             IsEditorVisible = false;

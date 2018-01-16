@@ -26,11 +26,11 @@ namespace BarNone.DataLift.UI.Views
             InitializeComponent();
         }
 
-        public bool IsStepTwoEnabled
+        public double IsStepTwoEnabled
         {
             get
             {
-                return (bool)GetValue(IsStepTwoEnabledProperty);
+                return (double)GetValue(IsStepTwoEnabledProperty);
             }
             set
             {
@@ -40,23 +40,17 @@ namespace BarNone.DataLift.UI.Views
 
         // Using a DependencyProperty as the backing store for IsStepTwoEnabled.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsStepTwoEnabledProperty =
-            DependencyProperty.Register("IsStepTwoEnabled", typeof(bool), typeof(WorkflowScreen), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            DependencyProperty.Register("IsStepTwoEnabled", typeof(double), typeof(WorkflowScreen), new FrameworkPropertyMetadata(0.5, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
-        private static void Testeroonie(DependencyObject d, DependencyPropertyChangedEventArgs baseValue)
+        public double IsStepThreeEnabled
         {
-            WorkflowScreen WorkFlowDataContextParent = d as WorkflowScreen;
-            
-        }
-
-        public bool IsStepThreeEnabled
-        {
-            get { return (bool)GetValue(IsStepThreeEnabledProperty); }
+            get { return (double)GetValue(IsStepThreeEnabledProperty); }
             set { SetValue(IsStepThreeEnabledProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for IsStepThreeEnabled.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsStepThreeEnabledProperty =
-            DependencyProperty.Register("IsStepThreeEnabled", typeof(bool), typeof(WorkflowScreen), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            DependencyProperty.Register("IsStepThreeEnabled", typeof(double), typeof(WorkflowScreen), new FrameworkPropertyMetadata(0.5, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
 
 
@@ -68,7 +62,17 @@ namespace BarNone.DataLift.UI.Views
 
         // Using a DependencyProperty as the backing store for StepTwoProgress.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty StepTwoProgressProperty =
-            DependencyProperty.Register("StepTwoProgress", typeof(int), typeof(WorkflowScreen), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            DependencyProperty.Register("StepTwoProgress", typeof(int), typeof(WorkflowScreen), new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        public int StepThreeProgress
+        {
+            get { return (int)GetValue(StepThreeProgressProperty); }
+            set { SetValue(StepThreeProgressProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for StepThreeProgress.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty StepThreeProgressProperty =
+            DependencyProperty.Register("StepThreeProgress", typeof(int), typeof(WorkflowScreen), new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
 
     }
