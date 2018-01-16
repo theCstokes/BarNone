@@ -9,12 +9,27 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using BarNone.DataLift.UI.Views;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
     public class ControlHolderVM : ViewModelBase
     {
         #region Public Commands
+        private async void ExecuteRunDialog(object o)
+        {
+            var view = new YesNoDialogScreen();
+
+            //let's set up a little MVVM, cos that's what the cool kids are doing:
+            var result = await DialogHost.Show(view, "RootDialog");
+
+            if (Equals(result, false))
+            {
+                MoveWorkflowBackward();
+            }
+        }
+        public ICommand RunDialogCommand => new RelayCommand(ExecuteRunDialog);
+
         public RelayCommand _TestStrategy1 { get; private set; }
         public ICommand TestStrategy1
         {
@@ -48,19 +63,17 @@ namespace BarNone.DataLift.UI.ViewModels
         /// Bound command to move wordlow backwards in XAML.
         /// </summary>
         public RelayCommand _MoveWorflowBackwardCmd { get; private set; }
-        public ICommand MoveWorflowBackwardCmd(object sender, DialogClosingEventArgs eventArgs)
+        public ICommand MoveWorflowBackwardCmd
         {
-                if ((Equals(eventArgs.Parameter, true)) && (_MoveWorflowBackwardCmd == null))
+            get
+            {
+                if (_MoveWorflowBackwardCmd == null)
                 {
                     _MoveWorflowBackwardCmd = new RelayCommand(action => MoveWorkflowBackward());
-
                 }
                 return _MoveWorflowBackwardCmd;
-                //if (_MoveWorflowBackwardCmd == null)
-                //{
-                //    _MoveWorflowBackwardCmd = new RelayCommand(action => MoveWorkflowBackward());
-                //}
-                //return _MoveWorflowBackwardCmd;
+            }
+
         }
 
         public ICommand LogoutCommand { get; } = new RelayCommand(action => PageManager.SwitchPage(UIPages.LoginView));
@@ -80,7 +93,7 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         #endregion
-        
+
         #region Public Properties
         /// <summary>
         /// Variable that controls the visibility of the Editor Screen.
@@ -159,7 +172,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Enumeration defininng which state DataLift is in.
         /// </summary>
-        private enum State {Recording, Editing, Saving};
+        private enum State { Recording, Editing, Saving };
         #endregion
 
         #region Private Functions
@@ -200,20 +213,10 @@ namespace BarNone.DataLift.UI.ViewModels
                     // Do nothing.  Button should be disabled.
                     break;
                 case State.Editing:
-                    // TODO Prompt user they may loose data. Implmementation may be wrong.
-                    result = MessageBox.Show("You may loose editing data if you choose to return to the recording page.  Do you wish to continue?", "Warning:  Data may be lost", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if(result == MessageBoxResult.Yes)
-                    {
-                        GotoRecordingState();
-                    }
+                    GotoRecordingState();
                     break;
                 case State.Saving:
-                    // TODO Prompt user they may loose data.  Implmementation may be wrong.
-                    result = MessageBox.Show("You may loose lift information data if you choose to return to the editing page.  Do you wish to continue?", "Warning:  Data may be lost", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        GotoEditingState();
-                    }
+                    GotoEditingState();
                     break;
             }
         }
@@ -226,6 +229,8 @@ namespace BarNone.DataLift.UI.ViewModels
             _currentState = State.Recording;
 
             IsBackwardsEnabled = false;
+            IsStepTwoEnabledController = false;
+            IsStepThreeEnabledController = false;
 
             IsRecorderVisible = true;
             IsEditorVisible = false;
@@ -241,7 +246,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             IsBackwardsEnabled = true;
             IsStepTwoEnabledController = true;
-            IsStepThreeEnabledController = true;
+            IsStepThreeEnabledController = false;
 
             IsRecorderVisible = false;
             IsEditorVisible = true;
@@ -254,6 +259,9 @@ namespace BarNone.DataLift.UI.ViewModels
         private void GotoSavingState()
         {
             _currentState = State.Saving;
+
+            IsStepTwoEnabledController = true;
+            IsStepThreeEnabledController = true;
 
             IsRecorderVisible = false;
             IsEditorVisible = false;

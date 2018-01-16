@@ -22,73 +22,75 @@
     <UserControl.DataContext>
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
-    <DockPanel>
+    <materialDesign:DialogHost Identifier="RootDialog" >
+        <DockPanel>
 
-        <materialDesign:ColorZone Height="50" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <DockPanel Grid.Column="2" >
-                    <Button Style="{StaticResource MaterialDesignFlatButton}" DockPanel.Dock="Right" VerticalAlignment="Stretch"  HorizontalAlignment="Right" Command="{Binding LogoutCommand}" >
-                        <materialDesign:PackIcon Kind="ExitToApp" Height="36" Width="36" Margin="0"/>
-                    </Button>
-                    <Button Style="{StaticResource MaterialDesignFlatButton}" DockPanel.Dock="Right" VerticalAlignment="Stretch"  HorizontalAlignment="Right" Command="{Binding TestStrategy1}">
-                        <materialDesign:PackIcon Kind="Replay" Height="36" Width="36" Margin="0,0,10,0"/>
-                    </Button>
-                </DockPanel>
-
-            </Grid>
-        </materialDesign:ColorZone>
-
-        <Grid VerticalAlignment="Stretch">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="20" />
-            </Grid.RowDefinitions>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="20" />
-            </Grid.ColumnDefinitions>
-
-            <local:WorkflowScreen Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" IsStepTwoEnabled="{Binding Path=IsStepTwoEnabledController}" IsStepThreeEnabled="{Binding Path=IsStepThreeEnabledController}"/>
-            <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsRecorderVisible, Converter={StaticResource BoolToVisConverter} }">
-                    <local:DataRecorderScreen />
-                </Border>
-
-                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsEditorVisible, Converter={StaticResource BoolToVisConverter} }">
-                    <TextBlock FontSize="36">
-                        Placeholder For Editing Screen.
-                    </TextBlock>    
-                </Border>
-
-                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsSavingVisible, Converter={StaticResource BoolToVisConverter} }">
-                    <TextBlock FontSize="36">
-                        Placeholder For Saving Screen.
-                    </TextBlock>
-                </Border>
-
+            <materialDesign:ColorZone Height="50" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <!--<ColumnDefinition Width="10" />-->
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-
-                    <Button Grid.Column="0" Width="200" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" />
-                    <Button Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Content="Next Step" Command="{Binding MoveWorflowForwardCmd}" />
+                    <DockPanel Grid.Column="2" >
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" DockPanel.Dock="Right" VerticalAlignment="Stretch"  HorizontalAlignment="Right" Command="{Binding LogoutCommand}" >
+                            <materialDesign:PackIcon Kind="ExitToApp" Height="36" Width="36" Margin="0"/>
+                        </Button>
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" DockPanel.Dock="Right" VerticalAlignment="Stretch"  HorizontalAlignment="Right" Command="{Binding TestStrategy1}">
+                            <materialDesign:PackIcon Kind="Replay" Height="36" Width="36" Margin="0,0,10,0"/>
+                        </Button>
+                    </DockPanel>
 
                 </Grid>
-            </StackPanel>
-            
-                        
-        </Grid>
-    </DockPanel>
+            </materialDesign:ColorZone>
+
+            <Grid VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="20" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+
+                <local:WorkflowScreen Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" IsStepTwoEnabled="{Binding Path=IsStepTwoEnabledController}" IsStepThreeEnabled="{Binding Path=IsStepThreeEnabledController}" Loaded="WorkflowScreen_Loaded"/>
+                <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsRecorderVisible, Converter={StaticResource BoolToVisConverter} }">
+                        <local:DataRecorderScreen />
+                    </Border>
+
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsEditorVisible, Converter={StaticResource BoolToVisConverter} }">
+                        <TextBlock FontSize="36">
+                        Placeholder For Editing Screen.
+                        </TextBlock>
+                    </Border>
+
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsSavingVisible, Converter={StaticResource BoolToVisConverter} }">
+                        <TextBlock FontSize="36">
+                        Placeholder For Saving Screen.
+                        </TextBlock>
+                    </Border>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <!--<ColumnDefinition Width="10" />-->
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0" Width="200" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" IsEnabled="{Binding IsBackwardsEnabled}"  Content="Previous Step" Command="{Binding RunDialogCommand}" />
+                        <Button Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Content="Next Step" Command="{Binding MoveWorflowForwardCmd}" />
+
+                    </Grid>
+                </StackPanel>
+
+
+            </Grid>
+        </DockPanel>
+    </materialDesign:DialogHost>
 </UserControl>
