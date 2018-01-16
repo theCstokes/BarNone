@@ -16,19 +16,6 @@
         <Binding Source="{StaticResource vm}" />
     </UserControl.DataContext>
     <Grid>
-        <ListView ScrollViewer.CanContentScroll="True">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding LiftName}" Header="Lift Name" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Duration}" Header="Duration">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <ComboBox />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>    
+       
     </Grid>
 </UserControl>

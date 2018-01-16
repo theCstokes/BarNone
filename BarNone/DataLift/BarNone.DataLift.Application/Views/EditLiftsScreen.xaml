@@ -6,20 +6,36 @@
              xmlns:local="clr-namespace:BarNone.DataLift.UI.Views"
              xmlns:vms="clr-namespace:BarNone.DataLift.UI.ViewModels"
              xmlns:cmpnts="clr-namespace:BarNone.DataLift.UI.Views.CustomComponents"
-             mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="500">
+             mc:Ignorable="d"
+             >
     <UserControl.Resources>
         <vms:EditLiftsScreenVM x:Key="vm"/>
     </UserControl.Resources>
     <UserControl.DataContext>
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <cmpnts:VideoViewer/>
-        <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}" 
+    <StackPanel Orientation="Horizontal">
+        <ListView ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Test}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding LiftName}" Header="Lift Name" />
+                    <GridViewColumn DisplayMemberBinding="{Binding LiftType}" Header="Duration">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding LiftTypeList}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <cmpnts:VideoViewer/>
+            <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}" 
                                  CommandPause="{Binding CommandPauseVideo}" 
                                  CommandResetInterval="{Binding CommandResetVideo}" 
                                  CommandSlowMo="{Binding CommandSlowMotionVideo}" 
                                  CommandFastForward="{Binding CommandFastForwardVideo}"/>
+        </StackPanel>
     </StackPanel>
 </UserControl>

@@ -1,6 +1,8 @@
 ﻿using BarNone.DataLift.UI.Commands;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +12,38 @@ namespace BarNone.DataLift.UI.ViewModels
 {
     public class EditLiftsScreenVM : ViewModelBase
     {
+        #region ListView properties
+
+        public ObservableCollection<LiftListVM> Test
+        {
+            get
+            {
+                return new ObservableCollection<LiftListVM>
+                {
+                    new LiftListVM
+                    {
+                        LiftName = "Test1",
+                        LiftType = "Squat"
+                    }
+                };
+            }
+        }
+
+        private string _selectedLiftType;
+        public string SelectedLiftType
+        {
+            get { return _selectedLiftType;  }
+
+            set
+            {
+                if (_selectedLiftType == value) return;
+
+                _selectedLiftType = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("SelectedLiftType"));
+            }
+        }
+
+        #endregion
         #region Video Control Commands
         private RelayCommand _commandPlayVideo;
         public ICommand CommandPlayVideo

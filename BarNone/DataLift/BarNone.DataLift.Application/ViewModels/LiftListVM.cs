@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
-    class LiftListVM : ViewModelBase
+    public class LiftListVM : ViewModelBase
     {
         private string _liftName;
         public string LiftName
@@ -34,6 +35,17 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 _liftType = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("LiftType"));
+            }
+        }
+
+        private ObservableCollection<string> _liftTypeList;
+        public ObservableCollection<string> LiftTypeList
+        {
+            get { return new ObservableCollection<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", }; }
+
+            private set
+            {
+                _liftTypeList = value;
             }
         }
     }
