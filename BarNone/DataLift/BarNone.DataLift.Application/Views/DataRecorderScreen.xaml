@@ -20,33 +20,6 @@
     </UserControl.DataContext>
     <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Center">
         <DockPanel>
-
-            <!--<materialDesign:ColorZone Height="50" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <DockPanel Grid.Column="2" >
-                    <Button Style="{StaticResource MaterialDesignFlatButton}" DockPanel.Dock="Right" VerticalAlignment="Stretch"  HorizontalAlignment="Right" Command="{Binding LogoutCommand}">
-                        <materialDesign:PackIcon Kind="ExitToApp" Height="36" Width="36" Margin="0"/>
-                    </Button>
-                    <Button Style="{StaticResource MaterialDesignFlatButton}" DockPanel.Dock="Right" VerticalAlignment="Stretch"  HorizontalAlignment="Right" Command="{Binding TestStrategy1}">
-                        <materialDesign:PackIcon Kind="Replay" Height="36" Width="36" Margin="0,0,10,0"/>
-                    </Button>
-                </DockPanel>
-
-            </Grid>
-        </materialDesign:ColorZone>-->
-
-            <!--<materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center" Height="Auto" Width="Auto" Margin="10 10 0 10">
-            <DockPanel>
-                <local:WorkflowScreen/>
-            </DockPanel>
-        </materialDesign:Card>-->
-
-            <!--<materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">-->
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20"/>
@@ -94,7 +67,7 @@
 
                     <Button Content="Stop" DockPanel.Dock="Top" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
 
-                    <ListView DockPanel.Dock="Top" Margin="10"  ItemsSource="{Binding allLiftData}">
+                    <ListView DockPanel.Dock="Top" Margin="10"  ItemsSource="{Binding AllLiftData}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <TextBox Name="Dbc_File" Grid.Column="0" Grid.Row="0" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="10,0" VerticalAlignment="Center">
@@ -105,17 +78,15 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-
-
                 </DockPanel>
 
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button Content="Start Recording." DockPanel.Dock="Bottom" Command="{Binding StartRecording}" Margin="10" Width="300" FontSize="16" />
+                    <Button Content="Send recordings to Rack." DockPanel.Dock="Bottom" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
+                </StackPanel>
 
                 <!--<Button Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Content="Send recordings to Rack." DockPanel.Dock="Bottom" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />-->
             </Grid>
-            <!--</materialDesign:Card>-->
-
-
         </DockPanel>
     </materialDesign:Card>
-
 </UserControl>

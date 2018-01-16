@@ -31,7 +31,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="20" />
             </Grid.ColumnDefinitions>
-             
+
             <Button Grid.Column="1" Grid.Row="1"  Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
                         Margin="10" HorizontalAlignment="Center" 
                         ToolTip="Step 1: Record Lift" IsEnabled="False" Opacity="100">

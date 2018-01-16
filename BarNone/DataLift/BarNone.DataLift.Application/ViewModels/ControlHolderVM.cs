@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+
 using BarNone.DataLift.UI.Views;
 
 namespace BarNone.DataLift.UI.ViewModels
@@ -73,7 +74,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 }
                 return _MoveWorflowBackwardCmd;
             }
-
         }
 
         public ICommand LogoutCommand { get; } = new RelayCommand(action => PageManager.SwitchPage(UIPages.LoginView));
@@ -145,8 +145,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs("IsStepTwoEnabledController"));
             }
         }
-
-
+        
         private double _isStepThreeEnabledController = 0.5;
         public double IsStepThreeEnabledController
         {
@@ -157,6 +156,8 @@ namespace BarNone.DataLift.UI.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs("IsStepThreeEnabledController"));
             }
         }
+
+        //TODO story board
         private int _stepTwoProgressController = 0;
         public int StepTwoProgressController
         {
@@ -250,12 +251,12 @@ namespace BarNone.DataLift.UI.ViewModels
             _currentState = State.Recording;
 
             IsBackwardsEnabled = false;
-
+            
             IsStepTwoEnabledController = 0.5;
             IsStepThreeEnabledController = 0.5;
 
             StepTwoProgressController = 0;
-
+            
             IsRecorderVisible = true;
             IsEditorVisible = false;
             IsSavingVisible = false;
@@ -287,12 +288,12 @@ namespace BarNone.DataLift.UI.ViewModels
         private void GotoSavingState()
         {
             _currentState = State.Saving;
-
+            
             StepThreeProgressController = 100;
 
             IsStepTwoEnabledController = 1;
             IsStepThreeEnabledController = 1;
-
+            
             IsRecorderVisible = false;
             IsEditorVisible = false;
             IsSavingVisible = true;

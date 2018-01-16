@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BarNone.DataLift.UI.Views
+namespace BarNone.DataLift.UI.Views.CustomComponents
 {
     /// <summary>
-    /// Interaction logic for ControlHolderScreen.xaml
+    /// Interaction logic for Scrubber.xaml
     /// </summary>
-    public partial class ControlHolderScreen : UserControl
+    public partial class Scrubber : UserControl
     {
-        public ControlHolderScreen()
+        public Scrubber()
         {
             InitializeComponent();
         }

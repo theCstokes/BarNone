@@ -24,7 +24,6 @@
     </UserControl.DataContext>
     <materialDesign:DialogHost Identifier="RootDialog" >
         <DockPanel>
-
             <materialDesign:ColorZone Height="50" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -57,22 +56,19 @@
                     <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="20" />
                 </Grid.ColumnDefinitions>
-                
+
                 <local:WorkflowScreen Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" 
                                       IsStepTwoEnabled="{Binding Path=IsStepTwoEnabledController}" 
                                       IsStepThreeEnabled="{Binding Path=IsStepThreeEnabledController}"
                                       StepTwoProgress="{Binding Path=StepTwoProgressController}"
-                                      StepThreeProgress="{Binding Path=StepThreeProgressController}"
-                                      Loaded="WorkflowScreen_Loaded"/>
+                                      StepThreeProgress="{Binding Path=StepThreeProgressController}"/>
                 <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsRecorderVisible, Converter={StaticResource BoolToVisConverter} }">
                         <local:DataRecorderScreen />
                     </Border>
 
                     <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsEditorVisible, Converter={StaticResource BoolToVisConverter} }">
-                        <TextBlock FontSize="36">
-                        Placeholder For Editing Screen.
-                        </TextBlock>
+                        <local:EditLiftsScreen/>
                     </Border>
 
                     <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsSavingVisible, Converter={StaticResource BoolToVisConverter} }">

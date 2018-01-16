@@ -40,42 +40,6 @@ namespace BarNone.DataLift.DataModel.KinectData
             DataFrames.Add(df);
         }
         #endregion
-
-        //#region Abstract Impl
-        //protected override BodyDataDetailDTO OnBuildDetailDTO(ConvertConfig config)
-        //{
-        //    var ret = new BodyDataDetailDTO()
-        //    {
-        //        OrderedFrames = DataFrames?.Select(x => x.CreateDTO(config)).ToList()
-        //    };
-
-        //    //DataFrames.Select(x => x?.CreateDTO());
-        //    return ret;
-        //}
-
-        //protected override BodyDataDTO OnBuildDTO()
-        //{
-        //    return new BodyDataDTO
-        //    {
-        //        //TODO ID DUH DO IT
-        //        //ID = this.ID, 
-        //        RecordTimeStamp = this.RecordDate
-        //    };
-        //}
-
-        //protected override void OnPopulate(BodyDataDTO dto, ConvertConfig config = null)
-        //{
-        //    RecordDate = dto.RecordTimeStamp;
-        //}
-
-        //protected override void OnDetailPopulate(BodyDataDetailDTO dto, ConvertConfig config = null)
-        //{
-        //    DataFrames = dto.OrderedFrames.Select(
-        //        joint => BodyDataFrame.CreateFromDTO(joint)).ToList();
-        //}
-
-
-
-        //#endregion
+        
     }
 }

@@ -50,16 +50,11 @@ namespace BarNone.UnitTest.DataLift.DomainModel
 
             foreach (KeyValuePair<JointType,Joint> joint in dataFame.Joints)
             {
-
-<<<<<<< HEAD
-                Assert.AreEqual(joint.Value.JointType, (JointType)jointDTO.JointType);
-                Assert.AreEqual(joint.Value.TrackingState, (TrackingState)jointDTO.JointTrackingStateType);
-=======
+                
                 var jointDTO = dataFameDTO.Details.Joints.FirstOrDefault(x => x.JointType.Value == (int)joint.Key);
 
                 Assert.AreEqual(joint.Value.JointType, (JointType)Enum.ToObject(typeof(JointType) ,jointDTO.JointType.Value));
                 Assert.AreEqual(joint.Value.TrackingState, (TrackingState)Enum.ToObject(typeof(JointType), jointDTO.TrackingState.Value));
->>>>>>> develop
 
                 Assert.AreEqual(joint.Value.Position.X, jointDTO.X);
                 Assert.AreEqual(joint.Value.Position.Y, jointDTO.Y);
