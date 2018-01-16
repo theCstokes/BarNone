@@ -5,13 +5,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:BarNone.DataLift.UI.Views"
+             xmlns:vms="clr-namespace:BarNone.DataLift.UI.ViewModels"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <vms:ControlHolderVM x:Key="vm"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource vm}" />
+    </UserControl.DataContext>
     <Grid>
         <ListView ScrollViewer.CanContentScroll="True">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding LiftName}" Header="Lift Name" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Duration}" Header="Duration" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Duration}" Header="Duration">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>    

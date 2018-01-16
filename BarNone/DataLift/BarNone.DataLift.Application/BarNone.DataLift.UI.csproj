@@ -103,6 +103,7 @@
     </ApplicationDefinition>
     <Compile Include="Drawing\KinectToImage.cs" />
     <Compile Include="ViewModels\ControlHolderVM.cs" />
+    <Compile Include="ViewModels\LiftListVM.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\DataRecorderVM.cs" />
     <Compile Include="ViewModels\LoginScreenVM.cs" />
