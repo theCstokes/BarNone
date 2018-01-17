@@ -40,17 +40,31 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
-        private string _liftDuration;
-        public string LiftDuration
+        private string _liftStartTime;
+        public string LiftStartTime
         {
-            get { return _liftDuration; }
+            get { return _liftStartTime; }
 
             set
             {
-                if (_liftDuration == value) return;
+                if (_liftStartTime == value) return;
 
-                _liftDuration = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("LiftDuration"));
+                _liftStartTime = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("LiftStartTime"));
+            }
+        }
+
+        private string _liftEndTime;
+        public string LiftEndTime
+        {
+            get { return _liftEndTime; }
+
+            set
+            {
+                if (_liftEndTime == value) return;
+
+                _liftEndTime = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("LiftEndTime"));
             }
         }
 

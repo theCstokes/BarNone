@@ -104,6 +104,7 @@
     </ApplicationDefinition>
     <Compile Include="Drawing\KinectToImage.cs" />
     <Compile Include="SharedViewData\CurrentLiftData.cs" />
+    <Compile Include="Validation\TimeInputRule.cs" />
     <Compile Include="ViewModels\ControlHolderVM.cs" />
     <Compile Include="ViewModels\LiftListVM.cs" />
     <Compile Include="ViewModels\EditLiftsScreenVM.cs" />
@@ -128,7 +129,7 @@
     </Compile>
     <Compile Include="Views\LiftListViewScreen.xaml.cs">
       <DependentUpon>LiftListViewScreen.xaml</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Views\EditLiftsScreen.xaml.cs">
       <DependentUpon>EditLiftsScreen.xaml</DependentUpon>
     </Compile>
@@ -179,7 +180,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\LiftListViewScreen.xaml">
-	      <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditLiftsScreen.xaml">

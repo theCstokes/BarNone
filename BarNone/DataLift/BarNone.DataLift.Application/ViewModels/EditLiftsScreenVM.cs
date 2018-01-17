@@ -20,14 +20,16 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 LiftName = "Test1",
                 LiftType = "Squat",
-                LiftDuration = "0:00-1:00",
+                LiftStartTime = "00:00:000",
+                LiftEndTime = "00:01:000",
                 Count = 0
             },
             new LiftListVM
             {
                 LiftName = "Test2",
                 LiftType = "Clean and Jerk",
-                LiftDuration = "1:01-2:00",
+                LiftStartTime = "00:01:001",
+                LiftEndTime = "00:02:000",
                 Count =  1
             }
         };
@@ -70,20 +72,23 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_deleteSelectedRecording == null)
                 {
-                    _deleteSelectedRecording = new RelayCommand(action => DeleteSelectedRecordingCommand());
+                    _deleteSelectedRecording = new RelayCommand(action => DeleteSelectedRecordingCommand(action));
                 }
                 return _deleteSelectedRecording;
             }
         }
 
-        private void DeleteSelectedRecordingCommand()
+        private void DeleteSelectedRecordingCommand(object action)
         {
-            //if (SelectedLift == null) return;
+            LiftListVM selected = (LiftListVM)action;
 
-            //Test.RemoveAt(SelectedLift.Count);
-            //for (int i = 0; i < Test.Count; i++) Test[i].Count = i;
-            Console.WriteLine(SelectedLift.LiftName);
-            Console.WriteLine(SelectedLift.LiftType);
+            if (action == null) return;
+
+            Test.RemoveAt(selected.Count);
+            for (int i = 0; i < Test.Count; i++) Test[i].Count = i;
+
+            //Console.WriteLine(selected.LiftName);
+            //Console.WriteLine(selected.LiftType);
         }
         #endregion
 
