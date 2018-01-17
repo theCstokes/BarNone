@@ -103,8 +103,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Drawing\KinectToImage.cs" />
-    <Compile Include="SharedViewData\CurrentLiftData.cs" />
     <Compile Include="ViewModels\ControlHolderVM.cs" />
+    <Compile Include="ViewModels\Common\CurrentLiftDataVM.cs" />
     <Compile Include="ViewModels\EditLiftsScreenVM.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\DataRecorderVM.cs" />
@@ -258,9 +258,6 @@
       <Project>{707ade0d-0c8d-4edf-81b9-889b4538efa1}</Project>
       <Name>BarNone.DataLift.DataModel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

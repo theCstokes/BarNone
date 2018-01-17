@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace BarNone.DataLift.UI.ViewModels.Common
 {
@@ -23,8 +25,13 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                 OnPropertyChanged(new PropertyChangedEventArgs("CurrentRecordedData"));
             }
         }
+#if DEBUG
+        public CurrentLiftDataVM()
+        {
+            CurrentRecordedData.Add(JsonConvert.DeserializeObject<LiftDTO>(File.ReadAllText(@"C:\Code\Capstone\barnone\BarNone\DataLift\BarNone.DataLift.Application\bin\Debug\SQUAT_2018_01_13.json")));
+        }
     }
-
+#endif
     #region Singleton Class
     /// <summary>
     /// Creates a singleton view model for shared lift information to prevent obsurd bindings

@@ -15,7 +15,7 @@
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <cmpnts:VideoViewer/>
+        <cmpnts:VideoViewer ImageSourceLeft="{Binding LeftImage}" ImageSourceRight="{Binding RightImage}"/>
         <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}" 
                                  CommandPause="{Binding CommandPauseVideo}" 
                                  CommandResetInterval="{Binding CommandResetVideo}" 
