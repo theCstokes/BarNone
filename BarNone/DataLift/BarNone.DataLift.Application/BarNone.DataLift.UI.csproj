@@ -102,18 +102,47 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Drawing\KinectToImage.cs" />
+    <Compile Include="Validation\TimeInputRule.cs" />
+    <Compile Include="ViewModels\Common\CurrentLiftDataVM.cs" />
+    <Compile Include="ViewModels\ControlHolderVM.cs" />
+    <Compile Include="ViewModels\EditLiftsScreenVM.cs" />
+    <Compile Include="ViewModels\LiftListVM.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\DataRecorderVM.cs" />
     <Compile Include="ViewModels\LoginScreenVM.cs" />
     <Compile Include="ViewModels\RegisterScreenVM.cs" />
+    <Compile Include="Views\ControlHolderScreen.xaml.cs">
+      <DependentUpon>ControlHolderScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomComponents\Scrubber.xaml.cs" />
+    <Compile Include="Views\CustomComponents\VideoControlsBar.xaml.cs" />
+    <Compile Include="Views\CustomComponents\VideoViewer.xaml.cs" />
     <Compile Include="Views\DataRecorderScreen.xaml.cs">
       <DependentUpon>DataRecorderScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditLiftsScreen.xaml.cs">
+      <DependentUpon>EditLiftsScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LiftListViewScreen.xaml.cs">
+      <DependentUpon>LiftListViewScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RegisterScreen.xaml.cs">
+      <DependentUpon>RegisterScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RegistrationScreen.xaml.cs">
       <DependentUpon>RegistrationScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WorkflowScreen.xaml.cs">
+      <DependentUpon>WorkflowScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\YesNoDialogBox.xaml.cs">
+      <DependentUpon>YesNoDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\YesNoDialogScreen.xaml.cs">
+      <DependentUpon>YesNoDialogScreen.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -129,7 +158,31 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ControlHolderScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CustomComponents\Scrubber.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CustomComponents\VideoControlsBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CustomComponents\VideoViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\DataRecorderScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\EditLiftsScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LiftListViewScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -137,9 +190,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\RegisterScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\RegistrationScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WorkflowScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\YesNoDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\YesNoDialogScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
