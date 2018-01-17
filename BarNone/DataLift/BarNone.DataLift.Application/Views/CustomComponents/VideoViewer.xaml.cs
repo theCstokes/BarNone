@@ -58,7 +58,7 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
 
         // Using a DependencyProperty as the backing store for IsStepTwoEnabled.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ImageSourceMiddleProperty =
-            DependencyProperty.Register("ImageSourceMiddle", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(DrawFilledRectangle(500, 375), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            DependencyProperty.Register("ImageSourceMiddle", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(DrawFilledRectangle(600, 400), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         private static BitmapImage DrawFilledRectangle(int x, int y)
         {
