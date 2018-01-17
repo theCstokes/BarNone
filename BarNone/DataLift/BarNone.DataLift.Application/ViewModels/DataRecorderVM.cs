@@ -15,6 +15,8 @@ using BarNone.Shared.DataTransfer;
 using BarNone.DataLift.UI.Nav;
 using System.ComponentModel;
 using BarNone.DataLift.DataConverters;
+using BarNone.Shared.DataTransfer.Flex;
+using System.Security.AccessControl;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -630,7 +632,15 @@ namespace BarNone.DataLift.UI.ViewModels
             var bodyDto = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
             toSend.Details.BodyData = bodyDto;
 
-            var temp = await DataManager.LiftFlex.Post(toSend);
+            var temp = await DataManager.Flex.Post(new FlexDTO
+            {
+                Entities = new List<FlexEntityDTO> [
+                    new FlexEntityDTO
+                    {
+                        Resource = FlexEntityType
+                    }
+                ]
+            });
 
             //System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp.ToString());
 

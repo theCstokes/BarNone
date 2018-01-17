@@ -1,5 +1,6 @@
 ﻿using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.Core;
+using BarNone.Shared.DataTransfer.Flex;
 using BarNone.TheRack.Core;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,9 @@ namespace BarNone.DataLift.APIRequest
 
         public static Endpoint<LiftDTO> LiftFlex { get; } =
             new Endpoint<LiftDTO>("Flex");
+
+        public static Endpoint<FlexDTO> Flex { get; } =
+            new Endpoint<FlexDTO>("Flex");
 
         public static Endpoint<BodyDataDTO> Bodies { get; } =
             new Endpoint<BodyDataDTO>("BodyData");

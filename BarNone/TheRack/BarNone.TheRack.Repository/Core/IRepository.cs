@@ -10,7 +10,7 @@ using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace BarNone.TheRack.Repository.Core
 {
-    public interface IRepository
+    public interface IRepository : IDisposable
     {
         List<IDomainModel> Get(WhereFunc where = null);
 

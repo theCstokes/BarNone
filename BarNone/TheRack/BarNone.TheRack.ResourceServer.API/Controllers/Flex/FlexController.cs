@@ -1,4 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer;
+using BarNone.Shared.DataTransfer.Flex;
 using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
 using BarNone.TheRack.FlexEngine;
@@ -24,6 +25,13 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
     [Authorize(Policy = "User")]
     public class FlexController : BaseController
     {
+        public delegate IRepository RepositoryBuilder(DomainContext context);
+
+        private Dictionary<string, RepositoryBuilder> repoMap = new Dictionary<string, RepositoryBuilder>
+        {
+            { FlexEntityType.LIFT, (dc) => new LiftRepository(dc) }
+        };
+
         [HttpPost]
         public IActionResult Flex()
         {
@@ -32,13 +40,36 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
                 HttpContext.Request.Body.CopyTo(ms);
                 byte[] data = ms.ToArray();
                 var jsonString = Encoding.ASCII.GetString(data);
-                var dto = JsonConvert.DeserializeObject<LiftDTO>(jsonString);
+                //var dto = JsonConvert.DeserializeObject<LiftDTO>(jsonString);
+
+                var dto = JsonConvert.DeserializeObject<FlexDTO>(jsonString);
 
                 try
                 {
-                    using (LiftRepository repository = new LiftRepository())
+                    using (var context = new DomainContext(UserID))
                     {
-                        return EntityResponse.Response(repository.Create(dto));
+                        var entities = dto.Entities.Select(entity =>
+                        {
+                            if (!repoMap.ContainsKey(entity.Resource)) return null;
+
+                            var entityResult = new FlexEntityDTO
+                            {
+                                Resource = entity.Resource
+                            };
+
+                            using (var repo = repoMap[entity.Resource](context))
+                            {
+                                entityResult.Entity = repo.Create(entity.Entity);
+                            }
+
+                            return entityResult;
+                        });
+
+                        context.SaveChanges();
+                        return EntityResponse.Entity(new FlexDTO
+                        {
+                            Entities = entities.ToList()
+                        });
                     }
                 }
                 catch (Exception e)
@@ -48,4 +79,9 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
             }
         }
     }
+
+    //public static class FlexResourceType
+    //{
+    //    public static string Lift = "Lift";
+    //}
 }
