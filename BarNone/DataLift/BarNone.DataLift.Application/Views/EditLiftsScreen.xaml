@@ -15,14 +15,14 @@
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
     <StackPanel Orientation="Horizontal">
-        <ListView ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Test}">
+        <ListView ScrollViewer.CanContentScroll="True" MinWidth="300" ItemsSource="{Binding Test}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding LiftName}" Header="Lift Name" />
-                    <GridViewColumn DisplayMemberBinding="{Binding LiftType}" Header="Duration">
+                    <GridViewColumn Header="Lift Type">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox ItemsSource="{Binding LiftTypeList}"/>
+                                <ComboBox SelectedItem="{Binding LiftType}" ItemsSource="{Binding LiftTypeList}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

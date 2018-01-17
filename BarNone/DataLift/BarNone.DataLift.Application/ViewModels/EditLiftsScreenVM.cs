@@ -14,18 +14,27 @@ namespace BarNone.DataLift.UI.ViewModels
     {
         #region ListView properties
 
+        private ObservableCollection<LiftListVM> _test = new ObservableCollection<LiftListVM>
+        {
+            new LiftListVM
+            {
+                LiftName = "Test1",
+                LiftType = "Squat"
+            }
+        };
+    
         public ObservableCollection<LiftListVM> Test
         {
             get
             {
-                return new ObservableCollection<LiftListVM>
-                {
-                    new LiftListVM
-                    {
-                        LiftName = "Test1",
-                        LiftType = "Squat"
-                    }
-                };
+                return _test;  
+            }
+            set
+            {
+                if (_test == value) return;
+
+                _test = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("Test"));
             }
         }
 
