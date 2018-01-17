@@ -72,19 +72,18 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
                             };
 
                             var flex = repoMap[entity.Resource];
-                            using (var repo = flex.Builder(context))
-                            {
-                                var val = ((JObject) entity.Entity).ToObject(flex.Type);
-                                entityResult.Entity = repo.Create(val);
-                            }
+                            var repo = flex.Builder(context);
+
+                            var val = ((JObject)entity.Entity).ToObject(flex.Type);
+                            entityResult.Entity = repo.Create(val);
 
                             return entityResult;
-                        });
+                        }).ToList();
 
                         context.SaveChanges();
                         return EntityResponse.Entity(new FlexDTO
                         {
-                            Entities = entities.ToList()
+                            Entities = entities
                         });
                     }
                 }

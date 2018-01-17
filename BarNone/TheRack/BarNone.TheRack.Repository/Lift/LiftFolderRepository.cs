@@ -27,13 +27,8 @@ namespace BarNone.TheRack.Repository
         //protected override DetailConverterResolverDelegate<LiftFolder, LiftFolderDTO, LiftFolderDetailDTO, Converters> DetailDataConverterResolver =>
         //    () => Converters.Convert.LiftFolder;
 
-        protected override ConverterResolverDelegate<LiftFolder, LiftFolderDTO> DataConverter =>
-            (dto) =>
-            {
-                var dm = Converters.Convert.LiftFolder.CreateDataModel(dto);
-                dm.UserID = context.UserID;
-                return dm;
-            };
+        protected override ConverterResolverDelegate<LiftFolder, LiftFolderDTO> DataConverter => 
+            Converters.NewConvertion(context).LiftFolder.CreateDataModel;
 
         protected override DetailResolverDelegate<LiftFolder> DetailEntityResolver => (folders) => folders.Include(l => l.Parent)
                 .Include(l => l.SubFolders)

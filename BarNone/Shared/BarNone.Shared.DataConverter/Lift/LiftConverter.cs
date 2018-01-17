@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.DataConverter.Core;
+﻿using BarNone.Shared.Core;
+using BarNone.Shared.DataConverter.Core;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
 using System;
@@ -9,7 +10,7 @@ namespace BarNone.Shared.DataConverters
 {
     public class LiftConverter : BaseDetailDataConverter<Lift, LiftDTO, LiftDetailDTO, Converters>
     {
-        public LiftConverter(Converters converterContext) : base(converterContext)
+        public LiftConverter(Converters converterContext, IDomainContext context) : base(converterContext, context)
         {
         }
 
@@ -20,7 +21,8 @@ namespace BarNone.Shared.DataConverters
                 ID = dto.ID,
                 Name = dto.Name,
                 ParentID = dto.ParentID,
-                BodyDataID = dto.BodyDataID
+                BodyDataID = dto.BodyDataID,
+                UserID = context.UserID
             };
         }
 

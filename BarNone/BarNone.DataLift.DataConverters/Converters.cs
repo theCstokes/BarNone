@@ -1,5 +1,6 @@
 ﻿using BarNone.DataLift.DataConverters.KinectData;
 using BarNone.DataLift.DataModel.KinectData;
+using BarNone.Shared.Core;
 using BarNone.Shared.DataConverter;
 using BarNone.Shared.DataConverter.Core;
 using BarNone.Shared.DataTransfer;
@@ -18,10 +19,10 @@ namespace BarNone.DataLift.DataConverters
         public BodyDataFrameConverter BodyDataFrame { get; private set; }
         #endregion
 
-        protected override void Init()
+        protected override void Init(IDomainContext context)
         {
-            BodyData = Register<BodyData, BodyDataDTO, BodyDataConverter>(new BodyDataConverter(this));
-            BodyDataFrame = Register<BodyDataFrame, BodyDataFrameDTO, BodyDataFrameConverter>(new BodyDataFrameConverter(this));
+            BodyData = Register<BodyData, BodyDataDTO, BodyDataConverter>(new BodyDataConverter(this, context));
+            BodyDataFrame = Register<BodyDataFrame, BodyDataFrameDTO, BodyDataFrameConverter>(new BodyDataFrameConverter(this, context));
         }
     }
 }

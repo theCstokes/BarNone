@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.DataConverter;
+﻿using BarNone.Shared.Core;
+using BarNone.Shared.DataConverter;
 using BarNone.Shared.DataConverter.Core;
 using BarNone.Shared.DataTransfer.Core;
 using BarNone.Shared.DomainModel.Core;
@@ -14,7 +15,7 @@ namespace BarNone.Shared.DataConverters.Core
         where TEType : struct 
 
     {
-        public BaseEnumDataConverter(Converters converterContext) : base(converterContext)
+        public BaseEnumDataConverter(Converters converterContext, IDomainContext context) : base(converterContext, context)
         {
         }
 

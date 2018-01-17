@@ -354,7 +354,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
                         };
 
-                        var bodyDto = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
+                        var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(CurrentRecordingBodyData);
                         toSend.Details.BodyData = bodyDto;
 
                         // Add the lift to the list of all lifts. 
@@ -776,7 +776,7 @@ namespace BarNone.DataLift.UI.ViewModels
             IsRecording = false;
 
 
-            var bodyDto = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
+            var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(CurrentRecordingBodyData);
             toSend.Details.BodyData = bodyDto;
 
             var temp = await DataManager.Flex.Post(new FlexDTO

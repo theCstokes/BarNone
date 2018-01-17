@@ -17,7 +17,7 @@ namespace BarNone.TheRack.FlexEngine
             {
                 return new FlexResposeEntityDTO
                 {
-                    Result = Converters.Convert.GetConverterFromData(e.GetType()).CreateDTO(e),
+                    Result = Converters.NewConvertion(context).GetConverterFromData(e.GetType()).CreateDTO(e),
                     Details = entityDTO.Details?.Aggregate(new Dictionary<string, dynamic>(), (result, detail) =>
                     {
                         var name = detail.Name ?? detail.Type;

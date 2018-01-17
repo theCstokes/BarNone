@@ -14,7 +14,7 @@ namespace BarNone.UnitTest.TheRack.DomainModel
         public void BuildDTO_Test()
         {
             var user = new User();
-            var dto = Converters.Convert.User.CreateDTO(user);
+            var dto = Converters.NewConvertion().User.CreateDTO(user);
 
             Assert.IsNotNull(dto);
         }

@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.DataConverter;
+﻿using BarNone.Shared.Core;
+using BarNone.Shared.DataConverter;
 using BarNone.Shared.DataConverter.Core;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
@@ -12,7 +13,7 @@ namespace BarNone.Shared.DataConverters
     public class BodyDataFrameConverter
         : BaseDetailDataConverter<BodyDataFrame, BodyDataFrameDTO, BodyDataFrameDetailDTO, Converters>
     {
-        public BodyDataFrameConverter(Converters converterContext) : base(converterContext)
+        public BodyDataFrameConverter(Converters converterContext, IDomainContext context) : base(converterContext, context)
         {
         }
 
@@ -22,7 +23,8 @@ namespace BarNone.Shared.DataConverters
             {
                 ID = dto.ID,
                 TimeOfFrame = dto.TimeOfFrame,
-                BodyDataID = dto.BodyDataID
+                BodyDataID = dto.BodyDataID,
+                UserID = context.UserID
             };
         }
 

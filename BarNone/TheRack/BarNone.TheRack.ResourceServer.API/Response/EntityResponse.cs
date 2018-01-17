@@ -76,7 +76,7 @@ namespace TheRack.ResourceServer.API.Response
         {
             //if (config == null) config = new ConvertConfig(1);
 
-            var dto = Converters.Convert.GetConverterFromData(entity.GetType()).CreateDTO(entity);
+            var dto = Converters.NewConvertion().GetConverterFromData(entity.GetType()).CreateDTO(entity);
             var response = new EntityDTO
             {
                 Entity = dto
@@ -91,7 +91,7 @@ namespace TheRack.ResourceServer.API.Response
 
             //var dto = entity.CreateDTO(config);
 
-            var dto = Converters.Convert.GetConverterFromData(entity.GetType()).CreateDTO(entity);
+            var dto = Converters.NewConvertion().GetConverterFromData(entity.GetType()).CreateDTO(entity);
             var response = new EntityDTO
             {
                 Entity = dto
@@ -106,7 +106,7 @@ namespace TheRack.ResourceServer.API.Response
             {
                 Count = entities.Count(),
                 Entities = entities
-                .Select(entity => Converters.Convert.GetConverterFromData(entity.GetType()).CreateDTO(entity)).ToList()
+                .Select(entity => Converters.NewConvertion().GetConverterFromData(entity.GetType()).CreateDTO(entity)).ToList()
             };
 
             return CreateResult(response, code);

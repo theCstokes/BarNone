@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.DataConverter;
+﻿using BarNone.Shared.Core;
+using BarNone.Shared.DataConverter;
 using BarNone.Shared.DataConverter.Core;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
@@ -11,7 +12,7 @@ namespace BarNone.Shared.DataConverters
 {
     public class BodyDataConverter : BaseDetailDataConverter<BodyData, BodyDataDTO, BodyDataDetailDTO, Converters>
     {
-        public BodyDataConverter(Converters converterContext) : base(converterContext)
+        public BodyDataConverter(Converters converterContext, IDomainContext context) : base(converterContext, context)
         {
         }
 
@@ -20,7 +21,8 @@ namespace BarNone.Shared.DataConverters
             return new BodyData
             {
                 ID = dto.ID,
-                RecordDate = dto.RecordTimeStamp
+                RecordDate = dto.RecordTimeStamp,
+                UserID = context.UserID
             };
         }
 

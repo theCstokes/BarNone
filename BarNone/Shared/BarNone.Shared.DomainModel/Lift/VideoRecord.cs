@@ -15,6 +15,7 @@ namespace BarNone.Shared.DomainModel
 
         public string Path { get; set; }
 
+        [NotMapped]
         public byte[] Data { get; set; }
     }
 }

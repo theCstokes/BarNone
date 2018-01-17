@@ -41,12 +41,13 @@ namespace BarNone.DataLift.Demo
                         Resource = "LIFT",
                         Entity = new LiftDTO
                         {
-                            Name = "Test",
+                            Name = "NewTest",
+                            ParentID = 1,
+                            BodyDataID = 55,
                             Details = new LiftDetailDTO
                             {
                                 Video = new VideoDTO
                                 {
-                                    ID = 3
                                     Data = data
                                 }
                             }

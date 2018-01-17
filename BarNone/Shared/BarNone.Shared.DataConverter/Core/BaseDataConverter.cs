@@ -27,10 +27,12 @@ namespace BarNone.Shared.DataConverter.Core
         where TConverters : IConverter
     {
         protected TConverters converterContext;
+        protected IDomainContext context;
 
-        public BaseDataConverter(TConverters converterContext)
+        public BaseDataConverter(TConverters converterContext, IDomainContext context)
         {
             this.converterContext = converterContext;
+            this.context = context;
         }
 
         public virtual TData CreateDataModel(TDTO dto)

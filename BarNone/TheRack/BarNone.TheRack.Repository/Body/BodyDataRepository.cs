@@ -24,16 +24,8 @@ namespace BarNone.TheRack.Repository
 
         }
 
-        //protected override DetailConverterResolverDelegate<BodyData, BodyDataDTO, BodyDataDetailDTO, Converters> DetailDataConverterResolver =>
-        //    () => Converters.Convert.BodyData;
-
-        protected override ConverterResolverDelegate<BodyData, BodyDataDTO> DataConverter =>
-            (dto) =>
-            {
-                var dm = Converters.Convert.BodyData.CreateDataModel(dto);
-                dm.UserID = context.UserID;
-                return dm;
-            };
+        protected override ConverterResolverDelegate<BodyData, BodyDataDTO> DataConverter => 
+            Converters.NewConvertion(context).BodyData.CreateDataModel;
 
         protected override DetailResolverDelegate<BodyData> DetailEntityResolver => (s) => s
                 .Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointType)

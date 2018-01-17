@@ -23,7 +23,7 @@ namespace BarNone.Shared.DataConverter.Core
             dataConverterMap = new Dictionary<Type, IDataConverter>();
             dtoConverterMap = new Dictionary<Type, IDataConverter>();
             Cache = new ShareDataConverterCache();
-            Init();
+            //Init(context);
         }
         #endregion
 
@@ -32,13 +32,19 @@ namespace BarNone.Shared.DataConverter.Core
         #endregion
 
         #region Public Static Property(s).
-        public static TConverters Convert
+        public static TConverters NewConvertion(IDomainContext context = null)
         {
-            get
-            {
-                return new TConverters();
-            }
+            var c = new TConverters();
+            c.Init(context);
+            return c;
         }
+        //public static TConverters Convert
+        //{
+        //    get
+        //    {
+        //        return new TConverters();
+        //    }
+        //}
         #endregion
 
         #region Public Member(s).
@@ -66,7 +72,7 @@ namespace BarNone.Shared.DataConverter.Core
             return converter;
         }
 
-        protected abstract void Init();
+        protected abstract void Init(IDomainContext context);
         #endregion
     }
 }
