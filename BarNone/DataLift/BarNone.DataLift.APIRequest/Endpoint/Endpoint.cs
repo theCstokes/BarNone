@@ -54,6 +54,12 @@ namespace BarNone.DataLift.APIRequest
             var result = await DataRequest.Post<ResponseEntityDTO<TDTO>>(CreateURL($"{_url}"), dto);
             return result?.Entity;
         }
+
+        public async Task Post(byte[] data)
+        {
+            var result = await DataRequest.Post<ResponseEntityDTO<TDTO>>(CreateURL($"{_url}"), data);
+            //return result?.Entity;
+        }
         #endregion
 
         #region Private Member(s).

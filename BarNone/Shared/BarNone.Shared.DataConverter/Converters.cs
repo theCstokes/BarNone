@@ -1,6 +1,7 @@
 ﻿using BarNone.Shared.Core;
 using BarNone.Shared.DataConverter;
 using BarNone.Shared.DataConverter.Core;
+using BarNone.Shared.DataConverter.Lift;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.LiftData;
 using BarNone.Shared.DomainModel;
@@ -29,20 +30,23 @@ namespace BarNone.Shared.DataConverters
         public JointTypeConverter JointType { get; private set; }
 
         public JointTrackingStateTypeConverter JointTrackingStateType { get; private set; }
+
+        public VideoConverter Video { get; private set; }
         #endregion
 
         #region Protected BaseConverter Implementation.
         protected override void Init()
         {
             /// TODO - pls no.
-            User = Register<User, UserDTO, UserConverter>(new UserConverter(this));
-            Lift = Register<Lift, LiftDTO, LiftConverter>(new LiftConverter(this));
-            LiftFolder = Register<LiftFolder, LiftFolderDTO, LiftFolderConverter>(new LiftFolderConverter(this));
-            BodyData = Register<BodyData, BodyDataDTO, BodyDataConverter>(new BodyDataConverter(this));
-            BodyDataFrame = Register<BodyDataFrame, BodyDataFrameDTO, BodyDataFrameConverter>(new BodyDataFrameConverter(this));
-            Joint = Register<Joint, JointDTO, JointConverter>(new JointConverter(this));
-            JointType = Register<JointType, JointTypeDTO, JointTypeConverter>(new JointTypeConverter(this));
-            JointTrackingStateType = Register<JointTrackingStateType, JointTrackingStateTypeDTO, JointTrackingStateTypeConverter>(new JointTrackingStateTypeConverter(this));
+            User =                      Register<User,          UserDTO, UserConverter>(new UserConverter(this));
+            Lift =                      Register<Lift,          LiftDTO, LiftConverter>(new LiftConverter(this));
+            LiftFolder =                Register<LiftFolder,    LiftFolderDTO, LiftFolderConverter>(new LiftFolderConverter(this));
+            BodyData =                  Register<BodyData,      BodyDataDTO, BodyDataConverter>(new BodyDataConverter(this));
+            BodyDataFrame =             Register<BodyDataFrame, BodyDataFrameDTO, BodyDataFrameConverter>(new BodyDataFrameConverter(this));
+            Joint =                     Register<Joint,         JointDTO, JointConverter>(new JointConverter(this));
+            JointType =                 Register<JointType,     JointTypeDTO, JointTypeConverter>(new JointTypeConverter(this));
+            JointTrackingStateType =    Register<JointTrackingStateType, JointTrackingStateTypeDTO, JointTrackingStateTypeConverter>(new JointTrackingStateTypeConverter(this));
+            Video =                     Register<VideoRecord,   VideoDTO, VideoConverter>(new VideoConverter(this));
             //Joint = Register<User, UserDTO, UserConverter>(new UserConverter(this));
         }
         #endregion

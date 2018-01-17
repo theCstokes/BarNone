@@ -28,6 +28,7 @@ namespace BarNone.Shared.DataConverters
         {
             data.Parent = converterContext.LiftFolder.CreateDataModel(dto.Parent);
             data.BodyData = converterContext.BodyData.CreateDataModel(dto.BodyData);
+            data.Video = converterContext.Video.CreateDataModel(dto.Video);
         }
 
         public override LiftDetailDTO OnCreateDetailDTO(Lift data)
@@ -35,7 +36,8 @@ namespace BarNone.Shared.DataConverters
             return new LiftDetailDTO
             {
                 Parent = converterContext.LiftFolder.CreateDTO(data.Parent),
-                BodyData = converterContext.BodyData.CreateDTO(data.BodyData)
+                BodyData = converterContext.BodyData.CreateDTO(data.BodyData),
+                Video = converterContext.Video.CreateDTO(data.Video)
             };
         }
 

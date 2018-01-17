@@ -11,6 +11,7 @@ using System.Text;
 using System.Transactions;
 using System.Xml.Linq;
 using static BarNone.TheRack.Repository.Core.Resolvers;
+using System.IO;
 
 namespace BarNone.TheRack.Repository
 {
@@ -25,13 +26,6 @@ namespace BarNone.TheRack.Repository
 
         }
 
-        //protected override ConverterResolver DetailDataConverterResolver => () => Converters.Convert.Lift;
-
-        //protected override DetailConverterResolverDelegate<Lift, LiftDTO, Converters> DetailDataConverterResolver => () => Converters.Convert.Lift;
-
-        //protected override DetailConverterResolverDelegate<Lift, LiftDTO, LiftDetailDTO, Converters> DetailDataConverterResolver =>
-        //    () => Converters.Convert.Lift;
-
         protected override ConverterResolverDelegate<Lift, LiftDTO> DataConverter =>
             (dto) =>
             {
@@ -40,14 +34,7 @@ namespace BarNone.TheRack.Repository
                 return dm;
             };
 
-        //protected override DbSetResolver SetResolver => (context) => context.Lifts.Where(l => l.ID == context.UserID);
-
         protected override SetResolverDelegate<Lift> SetResolver => (context) => context.Lifts;
-
-        //protected override Resolver DetailDataResolver => (s) => s.Include(u => u.Parent)
-        //        .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints)
-        //        .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointType)
-        //        .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointTrackingStateType);
 
         protected override DetailResolverDelegate<Lift> DetailEntityResolver => (lifts) => lifts
                 .Include(u => u.Parent)
@@ -58,6 +45,31 @@ namespace BarNone.TheRack.Repository
 
         protected override EntityResolverDelegate<Lift> EntityResolver => (lifts) => lifts.Where(l => l.UserID == context.UserID);
 
-        //protected override DetailResolverDelegate<Lift> DetailEntityResolver => throw new NotImplementedException();
+        public override Lift Create(LiftDTO dto)
+        {
+            //return base.Create(dto);
+
+            var dm = DataConverter(dto);
+            var result = Create(dm);
+
+            if (dm.Video != null)
+            {
+                SaveVideo(dm.Video);
+            }
+
+            return result;
+        }
+
+        private void SaveVideo(VideoRecord video)
+        {
+            var path = @"C:\VideoDB";
+            string fullPath = "";
+            do
+            {
+                var name = new Guid();
+                fullPath = $"{path}\\{name}";
+            } while (!File.Exists(fullPath));
+            File.WriteAllBytes(fullPath, video.Data);
+        }
     }
 }

@@ -7,12 +7,14 @@ using System.Text;
 namespace BarNone.Shared.DomainModel
 {
     [Table("Video", Schema = "public")]
-    public class VideoRecord : IDomainModel<LiftFolder>, IOwnedDomainModel
+    public class VideoRecord : IDomainModel<VideoRecord>, IOwnedDomainModel
     {
         public int ID { get; set; }
 
         public int UserID { get; set; }
 
         public string Path { get; set; }
+
+        public byte[] Data { get; set; }
     }
 }

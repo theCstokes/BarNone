@@ -56,6 +56,18 @@ namespace BarNone.DataLift.APIRequest
                 }
             }
         }
+
+        public static async Task Post(string url, byte[] data)
+        {
+            WebRequest request = WebRequest.Create(url);
+            request.Headers.Add("Authorization", $"Bearer {TokenManager.Token}");
+            request.Method = "POST";
+            request.ContentLength = data.Length;
+
+            var dataStream = request.GetRequestStream();
+            await dataStream.WriteAsync(data, 0, data.Length);
+            dataStream.Close();
+        }
         #endregion
 
         #region Public Property(s).

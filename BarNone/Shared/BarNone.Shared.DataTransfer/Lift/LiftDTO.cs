@@ -10,6 +10,9 @@ namespace BarNone.Shared.DataTransfer
 
         [JsonProperty(Order = 1, NullValueHandling = NullValueHandling.Ignore)]
         public BodyDataDTO BodyData { get; set; }
+
+        [JsonProperty(Order = 2, NullValueHandling = NullValueHandling.Ignore)]
+        public VideoDTO Video { get; set; }
     }
 
     public class LiftDTO : BaseParentDTO<LiftDTO, LiftDetailDTO>

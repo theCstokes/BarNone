@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,18 +18,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheRack.ResourceServer.API.Response;
+using static BarNone.TheRack.ResourceServer.API.Controllers.Flex.FlexController;
 
 namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
 {
+    struct FlexEntity
+    {
+        public RepositoryBuilder Builder;
+        public Type Type;
+    }
+
     [Route("api/v1/[controller]")]
     [Authorize(Policy = "User")]
     public class FlexController : BaseController
     {
         public delegate IRepository RepositoryBuilder(DomainContext context);
 
-        private Dictionary<string, RepositoryBuilder> repoMap = new Dictionary<string, RepositoryBuilder>
+        private Dictionary<string, FlexEntity> repoMap = new Dictionary<string, FlexEntity>
         {
-            { FlexEntityType.LIFT, (dc) => new LiftRepository(dc) }
+            {
+                FlexEntityType.LIFT,
+                new FlexEntity
+                {
+                    Type = typeof (LiftDTO),
+                    Builder = (dc) => new LiftRepository(dc)
+                }
+            }
         };
 
         [HttpPost]
@@ -56,9 +71,11 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
                                 Resource = entity.Resource
                             };
 
-                            using (var repo = repoMap[entity.Resource](context))
+                            var flex = repoMap[entity.Resource];
+                            using (var repo = flex.Builder(context))
                             {
-                                entityResult.Entity = repo.Create(entity.Entity);
+                                var val = ((JObject) entity.Entity).ToObject(flex.Type);
+                                entityResult.Entity = repo.Create(val);
                             }
 
                             return entityResult;
@@ -77,6 +94,11 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
                 }
             }
         }
+
+        //private T ConvertObject<T>(Object obj)
+        //{
+        //    return ((JObject)obj).ToObject<>();
+        //}
     }
 
     //public static class FlexResourceType
