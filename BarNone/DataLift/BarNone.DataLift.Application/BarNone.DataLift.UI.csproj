@@ -200,10 +200,6 @@
       <Project>{dc7c09e7-27e2-496c-9823-f048bb031174}</Project>
       <Name>BarNone.Shared.DataTransfer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DTOTransform.csproj">
-      <Project>{EE13BDCE-8F4F-46C6-8E36-97EEDAF64F04}</Project>
-      <Name>BarNone.Shared.DTOTransform</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BarNone.DataLift.APIRequest\BarNone.DataLift.APIRequest.csproj">
       <Project>{3a9be071-8a01-47a8-85cc-a3f712d3c6a9}</Project>
       <Name>BarNone.DataLift.APIRequest</Name>

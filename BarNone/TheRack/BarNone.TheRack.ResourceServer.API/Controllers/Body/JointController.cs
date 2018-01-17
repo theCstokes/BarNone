@@ -1,6 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DTOTransformable.Core;
-using BarNone.TheRack.DomainModel.Body;
+using BarNone.Shared.DomainModel;
 using BarNone.TheRack.Repository.Body;
 using BarNone.TheRack.ResourceServer.API.Controllers.Core;
 using Microsoft.AspNetCore.Authorization;

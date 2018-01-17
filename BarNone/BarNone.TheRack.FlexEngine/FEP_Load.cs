@@ -1,6 +1,5 @@
-﻿using BarNone.Shared.DTOTransformable.Core;
-using BarNone.TheRack.DataAccess;
-using BarNone.TheRack.DataConverters;
+﻿using BarNone.TheRack.DataAccess;
+using BarNone.Shared.DataConverters;
 using System.Collections.Generic;
 using System.Linq;
 

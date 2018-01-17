@@ -11,10 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DataConverter\BarNone.Shared.DataConverter.csproj" />
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj" />
-    <ProjectReference Include="..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DTOTransform.csproj" />
     <ProjectReference Include="..\BarNone.TheRack.DataAccess\BarNone.TheRack.DataAccess.csproj" />
-    <ProjectReference Include="..\BarNone.TheRack.DataConverters\BarNone.TheRack.DataConverters.csproj" />
-    <ProjectReference Include="..\BarNone.TheRack.DomainModel\BarNone.TheRack.DomainModel.csproj" />
   </ItemGroup>
 
 </Project>

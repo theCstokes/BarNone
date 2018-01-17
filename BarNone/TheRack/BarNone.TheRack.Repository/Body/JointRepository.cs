@@ -1,15 +1,14 @@
 ﻿using BarNone.Shared.DataTransfer;
-using BarNone.TheRack.DomainModel.Body;
+using BarNone.Shared.DomainModel;
 using BarNone.TheRack.Repository.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using BarNone.TheRack.DataAccess;
 using Microsoft.EntityFrameworkCore;
-using BarNone.Shared.DTOTransformable.Core;
-using BarNone.TheRack.DataConverters;
 using static BarNone.TheRack.Repository.Core.Resolvers;
 using System.Linq;
+using BarNone.Shared.DataConverters;
 
 namespace BarNone.TheRack.Repository.Body
 {

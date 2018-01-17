@@ -1,7 +1,6 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
-using BarNone.TheRack.DomainModel.Core;
+using BarNone.Shared.DomainModel.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,7 +31,7 @@ namespace BarNone.TheRack.Repository.Core
         public BaseRepository()
         {
             context = new DomainContext();
-            Config = new ConvertConfig();
+            //Config = new ConvertConfig();
 
             dbSet = SetResolver(context);
             entites = EntityResolver(dbSet);
@@ -41,7 +40,7 @@ namespace BarNone.TheRack.Repository.Core
         public BaseRepository(DomainContext context)
         {
             this.context = context;
-            Config = new ConvertConfig();
+            //Config = new ConvertConfig();
 
             dbSet = SetResolver(context);
             entites = EntityResolver(dbSet);
@@ -49,7 +48,7 @@ namespace BarNone.TheRack.Repository.Core
         #endregion
 
         #region Public Property(s).
-        public ConvertConfig Config { get; set; }
+        //public ConvertConfig Config { get; set; }
 
         public IQueryable<TDomainModel> entites { get; }
         #endregion

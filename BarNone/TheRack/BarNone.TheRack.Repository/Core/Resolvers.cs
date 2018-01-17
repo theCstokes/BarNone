@@ -1,9 +1,8 @@
 ﻿using BarNone.Shared.Core;
 using BarNone.Shared.DataConverter;
 using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
-using BarNone.TheRack.DomainModel.Core;
+using BarNone.Shared.DomainModel.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,7 +13,7 @@ namespace BarNone.TheRack.Repository.Core
 {
     public static class Resolvers
     {
-        public delegate ConvertConfig ConfigResolver();
+        //public delegate ConvertConfig ConfigResolver();
 
         //public delegate BaseDataConverter<TDomainModel, TDTO, TConverters> ConverterResolverDelegate<TDomainModel, TDTO, TConverters>()
         //    where TDomainModel : ITrackable<TDomainModel>, new()

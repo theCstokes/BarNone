@@ -1,5 +1,6 @@
 ﻿using BarNone.DataLift.DataModel.KinectData;
 using BarNone.Shared.DataConverter;
+using BarNone.Shared.DataConverter.Core;
 using BarNone.Shared.DataTransfer;
 using Microsoft.Kinect;
 using System;

@@ -1,6 +1,5 @@
-﻿using BarNone.Shared.DTOTransformable.Core;
-using BarNone.TheRack.DataConverters;
-using BarNone.TheRack.DomainModel;
+﻿using BarNone.Shared.DataConverters;
+using BarNone.Shared.DomainModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
@@ -53,7 +52,7 @@ namespace BarNone.UnitTest.TheRack.DomainModel
 
             var parentDTO = Converters.Convert.LiftFolder.CreateDTO(parent);
 
-            var config = new ConvertConfig(parentDTO);
+            //var config = new ConvertConfig(parentDTO);
 
             var liftDTO = Converters.Convert.Lift.CreateDTO(lift);
             Assert.IsNotNull(liftDTO);

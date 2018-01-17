@@ -1,8 +1,7 @@
 ﻿using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
-using BarNone.TheRack.DataConverters;
-using BarNone.TheRack.DomainModel.Body;
+using BarNone.Shared.DataConverters;
+using BarNone.Shared.DomainModel;
 using BarNone.TheRack.Repository.Core;
 using Microsoft.EntityFrameworkCore;
 using System;

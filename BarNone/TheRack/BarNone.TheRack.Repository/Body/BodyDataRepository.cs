@@ -1,6 +1,6 @@
 ﻿using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.DataAccess;
-using BarNone.TheRack.DomainModel;
+using BarNone.Shared.DomainModel;
 using BarNone.TheRack.Repository.Core;
 using System;
 using System.Collections.Generic;
@@ -8,8 +8,7 @@ using System.Text;
 using BarNone.Shared.DataTransfer.Core;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using BarNone.Shared.DTOTransformable.Core;
-using BarNone.TheRack.DataConverters;
+using BarNone.Shared.DataConverters;
 using static BarNone.TheRack.Repository.Core.Resolvers;
 
 namespace BarNone.TheRack.Repository

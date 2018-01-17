@@ -10,7 +10,7 @@ using System.Net;
 using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.Repository;
 using TheRack.ResourceServer.API.Response;
-using BarNone.TheRack.DomainModel;
+using BarNone.Shared.DomainModel;
 using BarNone.TheRack.ResourceServer.API.Controllers.Core;
 using System.Security.Claims;
 

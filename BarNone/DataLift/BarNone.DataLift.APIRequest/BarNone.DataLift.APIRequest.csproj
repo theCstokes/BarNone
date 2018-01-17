@@ -80,10 +80,6 @@
       <Project>{DC7C09E7-27E2-496C-9823-F048BB031174}</Project>
       <Name>BarNone.Shared.DataTransfer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DTOTransform.csproj">
-      <Project>{EE13BDCE-8F4F-46C6-8E36-97EEDAF64F04}</Project>
-      <Name>BarNone.Shared.DTOTransform</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

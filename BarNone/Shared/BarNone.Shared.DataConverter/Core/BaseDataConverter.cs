@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BarNone.Shared.DataConverter
+namespace BarNone.Shared.DataConverter.Core
 {
     public interface IDataConverter
     {

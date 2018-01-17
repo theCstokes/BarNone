@@ -1,5 +1,5 @@
 ﻿using BarNone.TheRack.DataAccess;
-using BarNone.TheRack.DomainModel;
+using BarNone.Shared.DomainModel;
 using BarNone.TheRack.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

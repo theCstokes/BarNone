@@ -1,9 +1,8 @@
-﻿using BarNone.TheRack.DomainModel.Body;
+﻿using BarNone.Shared.DomainModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using static BarNone.TheRack.DataAccess.DomainContext;
 
 namespace BarNone.TheRack.DataAccess
 {

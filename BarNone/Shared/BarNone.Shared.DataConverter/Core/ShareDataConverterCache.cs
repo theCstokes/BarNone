@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BarNone.Shared.DataConverter
+namespace BarNone.Shared.DataConverter.Core
 {
     public struct Convertion {
         public ITrackable DataModel;

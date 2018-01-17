@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\TheRack\BarNone.TheRack.DataAccess\BarNone.TheRack.DataAccess.csproj" />
-    <ProjectReference Include="..\..\..\TheRack\BarNone.TheRack.DomainModel\BarNone.TheRack.DomainModel.csproj" />
     <ProjectReference Include="..\..\..\TheRack\BarNone.TheRack.Repository\BarNone.TheRack.Repository.csproj" />
   </ItemGroup>
 

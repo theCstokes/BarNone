@@ -1,6 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.Flex;
-using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
 using BarNone.TheRack.FlexEngine;
 using BarNone.TheRack.Repository;
