@@ -27,8 +27,8 @@
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
     <StackPanel Orientation="Horizontal">
-        <StackPanel>
-            <!--<ListView ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Test}" SelectionMode="Single" SelectedItem="{Binding SelectedLift,  Mode=TwoWay}">
+        <!--<StackPanel>
+            --><!--<ListView ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Test}" SelectionMode="Single" SelectedItem="{Binding SelectedLift,  Mode=TwoWay}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Lift Name">
@@ -48,34 +48,36 @@
                         <GridViewColumn DisplayMemberBinding="{Binding LiftDuration}" Header="Lift Duration" />
                     </GridView>
                 </ListView.View>
-            </ListView>-->
+            </ListView>--><!--
 
-            <ListView ItemsSource="{Binding Test}" SelectionMode="Single" SelectedItem="{Binding SelectedLift}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Width="300">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <TextBox Grid.Column="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,10,0" 
-                                      materialDesign:HintAssist.Hint="Lift Name" Text="{Binding LiftName, Mode=TwoWay}" VerticalAlignment="Bottom" />
-                            <ComboBox Grid.Column="1" Margin="0,0,10,0" ItemsSource="{Binding LiftTypeList}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Lift Type"
-                                      materialDesign:HintAssist.HintOpacity=".26"
-                                      SelectedItem="{Binding LiftType}"  VerticalAlignment="Bottom" />
-                            <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" 
-                                    CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.DeleteSelectedRecording}">
-                                <materialDesign:PackIcon Kind="Delete" Height="24" Width="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
-                            </Button>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ListView>
-        </StackPanel>
+            
+        </StackPanel>-->
         <Border>
+
             <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="20">
                 <DockPanel>
+                    <ListView ItemsSource="{Binding Test}" SelectionMode="Single" SelectedItem="{Binding SelectedLift}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="300">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,10,0" 
+                                      materialDesign:HintAssist.Hint="Lift Name" Text="{Binding LiftName, Mode=TwoWay}" VerticalAlignment="Bottom" />
+                                    <ComboBox Grid.Column="1" Margin="0,0,10,0" ItemsSource="{Binding LiftTypeList}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Lift Type"
+                                      materialDesign:HintAssist.HintOpacity=".26"
+                                      SelectedItem="{Binding LiftType}"  VerticalAlignment="Bottom" />
+                                    <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" 
+                                    CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.DeleteSelectedRecording}">
+                                        <materialDesign:PackIcon Kind="Delete" Height="24" Width="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ListView>
                     <StackPanel DockPanel.Dock="Top" >
                         <Grid>
                             <Grid.ColumnDefinitions>
