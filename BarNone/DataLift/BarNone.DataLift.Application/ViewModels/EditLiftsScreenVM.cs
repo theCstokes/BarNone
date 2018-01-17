@@ -61,6 +61,32 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         #endregion
+
+        #region ListView Commands
+        public RelayCommand _deleteSelectedRecording { get; private set; }
+        public ICommand DeleteSelectedRecording
+        {
+            get
+            {
+                if (_deleteSelectedRecording == null)
+                {
+                    _deleteSelectedRecording = new RelayCommand(action => DeleteSelectedRecordingCommand());
+                }
+                return _deleteSelectedRecording;
+            }
+        }
+
+        private void DeleteSelectedRecordingCommand()
+        {
+            //if (SelectedLift == null) return;
+
+            //Test.RemoveAt(SelectedLift.Count);
+            //for (int i = 0; i < Test.Count; i++) Test[i].Count = i;
+            Console.WriteLine(SelectedLift.LiftName);
+            Console.WriteLine(SelectedLift.LiftType);
+        }
+        #endregion
+
         #region Video Control Commands
         private RelayCommand _commandPlayVideo;
         public ICommand CommandPlayVideo
