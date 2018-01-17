@@ -6,6 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:BarNone.DataLift.UI.Views"
              xmlns:vms="clr-namespace:BarNone.DataLift.UI.ViewModels"
+             xmlns:cmpts="clr-namespace:BarNone.DataLift.UI.Views.CustomComponents"
              mc:Ignorable="d">
     <UserControl.Resources>
         <vms:DataRecorderVM x:Key="vm"/>
@@ -18,75 +19,26 @@
     <UserControl.DataContext>
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
-    <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Center">
-        <DockPanel>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="20"/>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="20"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="20" />
-                </Grid.ColumnDefinitions>
-
-                <!--Skeleton Draws-->
-                <Viewbox HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1">
-                    <Image Source="{Binding ImageSourceFront}"/>
-                </Viewbox>
-                <Viewbox HorizontalAlignment="Center" Grid.Column="1" Grid.Row="2">
-                    <Image Source="{Binding ImageSourceSide}"/>
-                </Viewbox>
-
-                <!--Color Draws-->
-                <Viewbox HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1">
-                    <Image Source="{Binding ImageSourceColor}" RenderTransformOrigin="0.5,0.5">
-                        <Image.RenderTransform>
-                            <ScaleTransform ScaleX="-1"/>
-                        </Image.RenderTransform>
-                    </Image>
-                </Viewbox>
-
-                <DockPanel Grid.Column="2" Grid.Row="2" Margin="10">
-                    <!--<TextBox x:Name="LiftName" Grid.Row="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Width="300" DockPanel.Dock="Top" Margin="40 0 40 0" HorizontalAlignment="Stretch" Height="40" Text="{Binding Path=LiftName, Mode=TwoWay}" FontSize="18" VerticalAlignment="Center">
-                        <materialDesign:HintAssist.Hint>
-                            <StackPanel Orientation="Horizontal" >
-                                <materialDesign:PackIcon Kind="KeyboardVariant" />
-                                <TextBlock>Lift Name</TextBlock>
-                            </StackPanel>
-
-                        </materialDesign:HintAssist.Hint>
-                    </TextBox>
-                    <Button Content="Test Strategy 1 - Reset Kinect, Thats it" DockPanel.Dock="Top"  Command="{Binding TestStrategy1}" Margin="10" Width="300"  FontSize="16" />
-                    <Button Content="Start" DockPanel.Dock="Top" Command="{Binding StartRecording}" Margin="10"  Width="300"  FontSize="16" />-->
-
-                    <Button Content="Stop" DockPanel.Dock="Top" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
-
-                    <ListView DockPanel.Dock="Top" Margin="10"  ItemsSource="{Binding AllLiftData}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <TextBox Name="Dbc_File" Grid.Column="0" Grid.Row="0" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="10,0" VerticalAlignment="Center">
-                                    <TextBox.Text>
-                                        <Binding Path="Name" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"/>
-                                    </TextBox.Text>
-                                </TextBox>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </DockPanel>
-
-                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="Start Recording." DockPanel.Dock="Bottom" Command="{Binding StartRecording}" Margin="10" Width="300" FontSize="16" />
-                    <Button Content="Send recordings to Rack." DockPanel.Dock="Bottom" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
+    <Border>
+        <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Center" Padding="20">
+            <DockPanel>
+                <Grid DockPanel.Dock="Top" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    </Grid.ColumnDefinitions>
+                    <cmpts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="3" ImageSourceLeft="{Binding ImageSourceFront}" ImageSourceMiddle="{Binding ImageSourceColor}" ImageSourceRight="{Binding ImageSourceSide}"/>
+                    
+                </Grid>
+                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button Content="Start Recording." Command="{Binding StartRecording}" Margin="10" Width="300" FontSize="16" />
+                    <Button Content="Stop" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
+                    <Button Content="Send recordings to Rack." Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
                 </StackPanel>
-
-                <!--<Button Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Content="Send recordings to Rack." DockPanel.Dock="Bottom" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />-->
-            </Grid>
-        </DockPanel>
-    </materialDesign:Card>
+            </DockPanel>
+        </materialDesign:Card>
+    </Border>
 </UserControl>

@@ -36,7 +36,7 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
 
         // Using a DependencyProperty as the backing store for IsStepTwoEnabled.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ImageSourceLeftProperty =
-            DependencyProperty.Register("ImageSourceLeft", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(DrawFilledRectangle(200,200), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            DependencyProperty.Register("ImageSourceLeft", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(DrawFilledRectangle(200,200)));
 
 
         public ImageSource ImageSourceRight
@@ -47,7 +47,7 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
 
         // Using a DependencyProperty as the backing store for IsStepTwoEnabled.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ImageSourceRightProperty =
-            DependencyProperty.Register("ImageSourceRight", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(DrawFilledRectangle(200, 200), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            DependencyProperty.Register("ImageSourceRight", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(DrawFilledRectangle(200, 200)));
 
 
         public ImageSource ImageSourceMiddle
@@ -58,7 +58,7 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
 
         // Using a DependencyProperty as the backing store for IsStepTwoEnabled.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ImageSourceMiddleProperty =
-            DependencyProperty.Register("ImageSourceMiddle", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(DrawFilledRectangle(600, 400), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            DependencyProperty.Register("ImageSourceMiddle", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(DrawFilledRectangle(600, 400)));
 
         private static BitmapImage DrawFilledRectangle(int x, int y)
         {

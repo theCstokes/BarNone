@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:BarNone.DataLift.UI.Views"
              xmlns:vms="clr-namespace:BarNone.DataLift.UI.ViewModels"
              xmlns:cmpnts="clr-namespace:BarNone.DataLift.UI.Views.CustomComponents"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="500">
     <UserControl.Resources>
@@ -14,12 +15,43 @@
     <UserControl.DataContext>
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <cmpnts:VideoViewer ImageSourceLeft="{Binding LeftImage}" ImageSourceRight="{Binding RightImage}"/>
-        <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}" 
+
+    <Border>
+        <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="20">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                            <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                            <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                            <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                            <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        </Grid.ColumnDefinitions>
+                        <cmpnts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="3" ImageSourceLeft="{Binding LeftImage}" ImageSourceRight="{Binding RightImage}"/>
+
+                    </Grid>
+                    <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}" 
                                  CommandPause="{Binding CommandPauseVideo}" 
                                  CommandResetInterval="{Binding CommandResetVideo}" 
                                  CommandSlowMo="{Binding CommandSlowMotionVideo}" 
                                  CommandFastForward="{Binding CommandFastForwardVideo}"/>
-    </StackPanel>
+                    </StackPanel>
+            </DockPanel>
+        </materialDesign:Card>
+    </Border>
+
+    <!--<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <cmpnts:VideoViewer ImageSourceLeft="{Binding LeftImage}" ImageSourceRight="{Binding RightImage}"/>
+        <Grid DockPanel.Dock="Top" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+            </Grid.ColumnDefinitions>
+            <cmpnts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="3" ImageSourceLeft="{Binding ImageSourceFront}" ImageSourceMiddle="{Binding ImageSourceColor}" ImageSourceRight="{Binding ImageSourceSide}"/>
+        </Grid>
+    </StackPanel>-->
 </UserControl>
