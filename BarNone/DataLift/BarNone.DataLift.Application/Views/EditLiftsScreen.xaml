@@ -15,17 +15,24 @@
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
     <StackPanel Orientation="Horizontal">
-        <ListView ScrollViewer.CanContentScroll="True" MinWidth="300" ItemsSource="{Binding Test}">
+        <ListView ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Test}" SelectionMode="Single" SelectedItem="{Binding SelectedLift,  Mode=TwoWay}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding LiftName}" Header="Lift Name" />
-                    <GridViewColumn Header="Lift Type">
+                    <GridViewColumn Header="Lift Name">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox SelectedItem="{Binding LiftType}" ItemsSource="{Binding LiftTypeList}"/>
+                                <TextBox Text="{Binding LiftName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
+                    <GridViewColumn Header="Lift Type">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox SelectedItem="{Binding LiftType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding LiftTypeList}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding LiftDuration}" Header="Lift Duration" />
                 </GridView>
             </ListView.View>
         </ListView>

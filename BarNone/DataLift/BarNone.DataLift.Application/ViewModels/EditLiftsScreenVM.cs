@@ -19,10 +19,18 @@ namespace BarNone.DataLift.UI.ViewModels
             new LiftListVM
             {
                 LiftName = "Test1",
-                LiftType = "Squat"
+                LiftType = "Squat",
+                LiftDuration = "0:00-1:00",
+                Count = 0
+            },
+            new LiftListVM
+            {
+                LiftName = "Test2",
+                LiftType = "Clean and Jerk",
+                LiftDuration = "1:01-2:00",
+                Count =  1
             }
         };
-    
         public ObservableCollection<LiftListVM> Test
         {
             get
@@ -38,17 +46,17 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
-        private string _selectedLiftType;
-        public string SelectedLiftType
+        private LiftListVM _selectedLift;
+        public LiftListVM SelectedLift
         {
-            get { return _selectedLiftType;  }
+            get { return _selectedLift;  }
 
             set
             {
-                if (_selectedLiftType == value) return;
+                if (_selectedLift == value) return;
 
-                _selectedLiftType = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("SelectedLiftType"));
+                _selectedLift = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("SelectedLift"));
             }
         }
 

@@ -10,6 +10,8 @@ namespace BarNone.DataLift.UI.ViewModels
 {
     public class LiftListVM : ViewModelBase
     {
+        public int Count;
+
         private string _liftName;
         public string LiftName
         {
@@ -35,6 +37,20 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 _liftType = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("LiftType"));
+            }
+        }
+
+        private string _liftDuration;
+        public string LiftDuration
+        {
+            get { return _liftDuration; }
+
+            set
+            {
+                if (_liftDuration == value) return;
+
+                _liftDuration = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("LiftDuration"));
             }
         }
 
