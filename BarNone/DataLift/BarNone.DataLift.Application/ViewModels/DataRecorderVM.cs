@@ -19,6 +19,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using BarNone.Shared.DataTransfer.Flex;
+using System.Security.AccessControl;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -411,16 +413,39 @@ namespace BarNone.DataLift.UI.ViewModels
         {
 
             isCurrentlyRecording = false;
-            TempAddCurrentLift();
+            //TempAddCurrentLift();
 
-            foreach (var l in AllLiftData)
+            var toSend = new LiftDTO
             {
-                var temp = await DataManager.LiftFlex.Post(l);
-                    File.WriteAllText(l.Name + ".json", JsonConvert.SerializeObject(l));
-                
-            }
+                ParentID = 1,
+                Name = "FIX_NAME_SENDS" + Guid.NewGuid(),
+                Details = new LiftDetailDTO()
+                {
+                    BodyData = new BodyDataDTO()
+                }
 
-            AllLiftData.Clear();
+            };
+
+
+            IsRecording = false;
+
+
+            var bodyDto = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
+            toSend.Details.BodyData = bodyDto;
+
+            var temp = await DataManager.Flex.Post(new FlexDTO
+            {
+                Entities = new List<FlexEntityDTO>
+                {
+                    new FlexEntityDTO
+                    {
+                        Resource = "LIFT",
+                        Entity = toSend
+                    }
+                }
+            });
+
+            //System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp.ToString());
         }
 
         private void TempAddCurrentLift()

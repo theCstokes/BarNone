@@ -1,11 +1,12 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
-using BarNone.TheRack.DomainModel.Core;
+using BarNone.Shared.DomainModel.Core;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static BarNone.TheRack.Repository.Core.Resolvers;
 
 namespace BarNone.TheRack.Repository.Core
 {
@@ -13,21 +14,62 @@ namespace BarNone.TheRack.Repository.Core
         IDisposable
         where TDTO : BaseDTO<TDTO>, new()
         where TDomainModel : class, IDomainModel<TDomainModel>, new()
-    {
+    {        
         #region Protected Read Only Field(s).
         protected readonly DomainContext context;
+
+        protected abstract ConverterResolverDelegate<TDomainModel, TDTO> DataConverter { get; }
+        protected abstract SetResolverDelegate<TDomainModel> SetResolver { get; }
+        protected abstract EntityResolverDelegate<TDomainModel> EntityResolver { get; }
+        #endregion
+
+        #region Private Field(s).
+        private DbSet<TDomainModel> dbSet;
         #endregion
 
         #region Public Constructor(s).
+        public BaseRepository()
+        {
+            context = new DomainContext();
+            //Config = new ConvertConfig();
+
+            dbSet = SetResolver(context);
+            entites = EntityResolver(dbSet);
+        }
+
         public BaseRepository(DomainContext context)
         {
             this.context = context;
-            Config = new ConvertConfig();
+            //Config = new ConvertConfig();
+
+            dbSet = SetResolver(context);
+            entites = EntityResolver(dbSet);
         }
         #endregion
 
         #region Public Property(s).
-        public ConvertConfig Config { get; set; } 
+        //public ConvertConfig Config { get; set; }
+
+        public IQueryable<TDomainModel> entites { get; }
+        #endregion
+
+        #region Protected Member(s).
+
+        protected TDomainModel Create(TDomainModel model)
+        {
+
+            return dbSet.Add(model).Entity;
+        }
+
+        protected TDomainModel Update(TDomainModel model)
+        {
+            return dbSet.Update(model).Entity;
+        }
+
+        protected TDomainModel Remove(TDomainModel model)
+        {
+            return dbSet.Remove(model).Entity;
+        }
         #endregion
 
         #region Public IDisposable Implementation.

@@ -11,10 +11,13 @@ using System.Linq;
 namespace BarNone.TheRack.DomainModel
 {
     [Table("BodyData", Schema = "public")]
-    public class BodyData : IDomainModel<BodyData>
+    public class BodyData : IDomainModel<BodyData>, IOwnedDomainModel
     {
         [Key]
         public int ID { get; set; }
+
+        //[Key]
+        public int UserID { get; set; }
 
         public DateTime RecordDate { get; set; }
 

@@ -1,5 +1,4 @@
-﻿using BarNone.TheRack.DomainModel;
-using BarNone.TheRack.DomainModel.Body;
+﻿using BarNone.Shared.DomainModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
-﻿using BarNone.Shared.DataTransfer.Core;
+﻿using BarNone.Shared.Core;
+using BarNone.Shared.DataTransfer.Core;
 using BarNone.Shared.DataTransfer.Response;
-using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.Core;
 using Newtonsoft.Json;
 using System;
@@ -53,6 +53,12 @@ namespace BarNone.DataLift.APIRequest
         {
             var result = await DataRequest.Post<ResponseEntityDTO<TDTO>>(CreateURL($"{_url}"), dto);
             return result?.Entity;
+        }
+
+        public async Task Post(byte[] data)
+        {
+            var result = await DataRequest.Post<ResponseEntityDTO<TDTO>>(CreateURL($"{_url}"), data);
+            //return result?.Entity;
         }
         #endregion
 

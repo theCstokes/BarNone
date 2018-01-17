@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Configurations>Debug;Release;DL;DL- DB</Configurations>
+    <Configurations>Debug;Release;DL;DebugRack</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BarNone.Shared.Core\BarNone.Shared.Core.csproj" />
     <ProjectReference Include="..\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj" />
+    <ProjectReference Include="..\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj" />
   </ItemGroup>
 
 </Project>

@@ -50,9 +50,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DL- DB|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugRack|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\DL- DB\</OutputPath>
+    <OutputPath>bin\DebugRack\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\BaseDataModel.cs" />
     <Compile Include="Core\IDataModel.cs" />
     <Compile Include="KinectData\Skeleton.cs" />
     <Compile Include="KinectData\BodyData.cs" />
@@ -84,10 +85,6 @@
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj">
       <Project>{dc7c09e7-27e2-496c-9823-f048bb031174}</Project>
       <Name>BarNone.Shared.DataTransfer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DTOTransform.csproj">
-      <Project>{ee13bdce-8f4f-46c6-8e36-97eedaf64f04}</Project>
-      <Name>BarNone.Shared.DTOTransform</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

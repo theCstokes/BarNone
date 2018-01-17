@@ -10,8 +10,9 @@ using System.Net;
 using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.Repository;
 using TheRack.ResourceServer.API.Response;
-using BarNone.TheRack.DomainModel;
+using BarNone.Shared.DomainModel;
 using BarNone.TheRack.ResourceServer.API.Controllers.Core;
+using System.Security.Claims;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
@@ -29,9 +30,9 @@ namespace TheRack.ResourceServer.API.Controllers
                 var filter = FilterRequest;
                 if (filter != null)
                 {
-                    return EntityResponse.Enumerable(repository.Get(filter.GetWhere()));
+                    return EntityResponse.Response(repository.Get(filter.GetWhere()));
                 }
-                return EntityResponse.Enumerable(repository.Get());
+                return EntityResponse.Response(repository.Get());
             }
             catch(Exception e)
             {

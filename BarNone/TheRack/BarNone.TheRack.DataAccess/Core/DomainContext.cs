@@ -12,6 +12,11 @@ namespace BarNone.TheRack.DataAccess
 
         private static event ModelMapAction OnModelMap;
 
+        public DomainContext(int UserID = 0)
+        {
+            this.UserID = UserID;
+        }
+
         protected static ModelMapAction CreateModelMapping(ModelMapAction action)
         {
             DomainContext.OnModelMap += action;
@@ -22,5 +27,7 @@ namespace BarNone.TheRack.DataAccess
         {
             OnModelMap(modelBuilder);
         }
+
+        public int UserID { get; set; }
     }
 }

@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <ApplicationIcon />
     <StartupObject />
-    <Configurations>Debug;Release;DataLift - Debug;WorkingWithTheRack;DL;DL- DB</Configurations>
+    <Configurations>Debug;Release;DataLift - Debug;WorkingWithTheRack;DL;DebugRack</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BarNone.TheRack.DomainModel\BarNone.TheRack.DomainModel.csproj" />
+    <ProjectReference Include="..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>

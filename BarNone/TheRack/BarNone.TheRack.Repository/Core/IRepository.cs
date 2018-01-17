@@ -1,8 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DTOTransformable;
-using BarNone.Shared.DTOTransformable.Core;
-using BarNone.TheRack.DomainModel;
-using BarNone.TheRack.DomainModel.Core;
+using BarNone.Shared.DomainModel.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +7,7 @@ using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace BarNone.TheRack.Repository.Core
 {
-    public interface IRepository
+    public interface IRepository : IDisposable
     {
         List<IDomainModel> Get(WhereFunc where = null);
 

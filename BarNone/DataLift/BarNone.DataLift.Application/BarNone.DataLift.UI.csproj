@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5ACBD133-8068-4F2B-B778-2121646935A7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>BarNone.DataLift.UI</RootNamespace>
-    <AssemblyName>BarNone.DataLift.UI</AssemblyName>
+    <RootNamespace>BarNone.DataLift.Application</RootNamespace>
+    <AssemblyName>e</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -58,9 +58,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DL- DB|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugRack|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\DL- DB\</OutputPath>
+    <OutputPath>bin\DebugRack\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -84,7 +84,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -103,47 +102,18 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Drawing\KinectToImage.cs" />
-    <Compile Include="Validation\TimeInputRule.cs" />
-    <Compile Include="ViewModels\ControlHolderVM.cs" />
-    <Compile Include="ViewModels\LiftListVM.cs" />
-    <Compile Include="ViewModels\Common\CurrentLiftDataVM.cs" />
-    <Compile Include="ViewModels\EditLiftsScreenVM.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\DataRecorderVM.cs" />
     <Compile Include="ViewModels\LoginScreenVM.cs" />
     <Compile Include="ViewModels\RegisterScreenVM.cs" />
-    <Compile Include="Views\CustomComponents\Scrubber.xaml.cs">
-      <DependentUpon>Scrubber.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ControlHolderScreen.xaml.cs">
-      <DependentUpon>ControlHolderScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CustomComponents\VideoControlsBar.xaml.cs">
-      <DependentUpon>VideoControlsBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CustomComponents\VideoViewer.xaml.cs">
-      <DependentUpon>VideoViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\DataRecorderScreen.xaml.cs">
       <DependentUpon>DataRecorderScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LiftListViewScreen.xaml.cs">
-      <DependentUpon>LiftListViewScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EditLiftsScreen.xaml.cs">
-      <DependentUpon>EditLiftsScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RegistrationScreen.xaml.cs">
       <DependentUpon>RegistrationScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WorkflowScreen.xaml.cs">
-      <DependentUpon>WorkflowScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\YesNoDialogScreen.xaml.cs">
-      <DependentUpon>YesNoDialogScreen.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -159,47 +129,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\ControlHolderScreen.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\CustomComponents\Scrubber.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CustomComponents\VideoControlsBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CustomComponents\VideoViewer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\DataRecorderScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\LiftListViewScreen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EditLiftsScreen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LoginScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\RegistrationScreen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WorkflowScreen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\YesNoDialogScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -237,7 +175,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="res\" />
-    <Folder Include="SharedViewData\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BarNone.DataLift.DataConverters\BarNone.DataLift.DataConverters.csproj">
@@ -255,10 +192,6 @@
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj">
       <Project>{dc7c09e7-27e2-496c-9823-f048bb031174}</Project>
       <Name>BarNone.Shared.DataTransfer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DTOTransform.csproj">
-      <Project>{EE13BDCE-8F4F-46C6-8E36-97EEDAF64F04}</Project>
-      <Name>BarNone.Shared.DTOTransform</Name>
     </ProjectReference>
     <ProjectReference Include="..\BarNone.DataLift.APIRequest\BarNone.DataLift.APIRequest.csproj">
       <Project>{3a9be071-8a01-47a8-85cc-a3f712d3c6a9}</Project>

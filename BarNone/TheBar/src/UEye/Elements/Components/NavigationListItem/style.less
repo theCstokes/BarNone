@@ -1,0 +1,33 @@
+.UEye-Navigation-List-Item {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px;
+    color: @DefaultSelected;
+
+    > .Icon {
+        display: none;
+        font-size:35px;
+        margin-bottom:5px;
+		// color: @Outline;
+		
+	}
+
+	> .Icon.Visible {
+		display: block;
+	}
+    > .Name {
+        font-size: 10px;
+    }
+}
+
+.UEye-Navigation-List-Item.Selected {
+    background: @DefaultSelected;
+    color: #000000; 
+    overflow: hidden;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

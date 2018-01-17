@@ -1,6 +1,6 @@
 ﻿namespace BarNone.TheRack.FlexEngine
 {
-    class FlexEntityType
+    public class FlexEntityType
     {
         public static string LIFT = "LIFT";
 

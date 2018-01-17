@@ -10,10 +10,13 @@ using System.Linq;
 namespace BarNone.TheRack.DomainModel.Body
 {
     [Table("BodyDataFrame", Schema = "public")]
-    public class BodyDataFrame : IDomainModel<BodyDataFrame>
+    public class BodyDataFrame : IDomainModel<BodyDataFrame>, IOwnedDomainModel
     {
         [Key]
         public int ID { get; set; }
+
+        //[ForeignKey(]
+        public int UserID { get; set; }
 
         public DateTime TimeOfFrame { get; set; }
 

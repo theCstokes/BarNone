@@ -1,6 +1,7 @@
 ﻿using BarNone.DataLift.DataConverters.KinectData;
 using BarNone.DataLift.DataModel.KinectData;
 using BarNone.Shared.DataConverter;
+using BarNone.Shared.DataConverter.Core;
 using BarNone.Shared.DataTransfer;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace BarNone.DataLift.DataConverters
         public BodyDataConverter BodyData { get; private set; }
         public BodyDataFrameConverter BodyDataFrame { get; private set; }
         #endregion
+
         protected override void Init()
         {
             BodyData = Register<BodyData, BodyDataDTO, BodyDataConverter>(new BodyDataConverter(this));

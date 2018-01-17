@@ -1,6 +1,5 @@
-﻿using BarNone.Shared.DTOTransformable.Core;
-using BarNone.TheRack.DataConverters;
-using BarNone.TheRack.DomainModel;
+﻿using BarNone.Shared.DataConverters;
+using BarNone.Shared.DomainModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

@@ -1,14 +1,19 @@
 ﻿using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DomainModel.Core;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BarNone.TheRack.DomainModel.Body
 {
     [Table("Joint", Schema = "public")]
-    public class Joint : IDomainModel<Joint> //<Joint, JointDTO, JointDetailDTO>
+    public class Joint : IDomainModel<Joint>, IOwnedDomainModel
     {
+        [Key]
         public int ID { get; set; }
+
+        //[Key]
+        public int UserID { get; set; }
 
         public float X { get; set; }
 

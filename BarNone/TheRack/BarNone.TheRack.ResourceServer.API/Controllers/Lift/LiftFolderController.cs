@@ -1,5 +1,5 @@
 ﻿using BarNone.Shared.DataTransfer;
-using BarNone.TheRack.DomainModel;
+using BarNone.Shared.DomainModel;
 using BarNone.TheRack.Repository;
 using BarNone.TheRack.ResourceServer.API.Controllers.Core;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +16,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Lift
     [Authorize(Policy = "User")]
     public class LiftFolderController : DefaultDetailController<LiftFolderDTO, LiftFolder, LiftFolderRepository>
     {
-        public LiftFolderController(): base(() => new LiftFolderRepository())
+        public LiftFolderController(): base((context) => new LiftFolderRepository(context))
         {
 
         }

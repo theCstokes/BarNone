@@ -1,15 +1,14 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DTOTransformable.Core;
 using BarNone.TheRack.DataAccess;
 using Microsoft.EntityFrameworkCore;
-using BarNone.TheRack.DomainModel.Core;
+using BarNone.Shared.DomainModel.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static BarNone.TheRack.Repository.Core.Resolvers;
 using BarNone.Shared.DataConverter;
-using BarNone.TheRack.DataConverters;
+using BarNone.Shared.DataConverters;
 
 namespace BarNone.TheRack.Repository.Core
 {
@@ -18,79 +17,58 @@ namespace BarNone.TheRack.Repository.Core
         where TDetailDTO : BaseDetailDTO<TDetailDTO>, new()
         where TDomainModel : class, IDomainModel<TDomainModel>, new()
     {
-
-        #region Public Delegate Definition(s).
-        public delegate DbSet<TDomainModel> DbSetResolver(DomainContext context);
-
-        //public delegate IQueryable<TDomainModel> DetailResolver(IQueryable<TDomainModel> set);
-
-        public delegate BaseDetailDataConverter<TDomainModel, TDTO, TDetailDTO, Converters> ConverterResolver();
-
-        public delegate IQueryable<TDomainModel> Resolver(DbSet<TDomainModel> set);
-        #endregion
-
         #region Private Field(s).
-        //private DbSetResolver _resolver;
-        //private DetailResolver[] _detailResolvers;
-        //private ConfigResolver _configResolver;
-
-
-        protected abstract ConverterResolver DetailDataConverterResolver { get; }
-        protected abstract DbSetResolver SetResolver { get; }
-        protected abstract Resolver DetailDataResolver { get; }
+        protected abstract DetailResolverDelegate<TDomainModel> DetailEntityResolver { get; }
         #endregion
 
         #region Public Constructor(s).
 
 
-        public DefaultDetailRepository() : base(new DomainContext())
+        public DefaultDetailRepository() : base()
         {
         }
 
         public DefaultDetailRepository(DomainContext context) : base(context)
         {
+            //Converter = DetailDataConverterResolver();
         }
         #endregion
+
+        //protected BaseDetailDataConverter<TDomainModel, TDTO, TDetailDTO, Converters> Converter { get; private set; }
 
         public override TDomainModel Create(TDTO dto)
         {
 
-            var dm = DetailDataConverterResolver().CreateDataModel(dto);
+            var dm = DataConverter(dto);
 
-            var dataSet = SetResolver(context);
+            var result = Create(dm);
 
-            var createResult = dataSet.Add(dm);
-
-            context.SaveChanges();
-            return createResult.Entity;
+            return result;
         }
 
         public override List<TDomainModel> Get(FilterDTO.WhereFunc where = null)
         {
-            var set = SetResolver(context);
-
             if (where != null)
             {
-                return set
+                return entites
                     .Where(b => where(b))
+                    //.Where(b => b.ID == context.)
                     .ToList();
             }
 
-            return set.ToList();
+            return entites.ToList();
         }
 
         public override TDomainModel Get(int id)
         {
-            return SetResolver(context).Where(b => b.ID == id).FirstOrDefault();
+            return entites.Where(b => b.ID == id).FirstOrDefault();
         }
 
         public override TDomainModel GetWithDetails(int id)
         {
-            var set = SetResolver(context);
+            var detailEntities = DetailEntityResolver(entites);
 
-            var q = DetailDataResolver(set);
-
-            return q
+            return detailEntities
                 .Where(b => b.ID == id)
                 .FirstOrDefault();
         }
@@ -102,8 +80,8 @@ namespace BarNone.TheRack.Repository.Core
                 ID = id
             };
 
-            var result = context.Remove(TDomainModel);
-            return result.Entity;
+            var result = Remove(TDomainModel);
+            return result;
         }
 
         public override TDomainModel Update(int id, TDTO dto)
@@ -111,11 +89,22 @@ namespace BarNone.TheRack.Repository.Core
 
             dto.ID = id;
 
-            var dm = DetailDataConverterResolver().CreateDataModel(dto);
-            var result = SetResolver(context).Update(dm);
+            var dm = DataConverter(dto);
+            var result = Update(dm);
 
-            context.SaveChanges();
-            return result.Entity;
+            //context.SaveChanges();
+            return result;
         }
+
+        //private IQueryable<TDomainModel> Load()
+        //{
+
+        //    var set = SetResolver(context);
+        //    if(LoadFliter != null)
+        //    {
+        //        return LoadFliter(set);
+        //    }
+        //    return set;
+        //}
     }
 }

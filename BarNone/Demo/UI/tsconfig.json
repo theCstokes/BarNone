@@ -1,0 +1,25 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "target": "es6",
+    "module": "amd",
+    "sourceMap": true,
+    "outDir": "build/release",
+    "rootDir": "src",
+    "baseUrl": "src",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": true,
+    "alwaysStrict": true,
+    "listEmittedFiles": true,
+    "allowJs": true,
+    "types": [ "mocha", "chai" ]
+  },
+  "exclude": [
+    "./node_modules",
+    "./gulpfile.js",
+    "./build",
+    "./libs",
+    "./index.html"
+  ]
+}

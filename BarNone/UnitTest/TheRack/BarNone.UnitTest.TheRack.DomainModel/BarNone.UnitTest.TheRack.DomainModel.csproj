@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <Configurations>Debug;Release;WorkingWithTheRack;DL;DL- DB</Configurations>
+    <Configurations>Debug;Release;WorkingWithTheRack;DL;DebugRack</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\TheRack\BarNone.TheRack.DataConverters\BarNone.TheRack.DataConverters.csproj" />
-    <ProjectReference Include="..\..\..\TheRack\BarNone.TheRack.DomainModel\BarNone.TheRack.DomainModel.csproj" />
+    <ProjectReference Include="..\..\..\Shared\BarNone.Shared.DataConverter\BarNone.Shared.DataConverter.csproj" />
+    <ProjectReference Include="..\..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj" />
   </ItemGroup>
 
 </Project>

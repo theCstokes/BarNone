@@ -1,9 +1,7 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DTOTransformable;
-using BarNone.Shared.DTOTransformable.Core;
-using BarNone.TheRack.DataConverters;
-using BarNone.TheRack.DomainModel;
-using BarNone.TheRack.DomainModel.Core;
+using BarNone.Shared.DataConverters;
+using BarNone.Shared.DomainModel;
+using BarNone.Shared.DomainModel.Core;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -74,7 +72,7 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(entity, code);
         }
 
-        public static IActionResult Response(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK, ConvertConfig config = null)
+        public static IActionResult Response(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
         {
             //if (config == null) config = new ConvertConfig(1);
 
@@ -87,7 +85,7 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
-        public static IActionResult DetailResponse(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK, ConvertConfig config = null)
+        public static IActionResult DetailResponse(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
         {
             //if (config == null) config = new ConvertConfig(2);
 
@@ -114,29 +112,41 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
-        public static IActionResult Enumerable(IEnumerable<IDTOTransformable> entities, HttpStatusCode code = HttpStatusCode.OK)
-        {
+        //public static IActionResult Enumerable(IEnumerable<IDTOTransformable> entities, HttpStatusCode code = HttpStatusCode.OK)
+        //{
 
-            var response = new EnumerableDTO
-            {
-                Count = entities.Count(),
-                Entities = entities
-            };
+        //    var response = new EnumerableDTO
+        //    {
+        //        Count = entities.Count(),
+        //        Entities = entities
+        //    };
 
-            return CreateResult(response, code);
-        }
+        //    return CreateResult(response, code);
+        //}
 
-        public static IActionResult Enumerable(dynamic result, HttpStatusCode code = HttpStatusCode.OK)
-        {
+        //public static IActionResult Enumerable(List<IDTOTransformable> entities, HttpStatusCode code = HttpStatusCode.OK)
+        //{
 
-            //var response = new EnumerableDTO
-            //{
-            //    Count = entities.Count(),
-            //    Entities = entities
-            //};
+        //    var response = new EnumerableDTO
+        //    {
+        //        Count = entities.Count(),
+        //        Entities = entities
+        //    };
 
-            return CreateResult(result, code);
-        }
+        //    return CreateResult(response, code);
+        //}
+
+        //public static IActionResult Enumerable(dynamic result, HttpStatusCode code = HttpStatusCode.OK)
+        //{
+
+        //    //var response = new EnumerableDTO
+        //    //{
+        //    //    Count = entities.Count(),
+        //    //    Entities = entities
+        //    //};
+
+        //    return CreateResult(result, code);
+        //}
 
         public static IActionResult Error(Exception e, HttpStatusCode code = HttpStatusCode.InternalServerError)
         {
