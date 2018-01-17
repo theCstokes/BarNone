@@ -1,20 +1,20 @@
-﻿using BarNone.DataLift.DataModel.KinectData;
+﻿using BarNone.DataLift.APIRequest;
+using BarNone.DataLift.DataConverters;
+using BarNone.DataLift.DataModel.KinectData;
 using BarNone.DataLift.UI.Commands;
+using BarNone.DataLift.UI.Nav;
+using BarNone.Shared.DataTransfer;
 using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using BarNone.DataLift.APIRequest;
-using BarNone.Shared.DataTransfer;
-using BarNone.DataLift.UI.Nav;
-using System.ComponentModel;
-using BarNone.DataLift.DataConverters;
 using BarNone.Shared.DataTransfer.Flex;
 using System.Security.AccessControl;
 
@@ -36,6 +36,18 @@ namespace BarNone.DataLift.UI.ViewModels
                 }
             }
         }
+
+        private ObservableCollection<LiftDTO> _allLiftData = new ObservableCollection<LiftDTO>() { new LiftDTO() { ID= 9394 } };
+        public ObservableCollection<LiftDTO> allLiftData
+        {
+            get { return _allLiftData; }
+            set
+            {
+                _allLiftData = allLiftData;
+                OnPropertyChanged(new PropertyChangedEventArgs("allLiftData"));
+            }
+        }
+
         #endregion
 
         #region Private Properties
@@ -211,6 +223,21 @@ namespace BarNone.DataLift.UI.ViewModels
 
         private int currentID;
 
+        /// <summary>
+        /// Is the user in the middle of a lift that is recorded.
+        /// </summary>
+        private bool isCurrentlyRecording;
+        
+        /// <summary>
+        /// The last state of the users hand.  To track a change in hand state.
+        /// </summary>
+        private HandState prevHandState;
+
+        /// <summary>
+        /// All data that will be sent to the Rack.
+        /// </summary>
+        //private IList<BodyData> _allLiftData;
+
         #endregion
 
         #endregion
@@ -219,7 +246,28 @@ namespace BarNone.DataLift.UI.ViewModels
         internal override void Loaded()
         {
             LiftName = "";
+
             IsRecording = false;
+
+            isCurrentlyRecording = false;
+
+            prevHandState = 0;
+
+            allLiftData.Clear();
+            //_allLiftData = new ObservableCollection<LiftDTO>();
+        }
+
+        internal override void Closed()
+        {
+            LiftName = "";
+
+            IsRecording = false;
+
+            isCurrentlyRecording = false;
+
+            prevHandState = 0;
+
+            allLiftData.Clear();
         }
 
         #endregion
@@ -236,10 +284,16 @@ namespace BarNone.DataLift.UI.ViewModels
 
             if (frame != null)
             {
-                if (Bodies == null)
-                {
-                    Bodies = new Body[frame.BodyFrameSource.BodyCount];
+                //var temp = new Body[frame.BodyFrameSource.BodyCount];
 
+                //if (Bodies != temp)
+                //{
+                //    Bodies = temp;
+
+                //}
+
+                if (Bodies == null) {
+                    Bodies = new Body[frame.BodyFrameSource.BodyCount];
                 }
 
                 // The first time GetAndRefreshBodyData is called, Kinect will allocate each Body in the array.
@@ -264,20 +318,69 @@ namespace BarNone.DataLift.UI.ViewModels
 
             if (dataReceived)
             {
-                if (IsNewRecording)
+                //if (IsNewRecording)
+                //{
+                CurrentRecordingBodyData = new BodyData()
                 {
-                    CurrentRecordingBodyData = new BodyData()
-                    {
-                        RecordDate = DateTime.Now
-                    };
-                    IsNewRecording = false;
-                }
+                    RecordDate = DateTime.Now
+                };
+                //    IsNewRecording = false;
+                //}
+
 
 
                 //The parent user will be the lifter
                 //  They must first block the camera then reverse until they are spotted (for now)
 
-                var body = Bodies[0];
+                //var body = Bodies[0];
+                
+                // Gets the closest body to the kinect sensor
+                var body = GetPrimaryBody(Bodies);
+
+                // If the right hand goes from some hand position (other than open) to open.
+                if ((body.HandRightState == HandState.Open) && (prevHandState != HandState.Open))
+                {
+                    // If the user is in the middle of a lift and has indicated it is now finished.
+                    if(isCurrentlyRecording == true)
+                    {
+                        var toSend = new LiftDTO()
+                        {
+                            ParentID = 1,
+                            Name = String.Format("{0}_{1}_{2}_New_Lift_{3}", CurrentRecordingBodyData.RecordDate.Year, CurrentRecordingBodyData.RecordDate.Month, CurrentRecordingBodyData.RecordDate.Day,(allLiftData.Count+1)),
+                            Details = new LiftDetailDTO()
+                            {
+                                BodyData = new BodyDataDTO()
+                            }
+
+                        };
+
+                        var bodyDto = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
+                        toSend.Details.BodyData = bodyDto;
+
+                        // Add the lift to the list of all lifts. 
+                        allLiftData.Add(toSend);
+
+                        // Set is currently recording to false
+                        isCurrentlyRecording = false;
+                    }
+                    // Else means that they are indicating the beginning of a lift.
+                    else
+                    {
+                        //  Then replace CurrentRecordingBodyData with a new body data (start a new lift)
+                        CurrentRecordingBodyData = new BodyData
+                        {
+                            DataFrames = new List<BodyDataFrame>(),
+                            RecordDate = DateTime.Now
+                        };
+                        // Set the status of recoring to in progress.
+                        isCurrentlyRecording = true;
+                    }
+
+                }
+
+                // Save the status of the hand (so that when it is called the following iteration it will be the prev. one).
+                prevHandState = body.HandRightState;
+
                 var dataframe = new BodyDataFrame() { TimeOfFrame = DateTime.Now, Joints = body.Joints.ToDictionary(k => k.Key, v => v.Value) };
                 CurrentRecordingBodyData.AddNewFrame(dataframe);
                 //Update The Side And Front Views
@@ -291,6 +394,46 @@ namespace BarNone.DataLift.UI.ViewModels
 
 
             }
+        }
+
+        /// <summary>
+        /// Sets the body we draw on DL and send to the Rack.  The body we draw is the one whos spine base is closest to the Kinect.
+        /// </summary>
+        /// <param name="bodies_in">A list of all bodies being tracked by the kinect.</param>
+        /// <returns></returns>
+        private static Body GetPrimaryBody(IList<Body> bodies_in)
+        {
+            Body primaryBody = null;
+            
+            // for all the bodies the Kinect is currently tracking.
+            foreach(Body body in bodies_in)
+            {
+                /// If the position of spinebase (the enum value 0) is not 0.
+                /// Because for some godforsaken reason MS initiliazes position data to (0,0,0) 
+                if(body.Joints[JointType.SpineBase].Position.Z != 0)
+                {
+                    // If there is currently no body compare against then it is the one use by default.
+                    if(primaryBody == null)
+                    {
+                        primaryBody = body;
+                    }
+
+                    // If there are mutiple then we use the one whos spine base is closest to the kinect.
+                    else if (body.Joints[JointType.SpineBase].Position.Z < primaryBody.Joints[JointType.SpineBase].Position.Z)
+                    {
+                        primaryBody = body;
+                    }
+                }
+
+            }
+
+            // We cannot return a null body, so we just assign the first body as the one we return.
+            if(primaryBody == null)
+            {
+                primaryBody = bodies_in[0];
+            }
+
+            return primaryBody;
         }
         #endregion
 
@@ -322,6 +465,10 @@ namespace BarNone.DataLift.UI.ViewModels
                 }
 
                 DrawBody(frame.Joints, jointPoints, dc, bodyColor);
+
+
+                //DrawHand(lifter.HandLeftState, jointPoints[JointType.HandLeft], dc);
+                DrawHand(lifter.HandRightState, jointPoints[JointType.HandRight], dc);
 
                 // prevent drawing outside of our render area
                 FrontProfileDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, displayWidth, displayHeight));
@@ -355,6 +502,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 }
 
                 DrawBody(frame.Joints, jointPoints, dc, bodyColor);
+
 
                 // prevent drawing outside of our render area
                 SideProfileDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, displayWidth, displayHeight));
@@ -438,8 +586,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <param name="drawingContext">drawing context to draw to</param>
         private void DrawHand(HandState handState, Point handPosition, DrawingContext drawingContext)
         {
-            //DrawHand(lifter.HandLeftState, jointPoints[JointType.HandLeft], dc);
-            //DrawHand(lifter.HandRightState, jointPoints[JointType.HandRight], dc);
+
 
             switch (handState)
             {
@@ -614,7 +761,7 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             //var _bodyData = 
 
-            var toSend = new LiftDTO()
+            var toSend = new LiftDTO
             {
                 ParentID = 1,
                 Name = LiftName,
@@ -638,7 +785,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 {
                     new FlexEntityDTO
                     {
-                        Resource = "Lift",
+                        Resource = "LIFT",
                         Entity = toSend
                     }
                 }
@@ -646,7 +793,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             //System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp.ToString());
 
-            StartNewRecording();
+            //StartNewRecording();
 
         }
 
@@ -716,7 +863,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             foreach (UserDTO singleUser in user)
             {
-                if (LoginScreenVM._Username == singleUser.UserName)
+                if (LoginScreenVM._username == singleUser.UserName)
                     CurrentUser = singleUser;
             }
         }
