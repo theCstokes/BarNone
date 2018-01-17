@@ -433,7 +433,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 {
                     BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData)
                 }
-
             };
 
             // Add the lift to the list of all lifts. 

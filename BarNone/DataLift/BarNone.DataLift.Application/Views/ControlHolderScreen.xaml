@@ -47,6 +47,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="20" />
                 </Grid.RowDefinitions>
 
@@ -57,40 +58,37 @@
                     <ColumnDefinition Width="20" />
                 </Grid.ColumnDefinitions>
 
-                <local:WorkflowScreen Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" 
+                <local:WorkflowScreen Grid.Column="1" Grid.Row="1"  Grid.RowSpan="2" VerticalAlignment="Stretch" 
                                       IsStepTwoEnabled="{Binding Path=IsStepTwoEnabledController}" 
                                       IsStepThreeEnabled="{Binding Path=IsStepThreeEnabledController}"
                                       StepTwoProgress="{Binding Path=StepTwoProgressController}"
                                       StepThreeProgress="{Binding Path=StepThreeProgressController}"/>
-                <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsRecorderVisible, Converter={StaticResource BoolToVisConverter} }">
-                        <local:DataRecorderScreen />
+
+                <DockPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Border DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsRecorderVisible, Converter={StaticResource BoolToVisConverter} }">
+                        <local:DataRecorderScreen/>
                     </Border>
 
-                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsEditorVisible, Converter={StaticResource BoolToVisConverter} }">
+                    <Border DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding IsEditorVisible, Converter={StaticResource BoolToVisConverter} }">
                         <local:EditLiftsScreen/>
                     </Border>
 
-                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsSavingVisible, Converter={StaticResource BoolToVisConverter} }">
+                    <Border DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsSavingVisible, Converter={StaticResource BoolToVisConverter} }">
                         <TextBlock FontSize="36">
                         Placeholder For Saving Screen.
                         </TextBlock>
                     </Border>
+                </DockPanel>
+                <Grid Grid.Column="2" Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <!--<ColumnDefinition Width="10" />-->
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Width="200" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" IsEnabled="{Binding IsBackwardsEnabled}"  Content="Previous Step" Command="{Binding RunDialogCommand}" />
+                    <Button Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Content="Next Step" Command="{Binding MoveWorflowForwardCmd}" />
 
-                        <Button Grid.Column="0" Width="200" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" IsEnabled="{Binding IsBackwardsEnabled}"  Content="Previous Step" Command="{Binding RunDialogCommand}" />
-                        <Button Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Content="Next Step" Command="{Binding MoveWorflowForwardCmd}" />
-
-                    </Grid>
-                </StackPanel>
-
-
+                </Grid>
             </Grid>
         </DockPanel>
     </materialDesign:DialogHost>

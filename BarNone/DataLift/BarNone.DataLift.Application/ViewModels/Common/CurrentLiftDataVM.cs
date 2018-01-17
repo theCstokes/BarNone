@@ -28,7 +28,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
 #if DEBUG
         public CurrentLiftDataVM()
         {
-            //CurrentRecordedData.Add(JsonConvert.DeserializeObject<LiftDTO>(File.ReadAllText(@"C:\Code\Capstone\barnone\BarNone\DataLift\BarNone.DataLift.Application\bin\Debug\SQUAT_2018_01_13.json")));
+            CurrentRecordedData.Add(JsonConvert.DeserializeObject<LiftDTO>(File.ReadAllText(@"C:\Code\Capstone\barnone\BarNone\DataLift\BarNone.DataLift.Application\bin\Debug\SQUAT_2018_01_13.json")));
         }
     }
 #endif

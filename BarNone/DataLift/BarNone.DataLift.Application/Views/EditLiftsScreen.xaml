@@ -9,6 +9,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:validation="clr-namespace:BarNone.DataLift.UI.Validation"
              mc:Ignorable="d"
+             d:DesignHeight="1000"
+             d:DesignWidth="1000"
              >
     <UserControl.Resources>
         <ResourceDictionary>
@@ -26,115 +28,71 @@
     <UserControl.DataContext>
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
-    <StackPanel Orientation="Horizontal">
-        <!--<StackPanel>
-            --><!--<ListView ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Test}" SelectionMode="Single" SelectedItem="{Binding SelectedLift,  Mode=TwoWay}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Lift Name">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBox HorizontalAlignment="Stretch" Text="{Binding LiftName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Lift Type">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ComboBox SelectedItem="{Binding LiftType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding LiftTypeList}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding LiftDuration}" Header="Lift Duration" />
-                    </GridView>
-                </ListView.View>
-            </ListView>--><!--
-
-            
-        </StackPanel>-->
-        <Border>
-
-            <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="20">
-                <DockPanel>
-                    <ListView ItemsSource="{Binding Test}" SelectionMode="Single" SelectedItem="{Binding SelectedLift}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Width="300">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,10,0" 
+    <DockPanel>
+        <materialDesign:Card DockPanel.Dock="Left" VerticalAlignment="Stretch" Margin="0 0 10 0">
+            <ListView ItemsSource="{Binding Test}" SelectionMode="Single" SelectedItem="{Binding SelectedLift}" DockPanel.Dock="Left">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Width="300">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,10,0" 
                                       materialDesign:HintAssist.Hint="Lift Name" Text="{Binding LiftName, Mode=TwoWay}" VerticalAlignment="Bottom" />
-                                    <ComboBox Grid.Column="1" Margin="0,0,10,0" ItemsSource="{Binding LiftTypeList}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Lift Type"
+                            <ComboBox Grid.Column="1" Margin="0,0,10,0" ItemsSource="{Binding LiftTypeList}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Lift Type"
                                       materialDesign:HintAssist.HintOpacity=".26"
                                       SelectedItem="{Binding LiftType}"  VerticalAlignment="Bottom" />
-                                    <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" 
+                            <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" 
                                     CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.DeleteSelectedRecording}">
-                                        <materialDesign:PackIcon Kind="Delete" Height="24" Width="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
-                                    </Button>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ListView>
-                    <StackPanel DockPanel.Dock="Top" >
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                            </Grid.ColumnDefinitions>
-                            <cmpnts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="3" ImageSourceLeft="{Binding LeftImage}" ImageSourceRight="{Binding RightImage}"/>
-
+                                <materialDesign:PackIcon Kind="Delete" Height="24" Width="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+                            </Button>
                         </Grid>
-                        <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}" 
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ListView>
+        </materialDesign:Card>
+        <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="20" DockPanel.Dock="Right">
+        <StackPanel VerticalAlignment="Top">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                </Grid.ColumnDefinitions>
+                <cmpnts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="3" ImageSourceLeft="{Binding LeftImage}" ImageSourceRight="{Binding RightImage}"/>
+            </Grid>
+            <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}" 
                                  CommandPause="{Binding CommandPauseVideo}" 
                                  CommandResetInterval="{Binding CommandResetVideo}" 
                                  CommandSlowMo="{Binding CommandSlowMotionVideo}" 
                                  CommandFastForward="{Binding CommandFastForwardVideo}" />
-                        <!--Text="{Binding SelectedLift.LiftName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 30">
-                            <TextBox Width="250" Margin="5" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+            <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          materialDesign:HintAssist.Hint="Start Time">
-                                <TextBox.Text >
-                                    <Binding  Path="SelectedLift.LiftStartTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <validation:TimeInputRule />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                            </TextBox>
-                            <TextBox Width="250" Margin="5" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    <TextBox.Text >
+                        <Binding  Path="SelectedLift.LiftStartTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validation:TimeInputRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          materialDesign:HintAssist.Hint="End Time">
-                                <TextBox.Text >
-                                    <Binding Path="SelectedLift.LiftEndTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <validation:TimeInputRule />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                            </TextBox>
-                        </StackPanel>
-                    </StackPanel>
-                </DockPanel>
-            </materialDesign:Card>
-        </Border>
-    </StackPanel>
-
-    <!--<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <cmpnts:VideoViewer ImageSourceLeft="{Binding LeftImage}" ImageSourceRight="{Binding RightImage}"/>
-        <Grid DockPanel.Dock="Top" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-            </Grid.ColumnDefinitions>
-            <cmpnts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="3" ImageSourceLeft="{Binding ImageSourceFront}" ImageSourceMiddle="{Binding ImageSourceColor}" ImageSourceRight="{Binding ImageSourceSide}"/>
-        </Grid>
-    </StackPanel>-->
+                    <TextBox.Text >
+                        <Binding Path="SelectedLift.LiftEndTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validation:TimeInputRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </StackPanel>
+        </StackPanel>
+    </materialDesign:Card>
+    </DockPanel>
 </UserControl>
