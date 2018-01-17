@@ -29,11 +29,11 @@
                 <Setter Property="Margin" Value="15"/>
             </Style>
         </StackPanel.Resources>
-        <Button Command="{Binding Path=CommandPause}" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Style="{StaticResource MaterialDesignFlatButton}">
-            <materialDesign:PackIcon Kind="Pause" Height="15" Width="15" />
-        </Button>
         <Button Command="{Binding Path=CommandResetInterval, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Kind="SkipPrevious" Height="15" Width="15" />
+        </Button>
+        <Button Command="{Binding Path=CommandPause}" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Kind="Pause" Height="15" Width="15" />
         </Button>
         <Button Command="{Binding Path=CommandPlay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Kind="Play" Height="15" Width="15" />

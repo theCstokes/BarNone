@@ -1,6 +1,7 @@
 ﻿using BarNone.DataLift.APIRequest;
 using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Nav;
+using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DataTransfer;
 using System;
 using System.ComponentModel;
@@ -13,7 +14,7 @@ namespace BarNone.DataLift.UI.ViewModels
 {
     public class RegisterScreenVM : ViewModelBase
     {
-        #region
+        #region Types
         private enum RegisterScreenState { NO_STATE, SPINNER, USERNAME_EXISTS_ERROR, PASSWORDS_DO_NOT_MATCH, MISSING_FIELD }
         #endregion
 

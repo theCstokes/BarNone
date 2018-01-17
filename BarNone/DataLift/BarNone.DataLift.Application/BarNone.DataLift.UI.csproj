@@ -103,9 +103,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Drawing\KinectToImage.cs" />
-    <Compile Include="SharedViewData\CurrentLiftData.cs" />
+    <Compile Include="Validation\TimeInputRule.cs" />
     <Compile Include="ViewModels\ControlHolderVM.cs" />
     <Compile Include="ViewModels\LiftListVM.cs" />
+    <Compile Include="ViewModels\Common\CurrentLiftDataVM.cs" />
     <Compile Include="ViewModels\EditLiftsScreenVM.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\DataRecorderVM.cs" />
@@ -128,7 +129,7 @@
     </Compile>
     <Compile Include="Views\LiftListViewScreen.xaml.cs">
       <DependentUpon>LiftListViewScreen.xaml</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Views\EditLiftsScreen.xaml.cs">
       <DependentUpon>EditLiftsScreen.xaml</DependentUpon>
     </Compile>
@@ -179,7 +180,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\LiftListViewScreen.xaml">
-	      <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditLiftsScreen.xaml">
@@ -236,6 +237,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="res\" />
+    <Folder Include="SharedViewData\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BarNone.DataLift.DataConverters\BarNone.DataLift.DataConverters.csproj">
@@ -266,9 +268,6 @@
       <Project>{707ade0d-0c8d-4edf-81b9-889b4538efa1}</Project>
       <Name>BarNone.DataLift.DataModel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

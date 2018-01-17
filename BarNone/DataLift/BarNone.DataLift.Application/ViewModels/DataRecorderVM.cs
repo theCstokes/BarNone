@@ -4,6 +4,7 @@ using BarNone.DataLift.DataModel.KinectData;
 using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Drawing;
 using BarNone.DataLift.UI.Nav;
+using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DataTransfer;
 using Microsoft.Kinect;
 using Newtonsoft.Json;
@@ -35,6 +36,12 @@ namespace BarNone.DataLift.UI.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs("allLiftData"));
             }
         }
+
+        private CurrentLiftDataVM _currentLiftData = CurrentLiftDataVMSingleton.GetInstance();
+        public CurrentLiftDataVM CurrentLiftData
+        {
+            get => _currentLiftData;
+        } 
 
         #endregion
 
