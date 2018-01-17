@@ -622,7 +622,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 {
                     BodyData = new BodyDataDTO()
                 }
-                
+
             };
 
 
@@ -634,12 +634,14 @@ namespace BarNone.DataLift.UI.ViewModels
 
             var temp = await DataManager.Flex.Post(new FlexDTO
             {
-                Entities = new List<FlexEntityDTO> [
+                Entities = new List<FlexEntityDTO>
+                {
                     new FlexEntityDTO
                     {
-                        Resource = FlexEntityType
+                        Resource = "Lift",
+                        Entity = toSend
                     }
-                ]
+                }
             });
 
             //System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp.ToString());
