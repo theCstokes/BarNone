@@ -219,7 +219,10 @@ namespace BarNone.DataLift.UI.ViewModels
                             }
 
                         };
-                
+
+                        var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(CurrentRecordingBodyData);
+                        toSend.Details.BodyData = bodyDto;
+
                         // Add the lift to the list of all lifts. 
                         allLiftData.Add(toSend);
 
@@ -430,7 +433,7 @@ namespace BarNone.DataLift.UI.ViewModels
             IsRecording = false;
 
 
-            var bodyDto = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData);
+            var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(CurrentRecordingBodyData);
             toSend.Details.BodyData = bodyDto;
 
             var temp = await DataManager.Flex.Post(new FlexDTO
@@ -450,18 +453,18 @@ namespace BarNone.DataLift.UI.ViewModels
 
         private void TempAddCurrentLift()
         {
-            var toSend = new LiftDTO()
-            {
-                ParentID = 1,
-                Name = String.Format("{0}_{1}_{2}_New_Lift_{3}", CurrentRecordingBodyData.RecordDate.Year, CurrentRecordingBodyData.RecordDate.Month, CurrentRecordingBodyData.RecordDate.Day, (AllLiftData.Count + 1)),
-                Details = new LiftDetailDTO()
-                {
-                    BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData)
-                }
-            };
+            //var toSend = new LiftDTO()
+            //{
+            //    ParentID = 1,
+            //    Name = String.Format("{0}_{1}_{2}_New_Lift_{3}", CurrentRecordingBodyData.RecordDate.Year, CurrentRecordingBodyData.RecordDate.Month, CurrentRecordingBodyData.RecordDate.Day, (AllLiftData.Count + 1)),
+            //    Details = new LiftDetailDTO()
+            //    {
+            //        BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData)
+            //    }
+            //};
 
             // Add the lift to the list of all lifts. 
-            AllLiftData.Add(toSend);
+            //AllLiftData.Add(toSend);
         }
 
         #endregion

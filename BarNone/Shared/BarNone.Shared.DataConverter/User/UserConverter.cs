@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.DataConverter.Core;
+﻿using BarNone.Shared.Core;
+using BarNone.Shared.DataConverter.Core;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
 using System;
@@ -9,7 +10,7 @@ namespace BarNone.Shared.DataConverters
 {
     public class UserConverter : BaseDataConverter<User, UserDTO, Converters>
     {
-        public UserConverter(Converters converters) : base(converters)
+        public UserConverter(Converters converters, IDomainContext context) : base(converters, context)
         {
         }
 

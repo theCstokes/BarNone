@@ -1,4 +1,5 @@
 ﻿using BarNone.DataLift.DataModel.KinectData;
+using BarNone.Shared.Core;
 using BarNone.Shared.DataConverter;
 using BarNone.Shared.DataConverter.Core;
 using BarNone.Shared.DataTransfer;
@@ -12,7 +13,7 @@ namespace BarNone.DataLift.DataConverters.KinectData
 {
     public class BodyDataConverter : BaseDetailDataConverter<BodyData, BodyDataDTO, BodyDataDetailDTO, Converters>
     {
-        public BodyDataConverter(Converters converterContext) : base(converterContext)
+        public BodyDataConverter(Converters converterContext, IDomainContext context) : base(converterContext, context)
         {
         }
 

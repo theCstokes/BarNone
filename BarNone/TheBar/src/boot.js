@@ -2,7 +2,8 @@ require.config({
 	baseUrl: "build/release",
 	paths: {
 		data: "../../data",
-		lodash: '../../node_modules/lodash/lodash'
+		lodash: '../../node_modules/lodash/lodash',
+		chartjs: '../../libs/Chart'
 	},
 	// urlArgs: "v=" + (new Date()).getTime()
 });

@@ -15,13 +15,7 @@ namespace BarNone.TheRack.Repository
 {
     public class UserRepository : DefaultRepository<User, UserDTO>
     {
-        //protected override SetResolverDelegate SetResolver => (context) => context.Users;
-
-        //protected override EntityResolverDelegate EntityResolver => (set) => set;
-
-        //protected override ConverterResolverDelegate ConverterResolver => () => Converters.Convert.User;
-
-        protected override ConverterResolverDelegate<User, UserDTO> DataConverter => (dto) => Converters.Convert.User.CreateDataModel(dto);
+        protected override ConverterResolverDelegate<User, UserDTO> DataConverter => Converters.NewConvertion(context).User.CreateDataModel;
 
         protected override SetResolverDelegate<User> SetResolver => (context) => context.Users;
 

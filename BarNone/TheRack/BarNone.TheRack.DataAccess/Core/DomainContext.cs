@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BarNone.Shared.Core;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace BarNone.TheRack.DataAccess
 {
-    public partial class DomainContext : BaseDomainContext
+    public partial class DomainContext : BaseDomainContext, IDomainContext
     {
         public delegate void ModelMapAction(ModelBuilder builder);
 

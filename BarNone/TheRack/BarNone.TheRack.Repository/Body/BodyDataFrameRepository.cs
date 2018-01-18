@@ -21,17 +21,9 @@ namespace BarNone.TheRack.Repository
         public BodyDataFrameRepository(DomainContext context) : base(context)
         {
         }
-
-        //protected override DetailConverterResolverDelegate<BodyDataFrame, BodyDataFrameDTO, BodyDataFrameDetailDTO, Converters> DetailDataConverterResolver =>
-        //    () => Converters.Convert.BodyDataFrame;
-
-        protected override ConverterResolverDelegate<BodyDataFrame, BodyDataFrameDTO> DataConverter =>
-            (dto) =>
-            {
-                var dm = Converters.Convert.BodyDataFrame.CreateDataModel(dto);
-                dm.UserID = context.UserID;
-                return dm;
-            };
+        
+        protected override ConverterResolverDelegate<BodyDataFrame, BodyDataFrameDTO> DataConverter => 
+            Converters.NewConvertion(context).BodyDataFrame.CreateDataModel;
 
         protected override DetailResolverDelegate<BodyDataFrame> DetailEntityResolver =>
             (s) => s.Include(f => f.BodyData)

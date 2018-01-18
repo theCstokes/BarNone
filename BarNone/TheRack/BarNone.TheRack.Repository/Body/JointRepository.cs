@@ -23,13 +23,8 @@ namespace BarNone.TheRack.Repository.Body
 
         }
 
-        protected override ConverterResolverDelegate<Joint, JointDTO> DataConverter =>
-            (dto) =>
-            {
-                var dm = Converters.Convert.Joint.CreateDataModel(dto);
-                dm.UserID = context.UserID;
-                return dm;
-            };
+        protected override ConverterResolverDelegate<Joint, JointDTO> DataConverter => 
+            Converters.NewConvertion(context).Joint.CreateDataModel;
 
         protected override DetailResolverDelegate<Joint> DetailEntityResolver => (s) => s.Include(j => j.BodyDataFrame)
                     .Include(j => j.JointType)

@@ -26,6 +26,9 @@ export default class UserEditView extends EditView {
 						readonly: true,
 						hint: "Age",
 						text: 21
+					},
+					{
+						instance: ControlTypes.Graph
 					}
 				]
 			}

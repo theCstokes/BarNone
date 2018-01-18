@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.DataConverter;
+﻿using BarNone.Shared.Core;
+using BarNone.Shared.DataConverter;
 using BarNone.Shared.DataConverters.Core;
 using BarNone.Shared.DataTransfer.LiftData;
 using BarNone.Shared.DomainModel;
@@ -11,7 +12,7 @@ namespace BarNone.Shared.DataConverters
     public class JointTrackingStateTypeConverter
         : BaseEnumDataConverter<JointTrackingStateType, JointTrackingStateTypeDTO, EJointTrackingStateType>
     {
-        public JointTrackingStateTypeConverter(Converters converterContext) : base(converterContext)
+        public JointTrackingStateTypeConverter(Converters converterContext, IDomainContext context) : base(converterContext, context)
         {
         }
     }

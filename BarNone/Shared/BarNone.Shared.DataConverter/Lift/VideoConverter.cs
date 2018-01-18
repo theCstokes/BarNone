@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.DataConverter.Core;
+﻿using BarNone.Shared.Core;
+using BarNone.Shared.DataConverter.Core;
 using BarNone.Shared.DataConverters;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
@@ -10,7 +11,7 @@ namespace BarNone.Shared.DataConverter.Lift
 {
     public class VideoConverter : BaseDataConverter<VideoRecord, VideoDTO, Converters>
     {
-        public VideoConverter(Converters converters) : base(converters)
+        public VideoConverter(Converters converters, IDomainContext context) : base(converters, context)
         {
         }
 
@@ -19,7 +20,8 @@ namespace BarNone.Shared.DataConverter.Lift
             return new VideoRecord
             {
                 ID = dto.ID,
-                Data = dto.Data
+                Data = dto.Data,
+                UserID = context.UserID
             };
         }
 

@@ -26,13 +26,7 @@ namespace BarNone.TheRack.Repository
 
         }
 
-        protected override ConverterResolverDelegate<Lift, LiftDTO> DataConverter =>
-            (dto) =>
-            {
-                var dm = Converters.Convert.Lift.CreateDataModel(dto);
-                dm.UserID = context.UserID;
-                return dm;
-            };
+        protected override ConverterResolverDelegate<Lift, LiftDTO> DataConverter => Converters.NewConvertion(context).Lift.CreateDataModel;
 
         protected override SetResolverDelegate<Lift> SetResolver => (context) => context.Lifts;
 
@@ -50,26 +44,28 @@ namespace BarNone.TheRack.Repository
             //return base.Create(dto);
 
             var dm = DataConverter(dto);
-            var result = Create(dm);
 
             if (dm.Video != null)
             {
-                SaveVideo(dm.Video);
+                dm.Video.Path = SaveVideo(dm.Video);
             }
+            dm.Video.UserID = 2;
+            var result = Create(dm);
 
             return result;
         }
 
-        private void SaveVideo(VideoRecord video)
+        private string SaveVideo(VideoRecord video)
         {
             var path = @"C:\VideoDB";
             string fullPath = "";
             do
             {
-                var name = new Guid();
-                fullPath = $"{path}\\{name}";
-            } while (!File.Exists(fullPath));
+                var name = Guid.NewGuid();
+                fullPath = $"{path}\\{name}.mp4";
+            } while (File.Exists(fullPath));
             File.WriteAllBytes(fullPath, video.Data);
+            return fullPath;
         }
     }
 }

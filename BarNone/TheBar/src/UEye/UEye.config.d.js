@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 
 window.Utils = {};
 Utils.clone = function (obj) {

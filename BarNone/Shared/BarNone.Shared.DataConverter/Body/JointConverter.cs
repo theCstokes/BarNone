@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.DataConverter;
+﻿using BarNone.Shared.Core;
+using BarNone.Shared.DataConverter;
 using BarNone.Shared.DataConverter.Core;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
@@ -11,7 +12,7 @@ namespace BarNone.Shared.DataConverters
     public class JointConverter :
         BaseDetailDataConverter<Joint, JointDTO, JointDetailDTO, Converters>
     {
-        public JointConverter(Converters converterContext) : base(converterContext)
+        public JointConverter(Converters converterContext, IDomainContext context) : base(converterContext, context)
         {
         }
 
@@ -25,7 +26,8 @@ namespace BarNone.Shared.DataConverters
                 Z = dto.Z,
                 BodyDataFrameID = dto.BodyDataFrameID,
                 JointTrackingStateTypeID = dto.JointTrackingStateTypeID,
-                JointTypeID = dto.JointTypeID
+                JointTypeID = dto.JointTypeID,
+                UserID = context.UserID
             };
         }
 

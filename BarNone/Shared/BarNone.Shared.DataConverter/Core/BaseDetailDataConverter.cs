@@ -13,7 +13,7 @@ namespace BarNone.Shared.DataConverter.Core
         where TDetailDTO : BaseDetailDTO<TDetailDTO>, new()
         where TConverters : IConverter
     {
-        public BaseDetailDataConverter(TConverters converterContext) : base(converterContext)
+        public BaseDetailDataConverter(TConverters converterContext, IDomainContext context) : base(converterContext, context)
         {
         }
 
