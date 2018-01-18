@@ -12,9 +12,12 @@ define([
 	"UEye/UEye",
 	"UEye/UEye.config.d",
 	"App/App",
-	"App/App" // TODO - Play
-], function (UEye, UEye_config_d, App, PlayGround) {
+	"App/App", // TODO - Play
 
+	// Preload modules.
+	"chartjs"
+], function (UEye, UEye_config_d, App, PlayGround) {
+	
 	// Flags.
 	var launchPlayGround = false;
 
