@@ -20,6 +20,10 @@ namespace BarNone.DataLift.UI.ViewModels
     {
         #region ListView properties
 
+        /// <summary>
+        /// Observable collection used for debug in interm before we can recieve actual data from the kinect
+        /// and cast it appropriatly.
+        /// </summary>
         private ObservableCollection<LiftListVM> _test = new ObservableCollection<LiftListVM>
         {
             new LiftListVM
@@ -39,6 +43,9 @@ namespace BarNone.DataLift.UI.ViewModels
                 Count =  1
             }
         };
+        /// <summary>
+        /// Observable collection to be displayed in the ListView.
+        /// </summary>
         public ObservableCollection<LiftListVM> Test
         {
             get
@@ -54,6 +61,9 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// The lift that is selected in the lift.  Used to bind to video player to display the selected lift.
+        /// </summary>
         private LiftListVM _selectedLift;
         public LiftListVM SelectedLift
         {
@@ -71,6 +81,10 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region ListView Commands
+
+        /// <summary>
+        /// Command that calls the function to delete lifts from the ListView.
+        /// </summary>
         public RelayCommand _deleteSelectedRecording { get; private set; }
         public ICommand DeleteSelectedRecording
         {
@@ -84,17 +98,21 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Delete function for the ListView.  Removed the selected lift from the ObservableCollection.
+        /// </summary>
+        /// <param name="action">The object in the ObservableCollection that called Delete.</param>
         private void DeleteSelectedRecordingCommand(object action)
         {
+            // Cast action to a LiftListVM.
             LiftListVM selected = (LiftListVM)action;
 
+            // If action is null then return
             if (action == null) return;
 
+            // Remove the correct lift and redo count for all the remaining lifts in ListView.
             Test.RemoveAt(selected.Count);
             for (int i = 0; i < Test.Count; i++) Test[i].Count = i;
-
-            //Console.WriteLine(selected.LiftName);
-            //Console.WriteLine(selected.LiftType);
         }
         #endregion
 
@@ -211,8 +229,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs("RightImage"));
             }
         }
-
-
 
 
         DispatcherTimer VideoTimer;

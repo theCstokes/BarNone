@@ -10,8 +10,12 @@ namespace BarNone.DataLift.UI.ViewModels
 {
     public class LiftListVM : ViewModelBase
     {
+        // Corresponds to the index in the ObservableCollection
         public int Count;
 
+        /// <summary>
+        /// The name of the lift.  User editable.
+        /// </summary>
         private string _liftName;
         public string LiftName
         {
@@ -26,6 +30,9 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// The type  of lift; squat, clean etc.
+        /// </summary>
         private string _liftType;
         public string LiftType
         {
@@ -40,6 +47,9 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// The time the lift has started.
+        /// </summary>
         private string _liftStartTime;
         public string LiftStartTime
         {
@@ -54,6 +64,9 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// The time the lift has ended.
+        /// </summary>
         private string _liftEndTime;
         public string LiftEndTime
         {
@@ -68,15 +81,20 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
-        private ObservableCollection<string> _liftTypeList;
-        public ObservableCollection<string> LiftTypeList
+        /// <summary>
+        /// List that dictates the drop down for the list of lifts.
+        /// </summary>
+        private List<string> _liftTypeList;
+        public List<string> LiftTypeList
         {
-            get { return new ObservableCollection<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", }; }
+            get { return new List<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", "Other" }; }
 
             private set
             {
                 _liftTypeList = value;
             }
         }
+
+        //TODO make this list reference somewhere from shared, so we only need to maintain it in one place.
     }
 }
