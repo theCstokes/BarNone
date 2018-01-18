@@ -1,6 +1,6 @@
 ﻿using BarNone.DataLift.DomainModel.Core;
 using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DTOTransformable.Core;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

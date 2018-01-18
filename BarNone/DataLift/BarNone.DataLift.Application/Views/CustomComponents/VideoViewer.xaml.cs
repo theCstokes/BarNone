@@ -68,7 +68,7 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
             {
                 SysDraw.Rectangle ImageSize = new SysDraw.Rectangle(0, 0, x, y);
                 graph.FillRectangle(SysDraw.Brushes.Black, ImageSize);
-            }
+            } 
             
             using (MemoryStream memory = new MemoryStream())
             {

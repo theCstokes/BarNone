@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5ACBD133-8068-4F2B-B778-2121646935A7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>BarNone.DataLift.Application</RootNamespace>
+    <RootNamespace>BarNone.DataLift.UI</RootNamespace>
     <AssemblyName>e</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -84,6 +84,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />

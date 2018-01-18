@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BarNone.DataLift.Application.Views
+namespace BarNone.DataLift.UI.Views
 {
     /// <summary>
     /// Interaction logic for RegisterScreen.xaml
