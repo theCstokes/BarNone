@@ -1,6 +1,10 @@
 import { IUtils } from 'UEye/UEye.config';
 import Screen from 'UEye/Screen/Screen';
 import DataEvent, { IDataEvent } from 'UEye/DataEvent/DataEvent';
+
+// import {Chart} from 'chart.js';
+
+// console.log(Chart);
 // import { AppScreen } from "UEye/Screen/AppScreen";
 // import Core from "UEye/Elements/Core/Core";
 // import DataEvent from "UEye/Core/DataEvent/DataEvent";

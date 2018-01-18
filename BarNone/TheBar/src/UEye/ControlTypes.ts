@@ -12,6 +12,7 @@ import Breadcrumb from "UEye/Elements/Components/Breadcrumb/Breadcrumb";
 import Video from "UEye/Elements/Components/Video/Video";
 // import Stream from "UEye/Elements/Components/Stream/Stream";
 import Range from "UEye/Elements/Components/Range/Range";
+import Graph from "UEye/Elements/Components/Graph/Graph";
 
 import Column from "UEye/Elements/Containers/Column/Column";
 import ColumnLayout from "UEye/Elements/Containers/ColumnLayout/ColumnLayout";
@@ -35,6 +36,7 @@ export default class ControlTypes {
 	public static readonly Video = new ComponentType(p => new Video(p));
 	// public static readonly Stream = new ComponentType(p => new Stream(p));
 	public static readonly Range = new ComponentType(p => new Range(p));
+	public static readonly Graph = new ComponentType(p => new Graph(p));
 
 
 	public static readonly Column = new ContainerType(p => new Column(p));
