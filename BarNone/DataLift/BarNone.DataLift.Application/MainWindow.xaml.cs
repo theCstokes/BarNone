@@ -28,7 +28,7 @@ namespace BarNone.DataLift.UI
         {
             InitializeComponent();
             //Remove junk page management
-            PageManager.window = this;
+            PageManager.Window = this;
             PageManager.SwitchPage(UIPages.ControlHolderView);
         }
 
@@ -38,7 +38,7 @@ namespace BarNone.DataLift.UI
         /// <param name="nextPage">Page to switch to/param>
         internal void Navigate(UIPages nextPage)
         {
-            Content = nextPage.page;
+            Content = nextPage.Page;
         }
     }
 }

@@ -23,44 +23,67 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
     /// </summary>
     public partial class VideoViewer : UserControl
     {
+        /// <summary>
+        /// Initializes the view
+        /// </summary>
         public VideoViewer()
         {
             InitializeComponent();
         }
         
+        /// <summary>
+        /// Bindable dependency property for the left image
+        /// </summary>
         public ImageSource ImageSourceLeft
         {
             get { return (ImageSource)GetValue(ImageSourceLeftProperty); }
             set { SetValue(ImageSourceLeftProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for IsStepTwoEnabled.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Dependency property for the image source of the left image
+        /// </summary>
         public static readonly DependencyProperty ImageSourceLeftProperty =
-            DependencyProperty.Register("ImageSourceLeft", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(DrawFilledRectangle(200,200)));
+            DependencyProperty.Register("ImageSourceLeft", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(GetDefaultCanvas(200,200)));
 
-
+        /// <summary>
+        /// Bindable dependency property for the right image
+        /// </summary>
         public ImageSource ImageSourceRight
         {
             get { return (ImageSource)GetValue(ImageSourceRightProperty); }
             set { SetValue(ImageSourceRightProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for IsStepTwoEnabled.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Dependency property for the image source of the right image
+        /// </summary>
         public static readonly DependencyProperty ImageSourceRightProperty =
-            DependencyProperty.Register("ImageSourceRight", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(DrawFilledRectangle(200, 200)));
+            DependencyProperty.Register("ImageSourceRight", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(GetDefaultCanvas(200, 200)));
 
 
+        /// <summary>
+        /// Bindable dependency property for the middle image
+        /// </summary>
         public ImageSource ImageSourceMiddle
         {
             get { return (ImageSource)GetValue(ImageSourceMiddleProperty); }
             set { SetValue(ImageSourceMiddleProperty, value); }
         }
-
-        // Using a DependencyProperty as the backing store for IsStepTwoEnabled.  This enables animation, styling, binding, etc...
+        
+        /// <summary>
+        /// Dependency property for the image source of the largest and central image
+        /// </summary>
         public static readonly DependencyProperty ImageSourceMiddleProperty =
-            DependencyProperty.Register("ImageSourceMiddle", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(DrawFilledRectangle(600, 400)));
-
-        private static BitmapImage DrawFilledRectangle(int x, int y)
+            DependencyProperty.Register("ImageSourceMiddle", typeof(ImageSource), typeof(VideoViewer), new FrameworkPropertyMetadata(GetDefaultCanvas(600, 400)));
+        
+        /// <summary>
+        /// Creates a default canvas which is x * y pixels in size
+        /// </summary>
+        /// <param name="x">Width of canvas</param>
+        /// <param name="y">Height of canvas</param>
+        /// <returns>Default canvas</returns>
+        private static BitmapImage GetDefaultCanvas(int x, int y)
         {
             //Makes a black image appear, good for debugging!
             SysDraw.Bitmap bmp = new SysDraw.Bitmap(x, y);

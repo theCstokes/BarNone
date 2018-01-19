@@ -140,9 +140,6 @@
     <Compile Include="Views\WorkflowScreen.xaml.cs">
       <DependentUpon>WorkflowScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\YesNoDialogBox.xaml.cs">
-      <DependentUpon>YesNoDialogBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\YesNoDialogScreen.xaml.cs">
       <DependentUpon>YesNoDialogScreen.xaml</DependentUpon>
     </Compile>
@@ -155,7 +152,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\RelayCommand.cs" />
-    <Compile Include="Commands\SwitchPageCommand.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -201,10 +197,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\WorkflowScreen.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\YesNoDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -263,6 +255,10 @@
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj">
       <Project>{dc7c09e7-27e2-496c-9823-f048bb031174}</Project>
       <Name>BarNone.Shared.DataTransfer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj">
+      <Project>{b985f9c5-9463-4574-9eb6-684f9c4a3c92}</Project>
+      <Name>BarNone.Shared.DomainModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\BarNone.DataLift.APIRequest\BarNone.DataLift.APIRequest.csproj">
       <Project>{3a9be071-8a01-47a8-85cc-a3f712d3c6a9}</Project>

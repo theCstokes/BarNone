@@ -20,6 +20,9 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
     /// </summary>
     public partial class Scrubber : UserControl
     {
+        /// <summary>
+        /// Initializes the view
+        /// </summary>
         public Scrubber()
         {
             InitializeComponent();

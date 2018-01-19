@@ -34,7 +34,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         /// </summary>
         public CurrentLiftDataVM()
         {
-            CurrentRecordedData.Add(JsonConvert.DeserializeObject<LiftDTO>(File.ReadAllText(@"C:\Users\Aamir\Documents\McMaster\Year_4\Capstone\barnone\BarNone\DataLift\BarNone.DataLift.Application\bin\Debug\SQUAT_2018_01_13.json")));
+            //CurrentRecordedData.Add(JsonConvert.DeserializeObject<LiftDTO>(File.ReadAllText(@"C:\Users\Aamir\Documents\McMaster\Year_4\Capstone\barnone\BarNone\DataLift\BarNone.DataLift.Application\bin\Debug\SQUAT_2018_01_13.json")));
         }
     }
 #endif

@@ -20,6 +20,9 @@ namespace BarNone.DataLift.UI.Views
     /// </summary>
     public partial class LiftListViewScreen : UserControl
     {
+        /// <summary>
+        /// Initializes the view
+        /// </summary>
         public LiftListViewScreen()
         {
             InitializeComponent();

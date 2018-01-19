@@ -21,6 +21,9 @@ namespace BarNone.DataLift.UI.Views
     /// </summary>
     public partial class WorkflowScreen : UserControl
     {
+        /// <summary>
+        /// Initializes the view
+        /// </summary>
         public WorkflowScreen()
         {
             InitializeComponent();

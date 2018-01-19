@@ -22,6 +22,9 @@ namespace BarNone.DataLift.UI.Views
     /// </summary>
     public partial class LoginScreen : UserControl
     {
+        /// <summary>
+        /// Initializes the view
+        /// </summary>
         public LoginScreen()
         {
             InitializeComponent();
