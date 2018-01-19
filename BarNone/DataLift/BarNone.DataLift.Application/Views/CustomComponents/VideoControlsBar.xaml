@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="BarNone.DataLift.UI.Views.CustomComponents.VideoControlsBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BarNone.DataLift.UI.Views.CustomComponents"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <!--<Style x:Key="MaterialDesignFlatButton" BasedOn="{StaticResource MaterialDesignFlatButton}" TargetType="{x:Type Button}">
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidForegroundBrush}" />
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="Width" Value="25"/>
+                <Setter Property="Height" Value="25"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="15"/>
+            </Style>-->
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+        <StackPanel.Resources>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Margin" Value="15"/>
+            </Style>
+        </StackPanel.Resources>
+        <Button Command="{Binding Path=CommandResetInterval, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Kind="SkipPrevious" Height="15" Width="15" />
+        </Button>
+        <Button Command="{Binding Path=CommandPause}" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Kind="Pause" Height="15" Width="15" />
+        </Button>
+        <Button Command="{Binding Path=CommandPlay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Kind="Play" Height="15" Width="15" />
+        </Button>
+        <Button Command="{Binding Path=CommandFastForward, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Kind="FastForward" Height="15" Width="15" />
+        </Button>
+        <Button Command="{Binding Path=CommandSlowMo, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Kind="Timelapse" Height="15" Width="15" />
+        </Button>
+    </StackPanel>
+</UserControl>

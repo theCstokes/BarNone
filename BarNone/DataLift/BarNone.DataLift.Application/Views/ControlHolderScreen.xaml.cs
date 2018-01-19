@@ -16,14 +16,14 @@ using System.Windows.Shapes;
 namespace BarNone.DataLift.UI.Views
 {
     /// <summary>
-    /// Interaction logic for RegisterScreen.xaml
+    /// Interaction logic for ControlHolderScreen.xaml
     /// </summary>
-    public partial class RegisterScreen : UserControl
+    public partial class ControlHolderScreen : UserControl
     {
         /// <summary>
-        /// Initializes the view
+        /// Initialize the component on creation.
         /// </summary>
-        public RegisterScreen()
+        public ControlHolderScreen()
         {
             InitializeComponent();
         }

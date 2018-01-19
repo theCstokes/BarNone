@@ -2,7 +2,7 @@
 //using BarNone.DataLift.DataModel.KinectData;
 //using BarNone.Shared.DataTransfer;
 //using BarNone.Shared.DataTransfer.LiftData;
-//using BarNone.Shared.DTOTransformable.Core;
+//
 //using Microsoft.Kinect;
 //using Microsoft.VisualStudio.TestTools.UnitTesting;
 //using System;

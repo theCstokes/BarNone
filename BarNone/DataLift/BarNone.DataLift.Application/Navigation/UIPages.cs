@@ -1,24 +1,38 @@
 ﻿using BarNone.DataLift.UI.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace BarNone.DataLift.UI.Nav
 {
+    /// <summary>
+    /// Class containing static onstances of views to keep page management fast
+    /// </summary>
     public class UIPages
     {
-        public UserControl page { get; }
-
+        /// <summary>
+        /// Reference to the login page
+        /// </summary>
         public static readonly UIPages LoginView = new UIPages(new LoginScreen());
-        public static readonly UIPages DataRecorderView = new UIPages(new DataRecorderScreen());
+        /// <summary>
+        /// Reference to the registration page
+        /// </summary>
         public static readonly UIPages RegistrationView = new UIPages(new RegistrationScreen());
+        /// <summary>
+        /// Reference to the control holder page
+        /// </summary>
+        public static readonly UIPages ControlHolderView = new UIPages(new ControlHolderScreen());
 
+        /// <summary>
+        /// UserControl reference for the UIPage instance
+        /// </summary>
+        public UserControl Page { get; }
+
+        /// <summary>
+        /// Creates a new UIPage referenced to the singleton of <paramref name="page"/>
+        /// </summary>
+        /// <param name="page">Usercontrol pointed to by this</param>
         private UIPages(UserControl page)
         {
-            this.page = page;
+            Page = page;
         }
     }
 }

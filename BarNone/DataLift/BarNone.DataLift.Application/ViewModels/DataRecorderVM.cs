@@ -2,7 +2,9 @@
 using BarNone.DataLift.DataConverters;
 using BarNone.DataLift.DataModel.KinectData;
 using BarNone.DataLift.UI.Commands;
+using BarNone.DataLift.UI.Drawing;
 using BarNone.DataLift.UI.Nav;
+using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DataTransfer;
 using Microsoft.Kinect;
 using System;
@@ -16,94 +18,30 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using BarNone.Shared.DataTransfer.Flex;
-using System.Security.AccessControl;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
     public class DataRecorderVM : ViewModelBase
     {
         #region Bound Properties
-        private string _LiftName = "";
-        public string LiftName
-        {
-            get => _LiftName;
-            set
-            {
-                if (_LiftName != value)
-                {
-                    _LiftName = value;
-                    OnPropertyChanged(new PropertyChangedEventArgs("LiftName"));
-                }
-            }
-        }
-
-        private ObservableCollection<LiftDTO> _allLiftData = new ObservableCollection<LiftDTO>() { new LiftDTO() { ID= 9394 } };
-        public ObservableCollection<LiftDTO> allLiftData
+        //TODO Make this deprecated
+        private ObservableCollection<LiftDTO> _allLiftData = new ObservableCollection<LiftDTO>();
+        public ObservableCollection<LiftDTO> AllLiftData
         {
             get { return _allLiftData; }
             set
             {
-                _allLiftData = allLiftData;
+                _allLiftData = AllLiftData;
                 OnPropertyChanged(new PropertyChangedEventArgs("allLiftData"));
             }
         }
 
-        #endregion
+        private CurrentLiftDataVM _currentLiftData = CurrentLiftDataVMSingleton.GetInstance();
+        public CurrentLiftDataVM CurrentLiftData
+        {
+            get => _currentLiftData;
+        } 
 
-        #region Private Properties
-        #region Brushes
-        /// <summary>
-        /// Brush used for drawing hands that are currently tracked as closed
-        /// </summary>
-        private readonly Brush handClosedBrush = new SolidColorBrush(Color.FromArgb(128, 255, 0, 0));
-
-        /// <summary>
-        /// Brush used for drawing hands that are currently tracked as opened
-        /// </summary>
-        private readonly Brush handOpenBrush = new SolidColorBrush(Color.FromArgb(128, 0, 255, 0));
-
-        /// <summary>
-        /// Brush used for drawing hands that are currently tracked as in lasso (pointer) position
-        /// </summary>
-        private readonly Brush handLassoBrush = new SolidColorBrush(Color.FromArgb(128, 0, 0, 255));
-
-        /// <summary>
-        /// Brush used for drawing joints that are currently tracked
-        /// </summary>
-        private readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
-
-        /// <summary>
-        /// Brush used for drawing joints that are currently inferred
-        /// </summary>        
-        private readonly Brush inferredJointBrush = Brushes.Yellow;
-
-        /// <summary>
-        /// Pen used for drawing bones that are currently inferred
-        /// </summary>        
-        private readonly Pen inferredBonePen = new Pen(Brushes.Gray, 1);
-
-        #endregion
-
-        #region Skeleton Drawing Details
-        /// <summary>
-        /// Radius of drawn hand circles
-        /// </summary>
-        private const double HandSize = 30;
-
-        /// <summary>
-        /// Thickness of drawn joint lines
-        /// </summary>
-        private const double JointThickness = 3;
-
-        /// <summary>
-        /// Thickness of clip edge rectangles
-        /// </summary>
-        private const double ClipBoundsThickness = 10;
-
-        /// <summary>
-        /// Constant for clamping Z values of camera space points from being negative
-        /// </summary>
-        private const float InferredZPositionClamp = 0.1f;
         #endregion
 
         #region Color Drawing Details
@@ -134,17 +72,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// Drawing image that we will display
         /// </summary>
         private DrawingImage imageSourceSide;
-
-        /// <summary>
-        /// Active Kinect sensor
-        /// </summary>
-        private KinectSensor kinectSensor = null;
-
-        /// <summary>
-        /// Coordinate mapper to map one type of point to another
-        /// </summary>
-        private CoordinateMapper coordinateMapper = null;
-
+        
         /// <summary>
         /// Width of display (depth space)
         /// </summary>
@@ -156,59 +84,39 @@ namespace BarNone.DataLift.UI.ViewModels
         private int displayHeight;
 
         /// <summary>
-        /// Body Color for Body[0]
-        /// </summary>
-        private Pen bodyColor = new Pen(Brushes.Violet, 6);
-
-        /// <summary>
         /// Array for the bodies
         /// </summary>
         private IList<Body> Bodies { get; set; }
 
         /// <summary>
-        /// Current status text to display
+        /// Gets the bitmap to display
         /// </summary>
-        private string statusText = null;
-
+        public ImageSource ImageSourceFront { get => imageSourceFront; }
 
         /// <summary>
         /// Gets the bitmap to display
         /// </summary>
-        public ImageSource ImageSourceFront
-        {
-            get
-            {
-                return imageSourceFront;
-            }
-        }
+        public ImageSource ImageSourceSide { get => imageSourceSide; }
 
         /// <summary>
         /// Gets the bitmap to display
         /// </summary>
-        public ImageSource ImageSourceSide
-        {
-            get
-            {
-                return imageSourceSide;
-            }
-        }
-
-        /// <summary>
-        /// Gets the bitmap to display
-        /// </summary>
-        public ImageSource ImageSourceColor
-        {
-            get
-            {
-                return colorBitmap;
-            }
-        }
+        public ImageSource ImageSourceColor { get => colorBitmap; }
 
         #endregion
 
-        #region Frame Reader
-        MultiSourceFrameReader Reader;
+        #region Kinect Properties
+        private MultiSourceFrameReader Reader;
 
+        /// <summary>
+        /// Active Kinect sensor
+        /// </summary>
+        private KinectSensor kinectSensor = null;
+
+        /// <summary>
+        /// Coordinate mapper to map one type of point to another
+        /// </summary>
+        private CoordinateMapper coordinateMapper = null;
         #endregion
 
         #region Reccording Data Variables
@@ -221,13 +129,11 @@ namespace BarNone.DataLift.UI.ViewModels
 
         private UserDTO CurrentUser { get; set; }
 
-        private int currentID;
-
         /// <summary>
         /// Is the user in the middle of a lift that is recorded.
         /// </summary>
-        private bool isCurrentlyRecording;
-        
+        private bool isCurrentlyRecording = false;
+
         /// <summary>
         /// The last state of the users hand.  To track a change in hand state.
         /// </summary>
@@ -240,34 +146,27 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
-        #endregion
-
         #region User Control events
         internal override void Loaded()
         {
-            LiftName = "";
-
             IsRecording = false;
 
             isCurrentlyRecording = false;
 
             prevHandState = 0;
 
-            allLiftData.Clear();
-            //_allLiftData = new ObservableCollection<LiftDTO>();
+            AllLiftData.Clear();
         }
 
         internal override void Closed()
         {
-            LiftName = "";
-
             IsRecording = false;
 
             isCurrentlyRecording = false;
 
             prevHandState = 0;
 
-            allLiftData.Clear();
+            AllLiftData.Clear();
         }
 
         #endregion
@@ -284,15 +183,8 @@ namespace BarNone.DataLift.UI.ViewModels
 
             if (frame != null)
             {
-                //var temp = new Body[frame.BodyFrameSource.BodyCount];
-
-                //if (Bodies != temp)
-                //{
-                //    Bodies = temp;
-
-                //}
-
-                if (Bodies == null) {
+                if (Bodies == null)
+                {
                     Bodies = new Body[frame.BodyFrameSource.BodyCount];
                 }
 
@@ -303,53 +195,24 @@ namespace BarNone.DataLift.UI.ViewModels
                 dataReceived = true;
             }
 
-            //foreach(Body b in Bodies)
-            //{
-            //    if (WeGotHands())
-            //    {
-            //        tracked and set a flag to break
-            //    }
-            //    else
-            //    {
-            //        b = null;
-            //    }
-            //}
-
-
             if (dataReceived)
             {
-                //if (IsNewRecording)
-                //{
-                CurrentRecordingBodyData = new BodyData()
-                {
-                    RecordDate = DateTime.Now
-                };
-                //    IsNewRecording = false;
-                //}
-
-
-
-                //The parent user will be the lifter
-                //  They must first block the camera then reverse until they are spotted (for now)
-
-                //var body = Bodies[0];
-                
                 // Gets the closest body to the kinect sensor
                 var body = GetPrimaryBody(Bodies);
 
                 // If the right hand goes from some hand position (other than open) to open.
-                if ((body.HandRightState == HandState.Open) && (prevHandState != HandState.Open))
+                /*if ((body.HandRightState == HandState.Open) && (prevHandState != HandState.Open))
                 {
                     // If the user is in the middle of a lift and has indicated it is now finished.
-                    if(isCurrentlyRecording == true)
+                    if(isCurrentlyRecording)
                     {
                         var toSend = new LiftDTO()
                         {
                             ParentID = 1,
-                            Name = String.Format("{0}_{1}_{2}_New_Lift_{3}", CurrentRecordingBodyData.RecordDate.Year, CurrentRecordingBodyData.RecordDate.Month, CurrentRecordingBodyData.RecordDate.Day,(allLiftData.Count+1)),
+                            Name = String.Format("{0}_{1}_{2}_New_Lift_{3}", CurrentRecordingBodyData.RecordDate.Year, CurrentRecordingBodyData.RecordDate.Month, CurrentRecordingBodyData.RecordDate.Day, (allLiftData.Count + 1)),
                             Details = new LiftDetailDTO()
                             {
-                                BodyData = new BodyDataDTO()
+                                BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData)
                             }
 
                         };
@@ -380,19 +243,22 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 // Save the status of the hand (so that when it is called the following iteration it will be the prev. one).
                 prevHandState = body.HandRightState;
-
+                */
                 var dataframe = new BodyDataFrame() { TimeOfFrame = DateTime.Now, Joints = body.Joints.ToDictionary(k => k.Key, v => v.Value) };
-                CurrentRecordingBodyData.AddNewFrame(dataframe);
+                if (isCurrentlyRecording)
+                    CurrentRecordingBodyData.AddNewFrame(dataframe);
+
                 //Update The Side And Front Views
-                UpdateFrontView(dataframe, body);
-                UpdateSideView(dataframe, body);
-
-                //for(int i = 0; i < Bodies.Count; i++)
-                //{
-                //    Bodies[i] = null;
-                //}
-
-
+                KinectToImage.DrawFrameSideView(
+                    dataframe
+                    .Joints
+                    .Select(x => new JointDTO() { JointTypeID = (int)x.Key, X = x.Value.Position.X, Y = x.Value.Position.Y, Z = x.Value.Position.Z, JointTrackingStateTypeID = (int)x.Value.TrackingState }).ToList(),
+                    SideProfileDrawingGroup, displayHeight, displayWidth);
+                KinectToImage.DrawFrameFrontView(
+                    dataframe
+                    .Joints
+                    .Select(x => new JointDTO() { JointTypeID = (int)x.Key, X = x.Value.Position.X, Y = x.Value.Position.Y, Z = x.Value.Position.Z, JointTrackingStateTypeID = (int)x.Value.TrackingState }).ToList(),
+                    FrontProfileDrawingGroup, displayHeight, displayWidth);
             }
         }
 
@@ -404,248 +270,35 @@ namespace BarNone.DataLift.UI.ViewModels
         private static Body GetPrimaryBody(IList<Body> bodies_in)
         {
             Body primaryBody = null;
-            
+
             // for all the bodies the Kinect is currently tracking.
-            foreach(Body body in bodies_in)
+            foreach (Body body in bodies_in)
             {
                 /// If the position of spinebase (the enum value 0) is not 0.
                 /// Because for some godforsaken reason MS initiliazes position data to (0,0,0) 
-                if(body.Joints[JointType.SpineBase].Position.Z != 0)
+                if (body.Joints[JointType.SpineBase].Position.Z != 0)
                 {
                     // If there is currently no body compare against then it is the one use by default.
-                    if(primaryBody == null)
+                    if (primaryBody == null)
                     {
                         primaryBody = body;
                     }
-
-                    // If there are mutiple then we use the one whos spine base is closest to the kinect.
                     else if (body.Joints[JointType.SpineBase].Position.Z < primaryBody.Joints[JointType.SpineBase].Position.Z)
                     {
+                        // If there are mutiple then we use the one whos spine base is closest to the kinect.
                         primaryBody = body;
                     }
                 }
-
             }
 
             // We cannot return a null body, so we just assign the first body as the one we return.
-            if(primaryBody == null)
+            if (primaryBody == null)
             {
                 primaryBody = bodies_in[0];
             }
 
             return primaryBody;
         }
-        #endregion
-
-        #region Draw Skeletons
-        private void UpdateFrontView(BodyDataFrame frame, Body lifter)
-        {
-            using (DrawingContext dc = FrontProfileDrawingGroup.Open())
-            {
-                // Draw a transparent background to set the render size
-                dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, displayWidth, displayHeight));
-
-                DrawClippedEdges(lifter, dc);
-
-                // convert the joint points to depth (display) space
-                Dictionary<JointType, Point> jointPoints = new Dictionary<JointType, Point>();
-
-                foreach (JointType jointType in frame.Joints.Keys)
-                {
-                    // sometimes the depth(Z) of an inferred joint may show as negative
-                    // clamp down to 0.1f to prevent coordinatemapper from returning (-Infinity, -Infinity)
-                    CameraSpacePoint position = frame.Joints[jointType].Position;
-                    if (position.Z < 0)
-                    {
-                        position.Z = InferredZPositionClamp;
-                    }
-
-                    DepthSpacePoint depthSpacePoint = coordinateMapper.MapCameraPointToDepthSpace(position);
-                    jointPoints[jointType] = new Point((position.X - lifter.Joints[JointType.SpineBase].Position.X) * -153.34 + displayWidth / 2, position.Y * -153.34 + displayHeight / 2);
-                }
-
-                DrawBody(frame.Joints, jointPoints, dc, bodyColor);
-
-
-                //DrawHand(lifter.HandLeftState, jointPoints[JointType.HandLeft], dc);
-                DrawHand(lifter.HandRightState, jointPoints[JointType.HandRight], dc);
-
-                // prevent drawing outside of our render area
-                FrontProfileDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, displayWidth, displayHeight));
-            }
-        }
-
-        private void UpdateSideView(BodyDataFrame frame, Body lifter)
-        {
-            using (DrawingContext dc = SideProfileDrawingGroup.Open())
-            {
-                // Draw a transparent background to set the render size
-                dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, displayWidth, displayHeight));
-
-                DrawClippedEdges(lifter, dc);
-
-                // convert the joint points to depth (display) space
-                Dictionary<JointType, Point> jointPoints = new Dictionary<JointType, Point>();
-
-                foreach (JointType jointType in frame.Joints.Keys)
-                {
-                    // sometimes the depth(Z) of an inferred joint may show as negative
-                    // clamp down to 0.1f to prevent coordinatemapper from returning (-Infinity, -Infinity)
-                    CameraSpacePoint position = frame.Joints[jointType].Position;
-                    if (position.Z < 0)
-                    {
-                        position.Z = InferredZPositionClamp;
-                    }
-
-                    DepthSpacePoint depthSpacePoint = coordinateMapper.MapCameraPointToDepthSpace(position);
-                    jointPoints[jointType] = new Point((position.Z - lifter.Joints[JointType.SpineBase].Position.Z) * 153.34 + displayWidth / 2, position.Y * (-153.34) + displayHeight / 2);
-                }
-
-                DrawBody(frame.Joints, jointPoints, dc, bodyColor);
-
-
-                // prevent drawing outside of our render area
-                SideProfileDrawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, displayWidth, displayHeight));
-            }
-        }
-
-        /// <summary>
-        /// Draws a body
-        /// </summary>
-        /// <param name="joints">joints to draw</param>
-        /// <param name="jointPoints">translated positions of joints to draw</param>
-        /// <param name="drawingContext">drawing context to draw to</param>
-        /// <param name="drawingPen">specifies color to draw a specific body</param>
-        private void DrawBody(IDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, DrawingContext drawingContext, Pen drawingPen)
-        {
-            // Draw the bones
-            foreach (var bone in Skeleton.bones)
-            {
-                DrawBone(joints, jointPoints, bone.Item1, bone.Item2, drawingContext, drawingPen);
-            }
-
-            // Draw the joints
-            foreach (JointType jointType in joints.Keys)
-            {
-                Brush drawBrush = null;
-
-                TrackingState trackingState = joints[jointType].TrackingState;
-
-                if (trackingState == TrackingState.Tracked)
-                {
-                    drawBrush = trackedJointBrush;
-                }
-                else if (trackingState == TrackingState.Inferred)
-                {
-                    drawBrush = inferredJointBrush;
-                }
-
-                if (drawBrush != null)
-                {
-                    drawingContext.DrawEllipse(drawBrush, null, jointPoints[jointType], JointThickness, JointThickness);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Draws one bone of a body (joint to joint)
-        /// </summary>
-        /// <param name="joints">joints to draw</param>
-        /// <param name="jointPoints">translated positions of joints to draw</param>
-        /// <param name="jointType0">first joint of bone to draw</param>
-        /// <param name="jointType1">second joint of bone to draw</param>
-        /// <param name="drawingContext">drawing context to draw to</param>
-        /// /// <param name="drawingPen">specifies color to draw a specific bone</param>
-        private void DrawBone(IDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, JointType jointType0, JointType jointType1, DrawingContext drawingContext, Pen drawingPen)
-        {
-            Joint joint0 = joints[jointType0];
-            Joint joint1 = joints[jointType1];
-
-            // If we can't find either of these joints, exit
-            if (joint0.TrackingState == TrackingState.NotTracked ||
-                joint1.TrackingState == TrackingState.NotTracked)
-            {
-                return;
-            }
-
-            // We assume all drawn bones are inferred unless BOTH joints are tracked
-            Pen drawPen = inferredBonePen;
-            if ((joint0.TrackingState == TrackingState.Tracked) && (joint1.TrackingState == TrackingState.Tracked))
-            {
-                drawPen = drawingPen;
-            }
-
-            drawingContext.DrawLine(drawPen, jointPoints[jointType0], jointPoints[jointType1]);
-        }
-
-        /// <summary>
-        /// Draws a hand symbol if the hand is tracked: red circle = closed, green circle = opened; blue circle = lasso
-        /// </summary>
-        /// <param name="handState">state of the hand</param>
-        /// <param name="handPosition">position of the hand</param>
-        /// <param name="drawingContext">drawing context to draw to</param>
-        private void DrawHand(HandState handState, Point handPosition, DrawingContext drawingContext)
-        {
-
-
-            switch (handState)
-            {
-                case HandState.Closed:
-                    drawingContext.DrawEllipse(handClosedBrush, null, handPosition, HandSize, HandSize);
-                    break;
-
-                case HandState.Open:
-                    drawingContext.DrawEllipse(handOpenBrush, null, handPosition, HandSize, HandSize);
-                    break;
-
-                case HandState.Lasso:
-                    drawingContext.DrawEllipse(handLassoBrush, null, handPosition, HandSize, HandSize);
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Draws indicators to show which edges are clipping body data
-        /// </summary>
-        /// <param name="body">body to draw clipping information for</param>
-        /// <param name="drawingContext">drawing context to draw to</param>
-        private void DrawClippedEdges(Body body, DrawingContext drawingContext)
-        {
-            FrameEdges clippedEdges = body.ClippedEdges;
-
-            if (clippedEdges.HasFlag(FrameEdges.Bottom))
-            {
-                drawingContext.DrawRectangle(
-                    Brushes.Red,
-                    null,
-                    new Rect(0, displayHeight - ClipBoundsThickness, displayWidth, ClipBoundsThickness));
-            }
-
-            if (clippedEdges.HasFlag(FrameEdges.Top))
-            {
-                drawingContext.DrawRectangle(
-                    Brushes.Red,
-                    null,
-                    new Rect(0, 0, displayWidth, ClipBoundsThickness));
-            }
-
-            if (clippedEdges.HasFlag(FrameEdges.Left))
-            {
-                drawingContext.DrawRectangle(
-                    Brushes.Red,
-                    null,
-                    new Rect(0, 0, ClipBoundsThickness, displayHeight));
-            }
-
-            if (clippedEdges.HasFlag(FrameEdges.Right))
-            {
-                drawingContext.DrawRectangle(
-                    Brushes.Red,
-                    null,
-                    new Rect(displayWidth - ClipBoundsThickness, 0, ClipBoundsThickness, displayHeight));
-            }
-        }
-
         #endregion
 
         #region Draw Color
@@ -682,7 +335,7 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
-        #region TEST_TEMP
+        #region Reset Option
         public RelayCommand _TestStrategy1 { get; private set; }
 
 
@@ -714,15 +367,10 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_StartRecording == null)
                 {
-                    _StartRecording = new RelayCommand(action => StartNewRecording(), pred => true);
+                    _StartRecording = new RelayCommand(action => StartNewRecording(), pred => !isCurrentlyRecording);
                 }
                 return _StartRecording;
             }
-        }
-
-        private bool CanStartReccording()
-        {
-            return !string.IsNullOrWhiteSpace(LiftName) && !IsRecording;
         }
 
         /// <summary>
@@ -730,12 +378,16 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private void StartNewRecording()
         {
-            IsRecording = true;
+            if (isCurrentlyRecording)
+                TempAddCurrentLift();
+
             CurrentRecordingBodyData = new BodyData
             {
                 DataFrames = new List<BodyDataFrame>(),
                 RecordDate = DateTime.Now
+
             };
+            isCurrentlyRecording = true;
         }
 
         public ICommand LogoutCommand { get; } = new RelayCommand(action => PageManager.SwitchPage(UIPages.LoginView));
@@ -747,24 +399,26 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_EndRecording == null)
                 {
-                    //_EndRecording = new RelayCommand(action => EndCurrentRecording());
-                    _EndRecording = new RelayCommand(async action => await EndCurrentRecording(), pred => true);
+                    _EndRecording = new RelayCommand(async action => await EndCurrentRecording(), pred => isCurrentlyRecording);
                 }
                 return _EndRecording;
             }
         }
+
         /// <summary>
         /// Posts the recorded lift to the server when the user denotes a lift has been completed.
         /// </summary>
         /// <returns></returns>
         private async Task EndCurrentRecording()
         {
-            //var _bodyData = 
+
+            isCurrentlyRecording = false;
+            //TempAddCurrentLift();
 
             var toSend = new LiftDTO
             {
                 ParentID = 1,
-                Name = LiftName,
+                Name = "FIX_NAME_SENDS" + Guid.NewGuid(),
                 Details = new LiftDetailDTO()
                 {
                     BodyData = new BodyDataDTO()
@@ -792,9 +446,22 @@ namespace BarNone.DataLift.UI.ViewModels
             });
 
             //System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp.ToString());
+        }
 
-            //StartNewRecording();
+        private void TempAddCurrentLift()
+        {
+            //var toSend = new LiftDTO()
+            //{
+            //    ParentID = 1,
+            //    Name = String.Format("{0}_{1}_{2}_New_Lift_{3}", CurrentRecordingBodyData.RecordDate.Year, CurrentRecordingBodyData.RecordDate.Month, CurrentRecordingBodyData.RecordDate.Day, (AllLiftData.Count + 1)),
+            //    Details = new LiftDetailDTO()
+            //    {
+            //        BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData)
+            //    }
+            //};
 
+            // Add the lift to the list of all lifts. 
+            //AllLiftData.Add(toSend);
         }
 
         #endregion
@@ -808,10 +475,10 @@ namespace BarNone.DataLift.UI.ViewModels
                 Reader?.Dispose();
                 Reader = null;
             }
-
+            
             if (kinectSensor != null)
             {
-                kinectSensor?.Close();
+                //kinectSensor?.Close();
                 kinectSensor = null;
             }
         }
@@ -819,14 +486,12 @@ namespace BarNone.DataLift.UI.ViewModels
         public DataRecorderVM()
         {
             Task.Run(() => SetUser());
-            //Task.Run(() => GetAllLifts());
-
+            
             // one sensor is currently supported
             kinectSensor = KinectSensor.GetDefault();
 
             // get the coordinate mapper
             coordinateMapper = kinectSensor.CoordinateMapper;
-            // get the depth (display) extents
 
             Reader = kinectSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color |
                                                  FrameSourceTypes.Body);
@@ -899,8 +564,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 }
             }
         }
-
-
+        
         /// <summary>
         /// Handles the event which the sensor becomes unavailable (E.g. paused, closed, unplugged).
         /// </summary>

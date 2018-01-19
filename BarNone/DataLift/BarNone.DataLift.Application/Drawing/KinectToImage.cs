@@ -1,61 +1,54 @@
 ﻿using BarNone.DataLift.DataModel.KinectData;
+using BarNone.Shared.DataTransfer;
 using Microsoft.Kinect;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-
+using System.Windows.Media.Media3D;
 
 namespace BarNone.DataLift.UI.Drawing
 {
+    /// <summary>
+    /// Class handling the drawing of kinect retrieved data
+    /// </summary>
     public static class KinectToImage
     {
         #region Brushes
         /// <summary>
-        /// Brush used for drawing hands that are currently tracked as closed
+        /// Color for a closed hand, debugging purposes
         /// </summary>
         private static readonly Brush handClosedBrush = new SolidColorBrush(Color.FromArgb(128, 255, 0, 0));
-
+        
         /// <summary>
-        /// Brush used for drawing hands that are currently tracked as opened
+        /// Color for an open hand, debugging purposes
         /// </summary>
         private static readonly Brush handOpenBrush = new SolidColorBrush(Color.FromArgb(128, 0, 255, 0));
-
+        
         /// <summary>
-        /// Brush used for drawing hands that are currently tracked as in lasso (pointer) position
+        /// Color for a lasso hand (index touching thumb), debugging purposes
         /// </summary>
         private static readonly Brush handLassoBrush = new SolidColorBrush(Color.FromArgb(128, 0, 0, 255));
 
         /// <summary>
-        /// Brush used for drawing joints that are currently tracked
+        /// Color of a tracked joint
         /// </summary>
         private static readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
-
+        
         /// <summary>
-        /// Brush used for drawing joints that are currently inferred
-        /// </summary>        
-        private static readonly Brush inferredJointBrush = Brushes.Yellow;
-
-        /// <summary>
-        /// Pen used for drawing bones that are currently inferred
-        /// </summary>        
-        private static readonly Pen inferredBonePen = new Pen(Brushes.Gray, 1);
-
-        /// <summary>
-        /// List of colors for each body tracked
+        /// Color of an infered joint location
         /// </summary>
-        private static List<Pen> bodyColors = new List<Pen>()
-        {
-            new Pen(Brushes.Red, 6),
-            new Pen(Brushes.Orange, 6),
-            new Pen(Brushes.Green, 6),
-            new Pen(Brushes.Blue, 6),
-            new Pen(Brushes.Indigo, 6),
-            new Pen(Brushes.Violet, 6)
-        };
+        private static readonly Brush inferredJointBrush = Brushes.Yellow;
+        
+        /// <summary>
+        /// Color of an inffered bone
+        /// </summary>
+        private static readonly Pen inferredBonePen = new Pen(Brushes.Blue, 6);
+
+        /// <summary>
+        /// Color of a non inferred body
+        /// </summary>
+        private static Pen bodyColor = new Pen(Brushes.Violet, 6);
 
         #endregion
 
@@ -82,53 +75,118 @@ namespace BarNone.DataLift.UI.Drawing
         #endregion
 
         #region API Draws
-        internal static void DrawFrontProfile(DrawingGroup dg, Body[] bodies)
-        {
-           
-        }
-        #endregion
-
-        #region Internal Draws
         /// <summary>
-        /// Draws a body
+        /// Draws all the front profile of collected body data <paramref name="joints"/>
+        /// </summary>
+        /// <param name="joints">Body data to be drawn</param>
+        /// <param name="canvas">Drawing group which will be drawn on</param>
+        /// <param name="height">Height of the <paramref name="canvas"/></param>
+        /// <param name="width">Width of the <paramref name="canvas"/></param>
+        internal static void DrawFrameFrontView(IList<JointDTO> joints, DrawingGroup canvas, int height, int width)
+        {
+            using (DrawingContext dc = canvas.Open())
+            {
+                // Draw a transparent background to set the render size
+                dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, width, height));
+
+
+                var originJoint = joints.FirstOrDefault(j => j.JointTypeID == (int)JointType.SpineBase);
+                if (originJoint == null)
+                    return;
+
+                var origin = new Point3D() { X = originJoint.X, Y = originJoint.Y, Z = originJoint.Z };
+
+                // convert the joint points to depth (display) space
+                Dictionary<JointDTO, Point> jointPoints = new Dictionary<JointDTO, Point>();
+
+                // convert the joint points to depth (display) space
+                foreach (var j in joints)
+                {
+                    Point3D position = new Point3D() { X = j.X, Y = j.Y, Z = j.Z };
+
+                    // sometimes the depth(Z) of an inferred joint may show as negative
+                    // clamp down to 0.1f to prevent coordinatemapper from returning (-Infinity, -Infinity)
+                    //CameraSpacePoint position = frame.Joints[jointType].Position;
+                    if (position.Z < 0)
+                    {
+                        position.Z = InferredZPositionClamp;
+                    }
+
+                    jointPoints[j] = new Point((position.X - origin.X) * -153.34 + width / 2, position.Y * -153.34 + height / 2);
+                }
+                DrawBodyFromDTO(jointPoints, dc, bodyColor);
+            }
+        }
+
+        /// <summary>
+        /// Draws all the side profile of collected body data <paramref name="joints"/>
+        /// </summary>
+        /// <param name="joints">Body data to be drawn</param>
+        /// <param name="canvas">Drawing group which will be drawn on</param>
+        /// <param name="height">Height of the <paramref name="canvas"/></param>
+        /// <param name="width">Width of the <paramref name="canvas"/></param>
+        internal static void DrawFrameSideView(IList<JointDTO> joints, DrawingGroup canvas, int height, int width)
+        {
+            using (DrawingContext dc = canvas.Open())
+            {
+                // Draw a transparent background to set the render size
+                dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, width, height));
+
+
+                var originJoint = joints.FirstOrDefault(j => j.JointTypeID == (int)JointType.SpineBase);
+                if (originJoint == null)
+                    return;
+
+                var origin = new Point3D() { X = originJoint.X, Y = originJoint.Y, Z = originJoint.Z };
+
+                // convert the joint points to depth (display) space
+                Dictionary<JointDTO, Point> jointPoints = new Dictionary<JointDTO, Point>();
+
+                // convert the joint points to depth (display) space
+                foreach (var j in joints)
+                {
+                    Point3D position = new Point3D() { X = j.X, Y = j.Y, Z = j.Z };
+
+                    // sometimes the depth(Z) of an inferred joint may show as negative
+                    // clamp down to 0.1f to prevent coordinatemapper from returning (-Infinity, -Infinity)
+                    //CameraSpacePoint position = frame.Joints[jointType].Position;
+                    if (position.Z < 0)
+                    {
+                        position.Z = InferredZPositionClamp;
+                    }
+
+                    jointPoints[j] = new Point((position.Z - origin.Z) * 153.34 + width / 2, position.Y * (-153.34) + height / 2);
+                }
+                DrawBodyFromDTO(jointPoints, dc, bodyColor);
+            }
+        }
+
+
+        /// <summary>
+        /// Draws a body to <paramref name="drawingContext"/>
         /// </summary>
         /// <param name="joints">joints to draw</param>
         /// <param name="jointPoints">translated positions of joints to draw</param>
         /// <param name="drawingContext">drawing context to draw to</param>
         /// <param name="drawingPen">specifies color to draw a specific body</param>
-        internal static void DrawBody(IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, DrawingContext drawingContext, Pen drawingPen)
+        internal static void DrawBodyFromDTO(IDictionary<JointDTO, Point> jointPoints, DrawingContext drawingContext, Pen drawingPen)
         {
             // Draw the bones
             foreach (var bone in Skeleton.bones)
             {
-                DrawBone(joints, jointPoints, bone.Item1, bone.Item2, drawingContext, drawingPen);
+                DrawBoneFromDTO(jointPoints, bone.Item1, bone.Item2, drawingContext, drawingPen);
             }
 
             // Draw the joints
-            foreach (JointType jointType in joints.Keys)
+            foreach (var j in jointPoints.Keys)
             {
-                Brush drawBrush = null;
-
-                TrackingState trackingState = joints[jointType].TrackingState;
-
-                if (trackingState == TrackingState.Tracked)
-                {
-                    drawBrush = trackedJointBrush;
-                }
-                else if (trackingState == TrackingState.Inferred)
-                {
-                    drawBrush = inferredJointBrush;
-                }
-
-                if (drawBrush != null)
-                {
-                    drawingContext.DrawEllipse(drawBrush, null, jointPoints[jointType], JointThickness, JointThickness);
-                }
+                if (j.JointTrackingStateTypeID == (int)TrackingState.Tracked)
+                    drawingContext.DrawEllipse(inferredJointBrush, null, jointPoints[j], JointThickness, JointThickness);
             }
         }
 
         /// <summary>
-        /// Draws one bone of a body (joint to joint)
+        /// Draws one bone of a body (joint to joint) to <paramref name="drawingContext"/>
         /// </summary>
         /// <param name="joints">joints to draw</param>
         /// <param name="jointPoints">translated positions of joints to draw</param>
@@ -136,92 +194,26 @@ namespace BarNone.DataLift.UI.Drawing
         /// <param name="jointType1">second joint of bone to draw</param>
         /// <param name="drawingContext">drawing context to draw to</param>
         /// /// <param name="drawingPen">specifies color to draw a specific bone</param>
-        internal static void DrawBone(IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, JointType jointType0, JointType jointType1, DrawingContext drawingContext, Pen drawingPen)
+        internal static void DrawBoneFromDTO(IDictionary<JointDTO, Point> jointPoints, JointType jointType0, JointType jointType1, DrawingContext drawingContext, Pen drawingPen)
         {
-            Joint joint0 = joints[jointType0];
-            Joint joint1 = joints[jointType1];
+            var joint0 = jointPoints.First(p => p.Key.JointTypeID == (int)jointType0);
+            var joint1 = jointPoints.First(p => p.Key.JointTypeID == (int)jointType1);
 
             // If we can't find either of these joints, exit
-            if (joint0.TrackingState == TrackingState.NotTracked ||
-                joint1.TrackingState == TrackingState.NotTracked)
+            if (joint0.Key.JointTrackingStateTypeID == (int)TrackingState.NotTracked ||
+                joint1.Key.JointTrackingStateTypeID == (int)TrackingState.NotTracked)
             {
                 return;
             }
 
             // We assume all drawn bones are inferred unless BOTH joints are tracked
             Pen drawPen = inferredBonePen;
-            if ((joint0.TrackingState == TrackingState.Tracked) && (joint1.TrackingState == TrackingState.Tracked))
+            if ((joint0.Key.JointTrackingStateTypeID == (int)TrackingState.Tracked) && (joint1.Key.JointTrackingStateTypeID == (int)TrackingState.Tracked))
             {
                 drawPen = drawingPen;
             }
 
-            drawingContext.DrawLine(drawPen, jointPoints[jointType0], jointPoints[jointType1]);
-        }
-
-        /// <summary>
-        /// Draws a hand symbol if the hand is tracked: red circle = closed, green circle = opened; blue circle = lasso
-        /// </summary>
-        /// <param name="handState">state of the hand</param>
-        /// <param name="handPosition">position of the hand</param>
-        /// <param name="drawingContext">drawing context to draw to</param>
-        internal static void DrawHand(HandState handState, Point handPosition, DrawingContext drawingContext)
-        {
-            switch (handState)
-            {
-                case HandState.Closed:
-                    drawingContext.DrawEllipse(handClosedBrush, null, handPosition, HandSize, HandSize);
-                    break;
-
-                case HandState.Open:
-                    drawingContext.DrawEllipse(handOpenBrush, null, handPosition, HandSize, HandSize);
-                    break;
-
-                case HandState.Lasso:
-                    drawingContext.DrawEllipse(handLassoBrush, null, handPosition, HandSize, HandSize);
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Draws indicators to show which edges are clipping body data
-        /// </summary>
-        /// <param name="body">body to draw clipping information for</param>
-        /// <param name="drawingContext">drawing context to draw to</param>
-        internal static void DrawClippedEdges(Body body, DrawingContext drawingContext)
-        {
-           /* FrameEdges clippedEdges = body.ClippedEdges;
-
-            if (clippedEdges.HasFlag(FrameEdges.Bottom))
-            {
-                drawingContext.DrawRectangle(
-                    Brushes.Red,
-                    null,
-                    new Rect(0, displayHeight - ClipBoundsThickness, displayWidth, ClipBoundsThickness));
-            }
-
-            if (clippedEdges.HasFlag(FrameEdges.Top))
-            {
-                drawingContext.DrawRectangle(
-                    Brushes.Red,
-                    null,
-                    new Rect(0, 0, displayWidth, ClipBoundsThickness));
-            }
-
-            if (clippedEdges.HasFlag(FrameEdges.Left))
-            {
-                drawingContext.DrawRectangle(
-                    Brushes.Red,
-                    null,
-                    new Rect(0, 0, ClipBoundsThickness, displayHeight));
-            }
-
-            if (clippedEdges.HasFlag(FrameEdges.Right))
-            {
-                drawingContext.DrawRectangle(
-                    Brushes.Red,
-                    null,
-                    new Rect(displayWidth - ClipBoundsThickness, 0, ClipBoundsThickness, displayHeight));
-            } */
+            drawingContext.DrawLine(drawPen, joint0.Value, joint1.Value);
         }
 
         #endregion

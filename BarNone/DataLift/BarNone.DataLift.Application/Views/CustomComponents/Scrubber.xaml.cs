@@ -13,17 +13,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BarNone.DataLift.UI.Views
+namespace BarNone.DataLift.UI.Views.CustomComponents
 {
     /// <summary>
-    /// Interaction logic for RegisterScreen.xaml
+    /// Interaction logic for Scrubber.xaml
     /// </summary>
-    public partial class RegisterScreen : UserControl
+    public partial class Scrubber : UserControl
     {
         /// <summary>
         /// Initializes the view
         /// </summary>
-        public RegisterScreen()
+        public Scrubber()
         {
             InitializeComponent();
         }

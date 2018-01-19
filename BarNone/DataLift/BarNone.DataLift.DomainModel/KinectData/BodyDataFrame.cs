@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DTOTransformable.Core;
 using BarNone.Shared.DataTransfer.LiftData;
 using BarNone.DataLift.DomainModel.Core;
 
