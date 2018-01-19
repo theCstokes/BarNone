@@ -7,7 +7,14 @@ export default class DataEvent<T> implements IDataEvent<T> {
 	/**
 	 * Registered event handlers.
 	 */
-	private handlers: { (data?: T): void; }[] = [];
+	private handlers: { (data?: T): void; }[];
+
+	/**
+	 * Initialize data event.
+	 */
+	public constructor() {
+		this.handlers = [];
+	}
 
 	/**
 	 * Add handler for event.

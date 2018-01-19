@@ -26,10 +26,12 @@ export default abstract class Screen<TView extends View> {
     private _config: IScreenConfig;
     private _screenObj: ContentContainer;
 
-    public constructor(viewType: { new(): TView }, config?: Partial<IScreenConfig>) {
+    public constructor(viewType: { new(): TView }/*, config?: Partial<IScreenConfig>*/) {
         this._view = new viewType();
-        this._config = <IScreenConfig>{};
-        Object.assign(this._config, config);
+        this._config = <IScreenConfig>{
+            addScreenToHistory: true
+        };
+        // Object.assign(this._config, config);
     }
 
     public create(parent: HTMLElement): InflaterData {

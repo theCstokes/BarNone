@@ -12,7 +12,7 @@ export default class NavScreen extends Screen<NavView> {
 		this._stateManager = new StateManager();
 		this._stateManager.bind(this._onRender.bind(this));
 		// super(NavView, StateManager, true);
-		// UEye.onBack.on(() => this._backAction());
+		UEye.onBack.register(() => this._backAction());
 
 		
 	}
