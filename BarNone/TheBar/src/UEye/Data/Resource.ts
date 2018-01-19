@@ -1,63 +1,232 @@
-// import { Auth, BaseDataManager } from "UEye/Data/BaseDataManager";
-// import RequestBuilder from "UEye/Data/RequestBuilder";
-// import StringUtils from "UEye/Core/StringUtils";
-// import { Filter, FilterBuilder } from "UEye/Core/FilterBuilder";
+import { Filter, FilterBuilder } from "UEye/Core/FilterBuilder";
+import { BaseDataManager } from "UEye/Data/BaseDataManager";
+import { RequestBuilder } from "UEye/Data/RequestBuilder";
+import StringUtils from "UEye/Core/StringUtils";
 
-// class LoadResult<TSource> {
-// 	public count: number;
-// 	public entities: TSource[];
-// }
+/**
+ * Result structure for lists.
+ */
+class ListResult<TSource> {
+    public count: number;
+    public entities: TSource[];
+}
 
-// export class WhereRequest {
+/**
+ * Result structure for entity.
+ */
+class EntityResult<TSource> {
+    public entity: TSource;
+}
 
-// }
+/**
+ * Load options for standard apis.
+ */
+export interface ILoadOptions<T> {
+    /**
+     * Search filter.
+     */
+    filter?: Filter<T>;
+}
 
-// export class LoadOptions {
-// 	public filter?: WhereRequest[];
-// }
+/**
+ * Load options for detail apis.
+ */
+export interface ILoadDetailOptions<T> {
+    /**
+     * Search filter.
+     */
+    filter?: Filter<T>;
 
-// export interface ILoadOptions<T> {
-// 	filter?: Filter<T>;
-// 	useOverride?: boolean;
-// }
+    /**
+     * Include details in results flag.
+     */
+    includeDetails?: boolean;
+}
 
-// export default class Resource<TSource> {
-// 	private _route: string;
+/**
+ * Base resource.
+ */
+export class BaseResource {
+    /**
+     * Resource name for api.
+     */
+    protected _resource: string;
 
-// 	public constructor(route: string) {
-// 		this._route = route;
-// 	}
+    /**
+     * Flag set to use local data override.
+     */
+    protected _useOverride: boolean;
+}
 
-// 	public async load<T>(pOptions?: ILoadOptions<T>): Promise<TSource[]> {
-// 		var options: ILoadOptions<T> = {};
-// 		if (pOptions !== undefined) options = pOptions;
+/**
+ * API resource for accessing endpoint.
+ */
+export class Resource<TData> extends BaseResource {
 
-// 		var builder = RequestBuilder
-// 			.GET(this._route, BaseDataManager.resourceAddress + this._route)
-// 			.header("Authorization", "Bearer " + BaseDataManager.auth.access_token);
+    /**
+     * Initialize resource
+     * @param resource - resource name for api.
+     * @param useOverride - use local data override flag
+     */
+    public constructor(resource: string, useOverride: boolean = false) {
+        super();
+        this._resource = resource;
+        this._useOverride = useOverride;
+    }
 
-// 		if (options.filter !== undefined) {
-// 			builder.header("Filter", JSON.stringify(FilterBuilder.getHeader(options.filter)));
-// 		}
+    /**
+     * Access GET api for this resource.
+     * @param pOptions - options for request
+     */
+    public async all(pOptions?: ILoadOptions<TData>): Promise<TData[]> {
+        var options: ILoadOptions<TData> = {};
+        if (pOptions !== undefined) options = pOptions;
 
-// 		var result = await builder.execute(undefined, options.useOverride === true);
+        var route = StringUtils.format("{0}{1}", BaseDataManager.resourceAddress, this._resource);
 
-// 		var data: LoadResult<TSource> = JSON.parse(result);
+        var builder = RequestBuilder
+            .GET(this._resource, route, this._useOverride)
+            .header("Authorization", "Bearer " + BaseDataManager.auth.access_token);
 
-// 		return data.entities;
-// 	}
+        if (options.filter !== undefined) {
+            builder.header("Filter", JSON.stringify(FilterBuilder.getHeader(options.filter)));
+        }
 
-// 	public async update(id: number, source: TSource): Promise<TSource[]> {
-// 		var result = await RequestBuilder
-// 			.PUT(this._route, StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, this._route, id), {
-// 				id: id
-// 			})
-// 			.header("Authorization", "Bearer " + BaseDataManager.auth.access_token)
-// 			.header("Content-Type", "application/json")
-// 			.execute(source);
+        var result = await builder.execute();
 
-// 		var data: LoadResult<TSource> = JSON.parse(result);
+        var data: ListResult<TData> = JSON.parse(result);
 
-// 		return data.entities;
-// 	}
-// }
+        return data.entities;
+    }
+
+    /**
+     * Access GET by id for this resource
+     * @param id - id of entity
+     */
+    public async single(id: number): Promise<TData> {
+        var route = StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, this._resource, id);
+
+        var builder = RequestBuilder
+            .GET(this._resource, route, this._useOverride)
+            .header("Authorization", "Bearer " + BaseDataManager.auth.access_token);
+
+        var result = await builder.execute();
+
+        var data: EntityResult<TData> = JSON.parse(result);
+
+        return data.entity;
+    }
+
+    /**
+     * Access PUT for this resource
+     * @param id - id for entity
+     * @param source - data
+     */
+    public async update(id: number, source: TData): Promise<TData[]> {
+        var route = StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, this._resource, id);
+
+        var result = await RequestBuilder
+            .PUT(this._resource, route, { id: id })
+            .header("Authorization", "Bearer " + BaseDataManager.auth.access_token)
+            .header("Content-Type", "application/json")
+            .execute(source);
+
+        var data: ListResult<TData> = JSON.parse(result);
+
+        return data.entities;
+    }
+}
+
+/**
+ * API resource for accessing detail endpoint.
+ */
+export class DetailResource<TData> extends BaseResource {
+
+    /**
+     * Initialize resource
+     * @param resource - resource name for api.
+     * @param useOverride - use local data override flag
+     */
+    public constructor(resource: string, useOverride: boolean = false) {
+        super();
+        this._resource = resource;
+        this._useOverride = useOverride;
+    }
+
+    /**
+     * Access GET api for this resource.
+     * @param pOptions - options for request
+     */
+    public async all(pOptions?: ILoadDetailOptions<TData>): Promise<TData[]> {
+        var options: ILoadDetailOptions<TData> = {};
+        if (pOptions !== undefined) options = pOptions;
+
+        var route = StringUtils.format("{0}{1}", BaseDataManager.resourceAddress, this._resource);
+
+        if (options.includeDetails) {
+            route = StringUtils.format("{0}/{1}", route, "Details");
+        }
+
+        var builder = RequestBuilder
+            .GET(this._resource, route, this._useOverride)
+            .header("Authorization", "Bearer " + BaseDataManager.auth.access_token);
+
+        if (options.filter !== undefined) {
+            builder.header("Filter", JSON.stringify(FilterBuilder.getHeader(options.filter)));
+        }
+
+        var result = await builder.execute();
+
+        var data: ListResult<TData> = JSON.parse(result);
+
+        return data.entities;
+    }
+
+    /**
+     * Access GET by id for this resource
+     * @param id - id of entity
+     */
+    public async single(id: number, pOptions?: ILoadDetailOptions<TData>): Promise<TData> {
+        var options: ILoadDetailOptions<TData> = {};
+        if (pOptions !== undefined) options = pOptions;
+
+        var route = StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, this._resource, id);
+
+        if (options.includeDetails) {
+            route = StringUtils.format("{0}/{1}", route, "Details");
+        }
+
+        var builder = RequestBuilder
+            .GET(this._resource, route, this._useOverride)
+            .header("Authorization", "Bearer " + BaseDataManager.auth.access_token);
+
+        if (options.filter !== undefined) {
+            builder.header("Filter", JSON.stringify(FilterBuilder.getHeader(options.filter)));
+        }
+
+        var result = await builder.execute();
+
+        var data: EntityResult<TData> = JSON.parse(result);
+
+        return data.entity;
+    }
+
+    /**
+     * Access PUT for this resource
+     * @param id - id for entity
+     * @param source - data
+     */
+    public async update(id: number, source: TData): Promise<TData[]> {
+        var route = StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, this._resource, id);
+
+        var result = await RequestBuilder
+            .PUT(this._resource, route, { id: id })
+            .header("Authorization", "Bearer " + BaseDataManager.auth.access_token)
+            .header("Content-Type", "application/json")
+            .execute(source);
+
+        var data: ListResult<TData> = JSON.parse(result);
+
+        return data.entities;
+    }
+}

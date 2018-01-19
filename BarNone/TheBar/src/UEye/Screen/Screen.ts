@@ -5,10 +5,19 @@ import StringUtils from "UEye/Core/StringUtils";
 import ControlTypes from "UEye/ControlTypes";
 import ContentContainer from "UEye/Elements/Containers/ContentContainer/ContentContainer";
 
+/**
+ * Screen config.
+ */
 export interface IScreenConfig {
+    /**
+     * Add screen to history flag.
+     */
     addScreenToHistory: boolean;
 }
 
+/**
+ * Screen object.
+ */
 export default abstract class Screen<TView extends View> {
     private _view: TView;
     private _config: IScreenConfig;

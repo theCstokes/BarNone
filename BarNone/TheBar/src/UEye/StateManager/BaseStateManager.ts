@@ -1,22 +1,51 @@
 import StateBind, { StateCallableBind, StateCallable } from "UEye/StateManager/StateBind";
 
+/**
+ * State render callback function.
+ */
 type RenderCallback<TState> = (current: TState, original: TState) => void;
 
+/**
+ * State tracker for current and original state.
+ */
 export class StateTracker<TState> {
+	/**
+	 * State construction function.
+	 */
 	private _TStateType: { new(): TState };
-    public current: TState;
+
+	/**
+	 * Current state.
+	 */
+	public current: TState;
+	
+	/**
+	 * Original state.
+	 */
 	public original: TState;
 	
+	/**
+	 * Create new StateTracker
+	 * @param TStateType - state construction object.
+	 */
 	public constructor(TStateType: { new(): TState }) {
 		this._TStateType = TStateType;
 		this.current = new TStateType();
 		this.original = new TStateType();
 	}
 
+	/**
+	 * Create new reset state.
+	 * @returns - new empty state.
+	 */
 	public empty(): StateTracker<TState> {
 		return new StateTracker<TState>(this._TStateType);
 	}
 
+	/**
+	 * Creates new state initialized from current state.
+	 * @returns - new state from current.
+	 */
 	public initialize(): StateTracker<TState> {
 		var nextState = Utils.clone(this);
 		nextState.original = Utils.clone(this.current);
@@ -24,71 +53,70 @@ export class StateTracker<TState> {
 	}
 }
 
+/**
+ * Base state manager.
+ */
 export abstract class BaseStateManager<TState> {
-    private _renderCallbackList: RenderCallback<TState>[];
+	/**
+	 * render callbacks.
+	 */
+	private _renderCallbackList: RenderCallback<TState>[];
+	
+	/**
+	 * state tracker object.
+	 */
     private _stateTracker: StateTracker<TState>;
-	// private _currentState: TState;
-	// private _originalState: TState;
-	// private _screen: AppScreen;
-	// private _saveEvent: DataEvent<void>;
 
+	/**
+	 * Create new Base state manager
+	 * @param TStateType - state builder.
+	 */
 	public constructor(TStateType: { new(): TState }) {
-        // this.resetState = StateBind.onCallable(this, resetCallable, {
-        //     resetState: true
-		// });
 		this._renderCallbackList = [];
 		this._stateTracker = new StateTracker(TStateType);
-		// this._currentState = Utils.clone(state);
-		// this._originalState = Utils.clone(state);
-
-		// this._saveEvent = new DataEvent<void>();
     }
-    
-    // public resetState: StateCallableBind<TState>;
 
+	/**
+	 * adds render callback to state manager
+	 * @param renderCallback - render callback
+	 */
 	public bind(renderCallback: RenderCallback<TState>) {
 		this._renderCallbackList.push(renderCallback);
     }
-    
+	
+	/**
+	 * Gets state tracker object.
+	 */
     public getState(): StateTracker<TState> {
 		return Utils.clone(this._stateTracker);
 	}
 
+	/**
+	 * Current state from state tracker.
+	 */
 	public getCurrentState(): TState {
 		return Object.freeze(this._stateTracker.current);
 	}
 
+	/**
+	 * Original state from state tracker.
+	 */
 	public getOriginalState(): TState {
 		return Object.freeze(this._stateTracker.original);
 	}
 
+	/**
+	 * Update state.
+	 * @param state - tacker object
+	 */
 	public updateState(state: StateTracker<TState>) {
 		if (this._stateTracker !== state) {
 			this._stateTracker = Utils.clone(state);
-			// if (reset) {
-			// 	this._originalState = Utils.clone(state);
-			// }
+			
 			this._renderCallbackList.forEach(rc => rc(
                 this.getCurrentState(),
                 this.getOriginalState()
 			));
 		}
 	}
-
-	// public get screen(): AppScreen {
-	// 	return this._screen;
-	// }
-
-	// public get saveEvent(): IDataEvent<void> {
-	// 	return this._saveEvent.expose();
-	// }
-
-	// public async save(): Promise<void> {
-	// 	await this.onSave();
-	// 	this._saveEvent.trigger();
-	// }
-
-	// public abstract init(): void;
-
-	// public abstract onSave(): void;
 }
