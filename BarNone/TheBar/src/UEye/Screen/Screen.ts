@@ -19,6 +19,9 @@ export interface IScreenConfig {
  * Screen object.
  */
 export default abstract class Screen<TView extends View> {
+    /**
+     * Screen view
+     */
     private _view: TView;
     private _config: IScreenConfig;
     private _screenObj: ContentContainer;

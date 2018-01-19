@@ -2,7 +2,7 @@ import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import User from "App/Data/Models/User/User";
 import LiftFolder from "App/Data/Models/LiftFolder/LiftFolder";
 import Lift from "App/Data/Models/Lift/Lift";
-import { Resource, DetailResource } from "UEye/Data/Data";
+import { Resource, DetailResource } from "UEye/Data/Resource";
 import Joint from "App/Data/Models/Joint/Joint";
 
 export default class DataManager extends BaseDataManager {
