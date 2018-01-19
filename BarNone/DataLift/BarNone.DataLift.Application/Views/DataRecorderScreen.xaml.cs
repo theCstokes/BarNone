@@ -26,6 +26,9 @@ namespace BarNone.DataLift.UI.Views
     {
 
         #region Constructor
+        /// <summary>
+        /// Initialize the component on creation.
+        /// </summary>
         public DataRecorderScreen()
         {
             InitializeComponent();

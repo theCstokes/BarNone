@@ -20,6 +20,9 @@ namespace BarNone.DataLift.UI.Views
     /// </summary>
     public partial class ControlHolderScreen : UserControl
     {
+        /// <summary>
+        /// Initialize the component on creation.
+        /// </summary>
         public ControlHolderScreen()
         {
             InitializeComponent();
