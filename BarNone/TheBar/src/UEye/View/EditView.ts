@@ -17,6 +17,9 @@ export abstract class EditView extends View {
      */
     public saveButton: Button;
 
+    /**
+     * View base config
+     */
     public get config(): ComponentConfig[] {
         return [
             {
