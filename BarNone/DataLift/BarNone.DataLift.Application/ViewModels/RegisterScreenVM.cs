@@ -15,10 +15,16 @@ namespace BarNone.DataLift.UI.ViewModels
     public class RegisterScreenVM : ViewModelBase
     {
         #region Types
+        /// <summary>
+        /// State of the register page.
+        /// </summary>
         private enum RegisterScreenState { NO_STATE, SPINNER, USERNAME_EXISTS_ERROR, PASSWORDS_DO_NOT_MATCH, MISSING_FIELD }
         #endregion
 
         #region Bound Properties
+        /// <summary>
+        /// The username the user inputs on the register page.
+        /// </summary>
         internal static string _Username = "";
         public string Username
         {
@@ -33,6 +39,9 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Password the user inputs on the register page.
+        /// </summary>
         private SecureString _Password = new SecureString();
         public SecureString Password
         {
@@ -47,7 +56,9 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
-
+        /// <summary>
+        /// The confrim password (bound to the field) on the regsiter page.
+        /// </summary>
         private SecureString _ConfirmPassword = new SecureString();
         public SecureString ConfirmPassword
         {
@@ -62,8 +73,10 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// The current state of the register page.
+        /// </summary>
         private RegisterScreenState _state = RegisterScreenState.NO_STATE;
-        
         private RegisterScreenState State
         {
             get => _state;
@@ -77,22 +90,33 @@ namespace BarNone.DataLift.UI.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs("ShowMissingFieldMessage"));
             }
         }
-
+        /// <summary>
+        /// Bool dictating whether the progress bar is visible.
+        /// </summary>
         public bool IsProgressBarVisible
         {
             get { return State == RegisterScreenState.SPINNER; }
         }
 
+        /// <summary>
+        /// Dictates whether the desired username is taken and display the appropriate error message.
+        /// </summary>
         public bool ShowUsernameExistMessage
         {
             get { return State == RegisterScreenState.USERNAME_EXISTS_ERROR; }
         }
 
+        /// <summary>
+        /// Dictates whether the password and the confirm password the user input does not match and display the approprite error message.
+        /// </summary>
         public bool ShowPasswordsMatchMessage
         {
             get { return State == RegisterScreenState.PASSWORDS_DO_NOT_MATCH; }
         }
 
+        /// <summary>
+        /// Bool that shows whether a field is missing and show the appropriate error message if it's the case.
+        /// </summary>
         public bool ShowMissingFieldMessage
         {
             get { return State == RegisterScreenState.MISSING_FIELD; }
@@ -101,8 +125,14 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region Commands
+        /// <summary>
+        /// Commmand that takes the user back to the login page.
+        /// </summary>
         public ICommand BackCommand { get; } = new RelayCommand(action => PageManager.SwitchPage(UIPages.LoginView));
 
+        /// <summary>
+        /// Bound command that calls the register new user function.
+        /// </summary>
         public RelayCommand _RegisterCommand;
 
         public ICommand RegisterCommand
@@ -120,28 +150,41 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Function that will register a new user and store the new user information on The Rack.
+        /// </summary>
+        /// <returns></returns>
         public async Task RegisterNewUser()
         {
+            // Make sure that there are no empty fields in the register page.  If so, throw the appropriate error.
             if(Username.Length == 0 || Password.Length == 0 || ConfirmPassword.Length == 0)
             {
                 State = RegisterScreenState.MISSING_FIELD;
             }
+            //  If we are good then ensure that the password and confirm password pages match.
             else if (SecureStringEqual(Password, ConfirmPassword))
             {
+                // Start the progress bar.
                 State = RegisterScreenState.SPINNER;
+                //  Generate a new user profile object and send it to the server.  
                 var g = await TokenManager.Create(new UserDTO() { UserName = Username, Password = ConvertSecure(Password) });
+
+                // If saving on the server is sucessful
                 if (g.Authorized)
                 {
+                    // Reset state and move into the control holder state..
                     State = RegisterScreenState.NO_STATE;
-                    PageManager.SwitchPage(UIPages.DataRecorderView);
+                    PageManager.SwitchPage(UIPages.ControlHolderView);
                 }
                 else
                 {
+                    // Else assume that the username already exists and dispaly the error to the user.
                     State = RegisterScreenState.USERNAME_EXISTS_ERROR;
                 }
             }
             else
             {
+                // Else the passwords do not match.  Throw the correct error.
                 State = RegisterScreenState.PASSWORDS_DO_NOT_MATCH;
             }
             
