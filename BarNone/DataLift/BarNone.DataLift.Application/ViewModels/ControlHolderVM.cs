@@ -14,6 +14,11 @@ using BarNone.DataLift.UI.Views;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
+    /// <summary>
+    /// The view model for control holder.  The control holder is the screen that holds all the user controls 
+    /// for Data Lift.  It is essentiall the "background" of the system.  It is responsible for dictating the 
+    /// state of the system, and what screens the user can interact with in a specific state.
+    /// </summary>
     public class ControlHolderVM : ViewModelBase
     {
         #region Public Commands

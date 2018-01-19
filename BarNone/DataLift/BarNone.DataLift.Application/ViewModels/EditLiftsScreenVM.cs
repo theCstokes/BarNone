@@ -16,6 +16,10 @@ using System.Windows.Threading;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
+    /// <summary>
+    /// The view model for the edit screen of the Data Lift system.  This control is responsible for editing
+    /// lifts that were recorded in a lifting session.
+    /// </summary>
     public class EditLiftsScreenVM : ViewModelBase
     {
         #region ListView properties
