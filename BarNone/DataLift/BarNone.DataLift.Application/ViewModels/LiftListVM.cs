@@ -82,7 +82,7 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         /// <summary>
-        /// List that dictates the drop down for the list of lifts.
+        /// List that dictates the drop down for the list of lifts.  
         /// </summary>
         private List<string> _liftTypeList;
         public List<string> LiftTypeList
