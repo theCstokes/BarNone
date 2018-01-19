@@ -7,12 +7,10 @@ using BarNone.DataLift.UI.Nav;
 using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DataTransfer;
 using Microsoft.Kinect;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,7 +18,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using BarNone.Shared.DataTransfer.Flex;
-using System.Security.AccessControl;
 
 namespace BarNone.DataLift.UI.ViewModels
 {

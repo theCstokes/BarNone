@@ -21,6 +21,9 @@ namespace BarNone.DataLift.UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Instantiates a new Data Lift window
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -29,6 +32,10 @@ namespace BarNone.DataLift.UI
             PageManager.SwitchPage(UIPages.ControlHolderView);
         }
 
+        /// <summary>
+        /// Page navigation within the main window
+        /// </summary>
+        /// <param name="nextPage">Page to switch to/param>
         internal void Navigate(UIPages nextPage)
         {
             Content = nextPage.page;

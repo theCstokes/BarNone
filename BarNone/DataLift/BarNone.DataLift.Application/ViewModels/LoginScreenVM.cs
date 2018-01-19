@@ -43,7 +43,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Field representation for the <see cref="Username"/> bindable property
         /// </summary>
-        private static string _username = "";
+        internal static string _username = "";
         /// <summary>
         /// Binding property for the user inputted username
         /// </summary>

@@ -1,15 +1,8 @@
 ﻿using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Nav;
 using MaterialDesignThemes.Wpf;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-
 using BarNone.DataLift.UI.Views;
 
 namespace BarNone.DataLift.UI.ViewModels
@@ -21,12 +14,33 @@ namespace BarNone.DataLift.UI.ViewModels
     /// </summary>
     public class ControlHolderVM : ViewModelBase
     {
+        #region Types
+        /// <summary>
+        /// Private enumeration defininng which state DataLift is in.
+        /// </summary>
+        private enum State
+        {
+            /// <summary>
+            /// The sub-view is the Recording Screen
+            /// </summary>
+            Recording,
+            /// <summary>
+            /// The sub-view is the Editing Screen
+            /// </summary>
+            Editing,
+            /// <summary>
+            /// The sub-view is the Save and Share Screen
+            /// </summary>
+            Saving
+        };
+        #endregion
+
         #region Public Commands
         /// <summary>
         /// Asynchronous function that controls the warning dialog.
         /// Shows warning telling the user that they may loose data if they go backwards in the workflow.
         /// </summary>
-        /// <param name="o"></param>
+        /// <param name="o">Unused</param>
         private async void ExecuteRunDialog(object o)
         {
             // Create a new dialog.
@@ -41,47 +55,78 @@ namespace BarNone.DataLift.UI.ViewModels
                 MoveWorkflowBackward();
             }
         }
-        public ICommand RunDialogCommand => new RelayCommand(ExecuteRunDialog);
 
         /// <summary>
-        /// Currently unused function.  Still bound to a button in the UI.  May be used in the future for debug.
+        /// Field representation for the <see cref="RunDialogCommand"/> bindable command
         /// </summary>
-        public RelayCommand _TestStrategy1 { get; private set; }
+        private RelayCommand _runDialogCommand;
+        /// <summary>
+        /// Bindable command to open a new dialog box
+        /// </summary>
+        public ICommand RunDialogCommand
+        {
+            get
+            {
+                if (_runDialogCommand == null)
+                {
+                    _runDialogCommand =  new RelayCommand(ExecuteRunDialog);
+                }
+                return _runDialogCommand;
+            }
+        }
+
+        /// <summary>
+        /// Field representation for the <see cref="TestStrategy1"/> bindable command
+        /// </summary>
+        private RelayCommand _testStrategy1;
+        /// <summary>
+        /// Currently unused function to reset the Kinect.  Still bound to a button in the UI.  May be used in the future for debug.
+        /// </summary>
         public ICommand TestStrategy1
         {
             get
             {
-                if (_TestStrategy1 == null)
+                if (_testStrategy1 == null)
                 {
-                    _TestStrategy1 = new RelayCommand(action => TestStrategy1_ResetKinectSensor());
+                    _testStrategy1 = new RelayCommand(action => TestStrategy1_ResetKinectSensor());
                 }
-                return _TestStrategy1;
+                return _testStrategy1;
             }
         }
 
         /// <summary>
+        /// Field representation for the <see cref="MoveWorflowForwardCmd"/> bindable command
+        /// </summary>
+        private RelayCommand _moveWorflowForwardCmd;
+        /// <summary>
         /// Bound command to move wordlow forwards in XAML.
         /// </summary>
-        public RelayCommand _MoveWorflowForwardCmd { get; private set; }
         public ICommand MoveWorflowForwardCmd
         {
             get
             {
-                if (_MoveWorflowForwardCmd == null)
+                if (_moveWorflowForwardCmd == null)
                 {
-                    _MoveWorflowForwardCmd = new RelayCommand(action => MoveWorflowForward());
+                    _moveWorflowForwardCmd = new RelayCommand(action => MoveWorflowForward());
                 }
-                return _MoveWorflowForwardCmd;
+                return _moveWorflowForwardCmd;
             }
         }
 
-        // Logout command.  Dumps user data and moves back to the login page.
+        /// <summary>
+        /// Logout command.Disposes user data and moves back to the login page.
+        /// </summary>
         public ICommand LogoutCommand { get; } = new RelayCommand(action => PageManager.SwitchPage(UIPages.LoginView));
+        #endregion
 
+        #region Public Properties
+        /// <summary>
+        /// Field representation for the <see cref="IsRecorderVisible"/> bindable property
+        /// </summary>
+        private bool _isRecorderVisible = true;
         /// <summary>
         /// Variable that controls the visibility of the Recorder Screen.
         /// </summary>
-        private bool _isRecorderVisible = true;
         public bool IsRecorderVisible
         {
             get => _isRecorderVisible;
@@ -92,13 +137,13 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
-        #endregion
-
-        #region Public Properties
+        /// <summary>
+        /// Field representation for the <see cref="IsEditorVisible"/> bindable property
+        /// </summary>
+        private bool _isEditorVisible = false;
         /// <summary>
         /// Variable that controls the visibility of the Editor Screen.
         /// </summary>
-        private bool _isEditorVisible = false;
         public bool IsEditorVisible
         {
             get => _isEditorVisible;
@@ -110,9 +155,12 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         /// <summary>
-        /// Variable that controls the visibility of the Saving Screen.
+        /// Field representation for the <see cref="IsSavingVisible"/> bindable property
         /// </summary>
         private bool _isSavingVisible = false;
+        /// <summary>
+        /// Variable that controls the visibility of the Saving Screen.
+        /// </summary>
         public bool IsSavingVisible
         {
             get => _isSavingVisible;
@@ -124,11 +172,13 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         /// <summary>
+        /// Field representation for the <see cref="IsBackwardsEnabled"/> bindable property
+        /// </summary>
+        private bool _isBackwardsEnabled = false;
+        /// <summary>
         /// Controls whether the move backwards in workflow button can be pressed.  
         /// Because you cannot move backwards in the worflow if you are in the first step.
         /// </summary>
-        private bool _isBackwardsEnabled = false;
-
         public bool IsBackwardsEnabled
         {
             get => _isBackwardsEnabled;
@@ -140,9 +190,12 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         /// <summary>
-        /// Determines the opacity of the button for step 2 of the workflow.  0.5 is 50% opacity.
+        /// Field representation for the <see cref="IsStepTwoEnabledController"/> bindable property
         /// </summary>
         private double _isStepTwoEnabledController = 0.5;
+        /// <summary>
+        /// Determines the opacity of the button for step 2 of the workflow.  0.5 is 50% opacity.
+        /// </summary>
         public double IsStepTwoEnabledController
         {
             get => _isStepTwoEnabledController;
@@ -154,9 +207,12 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         /// <summary>
-        /// Determines the opacity of the button for step 3 of the workflow.  0.5 is 50% opacity.
+        /// Field representation for the <see cref="IsStepThreeEnabledController"/> bindable property
         /// </summary>
         private double _isStepThreeEnabledController = 0.5;
+        /// <summary>
+        /// Determines the opacity of the button for step 3 of the workflow.  0.5 is 50% opacity.
+        /// </summary>
         public double IsStepThreeEnabledController
         {
             get => _isStepThreeEnabledController;
@@ -166,13 +222,15 @@ namespace BarNone.DataLift.UI.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs("IsStepThreeEnabledController"));
             }
         }
-
-        //TODO story board
-
+        
+        //TODO story board animate the progress bars
+        /// <summary>
+        /// Field representation for the <see cref="StepTwoProgressController"/> bindable property
+        /// </summary>
+        private int _stepTwoProgressController = 0;
         /// <summary>
         /// Dictates how far the progress bar is between step 1 and 2.  0 is 0% and 100 is 100%
         /// </summary>
-        private int _stepTwoProgressController = 0;
         public int StepTwoProgressController
         {
             get => _stepTwoProgressController;
@@ -183,11 +241,13 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
-
+        /// <summary>
+        /// Field representation for the <see cref="StepThreeProgressController"/> bindable property
+        /// </summary>
+        private int _stepThreeProgressController = 0;
         /// <summary>
         /// Dictates how far the progress bar is between step 2 and 3.  0 is 0% and 100 is 100%
         /// </summary>
-        private int _stepThreeProgressController = 0;
         public int StepThreeProgressController
         {
             get => _stepThreeProgressController;
@@ -201,23 +261,14 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region Private Variables
-
         /// <summary>
-        /// private variable used to track waht state of the workflow the system is in.
+        /// Variable to track waht state of the workflow the system is in.
         /// </summary>
         private State _currentState = State.Recording;
 
         #endregion
-
-        #region Private Enums
-        /// <summary>
-        /// Private enumeration defininng which state DataLift is in.
-        /// </summary>
-        private enum State { Recording, Editing, Saving };
-        #endregion
-
+        
         #region Private Functions
-
         /// <summary>
         /// Currently unused function.  Bound to a button in the UI.  May be used in the future.
         /// </summary>
@@ -340,6 +391,4 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion 
 
     }
-
-
 }

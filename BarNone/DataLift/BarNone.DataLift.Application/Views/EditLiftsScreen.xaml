@@ -30,7 +30,7 @@
     </UserControl.DataContext>
     <DockPanel>
         <materialDesign:Card DockPanel.Dock="Left" VerticalAlignment="Stretch" Margin="0 0 10 0">
-            <ListView ItemsSource="{Binding Test}" SelectionMode="Single" SelectedItem="{Binding SelectedLift}" DockPanel.Dock="Left">
+            <ListView ItemsSource="{Binding LiftIntervals}" SelectionMode="Single" SelectedItem="{Binding SelectedLift}" DockPanel.Dock="Left">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid Width="300">

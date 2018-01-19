@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -14,13 +9,18 @@ namespace BarNone.DataLift.UI.ViewModels
     /// </summary>
     public class LiftListVM : ViewModelBase
     {
-        // Corresponds to the index in the ObservableCollection
+        /// <summary>
+        /// Corresponds to the index in the <see cref="EditLiftsScreenVM.LiftIntervals"/>
+        /// </summary>
         public int Count;
 
         /// <summary>
-        /// The name of the lift.  User editable.
+        /// Field representation for the <see cref="LiftName"/> bindable property
         /// </summary>
         private string _liftName;
+        /// <summary>
+        /// The name of the lift.  User editable.
+        /// </summary>
         public string LiftName
         {
             get { return _liftName; }
@@ -35,9 +35,12 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         /// <summary>
-        /// The type  of lift; squat, clean etc.
+        /// Field representation for the <see cref="LiftType"/> bindable property list
         /// </summary>
         private string _liftType;
+        /// <summary>
+        /// The type  of lift; squat, clean etc.
+        /// </summary>
         public string LiftType
         {
             get { return _liftType; }
@@ -50,11 +53,14 @@ namespace BarNone.DataLift.UI.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs("LiftType"));
             }
         }
-
+        
+        /// <summary>
+        /// Field representation for the <see cref="LiftName"/> bindable property
+        /// </summary>
+        private string _liftStartTime;
         /// <summary>
         /// The time the lift has started.
         /// </summary>
-        private string _liftStartTime;
         public string LiftStartTime
         {
             get { return _liftStartTime; }
@@ -69,9 +75,12 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         /// <summary>
-        /// The time the lift has ended.
+        /// Field representation for the <see cref="LiftEndTime"/> bindable property
         /// </summary>
         private string _liftEndTime;
+        /// <summary>
+        /// The time the lift has ended.
+        /// </summary>
         public string LiftEndTime
         {
             get { return _liftEndTime; }
@@ -86,9 +95,12 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         /// <summary>
-        /// List that dictates the drop down for the list of lifts.  
+        /// Field representation for the <see cref="LiftTypeList"/> bindable property
         /// </summary>
         private List<string> _liftTypeList;
+        /// <summary>
+        /// List that dictates the drop down for the list of lifts.  
+        /// </summary>
         public List<string> LiftTypeList
         {
             get { return new List<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", "Other" }; }

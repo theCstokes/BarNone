@@ -2,14 +2,8 @@
 using BarNone.DataLift.UI.Drawing;
 using BarNone.DataLift.UI.ViewModels.Common;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -22,13 +16,94 @@ namespace BarNone.DataLift.UI.ViewModels
     /// </summary>
     public class EditLiftsScreenVM : ViewModelBase
     {
-        #region ListView properties
+        #region Video Data Properties
+        /// <summary>
+        /// Field representation for the <see cref="CurrentLifts"/> bindable property
+        /// </summary>
+        private CurrentLiftDataVM _currentLifts = CurrentLiftDataVMSingleton.GetInstance();
+        /// <summary>
+        /// Shared viewmodel reference which holds currently recorded data consistently between VM's
+        /// </summary>
+        public CurrentLiftDataVM CurrentLifts
+        {
+            get => _currentLifts;
+            set
+            {
+                _currentLifts = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentLifts"));
+            }
+        }
+
+        #endregion
+
+        #region Image Properties
+        /// <summary>
+        /// Drawing group for rendering output of the left image
+        /// </summary>
+        private DrawingGroup _leftImageDrawingGroup = new DrawingGroup();
+        /// <summary>
+        /// Field representation for the <see cref="LeftImage"/> bindable property
+        /// </summary>
+        private DrawingImage _leftImage;
+        /// <summary>
+        /// Drawing image that we will display on the left
+        /// </summary>
+        public ImageSource LeftImage
+        {
+            get => _leftImage;
+            set
+            {
+                OnPropertyChanged(new PropertyChangedEventArgs("LeftImage"));
+            }
+        }
 
         /// <summary>
-        /// Observable collection used for debug in interm before we can recieve actual data from the kinect
-        /// and cast it appropriatly.
+        /// Drawing group for rendering output of the right image
         /// </summary>
-        private ObservableCollection<LiftListVM> _test = new ObservableCollection<LiftListVM>
+        private DrawingGroup _rightImageDrawingGroup = new DrawingGroup();
+        /// <summary>
+        /// Field representation for the <see cref="RightImage"/> bindable property
+        /// </summary>
+        private DrawingImage _rightImage;
+        /// <summary>
+        /// Drawing image that we will display on the right
+        /// </summary>
+        public ImageSource RightImage
+        {
+            get => _rightImage;
+            set
+            {
+                OnPropertyChanged(new PropertyChangedEventArgs("RightImage"));
+            }
+        }
+
+        /// <summary>
+        /// Drawing group for rendering output of the middle image
+        /// </summary>
+        private DrawingGroup _middleImageDrawingGroup = new DrawingGroup();
+        /// <summary>
+        /// Field representation for the <see cref="MiddleImage"/> bindable property
+        /// </summary>
+        private DrawingImage _middleImage;
+        /// <summary>
+        /// Drawing image that we will display in the middle
+        /// </summary>
+        public ImageSource MiddleImage
+        {
+            get => _middleImage;
+            set
+            {
+                OnPropertyChanged(new PropertyChangedEventArgs("MiddleImage"));
+            }
+        }
+
+        #endregion
+
+        #region ListView properties
+        /// <summary>
+        /// Field representation for the <see cref="LiftIntervals"/> bindable property
+        /// </summary>
+        private ObservableCollection<LiftListVM> _liftIntervals = new ObservableCollection<LiftListVM>
         {
             new LiftListVM
             {
@@ -47,31 +122,35 @@ namespace BarNone.DataLift.UI.ViewModels
                 Count =  1
             }
         };
+
         /// <summary>
         /// Observable collection to be displayed in the ListView.
         /// </summary>
-        public ObservableCollection<LiftListVM> Test
+        public ObservableCollection<LiftListVM> LiftIntervals
         {
             get
             {
-                return _test;  
+                return _liftIntervals;
             }
             set
             {
-                if (_test == value) return;
+                if (_liftIntervals == value) return;
 
-                _test = value;
+                _liftIntervals = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("Test"));
             }
         }
 
         /// <summary>
-        /// The lift that is selected in the lift.  Used to bind to video player to display the selected lift.
+        /// Field representation for the <see cref="SelectedLift"/> bindable property
         /// </summary>
         private LiftListVM _selectedLift;
+        /// <summary>
+        /// The lift that is selected in the lift.  Used to bind to video player to display the selected lift.
+        /// </summary>
         public LiftListVM SelectedLift
         {
-            get { return _selectedLift;  }
+            get { return _selectedLift; }
 
             set
             {
@@ -85,11 +164,13 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region ListView Commands
-
+        /// <summary>
+        /// Field representation for the <see cref="DeleteSelectedRecording"/> bindable property
+        /// </summary>
+        private RelayCommand _deleteSelectedRecording;
         /// <summary>
         /// Command that calls the function to delete lifts from the ListView.
         /// </summary>
-        public RelayCommand _deleteSelectedRecording { get; private set; }
         public ICommand DeleteSelectedRecording
         {
             get
@@ -115,13 +196,19 @@ namespace BarNone.DataLift.UI.ViewModels
             if (action == null) return;
 
             // Remove the correct lift and redo count for all the remaining lifts in ListView.
-            Test.RemoveAt(selected.Count);
-            for (int i = 0; i < Test.Count; i++) Test[i].Count = i;
+            LiftIntervals.RemoveAt(selected.Count);
+            for (int i = 0; i < LiftIntervals.Count; i++) LiftIntervals[i].Count = i;
         }
         #endregion
 
         #region Video Control Commands
+        /// <summary>
+        /// Field representation for the <see cref="CommandPlayVideo"/> bindable command
+        /// </summary>
         private RelayCommand _commandPlayVideo;
+        /// <summary>
+        /// The command to play/resume the videos.
+        /// </summary>
         public ICommand CommandPlayVideo
         {
             get
@@ -134,7 +221,13 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Field representation for the <see cref="CommandPauseVideo"/> bindable command
+        /// </summary>
         private RelayCommand _commandPauseVideo;
+        /// <summary>
+        /// The command to pause the videos.
+        /// </summary>
         public ICommand CommandPauseVideo
         {
             get
@@ -147,7 +240,13 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Field representation for the <see cref="CommandResetVideo"/> bindable command
+        /// </summary>
         private RelayCommand _commandResetVideo;
+        /// <summary>
+        /// The command to reset the videos to the first frame, play or pause is not invoked.
+        /// </summary>
         public ICommand CommandResetVideo
         {
             get
@@ -160,7 +259,13 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Field representation for the <see cref="CommandFastForwardVideo"/> bindable command
+        /// </summary>
         private RelayCommand _commandFastForwardVideo;
+        /// <summary>
+        /// The command to fast forward the videos.
+        /// </summary>
         public ICommand CommandFastForwardVideo
         {
             get
@@ -173,7 +278,13 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Field representation for the <see cref="CommandSlowMotionVideo"/> bindable command
+        /// </summary>
         private RelayCommand _commandSlowMotionVideo;
+        /// <summary>
+        /// The command to play the videos in slow motion, half speed
+        /// </summary>
         public ICommand CommandSlowMotionVideo
         {
             get
@@ -188,59 +299,22 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
-        private CurrentLiftDataVM _currentLifts = CurrentLiftDataVMSingleton.GetInstance();
-        public CurrentLiftDataVM CurrentLifts
-        {
-            get => _currentLifts;
-            set
-            {
-                _currentLifts = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("CurrentLifts"));
-            }
-        }
-
-
+        #region Video Controls
         /// <summary>
-        /// Drawing group for rendering output
+        /// Control Timer in the UI thread to handle VM to UI timed requests
         /// </summary>
-        private DrawingGroup _leftImageDrawingGroup = new DrawingGroup();
-        /// <summary>
-        /// Drawing image that we will display
-        /// </summary>
-        private DrawingImage _leftImage;
-        public ImageSource LeftImage
-        {
-            get => _leftImage;
-            set
-            {
-                OnPropertyChanged(new PropertyChangedEventArgs("LeftImage"));
-            }
-        }
-
-        /// <summary>
-        /// Drawing group for rendering output
-        /// </summary>
-        private DrawingGroup _rightImageDrawingGroup = new DrawingGroup();
-        /// <summary>
-        /// Drawing image that we will display
-        /// </summary>
-        private DrawingImage _rightImage;
-        public ImageSource RightImage
-        {
-            get => _rightImage;
-            set
-            {
-                OnPropertyChanged(new PropertyChangedEventArgs("RightImage"));
-            }
-        }
-
-
         DispatcherTimer VideoTimer;
 
+        /// <summary>
+        /// Current Video frame to draw
+        /// </summary>
+        private int currentFrame = 0;
 
-        //TMP
-        int currentFrame = 0;
-
+        /// <summary>
+        /// Redraws each image if required
+        /// </summary>
+        /// <param name="sender">Event object, unused</param>
+        /// <param name="e">Event parameters, unused</param>
         private void Redraw(object sender, EventArgs e)
         {
             KinectToImage.DrawFrameFrontView(CurrentLifts.CurrentRecordedData[0].Details.BodyData.Details.OrderedFrames[currentFrame].Details.Joints, _leftImageDrawingGroup, 424, 424);
@@ -248,8 +322,13 @@ namespace BarNone.DataLift.UI.ViewModels
 
             currentFrame = (currentFrame + 1) % CurrentLifts.CurrentRecordedData[0].Details.BodyData.Details.OrderedFrames.Count;
         }
-        
+
+        #endregion
+
         #region Constructor(s) & Desctructor
+        /// <summary>
+        /// Instantiates a new EditLiftsScreenVM and sets up the draws
+        /// </summary>
         public EditLiftsScreenVM()
         {
             //Init Images
@@ -261,18 +340,19 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 IsEnabled = false,
                 Interval = new TimeSpan(0, 0, 0, 0, 10)
-                
-            };
-            
-            VideoTimer.Tick += Redraw;
 
+            };
+
+            VideoTimer.Tick += Redraw;
         }
 
+        /// <summary>
+        /// Destructor for EditLiftScreenVM, 
+        /// </summary>
         ~EditLiftsScreenVM()
         {
             VideoTimer.Stop();
         }
-
         #endregion
 
     }
