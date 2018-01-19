@@ -9,8 +9,17 @@ namespace BarNone.TheRack.DataAccess
 {
     public partial class DomainContext
     {
+        /// <summary>
+        /// Lift db entities.
+        /// </summary>
+        /// <value>
+        /// The lifts.
+        /// </value>
         public DbSet<Lift> Lifts { get; set; }
 
+        /// <summary>
+        /// The lift parent bind
+        /// </summary>
         private ModelMapAction liftParentBind = CreateModelMapping(builder => builder.Entity<Lift>()
                 .HasOne(r => r.Parent)
                 .WithMany(rc => rc.Lifts));

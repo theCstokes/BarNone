@@ -12,67 +12,20 @@ using TheRack.ResourceServer.API.Response;
 
 namespace BarNone.TheRack.ResourceServer.API.Controllers.Lift
 {
+    /// <summary>
+    /// LiftFolder endpoint controller.
+    /// </summary>
+    /// <seealso cref="BarNone.TheRack.ResourceServer.API.Controllers.Core.DefaultDetailController{BarNone.Shared.DataTransfer.LiftFolderDTO, BarNone.Shared.DomainModel.LiftFolder, BarNone.TheRack.Repository.LiftFolderRepository}" />
     [Route("api/v1/[controller]")]
     [Authorize(Policy = "User")]
     public class LiftFolderController : DefaultDetailController<LiftFolderDTO, LiftFolder, LiftFolderRepository>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LiftFolderController"/> class.
+        /// </summary>
         public LiftFolderController(): base((context) => new LiftFolderRepository(context))
         {
 
         }
     }
-
-
-
-    //    : DetailController<LiftFolderDTO>
-    //{
-    //    public override IActionResult Delete(int id)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public override IActionResult GetAll()
-    //    {
-    //        using (var repo = new LiftFolderRepository())
-    //        {
-    //            var filter = FilterRequest;
-    //            if (filter != null)
-    //            {
-    //                return EntityResponse.Enumerable(repo.Get(filter.GetWhere()));
-    //            }
-    //            return EntityResponse.Enumerable(repo.Get());
-    //        }
-    //    }
-
-    //    public override IActionResult GetByID(int id)
-    //    {
-    //        using (var repo = new LiftFolderRepository())
-    //        {
-    //            return EntityResponse.Response(repo.Get(id));
-    //        }
-    //    }
-
-    //    public override IActionResult GetWithDetailsByID(int id)
-    //    {
-    //        using (var repo = new LiftFolderRepository())
-    //        {
-    //            return EntityResponse
-    //                .DetailResponse(repo.GetWithDetails(id));
-    //        }
-    //    }
-
-    //    public override IActionResult Post([FromBody] LiftFolderDTO dto)
-    //    {
-    //        using (var repo = new LiftFolderRepository())
-    //        {
-    //            return EntityResponse
-    //                .Response(repo.Create(dto));
-    //        }
-    //    }
-
-    //    public override IActionResult Put(int id, [FromBody] LiftFolderDTO dto)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
 }

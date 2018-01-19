@@ -12,13 +12,25 @@ using static BarNone.TheRack.Repository.Core.Resolvers;
 
 namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
 {
+    /// <summary>
+    /// Generic detail controller implementation.
+    /// </summary>
+    /// <typeparam name="TDTO">The type of the dto.</typeparam>
+    /// <typeparam name="TDomainModel">The type of the domain model.</typeparam>
+    /// <typeparam name="TRepo">The type of the repo.</typeparam>
+    /// <seealso cref="BarNone.TheRack.ResourceServer.API.Controllers.Core.DetailController{TDTO}" />
     public class DefaultDetailController<TDTO, TDomainModel, TRepo> : DetailController<TDTO>
         where TDTO : BaseDTO<TDTO>, new()
         where TDomainModel : class, IDomainModel<TDomainModel>, new()
         where TRepo : BaseRepository<TDomainModel, TDTO>
     {
 
-        #region Public Delegate Definition(s).
+        #region Public Delegate Definition(s).        
+        /// <summary>
+        /// Builder delegate to create an entity repository.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
         public delegate TRepo RepoBuilder(DomainContext context);
         #endregion
 
@@ -26,14 +38,23 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
         private RepoBuilder _builder;
         #endregion
 
-        #region Public Constructor(s).
+        #region Public Constructor(s).        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultDetailController{TDTO, TDomainModel, TRepo}"/> class.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
         public DefaultDetailController(RepoBuilder builder)
         {
             _builder = builder;
         }
         #endregion
 
-        #region Public DetailController Implementation.
+        #region Public DetailController Implementation.        
+        /// <summary>
+        /// Deletes the entity with the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         public override IActionResult Delete(int id)
         {
             using (var context = new DomainContext(UserID))
@@ -45,6 +66,10 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
             }
         }
 
+        /// <summary>
+        /// Gets all entities.
+        /// </summary>
+        /// <returns></returns>
         public override IActionResult GetAll()
         {
             using (var context = new DomainContext(UserID))
@@ -56,6 +81,11 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
             }
         }
 
+        /// <summary>
+        /// Gets the entity by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         public override IActionResult GetByID(int id)
         {
             using (var context = new DomainContext(UserID))
@@ -67,6 +97,11 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
             }
         }
 
+        /// <summary>
+        /// Gets the entity with details by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         public override IActionResult GetWithDetailsByID(int id)
         {
             using (var context = new DomainContext(UserID))
@@ -78,6 +113,11 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
             }
         }
 
+        /// <summary>
+        /// Creates the entity from the specified dto.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <returns></returns>
         public override IActionResult Post([FromBody]TDTO dto)
         {
             using (var context = new DomainContext(UserID))
@@ -89,6 +129,12 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
             }
         }
 
+        /// <summary>
+        /// Updates the entity from specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="dto">The dto.</param>
+        /// <returns></returns>
         public override IActionResult Put(int id, TDTO dto)
         {
             using (var context = new DomainContext(UserID))

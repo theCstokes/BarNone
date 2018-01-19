@@ -22,11 +22,6 @@ namespace BarNone.TheRack.ResourceServer.API
     {
         public Startup(IHostingEnvironment env)
         {
-            //JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            //{
-            //    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            //};
-
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)

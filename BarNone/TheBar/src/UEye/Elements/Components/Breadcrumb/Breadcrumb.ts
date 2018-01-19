@@ -54,15 +54,6 @@ export default class Breadcrumb extends BaseComponent {
     public onEnabledChange(): void {
         throw new Error("Method not implemented.");
     }
-    public onModifiedChange(): void {
-        throw new Error("Method not implemented.");
-    }
-    public onReadonlyChange(): void {
-        throw new Error("Method not implemented.");
-    }
-    public onErrorChange(): void {
-        throw new Error("Method not implemented.");
-    }
     // #endregion
 
     // #region Private Member(s).

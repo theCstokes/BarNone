@@ -22,16 +22,35 @@ using static BarNone.TheRack.ResourceServer.API.Controllers.Flex.FlexController;
 
 namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
 {
+    /// <summary>
+    /// 
+    /// </summary>
     struct FlexEntity
     {
+        /// <summary>
+        /// The builder for the repository.
+        /// </summary>
         public RepositoryBuilder Builder;
+
+        /// <summary>
+        /// The type of entity managed by the repository.
+        /// </summary>
         public Type Type;
     }
 
+    /// <summary>
+    /// Endpoint controller for managing flex requests of very large size.
+    /// </summary>
+    /// <seealso cref="BarNone.TheRack.ResourceServer.API.Controllers.Core.BaseController" />
     [Route("api/v1/[controller]")]
     [Authorize(Policy = "User")]
     public class FlexController : BaseController
     {
+        /// <summary>
+        /// Delegate for building repository.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
         public delegate IRepository RepositoryBuilder(DomainContext context);
 
         private Dictionary<string, FlexEntity> repoMap = new Dictionary<string, FlexEntity>
@@ -46,6 +65,10 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
             }
         };
 
+        /// <summary>
+        /// Route to make flex request.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Flex()
         {
@@ -93,15 +116,5 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
                 }
             }
         }
-
-        //private T ConvertObject<T>(Object obj)
-        //{
-        //    return ((JObject)obj).ToObject<>();
-        //}
     }
-
-    //public static class FlexResourceType
-    //{
-    //    public static string Lift = "Lift";
-    //}
 }

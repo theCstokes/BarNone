@@ -13,30 +13,41 @@ namespace BarNone.TheRack.Repository.Core
 {
     public static class Resolvers
     {
-        //public delegate ConvertConfig ConfigResolver();
-
-        //public delegate BaseDataConverter<TDomainModel, TDTO, TConverters> ConverterResolverDelegate<TDomainModel, TDTO, TConverters>()
-        //    where TDomainModel : ITrackable<TDomainModel>, new()
-        //    where TDTO : ITrackableDTO<TDTO>, new()
-        //    where TConverters : IConverter;
-
+        /// <summary>
+        /// Delegate to resolve type converter.
+        /// </summary>
+        /// <typeparam name="TDomainModel">The type of the domain model.</typeparam>
+        /// <typeparam name="TDTO">The type of the dto.</typeparam>
+        /// <param name="dto">The dto.</param>
+        /// <returns></returns>
         public delegate TDomainModel ConverterResolverDelegate<TDomainModel, TDTO>(TDTO dto)
             where TDomainModel : ITrackable<TDomainModel>, new()
             where TDTO : ITrackableDTO<TDTO>, new();
 
+        /// <summary>
+        /// Delegate to resolve set.
+        /// </summary>
+        /// <typeparam name="TDomainModel">The type of the domain model.</typeparam>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
         public delegate DbSet<TDomainModel> SetResolverDelegate<TDomainModel>(DomainContext context)
             where TDomainModel : class, IDomainModel<TDomainModel>, new();
 
-        //public delegate BaseDetailDataConverter<TDomainModel, TDTO, TDetailDTO, TConverters>
-        //    DetailConverterResolverDelegate<TDomainModel, TDTO, TDetailDTO, TConverters>()
-        //    where TDTO : BaseParentDTO<TDTO, TDetailDTO>, new()
-        //    where TDetailDTO : BaseDetailDTO<TDetailDTO>, new()
-        //    where TDomainModel : class, IDomainModel<TDomainModel>, new()
-        //    where TConverters : IConverter;
-
+        /// <summary>
+        /// Delegate to resolve entities.
+        /// </summary>
+        /// <typeparam name="TDomainModel">The type of the domain model.</typeparam>
+        /// <param name="set">The set.</param>
+        /// <returns></returns>
         public delegate IQueryable<TDomainModel> EntityResolverDelegate<TDomainModel>(DbSet<TDomainModel> set)
             where TDomainModel : class, IDomainModel<TDomainModel>, new();
 
+        /// <summary>
+        /// Delegate to resolve detail entities.
+        /// </summary>
+        /// <typeparam name="TDomainModel">The type of the domain model.</typeparam>
+        /// <param name="set">The set.</param>
+        /// <returns></returns>
         public delegate IQueryable<TDomainModel> DetailResolverDelegate<TDomainModel>(IQueryable<TDomainModel> set)
             where TDomainModel : class, IDomainModel<TDomainModel>, new();
     }

@@ -8,6 +8,12 @@ namespace BarNone.TheRack.DataAccess
 {
     public partial class DomainContext
     {
+        /// <summary>
+        /// JointType db entities.
+        /// </summary>
+        /// <value>
+        /// The joint types.
+        /// </value>
         public virtual DbSet<JointType> JointTypes { get; set; }
     }
 }

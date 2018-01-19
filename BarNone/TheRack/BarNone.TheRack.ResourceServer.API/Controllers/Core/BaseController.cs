@@ -10,8 +10,18 @@ using System.Threading.Tasks;
 
 namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
 {
+    /// <summary>
+    /// Base controller.
+    /// </summary>
+    /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     public class BaseController : Controller
     {
+        /// <summary>
+        /// Gets the filter request from the headers.
+        /// </summary>
+        /// <value>
+        /// The filter request.
+        /// </value>
         public FilterDTO FilterRequest
         {
             get
@@ -22,6 +32,12 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
             }
         }
 
+        /// <summary>
+        /// Gets the user identifier from the token.
+        /// </summary>
+        /// <value>
+        /// The user identifier.
+        /// </value>
         public int UserID
         {
             get

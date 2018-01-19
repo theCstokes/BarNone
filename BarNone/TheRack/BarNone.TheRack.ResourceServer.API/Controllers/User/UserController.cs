@@ -16,10 +16,18 @@ using System.Security.Claims;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
+    /// <summary>
+    /// User endpoint controller.
+    /// </summary>
+    /// <seealso cref="BarNone.TheRack.ResourceServer.API.Controllers.Core.BaseController" />
     [Route("api/v1/[controller]")]
     [Authorize(Policy = "User")]
     public class UserController : BaseController
     {
+        /// <summary>
+        /// Gets all users.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -40,6 +48,11 @@ namespace TheRack.ResourceServer.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the user for the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -54,20 +67,25 @@ namespace TheRack.ResourceServer.API.Controllers
             }
         }
 
-        [HttpGet("{id}/Detail")]
-        public IActionResult GetWithDetails(int id)
-        {
-            try
-            {
-                UserRepository repository = new UserRepository();
-                return EntityResponse.Response(repository.GetWithDetails(id));
-            }
-            catch (Exception e)
-            {
-                return EntityResponse.Error(e);
-            }
-        }
+        //[HttpGet("{id}/Detail")]
+        //public IActionResult GetWithDetails(int id)
+        //{
+        //    try
+        //    {
+        //        UserRepository repository = new UserRepository();
+        //        return EntityResponse.Response(repository.GetWithDetails(id));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return EntityResponse.Error(e);
+        //    }
+        //}
 
+        /// <summary>
+        /// Creates a user from the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Post([FromBody] UserDTO value)
         {
@@ -82,6 +100,12 @@ namespace TheRack.ResourceServer.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates the user with the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] UserDTO value)
         {
@@ -96,6 +120,11 @@ namespace TheRack.ResourceServer.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes the user with the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

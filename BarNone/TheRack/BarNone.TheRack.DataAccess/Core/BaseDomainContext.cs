@@ -6,12 +6,35 @@ using System.Net.Http;
 
 namespace BarNone.TheRack.DataAccess
 {
+    /// <summary>
+    /// Database interface credentials.
+    /// </summary>
+    /// <seealso cref="Microsoft.EntityFrameworkCore.DbContext" />
     public class BaseDomainContext : DbContext
     {
+        /// <summary>
+        /// The host for db.
+        /// </summary>
         private static readonly string HOST = "127.0.0.1";
+
+        /// <summary>
+        /// The port for db.
+        /// </summary>
         private static readonly string PORT = "5433";
+
+        /// <summary>
+        /// The username for db.
+        /// </summary>
         private static readonly string USERNAME = "postgres";
+
+        /// <summary>
+        /// The password for db.
+        /// </summary>
         private static readonly string PASSWORD = "admin";
+
+        /// <summary>
+        /// The database name.
+        /// </summary>
         private static readonly string DATABASE = "BarNone";
 
         public BaseDomainContext() : base()

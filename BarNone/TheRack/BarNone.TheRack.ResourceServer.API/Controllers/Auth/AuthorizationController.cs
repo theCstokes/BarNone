@@ -17,6 +17,10 @@ using BarNone.TheRack.Repository;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
+    /// <summary>
+    /// Controller for authentication endpoints.
+    /// </summary>
+    /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     [Route("api/v1/[controller]")]
     public class AuthorizationController : Controller
     {
@@ -24,6 +28,11 @@ namespace TheRack.ResourceServer.API.Controllers
         private readonly ILogger _logger;
         private readonly JsonSerializerSettings _serializerSettings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationController"/> class.
+        /// </summary>
+        /// <param name="jwtOptions">The JWT options.</param>
+        /// <param name="loggerFactory">The logger factory.</param>
         public AuthorizationController(IOptions<JwtIssuerOptions> jwtOptions, ILoggerFactory loggerFactory)
         {
             _jwtOptions = jwtOptions.Value;
@@ -37,6 +46,11 @@ namespace TheRack.ResourceServer.API.Controllers
             };
         }
 
+        /// <summary>
+        /// Logins the specified application user.
+        /// </summary>
+        /// <param name="applicationUser">The application user.</param>
+        /// <returns>Token</returns>
         [HttpPost("Login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromForm] UserDTO applicationUser)
@@ -84,6 +98,11 @@ namespace TheRack.ResourceServer.API.Controllers
             }, _serializerSettings));
         }
 
+        /// <summary>
+        /// Creates the specified application user.
+        /// </summary>
+        /// <param name="applicationUser">The application user.</param>
+        /// <returns>Token</returns>
         [HttpPost("Create")]
         [AllowAnonymous]
         public async Task<IActionResult> Create([FromForm] UserDTO applicationUser)

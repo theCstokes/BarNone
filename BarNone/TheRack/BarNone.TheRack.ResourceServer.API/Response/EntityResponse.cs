@@ -15,67 +15,80 @@ using System.Threading.Tasks;
 
 namespace TheRack.ResourceServer.API.Response
 {
+    /// <summary>
+    /// Standard result dto wrapper.
+    /// </summary>
     struct EntityDTO
     {
+        /// <summary>
+        /// Gets or sets the entity.
+        /// </summary>
+        /// <value>
+        /// The entity.
+        /// </value>
         public object Entity { get; set; }
     }
 
+    /// <summary>
+    /// Enumerable result dto wrapper.
+    /// </summary>
     struct EnumerableDTO
     {
+        /// <summary>
+        /// Gets or sets the count.
+        /// </summary>
+        /// <value>
+        /// The count.
+        /// </value>
         public int Count { get; set; }
 
+        /// <summary>
+        /// Gets or sets the entities.
+        /// </summary>
+        /// <value>
+        /// The entities.
+        /// </value>
         public IEnumerable<object> Entities { get; set; }
     }
 
+    /// <summary>
+    /// Error result dto wrapper.
+    /// </summary>
     struct ErrorDTO
     {
+        /// <summary>
+        /// Gets or sets the message.
+        /// </summary>
+        /// <value>
+        /// The message.
+        /// </value>
         public string Message { get; set; }
     }
 
-    public class EntityResponse : IResponse
+    /// <summary>
+    /// Response helper to create API responses.
+    /// </summary>
+    public static class EntityResponse
     {
-        //public static IActionResult Entity<TDomainModel, TDTO>(TDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
-        //    where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, new()
-        //    where TDTO : BaseDTO<TDTO>, new()
-        //{
-        //    var response = new EntityDTO
-        //    {
-        //        Entity = entity.BuildDTO()
-        //    };
-
-        //    return CreateResult(response, code);
-        //}
-
-        //public static IActionResult EntityDetail<TDomainModel, TDTO, TDetailDTO>(TDomainModel entity, 
-        //    HttpStatusCode code = HttpStatusCode.OK)
-        //    where TDomainModel : BaseDomainModel<TDomainModel, TDTO>, IDetailDomainModel<TDTO, TDetailDTO>, new()
-        //    where TDTO : BaseParentDTO<TDTO, TDetailDTO>, new()
-        //    where TDetailDTO : BaseDetailDTO<TDetailDTO>, new()
-        //{
-        //    var dto = entity.BuildDTO();
-        //    dto.Details = entity.BuildDetailDTO();
-        //    var response = new EntityDTO
-        //    {
-        //        Entity = dto
-        //    };
-
-        //    return CreateResult(response, code);
-        //}
-
+        /// <summary>
+        /// Create the API response for the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="code">The status code.</param>
+        /// <returns></returns>
         public static IActionResult Entity(object entity, HttpStatusCode code = HttpStatusCode.OK)
         {
-            //var response = new EntityDTO
-            //{
-            //    Entity = entity
-            //};
-
             return CreateResult(entity, code);
         }
 
+        /// <summary>
+        /// Creates the API responses for the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="code">The status code.</param>
+        /// <returns></returns>
         public static IActionResult Response(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
         {
-            //if (config == null) config = new ConvertConfig(1);
-
             var dto = Converters.NewConvertion().GetConverterFromData(entity.GetType()).CreateDTO(entity);
             var response = new EntityDTO
             {
@@ -85,12 +98,14 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
+        /// <summary>
+        /// Creates the detailed API the response for the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="code">The status code.</param>
+        /// <returns></returns>
         public static IActionResult DetailResponse(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
         {
-            //if (config == null) config = new ConvertConfig(2);
-
-            //var dto = entity.CreateDTO(config);
-
             var dto = Converters.NewConvertion().GetConverterFromData(entity.GetType()).CreateDTO(entity);
             var response = new EntityDTO
             {
@@ -100,6 +115,12 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
+        /// <summary>
+        /// Creates the API responses for the specified entities.
+        /// </summary>
+        /// <param name="entities">The entities.</param>
+        /// <param name="code">The status code.</param>
+        /// <returns></returns>
         public static IActionResult Response(IEnumerable<IDomainModel> entities, HttpStatusCode code = HttpStatusCode.OK)
         {
             var response = new EnumerableDTO
@@ -112,42 +133,12 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
-        //public static IActionResult Enumerable(IEnumerable<IDTOTransformable> entities, HttpStatusCode code = HttpStatusCode.OK)
-        //{
-
-        //    var response = new EnumerableDTO
-        //    {
-        //        Count = entities.Count(),
-        //        Entities = entities
-        //    };
-
-        //    return CreateResult(response, code);
-        //}
-
-        //public static IActionResult Enumerable(List<IDTOTransformable> entities, HttpStatusCode code = HttpStatusCode.OK)
-        //{
-
-        //    var response = new EnumerableDTO
-        //    {
-        //        Count = entities.Count(),
-        //        Entities = entities
-        //    };
-
-        //    return CreateResult(response, code);
-        //}
-
-        //public static IActionResult Enumerable(dynamic result, HttpStatusCode code = HttpStatusCode.OK)
-        //{
-
-        //    //var response = new EnumerableDTO
-        //    //{
-        //    //    Count = entities.Count(),
-        //    //    Entities = entities
-        //    //};
-
-        //    return CreateResult(result, code);
-        //}
-
+        /// <summary>
+        /// Creates the errors API response the specified e.
+        /// </summary>
+        /// <param name="e">The e.</param>
+        /// <param name="code">The code.</param>
+        /// <returns></returns>
         public static IActionResult Error(Exception e, HttpStatusCode code = HttpStatusCode.InternalServerError)
         {
 
@@ -159,6 +150,12 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
+        /// <summary>
+        /// Creates the result.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="code">The code.</param>
+        /// <returns></returns>
         private static IActionResult CreateResult(object source, HttpStatusCode code)
         {
             return new ObjectResult(source)

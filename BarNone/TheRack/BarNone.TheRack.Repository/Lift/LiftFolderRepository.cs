@@ -14,28 +14,56 @@ namespace BarNone.TheRack.Repository
 {
     public class LiftFolderRepository : DefaultDetailRepository<LiftFolder, LiftFolderDTO, LiftFolderDetailDTO>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LiftFolderRepository"/> class.
+        /// </summary>
         public LiftFolderRepository() : base()
         {
 
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LiftFolderRepository"/> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
         public LiftFolderRepository(DomainContext context) : base(context)
         {
 
         }
 
-        //protected override DetailConverterResolverDelegate<LiftFolder, LiftFolderDTO, LiftFolderDetailDTO, Converters> DetailDataConverterResolver =>
-        //    () => Converters.Convert.LiftFolder;
-
+        /// <summary>
+        /// Gets the data converter.
+        /// </summary>
+        /// <value>
+        /// The data converter.
+        /// </value>
         protected override ConverterResolverDelegate<LiftFolder, LiftFolderDTO> DataConverter => 
             Converters.NewConvertion(context).LiftFolder.CreateDataModel;
 
+        /// <summary>
+        /// Gets the detail entity resolver.
+        /// </summary>
+        /// <value>
+        /// The detail entity resolver.
+        /// </value>
         protected override DetailResolverDelegate<LiftFolder> DetailEntityResolver => (folders) => folders.Include(l => l.Parent)
                 .Include(l => l.SubFolders)
                 .Include(l => l.Lifts);
 
+        /// <summary>
+        /// Gets the set resolver.
+        /// </summary>
+        /// <value>
+        /// The set resolver.
+        /// </value>
         protected override SetResolverDelegate<LiftFolder> SetResolver => (context) => context.LiftFolders;
 
+        /// <summary>
+        /// Gets the entity resolver.
+        /// </summary>
+        /// <value>
+        /// The entity resolver.
+        /// </value>
         protected override EntityResolverDelegate<LiftFolder> EntityResolver => 
             (folders) => folders.Where(folder => folder.UserID == context.UserID);
     }

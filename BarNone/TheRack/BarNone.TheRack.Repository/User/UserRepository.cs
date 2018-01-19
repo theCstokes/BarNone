@@ -21,14 +21,27 @@ namespace BarNone.TheRack.Repository
 
         protected override EntityResolverDelegate<User> EntityResolver => (set) => set;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserRepository"/> class.
+        /// </summary>
         public UserRepository() : base()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserRepository"/> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
         public UserRepository(DomainContext context) : base(context)
         {
         }
 
+        /// <summary>
+        /// Logins the specified user name.
+        /// </summary>
+        /// <param name="userName">Name of the user.</param>
+        /// <param name="password">The password.</param>
+        /// <returns></returns>
         public User Login(string userName, string password)
         {
             var result = entites.Where(c => c.UserName == userName);
@@ -36,72 +49,9 @@ namespace BarNone.TheRack.Repository
 
             var user = result.FirstOrDefault();
 
-            //context.SaveChanges();
-
             if (user.Password == password) return user;
 
             return null;
         }
-
-        //public override List<User> Get(WhereFunc where = null)
-        //{
-        //    if (where != null)
-        //    {
-        //        return entites.Where((u) => where(u))
-        //            .ToList();
-        //    }
-        //    return entites.ToList();
-        //}
-
-        //public override User Get(int id)
-        //{
-        //    var result = entites.Where(c => c.ID == id).First();
-
-        //    //context.SaveChanges();
-
-        //    return result;
-        //}
-
-        //public override User GetWithDetails(int id)
-        //{
-        //    var result = entites.Where(c => c.ID == id).First();
-
-        //    //context.SaveChanges();
-
-        //    return result;
-        //}
-
-        //public override User Create(UserDTO dto)
-        //{
-        //    var entity = Converters.Convert.User.CreateDataModel(dto);
-        //    var result = Create(entity);
-
-        //    //context.SaveChanges();
-
-        //    return result;
-        //}
-
-        //public override User Update(int id, UserDTO dto)
-        //{
-        //    var entity = Converters.Convert.User.CreateDataModel(dto);
-        //    entity.ID = id;
-        //    var result = Update(entity);
-
-        //    //context.SaveChanges();
-
-        //    return result;
-        //}
-
-        //public override User Remove(int id)
-        //{
-        //    var result = Remove(new User
-        //    {
-        //        ID = id
-        //    });
-
-        //    //context.SaveChanges();
-
-        //    return result;
-        //}
     }
 }

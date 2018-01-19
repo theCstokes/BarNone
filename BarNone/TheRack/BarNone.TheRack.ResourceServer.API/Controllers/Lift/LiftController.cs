@@ -19,42 +19,53 @@ using BarNone.TheRack.DataAccess;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
+    /// <summary>
+    /// Lift endpoint controller.
+    /// </summary>
+    /// <seealso cref="BarNone.TheRack.ResourceServer.API.Controllers.Core.DefaultDetailController{BarNone.Shared.DataTransfer.LiftDTO, BarNone.Shared.DomainModel.Lift, BarNone.TheRack.Repository.LiftRepository}" />
     [Route("api/v1/[controller]")]
     [Authorize(Policy = "User")]
     public class LiftController : DefaultDetailController<LiftDTO, Lift, LiftRepository>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LiftController"/> class.
+        /// </summary>
         public LiftController() : base((context) => new LiftRepository(context))
         {
 
         }
 
-        [HttpPost]
-        public override IActionResult Post([FromBody] LiftDTO dto)
-        {
-            if (dto == null)
-            {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    HttpContext.Request.Body.CopyTo(ms);
-                    byte[] data = ms.ToArray();
-                    var jsonString = Encoding.ASCII.GetString(data);
-                    dto = JsonConvert.DeserializeObject<LiftDTO>(jsonString);
-                }
-            }
+        //[HttpPost]
+        //public override IActionResult Post([FromBody] LiftDTO dto)
+        //{
+        //    if (dto == null)
+        //    {
+        //        using (MemoryStream ms = new MemoryStream())
+        //        {
+        //            HttpContext.Request.Body.CopyTo(ms);
+        //            byte[] data = ms.ToArray();
+        //            var jsonString = Encoding.ASCII.GetString(data);
+        //            dto = JsonConvert.DeserializeObject<LiftDTO>(jsonString);
+        //        }
+        //    }
 
-            try
-            {
-                using (LiftRepository repository = new LiftRepository())
-                {
-                    return EntityResponse.Response(repository.Create(dto));
-                }
-            }
-            catch (Exception e)
-            {
-                return EntityResponse.Error(e);
-            }
-        }
+        //    try
+        //    {
+        //        using (LiftRepository repository = new LiftRepository())
+        //        {
+        //            return EntityResponse.Response(repository.Create(dto));
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return EntityResponse.Error(e);
+        //    }
+        //}
 
+        /// <summary>
+        /// Gets video stream for the video linked with the lift from the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
         [HttpGet("{id}/Video")]
         public void Get(int id)
         {
