@@ -1,11 +1,6 @@
-﻿using BarNone.Shared.DataTransfer.Auth;
-using BarNone.Shared.DataTransfer.Core;
-using BarNone.Shared.DataTransfer.Response;
+﻿using BarNone.Shared.DataTransfer.Response;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -13,22 +8,18 @@ using System.Threading.Tasks;
 
 namespace BarNone.DataLift.APIRequest
 {
+    /// <summary>
+    /// Data Post and Get request abstraction
+    /// </summary>
     public class DataRequest
     {
-        #region Private Field(s).
-        private readonly string _url;
-        private readonly string _httpMethod;
-        #endregion
-
-        #region Private Constructor(s).
-        private DataRequest(string url, string httpMethod)
-        {
-            _url = url;
-            _httpMethod = httpMethod;
-        }
-        #endregion
-
         #region Public Static Member(s).
+        /// <summary>
+        /// Get data from the URL
+        /// </summary>
+        /// <typeparam name="T">Data type fetched</typeparam>
+        /// <param name="url">Location being fetched from</param>
+        /// <returns>The object requested</returns>
         public static async Task<T> Get<T>(string url)
             where T : class
         {
@@ -41,6 +32,13 @@ namespace BarNone.DataLift.APIRequest
             }
         }
 
+        /// <summary>
+        /// Post erialized data to <paramref name="url"/>
+        /// </summary>
+        /// <typeparam name="T">Data type posted</typeparam>
+        /// <param name="url">Location being posted to</param>
+        /// <param name="data">Data being posted to <paramref name="data"/></param>
+        /// <returns>Response of post deserialized</returns>
         public static async Task<T> Post<T>(string url, object data)
             where T : class
         {
@@ -60,6 +58,12 @@ namespace BarNone.DataLift.APIRequest
             }
         }
 
+        /// <summary>
+        /// Post data to <paramref name="url"/>
+        /// </summary>
+        /// <param name="url">Location being posted to</param>
+        /// <param name="data">Data being posted to <paramref name="data"/></param>
+        /// <returns>Void Task</returns>
         public static async Task Post(string url, byte[] data)
         {
             WebRequest request = WebRequest.Create(url);
@@ -71,16 +75,22 @@ namespace BarNone.DataLift.APIRequest
             await dataStream.WriteAsync(data, 0, data.Length);
             dataStream.Close();
         }
+
         #endregion
 
         #region Public Property(s).
+        /// <summary>
+        /// Response error handled by the Rack
+        /// </summary>
         public ResponseErrorDTO Error { get; private set; }
-        #endregion
 
-        #region Public Member(s).
         #endregion
 
         #region Private Member(s).
+        /// <summary>
+        /// Opens an Http Client for an authorized user
+        /// </summary>
+        /// <returns>User HttpCient to retrieve or post data to</returns>
         private static HttpClient CreateClient()
         {
             var httpClient = new HttpClient();
@@ -88,20 +98,7 @@ namespace BarNone.DataLift.APIRequest
             return httpClient;
         }
 
-        //private HttpWebRequest CreateRequest()
-        //{
-        //    Uri address = new Uri(_url);
-
-        //    HttpWebRequest request = WebRequest.Create(address) as HttpWebRequest;
-
-        //    request.Method = _httpMethod;
-        //    request.Timeout = 600000;
-
-        //    request.ContentType = "application/json";
-        //    request.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {TokenManager.Token}");
-
-        //    return request;
-        //}
         #endregion
+
     }
 }
