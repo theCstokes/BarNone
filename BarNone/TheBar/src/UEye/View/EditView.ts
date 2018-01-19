@@ -3,8 +3,18 @@ import { View } from "UEye/View/View";
 import ControlTypes from "UEye/ControlTypes";
 import Button from "UEye/Elements/Components/Button/Button";
 
+/**
+ * Base edit view.
+ */
 export abstract class EditView extends View {
+    /**
+     * Cancel changes button.
+     */
     public cancelButton: Button;
+
+    /**
+     * Save changes button.
+     */
     public saveButton: Button;
 
     public get config(): ComponentConfig[] {

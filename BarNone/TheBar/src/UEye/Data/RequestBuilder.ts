@@ -116,6 +116,10 @@ export class GetRequestBuilder extends BaseRequestBuilder {
 		this._useOverride = useOverride;
 	}
 
+	/**
+	 * Submit api request
+	 * @param data - data object
+	 */
 	public async execute(data: any = null): Promise<string> {
 		if (this._useOverride) {
 			var filePath = "Application/Data/DataOverride/api/v1/" + this.resource;

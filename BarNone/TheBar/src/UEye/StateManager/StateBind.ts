@@ -24,18 +24,33 @@ export type StateCallable<TState> = (state: StateTracker<TState>) => StateTracke
  * State Bind Utils.
  */
 export default class StateBind {
+    /**
+     * Creates action state bind
+     * @param stateManager - state manager to bind with
+     * @param action - state action
+     */
     public static onAction<TState, TData>(
         stateManager: BaseStateManager<TState>, 
         action: StateAction<TState, TData>): StateActionBind<TState, TData> {
         return new StateActionBind<TState, TData>(stateManager, action);
     }
 
+    /**
+     * Create async action state bind
+     * @param stateManager - state manager to bind with
+     * @param action - async state action
+     */
     public static onAsyncAction<TState, TData>(
         stateManager: BaseStateManager<TState>, 
         action: StateAsyncAction<TState, TData>): StateAsyncActionBind<TState, TData> {
         return new StateAsyncActionBind<TState, TData>(stateManager, action);
     }
 
+    /**
+     * Create callable state bind
+     * @param stateManager - state manager to bind with
+     * @param action - callable state action
+     */
     public static onCallable<TState>(
         stateManager: BaseStateManager<TState>, 
         action: StateCallable<TState>): StateCallableBind<TState> {
