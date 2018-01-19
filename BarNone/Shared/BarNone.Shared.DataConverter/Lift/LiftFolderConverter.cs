@@ -9,13 +9,28 @@ using System.Text;
 
 namespace BarNone.Shared.DataConverters
 {
+    /// <summary>
+    /// LiftFolder converter.
+    /// </summary>
+    /// <seealso cref="BarNone.Shared.DataConverter.Core.BaseDetailDataConverter{BarNone.Shared.DomainModel.LiftFolder, BarNone.Shared.DataTransfer.LiftFolderDTO, BarNone.Shared.DataTransfer.LiftFolderDetailDTO, BarNone.Shared.DataConverters.Converters}" />
     public class LiftFolderConverter 
         : BaseDetailDataConverter<LiftFolder, LiftFolderDTO, LiftFolderDetailDTO, Converters>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LiftFolderConverter"/> class.
+        /// </summary>
+        /// <param name="converterContext">The converter context.</param>
+        /// <param name="context">The context.</param>
         public LiftFolderConverter(Converters converterContext, IDomainContext context) : base(converterContext, context)
         {
         }
 
+        /// <summary>
+        /// Creates data model.
+        /// Called when [create data model].
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <returns></returns>
         public override LiftFolder OnCreateDataModel(LiftFolderDTO dto)
         {
             return new LiftFolder
@@ -27,6 +42,11 @@ namespace BarNone.Shared.DataConverters
             };
         }
 
+        /// <summary>
+        /// Called when [create detail data model].
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="dto">The dto.</param>
         public override void OnCreateDetailDataModel(LiftFolder data, LiftFolderDetailDTO dto)
         {
             data.Parent = converterContext.LiftFolder.CreateDataModel(dto.Parent);
@@ -34,6 +54,12 @@ namespace BarNone.Shared.DataConverters
             data.SubFolders = dto.SubFolders.Select(f => converterContext.LiftFolder.CreateDataModel(f)).ToList();
         }
 
+        /// <summary>
+        /// Creates detail dto.
+        /// Called when [create detail dto].
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
         public override LiftFolderDetailDTO OnCreateDetailDTO(LiftFolder data)
         {
             return new LiftFolderDetailDTO
@@ -44,6 +70,12 @@ namespace BarNone.Shared.DataConverters
             };
         }
 
+        /// <summary>
+        /// Creates dto.
+        /// Called when [create dto].
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
         public override LiftFolderDTO OnCreateDTO(LiftFolder data)
         {
             return new LiftFolderDTO

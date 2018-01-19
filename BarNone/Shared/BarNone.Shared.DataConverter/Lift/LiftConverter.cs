@@ -8,12 +8,27 @@ using System.Text;
 
 namespace BarNone.Shared.DataConverters
 {
+    /// <summary>
+    /// Lift converter.
+    /// </summary>
+    /// <seealso cref="BarNone.Shared.DataConverter.Core.BaseDetailDataConverter{BarNone.Shared.DomainModel.Lift, BarNone.Shared.DataTransfer.LiftDTO, BarNone.Shared.DataTransfer.LiftDetailDTO, BarNone.Shared.DataConverters.Converters}" />
     public class LiftConverter : BaseDetailDataConverter<Lift, LiftDTO, LiftDetailDTO, Converters>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LiftConverter"/> class.
+        /// </summary>
+        /// <param name="converterContext">The converter context.</param>
+        /// <param name="context">The context.</param>
         public LiftConverter(Converters converterContext, IDomainContext context) : base(converterContext, context)
         {
         }
 
+        /// <summary>
+        /// Creates data model.
+        /// Called when [create data model].
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <returns></returns>
         public override Lift OnCreateDataModel(LiftDTO dto)
         {
             return new Lift
@@ -26,6 +41,12 @@ namespace BarNone.Shared.DataConverters
             };
         }
 
+        /// <summary>
+        /// Creates detail data model.
+        /// Called when [create detail data model].
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="dto">The dto.</param>
         public override void OnCreateDetailDataModel(Lift data, LiftDetailDTO dto)
         {
             data.Parent = converterContext.LiftFolder.CreateDataModel(dto.Parent);
@@ -33,6 +54,12 @@ namespace BarNone.Shared.DataConverters
             data.Video = converterContext.Video.CreateDataModel(dto.Video);
         }
 
+        /// <summary>
+        /// Creates detail dto.
+        /// Called when [create detail dto].
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
         public override LiftDetailDTO OnCreateDetailDTO(Lift data)
         {
             return new LiftDetailDTO
@@ -43,6 +70,12 @@ namespace BarNone.Shared.DataConverters
             };
         }
 
+        /// <summary>
+        /// Creates dto.
+        /// Called when [create dto].
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
         public override LiftDTO OnCreateDTO(Lift data)
         {
             return new LiftDTO

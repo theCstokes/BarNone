@@ -1,5 +1,8 @@
 ﻿namespace BarNone.Shared.DomainModel
 {
+    /// <summary>
+    /// Joint tracking state.
+    /// </summary>
     public enum EJointTrackingStateType
     {
         //

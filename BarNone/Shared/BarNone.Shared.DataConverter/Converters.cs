@@ -14,27 +14,85 @@ namespace BarNone.Shared.DataConverters
     public class Converters : BaseConverter<Converters>
     {
 
-        #region Converter(s).
+        #region Converter(s).        
+        /// <summary>
+        /// User Converter.
+        /// </summary>
+        /// <value>
+        /// The user.
+        /// </value>
         public UserConverter User { get; private set; }
 
+        /// <summary>
+        /// Lift Converter.
+        /// </summary>
+        /// <value>
+        /// The lift.
+        /// </value>
         public LiftConverter Lift { get; private set; }
 
+        /// <summary>
+        /// LiftFolder Converter.
+        /// </summary>
+        /// <value>
+        /// The lift folder.
+        /// </value>
         public LiftFolderConverter LiftFolder { get; private set; }
 
+        /// <summary>
+        /// Body Converter.
+        /// </summary>
+        /// <value>
+        /// The body data.
+        /// </value>
         public BodyDataConverter BodyData { get; private set; }
 
+        /// <summary>
+        /// BodyDataFrame Converter.
+        /// </summary>
+        /// <value>
+        /// The body data frame.
+        /// </value>
         public BodyDataFrameConverter BodyDataFrame { get; private set; }
 
+        /// <summary>
+        /// Joint Converter.
+        /// </summary>
+        /// <value>
+        /// The joint.
+        /// </value>
         public JointConverter Joint { get; private set; }
 
+        /// <summary>
+        /// Joint Converter.
+        /// </summary>
+        /// <value>
+        /// The type of the joint.
+        /// </value>
         public JointTypeConverter JointType { get; private set; }
 
+        /// <summary>
+        /// JointTrackingState Converter.
+        /// </summary>
+        /// <value>
+        /// The type of the joint tracking state.
+        /// </value>
         public JointTrackingStateTypeConverter JointTrackingStateType { get; private set; }
 
+        /// <summary>
+        /// Video converter.
+        /// </summary>
+        /// <value>
+        /// The video.
+        /// </value>
         public VideoConverter Video { get; private set; }
         #endregion
 
-        #region Protected BaseConverter Implementation.
+        #region Protected BaseConverter Implementation.        
+        /// <summary>
+        /// Initializes the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
         protected override void Init(IDomainContext context)
         {
             /// TODO - pls no.

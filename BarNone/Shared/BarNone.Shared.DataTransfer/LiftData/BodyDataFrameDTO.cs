@@ -5,7 +5,10 @@ using System.Collections.Generic;
 
 namespace BarNone.Shared.DataTransfer
 {
-
+    /// <summary>
+    /// Body data frame detail dto.
+    /// </summary>
+    /// <seealso cref="BarNone.Shared.DataTransfer.Core.BaseDetailDTO{BarNone.Shared.DataTransfer.BodyDataFrameDetailDTO}" />
     public class BodyDataFrameDetailDTO : BaseDetailDTO<BodyDataFrameDetailDTO>
     {
         [JsonProperty(Order = 0, NullValueHandling = NullValueHandling.Ignore)]
@@ -15,6 +18,10 @@ namespace BarNone.Shared.DataTransfer
         public BodyDataDTO BodyData { get; set; }
     }
 
+    /// <summary>
+    /// Body data frame dto.
+    /// </summary>
+    /// <seealso cref="BarNone.Shared.DataTransfer.Core.BaseParentDTO{BarNone.Shared.DataTransfer.BodyDataFrameDTO, BarNone.Shared.DataTransfer.BodyDataFrameDetailDTO}" />
     public class BodyDataFrameDTO : BaseParentDTO<BodyDataFrameDTO, BodyDataFrameDetailDTO>
     {
         [JsonProperty(Order = 0)]

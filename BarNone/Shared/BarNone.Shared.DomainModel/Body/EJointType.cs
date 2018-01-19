@@ -1,5 +1,8 @@
 ﻿namespace BarNone.Shared.DomainModel
 {
+    /// <summary>
+    /// Joint types.
+    /// </summary>
     public enum EJointType
     {
         //
