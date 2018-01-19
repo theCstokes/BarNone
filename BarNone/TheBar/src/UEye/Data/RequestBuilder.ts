@@ -1,6 +1,5 @@
 import { BaseDataOverride } from "UEye/Data/BaseDataOverride";
 import Loader from "UEye/Loader";
-import { exec } from "child_process";
 
 /**
  * REST API verbs

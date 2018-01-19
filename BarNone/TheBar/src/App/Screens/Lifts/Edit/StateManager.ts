@@ -1,13 +1,7 @@
 import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 import StateBind from "UEye/StateManager/StateBind";
 import DataManager from "App/Data/DataManager";
-import { start } from "repl";
-import { stat } from "fs";
 import Lift from "App/Data/Models/Lift/Lift";
-// import { AppScreen } from "UEye/Screen/AppScreen";
-// import StateBind from "UEye/Core/DataBind/StateBind";
-// import { IDataBind } from "UEye/Core/DataBind/IDataBind";
-// import DataManager from "Application/Data/DataManager";
 
 export class State {
 	public id: number;
