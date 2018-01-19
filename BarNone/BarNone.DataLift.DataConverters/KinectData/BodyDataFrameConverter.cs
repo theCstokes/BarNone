@@ -1,14 +1,10 @@
 ﻿using BarNone.DataLift.DataModel.KinectData;
 using BarNone.Shared.Core;
-using BarNone.Shared.DataConverter;
 using BarNone.Shared.DataConverter.Core;
 using BarNone.Shared.DataTransfer;
 using Microsoft.Kinect;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BarNone.DataLift.DataConverters.KinectData
 {
