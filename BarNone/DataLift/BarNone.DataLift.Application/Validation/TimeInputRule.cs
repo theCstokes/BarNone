@@ -12,9 +12,9 @@ namespace BarNone.DataLift.UI.Validation
     class TimeInputRule : ValidationRule
     {
         private Regex comapreTo = new Regex(@"^[0-5][0-9]:[0-5][0-9]:[0-9]{3}$");
-        public TimeInputRule()
-        {
-        }
+        //public TimeInputRule() : base()
+        //{
+        //}
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {

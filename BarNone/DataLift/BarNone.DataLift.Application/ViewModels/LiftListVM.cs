@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
+    /// <summary>
+    /// The view model for each item containted in the list of lifts in the edit screen of Data Lift.  Holds all
+    /// values bound to the ListView and an ObservableCollection of these VMs will be bound to the ListView.
+    /// </summary>
     public class LiftListVM : ViewModelBase
     {
         // Corresponds to the index in the ObservableCollection

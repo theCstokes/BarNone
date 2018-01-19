@@ -12,6 +12,10 @@ using System.Windows.Input;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
+    /// <summary>
+    /// The view model for the Register Screen for the Data Lift application.  Controls functionality for the
+    /// data lift register page.
+    /// </summary>
     public class RegisterScreenVM : ViewModelBase
     {
         #region Types
