@@ -1,12 +1,18 @@
 import { BaseContainer } from "UEye/Elements/Core/BaseContainer/BaseContainer";
 import Core from "UEye/Elements/Core/Core";
-
+/**
+ *  Represents container that provides LoginFrame for Login elements and functionality. 
+ */
 export default class LoginFrame extends BaseContainer {
+    /**  Represents background image seen on login interface */
     private _backgroundImage: HTMLImageElement;
+     /**  Represents HTML content of the frame container */
     private _content: HTMLElement;
-
+    /**  Represents the string image source of _backgroundImage element */
     private _backgroundImageSource: string;
-    
+     /** Constructor intializes and defines the LoginFrame as an encompassing HTMLElement tag named UEye-Login-Frame (using Core.addClass). 
+	 * * @returns Returns Frame with an image and content children.   
+     * */
     constructor(parent: HTMLElement) {
         super(parent);
         Core.addClass(this.element, "UEye-Login-Frame");
@@ -16,17 +22,27 @@ export default class LoginFrame extends BaseContainer {
         this._content = Core.create("div", this.element, "Content");
         this.linkComponentContainer("content", this._content);
     }
-    
+       /** Method sets the content of the LoginFrame.
+	 * * @param value Array of contents of type any to be viewed as screen. 
+     * */
     public set content(value: any[]) {
         this.setScreenContainer("content", value);
     }
+    /** Accersor gets the content of Frame.
+	 * * @returns  Array of contents viewed as ScreenContainer.
+     * */
     public get content(): any[] {
         return this.getScreenContainer("content");
     }
-
+     /** Accersor gets the background image of the Login Frame. 
+	 * * @returns  String text that of the image source of the current background image.   
+     * */
     public get background(): string {
         return this._backgroundImageSource;
     }
+     /** Method sets the background image of the Login Frame. 
+	 * * @param value String text that represents the image source of the background image.   
+     * */
     public set background(value: string) {
         if (this._backgroundImageSource !== value) {
             this._backgroundImageSource = value;
@@ -34,13 +50,5 @@ export default class LoginFrame extends BaseContainer {
         }
     }
     
-    public onModifiedChange(): void {
-        throw new Error("Method not implemented.");
-    }
-    public onReadonlyChange(): void {
-        throw new Error("Method not implemented.");
-    }
-    public onErrorChange(): void {
-        throw new Error("Method not implemented.");
-    }
+   
 }
