@@ -14,15 +14,19 @@ import UEye from "UEye/UEye";
 import CreateAccountScreen from "App/Screens/Login/Create/CreateAccountScreen";
 import DataManager from "App/Data/DataManager";
 import NavScreen from "App/Screens/Nav/NavScreen";
-
+/**
+ *  Represents Login Screen Component
+ */
 export default class LoginScreen extends Screen<LoginView> {
-	// private _stateManager: StateManager;
 
+ /** Constructor intialized Screen Component and binds corresponding View 
+     * */
 	public constructor() {
 		super(LoginView);
 		// this._stateManager = new StateManager(this);
 	}
-
+		/** Method defines UI properties when shown
+     * */
 	public onShow(): void {
 		// TODO - remove hard code login.
 		this.view.usernameInput.text = "admin";

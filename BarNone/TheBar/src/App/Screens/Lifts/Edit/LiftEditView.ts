@@ -5,14 +5,29 @@ import Panel from "UEye/Elements/Containers/Panel/Panel";
 import Video from "UEye/Elements/Components/Video/Video";
 // import Stream from "UEye/Elements/Components/Stream/Stream";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
-
+/**
+ *  Represents View for Lifts Edit Screen .
+ */
 export default class LiftEditView extends EditView {
+		/**
+ * Represents input for lift name
+ * */
 	public nameInput: Input;
+		/**
+ * Represents input for age of user 
+ * */
 	public ageInput: Input;
+		/**
+ * Represents panel for editing
+ * */
 	public editPanel: Panel;
-	// public liftPlayer: Video;
+		/**
+ * Represents video player of lift
+ * */
 	public player: Video;
-
+/**
+ * Acessor gets content layout of Lifts Edit Screen 
+ * */
 	public get content(): any[] {
 		return [
 			{
