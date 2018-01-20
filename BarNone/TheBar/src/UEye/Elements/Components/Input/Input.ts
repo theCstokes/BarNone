@@ -15,7 +15,7 @@ export default class Input extends BaseComponent {
     private _action: HTMLElement;
     /**Represents placeholder as text*/
     private _hintText: string;
-    /**Represents user's input as text*/
+     /**Represents placeholder as text*/
     private _text: string;
 	/**  Represents event listner that is called when even occurs.*/
     private _onChangeCallback: OnChangeCallback;
