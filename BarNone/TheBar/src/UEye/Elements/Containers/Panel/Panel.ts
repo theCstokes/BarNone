@@ -80,13 +80,4 @@ export default class Panel extends BaseContainer {
         }
     }
 
-    public onModifiedChange(): void {
-        this.renderMode(this.modified, "Modified");
-    }
-    public onReadonlyChange(): void {
-        this.renderMode(this.readonly, "Readonly");
-    }
-    public onErrorChange(): void {
-        throw new Error("Method not implemented.");
-    }
 }
