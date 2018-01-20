@@ -9,7 +9,9 @@ export class State {
 	public age: number;
 	public lift: Lift;
 }
-
+/**
+ *  Represents State for Lift Edit Screen.
+ */
 export class StateManager extends BaseStateManager<State> {
 	public constructor() {
 		super(State);

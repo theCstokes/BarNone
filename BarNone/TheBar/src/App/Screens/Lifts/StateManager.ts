@@ -10,7 +10,9 @@ import Lift from "App/Data/Models/Lift/Lift";
 // import { IDataBind } from "UEye/Core/DataBind/IDataBind";
 // import { SelectionStateManager, ISelectionState } from "Application/Core/StateManager/SelectionStateManager";
 // import LiftFolder from "Application/Data/Models/LiftFolder/LiftFolder";
-
+/**
+ *  Represents State for Lift Screen.
+ */
 export class State implements ISelectionState<Lift> {
 	public selectionList: Lift[];
 	public selectionId: number;
