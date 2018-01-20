@@ -1,10 +1,17 @@
 import { View } from "UEye/View/View";
 import ControlTypes from "UEye/ControlTypes";
 import List from "UEye/Elements/Components/List/List";
-
+/**
+ *  Represents View for Lifts Screen .
+ */
 export default class LiftView extends View {
+		/**
+ * Represents lift list 
+ * */
 	public userList: List;
-	
+	/**
+ * Acessor gets content layout of Lifts Screen 
+ * */
 	public get content(): any[] {
 		return [
 			{

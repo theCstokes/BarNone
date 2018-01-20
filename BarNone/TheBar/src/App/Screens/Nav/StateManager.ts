@@ -4,17 +4,30 @@ import Screen from "UEye/Screen/Screen";
 import UserScreen from "App/Screens/User/UserScreen";
 import LiftScreen from "App/Screens/Lifts/LiftScreen";
 import SettingsScreen from "App/Screens/Settings/SettingsScreen"
-
+/**
+ *  Represents Definition for Navigation Element 
+ */
 class NavElement {
 	public id: number;
 	public name: string;
 	public icon: string;
 	public screen: { new(): Screen<any> };
 }
-
+/**
+ *  Represents State for Nav Screen.
+ */
 export class State {
+	/**
+ *  Represents Current screen id
+ */
 	public currentScreenId: number;
+	/**
+ *  Represents array storing navigation history
+ */
 	public navHistory: number[] = [];
+	/**
+ *  Represents lists seen as part Navigation List
+ */
 	public navElementList: NavElement[] = [
 		{
 			id: 1,
