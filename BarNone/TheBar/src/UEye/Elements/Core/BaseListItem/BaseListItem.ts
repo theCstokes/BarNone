@@ -7,8 +7,8 @@ export abstract class BaseListItem extends BaseComponent implements IListItem {
     private _selected: boolean;
     private _onSelectCallback: OnSelectCallback;
 
-    public constructor(parent: HTMLElement) {
-        super(parent);
+    public constructor(parent: HTMLElement, ... styles: string[]) {
+        super(parent, ...styles);
         Core.addClass(this.element, "UEye-List-Item");
 
         this.element.onclick = this.onSelectCallback.bind(this);
