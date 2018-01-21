@@ -5,6 +5,9 @@ import UserScreen from "App/Screens/User/UserScreen";
 import LiftScreen from "App/Screens/Lifts/LiftScreen";
 import LiftScreen2 from "App/Screens/Lift2/LiftScreen";
 import SettingsScreen from "App/Screens/Settings/SettingsScreen"
+import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
+import { ContextState } from "App/Screens/Nav/ContextStateManager";
+import ParentStateManager from "UEye/StateManager/ParentStateManager";
 
 class NavElement {
 	public id: number;
@@ -13,9 +16,11 @@ class NavElement {
 	public screen: { new(): Screen<any> };
 }
 
+
 export class State {
 	public currentScreenId: number;
 	public navHistory: number[] = [];
+	public context: ContextState = new ContextState();
 	public navElementList: NavElement[] = [
 		{
 			id: 1,
@@ -50,7 +55,7 @@ export class State {
 	]
 }
 
-export class StateManager extends BaseStateManager<State> {
+export class StateManager extends ParentStateManager<State> {
 	public constructor() {
 		super(State);
 	}
@@ -85,7 +90,18 @@ export class StateManager extends BaseStateManager<State> {
 		}>(this, (state, data) => {
 			var nextState = Utils.clone(state);
 			nextState.current.currentScreenId = data.id;
-			nextState.current.navHistory.push(nextState.current.currentScreenId);
+
+			var selection = nextState.current.navElementList
+				.find(e => e.id === nextState.current.currentScreenId);
+
+			if (selection !== undefined) {
+				nextState.current.context.crumbList = [{
+					value: selection.name,
+					onClick: this._onBaseCrumbElementClickHandler.bind(this)
+				}];
+
+				nextState.current.navHistory.push(nextState.current.currentScreenId);
+			}
 
 			return nextState;
 		});
@@ -104,6 +120,11 @@ export class StateManager extends BaseStateManager<State> {
 
 			return nextState;
 		});
+
+	private _onBaseCrumbElementClickHandler() {
+		var current = this.getCurrentState();
+		this.SelectionChange.trigger({ id: current.currentScreenId });
+	}
 
 	// public constructor(screen: AppScreen) {
 	// 	super(screen, new State());

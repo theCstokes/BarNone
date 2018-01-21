@@ -16,5 +16,7 @@ export interface IUtils {
 	 * Is string null or whitespace.
 	 */
 	isNullOrWhitespace: (obj: any | null | undefined) => boolean;
+
+	// guid(): string;
 }
 

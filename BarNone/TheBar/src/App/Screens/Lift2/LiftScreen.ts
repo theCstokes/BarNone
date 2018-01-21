@@ -5,9 +5,10 @@ import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import UEye from "UEye/UEye";
 import { StateManager, State } from "App/Screens/Lift2/StateManager";
 import EditScreen from "UEye/Screen/EditScreen";
-import { LiftListType } from "App/Screens/Lift2/Models";
+import { LiftListType, LiftListItem } from "App/Screens/Lift2/Models";
 import LiftFolderEditScreen from "App/Screens/Lift2/LiftFolderEdit/LiftFolderEditScreen";
 import LiftEditScreen from "App/Screens/Lift2/LiftEdit/LiftEditScreen";
+import App from "App/App";
 
 export default class LiftScreen extends Screen<LiftView> {
 	// private subScreen: LiftEditScreen;
@@ -31,7 +32,7 @@ export default class LiftScreen extends Screen<LiftView> {
 				onOpen: () => {
 					console.log(item);
 					if (item.type === LiftListType.Folder) {
-						this._onFolderOpenHandler(item.id);
+						this._onFolderOpenHandler(item);
 					}
 				}
 			}
@@ -40,6 +41,7 @@ export default class LiftScreen extends Screen<LiftView> {
 		var userData = current.selectionList.find(item => {
 			return (item.id === current.selectionId);
 		});
+
 		if (userData !== undefined) {
 			if (this.subScreen !== undefined) {
 				UEye.popTo(this);
@@ -68,8 +70,22 @@ export default class LiftScreen extends Screen<LiftView> {
 		this._stateManager.init();
 	}
 
-	private _onFolderOpenHandler(parentID: number) {
-		this._stateManager.ParentChange.trigger({ parentID: parentID });
+	private _onFolderOpenHandler(item: LiftListItem) {
+		App.Navigation.AddSubBreadcrumb.trigger({
+			value: item.name,
+			onClick: () => {
+				this._stateManager.ParentChange.trigger({ parentID: item.parentID });
+			}
+		});
+		
+		// App.breadcrumbs.push({
+		// 	value: item.name,
+		// 	onClick: () => {
+		// 		this._stateManager.ParentChange.trigger({ parentID: item.parentID });
+		// 	}
+		// });
+
+		this._stateManager.ParentChange.trigger({ parentID: item.id });
 	}
 
 	private _onListOpenHandler(parentID: number) {

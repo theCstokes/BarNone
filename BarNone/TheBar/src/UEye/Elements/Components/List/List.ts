@@ -16,7 +16,6 @@ export default class UEyeList extends BaseComponent {
     public constructor(parent: HTMLElement) {
         super(parent);
         Core.addClass(this.element, "UEye-List");
-        // this.element.onclick = this.onSelectCallback.bind(this);
 
         this._elementList = Core.create("ul", this.element, "Element-List");
     }
