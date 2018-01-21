@@ -96,6 +96,7 @@ export class StateManager extends ParentStateManager<State> {
 
 			if (selection !== undefined) {
 				nextState.current.context.crumbList = [{
+					id: Utils.guid(),
 					value: selection.name,
 					onClick: this._onBaseCrumbElementClickHandler.bind(this)
 				}];

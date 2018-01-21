@@ -33,7 +33,11 @@ export class StateManager extends SelectionStateManager<LiftListItem, State> {
 		var list = await StateManager.onLoad(data.parentID);
 		var nextState = state.empty();
 		nextState.current.selectionList = list;
-		nextState.current.selectionId = nextState.current.selectionList[0].id;
+
+		if (nextState.current.selectionList.length > 0) {
+			nextState.current.selectionId = nextState.current.selectionList[0].id;
+		}
+		
 		nextState.current.parentID = data.parentID;
 
 		return nextState.initialize();

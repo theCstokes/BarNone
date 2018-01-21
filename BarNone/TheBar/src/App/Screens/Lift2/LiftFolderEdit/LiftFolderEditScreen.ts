@@ -5,6 +5,8 @@ import { SkeletonBuilder } from "App/Screens/Lifts/Edit/SkeletonBuilder";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import StringUtils from "UEye/Core/StringUtils";
 import LiftFolderEditView from "App/Screens/Lift2/LiftFolderEdit/LiftFolderEditView";
+import LiftScreen from "App/Screens/Lift2/LiftScreen";
+import { LiftListType } from "App/Screens/Lift2/Models";
 
 // import EditScreen from "Application/Core/EditScreen";
 // import ScreenBind from "UEye/Screen/ScreenBind";
@@ -30,7 +32,13 @@ export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView,
 					name: item.name,
 					icon: "fa-folder-o",
 					onOpen: () => {
-						alert("open");
+						// alert("open");
+						LiftScreen.ParentChange.trigger({
+							id: item.id,
+							name: item.name,
+							parentID: item.parentID,
+							type: LiftListType.Folder
+						});
 					}
 				}
 			}).concat(

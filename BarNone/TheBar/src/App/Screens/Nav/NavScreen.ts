@@ -29,6 +29,7 @@ export default class NavScreen extends Screen<NavView> {
 	private _onContextRender(current: ContextState, original: ContextState): void {
 		this.view.navBreadcrumbs.items = current.crumbList.map(crumb => {
 			return {
+				id: crumb.id,
 				value: crumb.value,
 				onClick: crumb.onClick
 			}

@@ -2,14 +2,14 @@ import { BaseComponent } from "UEye/Elements/Core/BaseComponent/BaseComponent";
 import Core from "UEye/Elements/Core/Core";
 import { OnClickCallback, OnSelectCallback, IListItem, OnChangeCallback } from "UEye/Elements/Core/EventCallbackTypes";
 
-class BreadcrumbItem /*implements IListItem*/ {
+class BreadcrumbItem implements IListItem {
     // private _onClickCallback: OnClickCallback;
     
-    // public id: number;
+    public id: number | string;
 
     public value: string;
 
-    public onClick?: OnClickCallback;
+    public onClick?: OnSelectCallback;
 
     // public get onClick(): OnClickCallback {
     //     return this._onClickCallback;
@@ -109,7 +109,7 @@ export default class Breadcrumb extends BaseComponent {
         //     this._onSelectCallback(data);
         // }
         if (data.onClick !== undefined) {
-            data.onClick();
+            data.onClick(data);
         }
     }
 }

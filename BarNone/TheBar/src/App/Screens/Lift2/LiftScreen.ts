@@ -9,17 +9,22 @@ import { LiftListType, LiftListItem } from "App/Screens/Lift2/Models";
 import LiftFolderEditScreen from "App/Screens/Lift2/LiftFolderEdit/LiftFolderEditScreen";
 import LiftEditScreen from "App/Screens/Lift2/LiftEdit/LiftEditScreen";
 import App from "App/App";
+import DataEvent from "UEye/Core/DataEvent/DataEvent";
 
 export default class LiftScreen extends Screen<LiftView> {
 	// private subScreen: LiftEditScreen;
 	private subScreen: EditScreen<any, any>
 	private _stateManager: StateManager;
+
+	public static ParentChange: DataEvent<LiftListItem>;
 	
 	public constructor() {
 		super(LiftView);
 
 		this._stateManager = new StateManager();
 		this._stateManager.bind(this._onRender.bind(this));
+		LiftScreen.ParentChange = new DataEvent();
+		LiftScreen.ParentChange.on(this._onFolderOpenHandler.bind(this));
 	}
 
 	private _onRender(current: State, original: State): void {
@@ -72,9 +77,11 @@ export default class LiftScreen extends Screen<LiftView> {
 
 	private _onFolderOpenHandler(item: LiftListItem) {
 		App.Navigation.AddSubBreadcrumb.trigger({
+			id: Utils.guid(),
 			value: item.name,
-			onClick: () => {
-				this._stateManager.ParentChange.trigger({ parentID: item.parentID });
+			onClick: (crumb) => {
+				this._stateManager.ParentChange.trigger({ parentID: item.id });
+				App.Navigation.PopSubBreadcrumbTo.trigger(crumb);
 			}
 		});
 		
