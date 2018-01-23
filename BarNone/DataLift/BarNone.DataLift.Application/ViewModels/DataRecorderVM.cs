@@ -1,49 +1,27 @@
 ﻿using BarNone.DataLift.APIRequest;
-using BarNone.DataLift.DataConverters;
+using BarNone.DataLift.DataConverters.KinectToDM;
 using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Drawing;
 using BarNone.DataLift.UI.Nav;
 using BarNone.DataLift.UI.ViewModels.Common;
+using BarNone.Shared.DataConverters;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.Flex;
 using BarNone.Shared.DomainModel;
 using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using BarNone.DataLift.DataConverters.KinectToDM;
-using BarNone.Shared.DataConverters;
-using BarNone.Shared.Core;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
     public class DataRecorderVM : ViewModelBase
     {
         #region Bound Properties
-        /// <summary>
-        /// Representation of all currently recorded lifts, deprecated
-        /// </summary>
-        private ObservableCollection<LiftDTO> _allLiftData = new ObservableCollection<LiftDTO>();
-        /// <summary>
-        /// Bindable List of all currently recorded lifts, deprecated
-        /// </summary>
-        public ObservableCollection<LiftDTO> AllLiftData
-        {
-            get { return _allLiftData; }
-            set
-            {
-                _allLiftData = AllLiftData;
-                OnPropertyChanged(new PropertyChangedEventArgs("allLiftData"));
-            }
-        }
-
         /// <summary>
         /// Vm holding all information shared between video data dependent viewmodels
         /// </summary>
@@ -164,39 +142,22 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private bool isCurrentlyRecording = false;
 
-        /// <summary>
-        /// The last state of the users hand.  To track a change in hand state.
-        /// </summary>
-        private HandState prevHandState;
-
-        /// <summary>
-        /// All data that will be sent to the Rack.
-        /// </summary>
-        //private IList<BodyData> _allLiftData;
-
         #endregion
 
         #region User Control events
         internal override void Loaded()
         {
             IsRecording = false;
-
             isCurrentlyRecording = false;
 
-            prevHandState = 0;
-
-            AllLiftData.Clear();
+            CurrentLiftData.CurrentRecordedData.Clear();
         }
 
         internal override void Closed()
         {
             IsRecording = false;
-
             isCurrentlyRecording = false;
 
-            prevHandState = 0;
-
-            AllLiftData.Clear();
         }
 
         #endregion
@@ -311,7 +272,6 @@ namespace BarNone.DataLift.UI.ViewModels
                     colorBitmap.Unlock();
                 }
             }
-
         }
         #endregion
 
@@ -520,7 +480,7 @@ namespace BarNone.DataLift.UI.ViewModels
             // Create an image source that we can use in our image control
             imageSourceSide = new DrawingImage(SideProfileDrawingGroup);
         }
-        
+
         /// <summary>
         /// Event fired when the kinect sends any data frame type, depth and color are monitored
         /// </summary>

@@ -135,9 +135,7 @@ namespace BarNone.DataLift.UI.Drawing
                     // clamp down to 0.1f to prevent coordinatemapper from returning (-Infinity, -Infinity)
                     //CameraSpacePoint position = frame.Joints[jointType].Position;
                     if (position.Z < 0)
-                    {
                         position.Z = InferredZPositionClamp;
-                    }
 
                     jointPoints[j] = Convert3DToPoint.Invoke(origin, position);
                 }
