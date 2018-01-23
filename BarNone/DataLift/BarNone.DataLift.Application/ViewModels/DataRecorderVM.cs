@@ -20,6 +20,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using BarNone.DataLift.DataConverters.KinectToDM;
 using BarNone.Shared.DataConverters;
+using BarNone.Shared.Core;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -422,9 +423,8 @@ namespace BarNone.DataLift.UI.ViewModels
 
             IsRecording = false;
 
-            var conv = new Converters();
 
-            var bodyDto = conv.BodyData.CreateDTO(KinectDepthFrameConverter.KinectBodyDataToDmBodyData(CurrentLiftData.CurrentRecordedData));
+            var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(KinectDepthFrameConverter.KinectBodyDataToDmBodyData(CurrentLiftData.CurrentRecordedData));
             toSend.Details.BodyData = bodyDto;
 
             var temp = await DataManager.Flex.Post(new FlexDTO

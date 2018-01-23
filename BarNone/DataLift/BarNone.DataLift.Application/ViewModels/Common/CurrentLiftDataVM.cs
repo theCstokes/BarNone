@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.DataConverters;
+﻿using BarNone.Shared.Core;
+using BarNone.Shared.DataConverters;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
 using Newtonsoft.Json;
@@ -36,8 +37,9 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         /// </summary>
         public CurrentLiftDataVM()
         {
-            var lift = Converters.NewConvertion().BodyData.CreateDataModel(JsonConvert.DeserializeObject<LiftDTO>(File.ReadAllText(Path.GetFullPath(@"./res/Squat_Debug.json"))).Details.BodyData);
-            lift.BodyDataFrames.ForEach(f => CurrentRecordedData.Add(f));
+            var lift = Converters.NewConvertion(new DebugContext()).Lift.CreateDataModel(JsonConvert.DeserializeObject<LiftDTO>(File.ReadAllText(Path.GetFullPath(@"./res/Squat_Debug.json"))));
+            lift.BodyData.BodyDataFrames.ForEach(f => f.Joints.ForEach(j => { j.JointType = new JointType((EJointType)j.JointTypeID); j.JointTrackingStateType = new JointTrackingStateType((EJointTrackingStateType)j.JointTrackingStateTypeID); }));
+            lift.BodyData.BodyDataFrames.ForEach(f => CurrentRecordedData.Add(f));
         }
     }
 #endif
@@ -67,5 +69,15 @@ namespace BarNone.DataLift.UI.ViewModels.Common
 
     }
     #endregion
+
+#if DEBUG
+    /// <summary>
+    /// Constructor for CurrentLiftDataVM which initializes test data into the system for UI validation
+    /// </summary>
+    public class DebugContext : IDomainContext
+    {
+        public int UserID { get => 0; set { return; } }
+    }
+#endif
 
 }

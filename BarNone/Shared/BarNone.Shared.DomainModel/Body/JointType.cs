@@ -44,7 +44,7 @@ namespace BarNone.Shared.DomainModel
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static implicit operator EJointType(JointType joint) => (EJointType)joint.ID; 
+        public static implicit operator EJointType(JointType joint) => (EJointType)joint.Value; 
         #endregion
     }
 }
