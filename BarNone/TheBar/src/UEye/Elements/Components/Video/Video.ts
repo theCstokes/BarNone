@@ -15,6 +15,7 @@ export default class Video extends BaseComponent {
     private _actionButton: HTMLElement;
     private _slider: HTMLElement;
     private _bar: HTMLElement;
+    private _thumb: HTMLElement;
     private _src: string;
     private _frameDataList: FrameData[];
 
@@ -36,10 +37,11 @@ export default class Video extends BaseComponent {
 
         this._slider = Core.create("div", this._controlBar, "Slider");
         this._bar = Core.create("div", this._slider, "Bar");
+        this._thumb =Core.create("div",this._bar, "Thumb");
 
         this._slider.onclick = (e) => {
             console.log(e);
-            this._bar.style.width = e.offsetX + "px";
+            this._bar.style.width=  this._thumb.style.marginLeft = e.offsetX + "px";
             var percent = (e.offsetX / this._slider.offsetWidth);
 
             // this._video.seekable.
@@ -116,7 +118,7 @@ export default class Video extends BaseComponent {
             // this._context.putImageData(frameData, 0, 0, w, h);
         }
 
-        this._bar.style.width = (this._slider.offsetWidth * percent) + "px";
+        this._bar.style.width=this._thumb.style.width = (this._slider.offsetWidth * percent) + "px";
         setTimeout(this.draw.bind(this), 20, w, h);
     }
 
