@@ -317,10 +317,10 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <param name="e">Event parameters, unused</param>
         private void Redraw(object sender, EventArgs e)
         {
-            KinectToImage.DrawFrameFrontView(CurrentLifts.CurrentRecordedData[0].Details.BodyData.Details.OrderedFrames[currentFrame].Details.Joints, _leftImageDrawingGroup, 424, 424);
-            KinectToImage.DrawFrameSideView(CurrentLifts.CurrentRecordedData[0].Details.BodyData.Details.OrderedFrames[currentFrame].Details.Joints, _rightImageDrawingGroup, 424, 424);
+            KinectToImage.DrawFrameFrontView(CurrentLifts.CurrentRecordedData[currentFrame], _leftImageDrawingGroup, 424, 424);
+            KinectToImage.DrawFrameSideView(CurrentLifts.CurrentRecordedData[currentFrame], _rightImageDrawingGroup, 424, 424);
 
-            currentFrame = (currentFrame + 1) % CurrentLifts.CurrentRecordedData[0].Details.BodyData.Details.OrderedFrames.Count;
+            currentFrame = (currentFrame + 1) % CurrentLifts.CurrentRecordedData.Count;
         }
 
         #endregion

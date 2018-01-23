@@ -1,4 +1,6 @@
-﻿using BarNone.Shared.DataTransfer;
+﻿using BarNone.Shared.DataConverters;
+using BarNone.Shared.DataTransfer;
+using BarNone.Shared.DomainModel;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -15,11 +17,11 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         /// <summary>
         /// Field representation for the <see cref="CurrentRecordedData"/> bindable property list
         /// </summary>
-        private ObservableCollection<LiftDTO> _currentRecordedData = new ObservableCollection<LiftDTO>();
+        private ObservableCollection<BodyDataFrame> _currentRecordedData = new ObservableCollection<BodyDataFrame>();
         /// <summary>
         /// Binding property for the currently recorded data. This data represents all recorded data from start recording to stop recorrding.
         /// </summary>
-        public ObservableCollection<LiftDTO> CurrentRecordedData
+        public ObservableCollection<BodyDataFrame> CurrentRecordedData
         {
             get => _currentRecordedData;
             set
@@ -34,7 +36,8 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         /// </summary>
         public CurrentLiftDataVM()
         {
-            //CurrentRecordedData.Add(JsonConvert.DeserializeObject<LiftDTO>(File.ReadAllText(@"C:\Users\Aamir\Documents\McMaster\Year_4\Capstone\barnone\BarNone\DataLift\BarNone.DataLift.Application\bin\Debug\SQUAT_2018_01_13.json")));
+            var lift = Converters.NewConvertion().BodyData.CreateDataModel(JsonConvert.DeserializeObject<LiftDTO>(File.ReadAllText(Path.GetFullPath(@"./res/Squat_Debug.json"))).Details.BodyData);
+            lift.BodyDataFrames.ForEach(f => CurrentRecordedData.Add(f));
         }
     }
 #endif

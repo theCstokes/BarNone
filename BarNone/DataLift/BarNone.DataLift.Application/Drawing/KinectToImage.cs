@@ -1,6 +1,6 @@
-﻿using BarNone.DataLift.DataModel.KinectData;
-using BarNone.Shared.DataTransfer;
-using Microsoft.Kinect;
+﻿using BarNone.Shared.DomainModel;
+using BarNone.Shared.DomainModel.Body;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -19,12 +19,12 @@ namespace BarNone.DataLift.UI.Drawing
         /// Color for a closed hand, debugging purposes
         /// </summary>
         private static readonly Brush handClosedBrush = new SolidColorBrush(Color.FromArgb(128, 255, 0, 0));
-        
+
         /// <summary>
         /// Color for an open hand, debugging purposes
         /// </summary>
         private static readonly Brush handOpenBrush = new SolidColorBrush(Color.FromArgb(128, 0, 255, 0));
-        
+
         /// <summary>
         /// Color for a lasso hand (index touching thumb), debugging purposes
         /// </summary>
@@ -34,12 +34,12 @@ namespace BarNone.DataLift.UI.Drawing
         /// Color of a tracked joint
         /// </summary>
         private static readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
-        
+
         /// <summary>
         /// Color of an infered joint location
         /// </summary>
         private static readonly Brush inferredJointBrush = Brushes.Yellow;
-        
+
         /// <summary>
         /// Color of an inffered bone
         /// </summary>
@@ -74,7 +74,7 @@ namespace BarNone.DataLift.UI.Drawing
         private const float InferredZPositionClamp = 0.1f;
         #endregion
 
-        #region API Draws
+        #region DM API Draws
         /// <summary>
         /// Draws all the front profile of collected body data <paramref name="joints"/>
         /// </summary>
@@ -82,40 +82,9 @@ namespace BarNone.DataLift.UI.Drawing
         /// <param name="canvas">Drawing group which will be drawn on</param>
         /// <param name="height">Height of the <paramref name="canvas"/></param>
         /// <param name="width">Width of the <paramref name="canvas"/></param>
-        internal static void DrawFrameFrontView(IList<JointDTO> joints, DrawingGroup canvas, int height, int width)
+        internal static void DrawFrameFrontView(BodyDataFrame frame, DrawingGroup canvas, int height, int width)
         {
-            using (DrawingContext dc = canvas.Open())
-            {
-                // Draw a transparent background to set the render size
-                dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, width, height));
-
-
-                var originJoint = joints.FirstOrDefault(j => j.JointTypeID == (int)JointType.SpineBase);
-                if (originJoint == null)
-                    return;
-
-                var origin = new Point3D() { X = originJoint.X, Y = originJoint.Y, Z = originJoint.Z };
-
-                // convert the joint points to depth (display) space
-                Dictionary<JointDTO, Point> jointPoints = new Dictionary<JointDTO, Point>();
-
-                // convert the joint points to depth (display) space
-                foreach (var j in joints)
-                {
-                    Point3D position = new Point3D() { X = j.X, Y = j.Y, Z = j.Z };
-
-                    // sometimes the depth(Z) of an inferred joint may show as negative
-                    // clamp down to 0.1f to prevent coordinatemapper from returning (-Infinity, -Infinity)
-                    //CameraSpacePoint position = frame.Joints[jointType].Position;
-                    if (position.Z < 0)
-                    {
-                        position.Z = InferredZPositionClamp;
-                    }
-
-                    jointPoints[j] = new Point((position.X - origin.X) * -153.34 + width / 2, position.Y * -153.34 + height / 2);
-                }
-                DrawBodyFromDTO(jointPoints, dc, bodyColor);
-            }
+            DrawFrame(frame, canvas, height, width, (origin, compare) => new Point((compare.X - origin.X) * -153.34 + width / 2, compare.Y * -153.34 + height / 2));
         }
 
         /// <summary>
@@ -125,22 +94,37 @@ namespace BarNone.DataLift.UI.Drawing
         /// <param name="canvas">Drawing group which will be drawn on</param>
         /// <param name="height">Height of the <paramref name="canvas"/></param>
         /// <param name="width">Width of the <paramref name="canvas"/></param>
-        internal static void DrawFrameSideView(IList<JointDTO> joints, DrawingGroup canvas, int height, int width)
+        internal static void DrawFrameSideView(BodyDataFrame frame, DrawingGroup canvas, int height, int width)
+        {
+            DrawFrame(frame, canvas, height, width, (origin, compare) => new Point((compare.Z - origin.Z) * 153.34 + width / 2, compare.Y * (-153.34) + height / 2));
+        }
+
+        /// <summary>
+        /// Generalized Draw function for comonalities between 
+        /// <see cref="DrawFrameFrontView(BodyDataFrame, DrawingGroup, int, int)"/> 
+        /// and <see cref="DrawFrameSideView(BodyDataFrame, DrawingGroup, int, int)"/>
+        /// </summary>
+        /// <param name="joints">Body data to be drawn</param>
+        /// <param name="canvas">Drawing group which will be drawn on</param>
+        /// <param name="height">Height of the <paramref name="canvas"/></param>
+        /// <param name="width">Width of the <paramref name="canvas"/></param>
+        /// <param name="Convert3DToPoint">Arg1: Origin, Arg2: Compare Point, Return 2D representation of compare normalized to Origin</param>
+        private static void DrawFrame(BodyDataFrame frame, DrawingGroup canvas, int height, int width, Func<Point3D, Point3D, Point> Convert3DToPoint)
         {
             using (DrawingContext dc = canvas.Open())
             {
                 // Draw a transparent background to set the render size
                 dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, width, height));
+                var joints = frame.Joints;
 
-
-                var originJoint = joints.FirstOrDefault(j => j.JointTypeID == (int)JointType.SpineBase);
+                var originJoint = joints.FirstOrDefault(j => j.JointType == EJointType.SpineBase);
                 if (originJoint == null)
                     return;
 
                 var origin = new Point3D() { X = originJoint.X, Y = originJoint.Y, Z = originJoint.Z };
 
                 // convert the joint points to depth (display) space
-                Dictionary<JointDTO, Point> jointPoints = new Dictionary<JointDTO, Point>();
+                Dictionary<Joint, Point> jointPoints = new Dictionary<Joint, Point>();
 
                 // convert the joint points to depth (display) space
                 foreach (var j in joints)
@@ -155,13 +139,12 @@ namespace BarNone.DataLift.UI.Drawing
                         position.Z = InferredZPositionClamp;
                     }
 
-                    jointPoints[j] = new Point((position.Z - origin.Z) * 153.34 + width / 2, position.Y * (-153.34) + height / 2);
+                    jointPoints[j] = Convert3DToPoint.Invoke(origin, position);
                 }
                 DrawBodyFromDTO(jointPoints, dc, bodyColor);
             }
         }
-
-
+        
         /// <summary>
         /// Draws a body to <paramref name="drawingContext"/>
         /// </summary>
@@ -169,7 +152,7 @@ namespace BarNone.DataLift.UI.Drawing
         /// <param name="jointPoints">translated positions of joints to draw</param>
         /// <param name="drawingContext">drawing context to draw to</param>
         /// <param name="drawingPen">specifies color to draw a specific body</param>
-        internal static void DrawBodyFromDTO(IDictionary<JointDTO, Point> jointPoints, DrawingContext drawingContext, Pen drawingPen)
+        internal static void DrawBodyFromDTO(IDictionary<Joint, Point> jointPoints, DrawingContext drawingContext, Pen drawingPen)
         {
             // Draw the bones
             foreach (var bone in Skeleton.bones)
@@ -180,7 +163,7 @@ namespace BarNone.DataLift.UI.Drawing
             // Draw the joints
             foreach (var j in jointPoints.Keys)
             {
-                if (j.JointTrackingStateTypeID == (int)TrackingState.Tracked)
+                if (j.JointTrackingStateType == EJointTrackingStateType.Tracked)
                     drawingContext.DrawEllipse(inferredJointBrush, null, jointPoints[j], JointThickness, JointThickness);
             }
         }
@@ -193,22 +176,23 @@ namespace BarNone.DataLift.UI.Drawing
         /// <param name="jointType0">first joint of bone to draw</param>
         /// <param name="jointType1">second joint of bone to draw</param>
         /// <param name="drawingContext">drawing context to draw to</param>
-        /// /// <param name="drawingPen">specifies color to draw a specific bone</param>
-        internal static void DrawBoneFromDTO(IDictionary<JointDTO, Point> jointPoints, JointType jointType0, JointType jointType1, DrawingContext drawingContext, Pen drawingPen)
+        /// <param name="drawingPen">specifies color to draw a specific bone</param>
+        internal static void DrawBoneFromDTO(IDictionary<Joint, Point> jointPoints, EJointType jointType0, EJointType jointType1, DrawingContext drawingContext, Pen drawingPen)
         {
             var joint0 = jointPoints.First(p => p.Key.JointTypeID == (int)jointType0);
             var joint1 = jointPoints.First(p => p.Key.JointTypeID == (int)jointType1);
 
             // If we can't find either of these joints, exit
-            if (joint0.Key.JointTrackingStateTypeID == (int)TrackingState.NotTracked ||
-                joint1.Key.JointTrackingStateTypeID == (int)TrackingState.NotTracked)
+            if (joint0.Key.JointTrackingStateType == EJointTrackingStateType.NotTracked ||
+                joint1.Key.JointTrackingStateType == EJointTrackingStateType.NotTracked)
             {
                 return;
             }
 
             // We assume all drawn bones are inferred unless BOTH joints are tracked
             Pen drawPen = inferredBonePen;
-            if ((joint0.Key.JointTrackingStateTypeID == (int)TrackingState.Tracked) && (joint1.Key.JointTrackingStateTypeID == (int)TrackingState.Tracked))
+            if ((joint0.Key.JointTrackingStateType == EJointTrackingStateType.Tracked) 
+                && (joint1.Key.JointTrackingStateType == EJointTrackingStateType.Tracked))
             {
                 drawPen = drawingPen;
             }
@@ -217,6 +201,5 @@ namespace BarNone.DataLift.UI.Drawing
         }
 
         #endregion
-
     }
 }

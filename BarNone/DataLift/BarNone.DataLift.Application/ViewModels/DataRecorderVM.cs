@@ -1,12 +1,12 @@
 ﻿using BarNone.DataLift.APIRequest;
 using BarNone.DataLift.DataConverters;
-using BarNone.DataLift.DataModel.KinectData;
 using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Drawing;
 using BarNone.DataLift.UI.Nav;
 using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.Flex;
+using BarNone.Shared.DomainModel;
 using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using BarNone.DataLift.DataConverters.KinectToDM;
+using BarNone.Shared.DataConverters;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -226,66 +228,15 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 // Gets the closest body to the kinect sensor
                 var body = GetPrimaryBody(Bodies);
+                //Convert the frame to a more usable form
+                var dataFrame = frame.KinectBdfToDmBdf(body);
 
-                // If the right hand goes from some hand position (other than open) to open.
-                /*if ((body.HandRightState == HandState.Open) && (prevHandState != HandState.Open))
-                {
-                    // If the user is in the middle of a lift and has indicated it is now finished.
-                    if(isCurrentlyRecording)
-                    {
-                        var toSend = new LiftDTO()
-                        {
-                            ParentID = 1,
-                            Name = String.Format("{0}_{1}_{2}_New_Lift_{3}", CurrentRecordingBodyData.RecordDate.Year, CurrentRecordingBodyData.RecordDate.Month, CurrentRecordingBodyData.RecordDate.Day, (allLiftData.Count + 1)),
-                            Details = new LiftDetailDTO()
-                            {
-                                BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData)
-                            }
-
-                        };
-
-                        var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(CurrentRecordingBodyData);
-                        toSend.Details.BodyData = bodyDto;
-
-                        // Add the lift to the list of all lifts. 
-                        allLiftData.Add(toSend);
-
-                        // Set is currently recording to false
-                        isCurrentlyRecording = false;
-                    }
-                    // Else means that they are indicating the beginning of a lift.
-                    else
-                    {
-                        //  Then replace CurrentRecordingBodyData with a new body data (start a new lift)
-                        CurrentRecordingBodyData = new BodyData
-                        {
-                            DataFrames = new List<BodyDataFrame>(),
-                            RecordDate = DateTime.Now
-                        };
-                        // Set the status of recoring to in progress.
-                        isCurrentlyRecording = true;
-                    }
-
-                }
-
-                // Save the status of the hand (so that when it is called the following iteration it will be the prev. one).
-                prevHandState = body.HandRightState;
-                */
-                var dataframe = new BodyDataFrame() { TimeOfFrame = DateTime.Now, Joints = body.Joints.ToDictionary(k => k.Key, v => v.Value) };
                 if (isCurrentlyRecording)
-                    CurrentRecordingBodyData.AddNewFrame(dataframe);
+                    CurrentLiftData.CurrentRecordedData.Add(dataFrame);
 
                 //Update The Side And Front Views
-                KinectToImage.DrawFrameSideView(
-                    dataframe
-                    .Joints
-                    .Select(x => new JointDTO() { JointTypeID = (int)x.Key, X = x.Value.Position.X, Y = x.Value.Position.Y, Z = x.Value.Position.Z, JointTrackingStateTypeID = (int)x.Value.TrackingState }).ToList(),
-                    SideProfileDrawingGroup, displayHeight, displayWidth);
-                KinectToImage.DrawFrameFrontView(
-                    dataframe
-                    .Joints
-                    .Select(x => new JointDTO() { JointTypeID = (int)x.Key, X = x.Value.Position.X, Y = x.Value.Position.Y, Z = x.Value.Position.Z, JointTrackingStateTypeID = (int)x.Value.TrackingState }).ToList(),
-                    FrontProfileDrawingGroup, displayHeight, displayWidth);
+                KinectToImage.DrawFrameSideView(dataFrame, SideProfileDrawingGroup, displayHeight, displayWidth);
+                KinectToImage.DrawFrameFrontView(dataFrame, FrontProfileDrawingGroup, displayHeight, displayWidth);
             }
         }
 
@@ -303,14 +254,15 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 /// If the position of spinebase (the enum value 0) is not 0.
                 /// Because for some godforsaken reason MS initiliazes position data to (0,0,0) 
-                if (body.Joints[JointType.SpineBase].Position.Z != 0)
+                //TODO fix using MicrosoftKinect, best to put all kinect stuff in a KinectHandler
+                if (body.Joints[Microsoft.Kinect.JointType.SpineBase].Position.Z != 0)
                 {
                     // If there is currently no body compare against then it is the one use by default.
                     if (primaryBody == null)
                     {
                         primaryBody = body;
                     }
-                    else if (body.Joints[JointType.SpineBase].Position.Z < primaryBody.Joints[JointType.SpineBase].Position.Z)
+                    else if (body.Joints[Microsoft.Kinect.JointType.SpineBase].Position.Z < primaryBody.Joints[Microsoft.Kinect.JointType.SpineBase].Position.Z)
                     {
                         // If there are mutiple then we use the one whos spine base is closest to the kinect.
                         primaryBody = body;
@@ -418,15 +370,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private void StartNewRecording()
         {
-            //    if (isCurrentlyRecording)
-            //        TempAddCurrentLift();
-
-            CurrentRecordingBodyData = new BodyData
-            {
-                DataFrames = new List<BodyDataFrame>(),
-                RecordDate = DateTime.Now
-
-            };
+            CurrentLiftData.CurrentRecordedData.Clear();
             isCurrentlyRecording = true;
         }
 
@@ -460,7 +404,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <returns></returns>
         private async Task EndCurrentRecording()
         {
-
+            //TODO CLEAN!
             isCurrentlyRecording = false;
             //TempAddCurrentLift();
 
@@ -478,8 +422,9 @@ namespace BarNone.DataLift.UI.ViewModels
 
             IsRecording = false;
 
+            var conv = new Converters();
 
-            var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(CurrentRecordingBodyData);
+            var bodyDto = conv.BodyData.CreateDTO(KinectDepthFrameConverter.KinectBodyDataToDmBodyData(CurrentLiftData.CurrentRecordedData));
             toSend.Details.BodyData = bodyDto;
 
             var temp = await DataManager.Flex.Post(new FlexDTO
@@ -494,7 +439,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 }
             });
 
-            //System.Diagnostics.Debug.WriteLine("The lift was sent to the server {0}", temp.ToString());
         }
 
         //private void TempAddCurrentLift()
