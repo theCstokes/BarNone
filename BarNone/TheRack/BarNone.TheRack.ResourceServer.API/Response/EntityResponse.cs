@@ -115,6 +115,17 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
+        private static void FilterDetail(IParentDTO dto)
+        {
+
+        }
+
+        private static void _FilterDetail(IParentDTO dto, int depth, int target)
+        {
+
+        }
+
+
         /// <summary>
         /// Creates the API responses for the specified entities.
         /// </summary>

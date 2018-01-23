@@ -50,7 +50,8 @@ export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView,
 						name: item.name,
 						icon: "fa-universal-access",
 						onOpen: () => {
-							alert("open");
+							// alert("open");
+							LiftScreen.LiftChange.trigger(item);
 						}
 					}
 				})

@@ -10,6 +10,7 @@ import LiftFolderEditScreen from "App/Screens/Lift2/LiftFolderEdit/LiftFolderEdi
 import LiftEditScreen from "App/Screens/Lift2/LiftEdit/LiftEditScreen";
 import App from "App/App";
 import DataEvent from "UEye/Core/DataEvent/DataEvent";
+import Lift from "App/Data/Models/Lift/Lift";
 
 export default class LiftScreen extends Screen<LiftView> {
 	// private subScreen: LiftEditScreen;
@@ -17,14 +18,20 @@ export default class LiftScreen extends Screen<LiftView> {
 	private _stateManager: StateManager;
 
 	public static ParentChange: DataEvent<LiftListItem>;
+
+	public static LiftChange: DataEvent<Lift>;
 	
 	public constructor() {
 		super(LiftView);
 
 		this._stateManager = new StateManager();
 		this._stateManager.bind(this._onRender.bind(this));
+
 		LiftScreen.ParentChange = new DataEvent();
 		LiftScreen.ParentChange.on(this._onFolderOpenHandler.bind(this));
+
+		LiftScreen.LiftChange = new DataEvent();
+		LiftScreen.LiftChange.on(this._onListOpenHandler.bind(this));
 	}
 
 	private _onRender(current: State, original: State): void {
@@ -84,19 +91,26 @@ export default class LiftScreen extends Screen<LiftView> {
 				App.Navigation.PopSubBreadcrumbTo.trigger(crumb);
 			}
 		});
-		
-		// App.breadcrumbs.push({
-		// 	value: item.name,
-		// 	onClick: () => {
-		// 		this._stateManager.ParentChange.trigger({ parentID: item.parentID });
-		// 	}
-		// });
 
 		this._stateManager.ParentChange.trigger({ parentID: item.id });
 	}
 
-	private _onListOpenHandler(parentID: number) {
-		this._stateManager.ParentChange.trigger({ parentID: parentID });
+	private _onListOpenHandler(item: Lift) {
+		if (item.details.parent !== undefined) {
+			App.Navigation.AddSubBreadcrumb.trigger({
+				id: Utils.guid(),
+				value: item.details.parent.name,
+				onClick: (crumb) => {
+					this._stateManager.ParentChange.trigger({ parentID: item.id });
+					App.Navigation.PopSubBreadcrumbTo.trigger(crumb);
+				}
+			});
+		}
+
+		this._stateManager.ParentChange.trigger({ 
+			parentID: item.parentID,
+			selectionId: item.id
+		});
 	}
 
 	// public userListBind = ScreenBind

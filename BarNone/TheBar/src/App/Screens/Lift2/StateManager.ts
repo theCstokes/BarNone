@@ -28,13 +28,16 @@ export class StateManager extends SelectionStateManager<LiftListItem, State> {
 
 	public ParentChange = StateBind.onAsyncAction<State, {
 		parentID: number | null;
+		selectionId?: number
 	}>(this, async (state, data) => {
 		console.log(data);
 		var list = await StateManager.onLoad(data.parentID);
 		var nextState = state.empty();
 		nextState.current.selectionList = list;
 
-		if (nextState.current.selectionList.length > 0) {
+		if (data.selectionId !== undefined) {
+			nextState.current.selectionId = data.selectionId;
+		} else if (nextState.current.selectionList.length > 0) {
 			nextState.current.selectionId = nextState.current.selectionList[0].id;
 		}
 		
