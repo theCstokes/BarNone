@@ -4,7 +4,6 @@ import { StateManager, State } from "App/Screens/Nav/StateManager";
 import UEye from "UEye/UEye";
 import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import App from "App/App";
-import { create } from "domain";
 import { ContextStateManager, ContextState } from "App/Screens/Nav/ContextStateManager";
 
 export default class NavScreen extends Screen<NavView> {
