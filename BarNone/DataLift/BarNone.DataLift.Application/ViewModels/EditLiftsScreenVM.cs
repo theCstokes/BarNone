@@ -4,8 +4,10 @@ using BarNone.DataLift.UI.ViewModels.Common;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace BarNone.DataLift.UI.ViewModels
@@ -319,7 +321,12 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             KinectToImage.DrawFrameFrontView(CurrentLifts.CurrentRecordedData[currentFrame], _leftImageDrawingGroup, 424, 424);
             KinectToImage.DrawFrameSideView(CurrentLifts.CurrentRecordedData[currentFrame], _rightImageDrawingGroup, 424, 424);
-
+            using (DrawingContext dc = _middleImageDrawingGroup.Open())
+            {
+                var currColor = CurrentLifts.CurrentRecordedColorData[currentFrame].Image;
+                ImageBrush colorBrush = new ImageBrush(currColor);
+                dc.DrawImage(currColor, new System.Windows.Rect(0, 0, 1920, 1080));
+            }
             currentFrame = (currentFrame + 1) % CurrentLifts.CurrentRecordedData.Count;
         }
 
@@ -334,6 +341,7 @@ namespace BarNone.DataLift.UI.ViewModels
             //Init Images
             _leftImage = new DrawingImage(_leftImageDrawingGroup);
             _rightImage = new DrawingImage(_rightImageDrawingGroup);
+            _middleImage = new DrawingImage(_rightImageDrawingGroup);
 
             //Init Timer
             VideoTimer = new DispatcherTimer()

@@ -177,8 +177,8 @@ namespace BarNone.DataLift.UI.Drawing
         /// <param name="drawingPen">specifies color to draw a specific bone</param>
         internal static void DrawBoneFromDTO(IDictionary<Joint, Point> jointPoints, EJointType jointType0, EJointType jointType1, DrawingContext drawingContext, Pen drawingPen)
         {
-            var joint0 = jointPoints.First(p => p.Key.JointTypeID == (int)jointType0);
-            var joint1 = jointPoints.First(p => p.Key.JointTypeID == (int)jointType1);
+            var joint0 = jointPoints.First(p => p.Key.JointType == jointType0);
+            var joint1 = jointPoints.First(p => p.Key.JointType == jointType1);
 
             // If we can't find either of these joints, exit
             if (joint0.Key.JointTrackingStateType == EJointTrackingStateType.NotTracked ||

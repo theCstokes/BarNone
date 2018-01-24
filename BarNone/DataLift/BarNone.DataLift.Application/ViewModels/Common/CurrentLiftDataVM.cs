@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.Core;
+﻿using BarNone.DataLift.UI.Models;
+using BarNone.Shared.Core;
 using BarNone.Shared.DataConverters;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
@@ -31,6 +32,18 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                 OnPropertyChanged(new PropertyChangedEventArgs("CurrentRecordedData"));
             }
         }
+
+        private ObservableCollection<ColorImageFrame> _currentRecordedColorData = new ObservableCollection<ColorImageFrame>();
+        public ObservableCollection<ColorImageFrame> CurrentRecordedColorData
+        {
+            get => _currentRecordedColorData;
+            set
+            {
+                _currentRecordedColorData = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentRecordedColorData"));
+            }
+        }
+
 #if DEBUG
         /// <summary>
         /// Constructor for CurrentLiftDataVM which initializes test data into the system for UI validation
@@ -72,7 +85,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
 
 #if DEBUG
     /// <summary>
-    /// Constructor for CurrentLiftDataVM which initializes test data into the system for UI validation
+    /// Used to force debug code to have rack provided feilds
     /// </summary>
     public class DebugContext : IDomainContext
     {

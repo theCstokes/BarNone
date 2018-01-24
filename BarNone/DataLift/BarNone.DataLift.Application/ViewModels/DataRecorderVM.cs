@@ -41,7 +41,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// Bitmap to display the color video
         /// </summary>
         private WriteableBitmap colorBitmap = null;
-
+        
         #endregion
 
         #region UI Components
@@ -270,6 +270,11 @@ namespace BarNone.DataLift.UI.ViewModels
                     }
 
                     colorBitmap.Unlock();
+                    if (isCurrentlyRecording)
+                    {
+                        var toSave = new WriteableBitmap(colorBitmap);
+                        CurrentLiftData.CurrentRecordedColorData.Add(new Models.ColorImageFrame(toSave, frame.RelativeTime));
+                    }
                 }
             }
         }
@@ -365,8 +370,10 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <returns></returns>
         private async Task EndCurrentRecording()
         {
-            //TODO CLEAN!
             isCurrentlyRecording = false;
+            IsRecording = false;
+            return;
+            //TODO CLEAN!
             //TempAddCurrentLift();
 
             var toSend = new LiftDTO
@@ -381,7 +388,6 @@ namespace BarNone.DataLift.UI.ViewModels
             };
 
 
-            IsRecording = false;
 
 
             var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(KinectDepthFrameConverter.KinectBodyDataToDmBodyData(CurrentLiftData.CurrentRecordedData));
@@ -400,30 +406,10 @@ namespace BarNone.DataLift.UI.ViewModels
             });
 
         }
-
-        //private void TempAddCurrentLift()
-        //{
-        //    //var toSend = new LiftDTO()
-        //    //{
-        //    //    ParentID = 1,
-        //    //    Name = String.Format("{0}_{1}_{2}_New_Lift_{3}", CurrentRecordingBodyData.RecordDate.Year, CurrentRecordingBodyData.RecordDate.Month, CurrentRecordingBodyData.RecordDate.Day, (AllLiftData.Count + 1)),
-        //    //    Details = new LiftDetailDTO()
-        //    //    {
-        //    //        BodyData = Converters.Convert.BodyData.CreateDTO(CurrentRecordingBodyData)
-        //    //    }
-        //    //};
-
-        //    // Add the lift to the list of all lifts. 
-        //    //AllLiftData.Add(toSend);
-        //}
-
+        
         #endregion
 
-        /// <summary>
-        /// Shows the status of the kinect on the record screen
-        /// </summary>
-        public string KinectConnected;
-
+        #region Constructor(s) and Destructor
         ~DataRecorderVM()
         {
             if (Reader != null)
@@ -481,6 +467,8 @@ namespace BarNone.DataLift.UI.ViewModels
             imageSourceSide = new DrawingImage(SideProfileDrawingGroup);
         }
 
+#endregion
+
         /// <summary>
         /// Event fired when the kinect sends any data frame type, depth and color are monitored
         /// </summary>
@@ -505,11 +493,16 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (frame != null)
                 {
-
                     Reader_FrameArrived(frame);
                 }
             }
         }
+
+        //TODO IMPLEMENT AND TEST
+        /// <summary>
+        /// Shows the status of the kinect on the record screen
+        /// </summary>
+        public string KinectConnected;
 
         /// <summary>
         /// Handles the event which the sensor becomes unavailable (E.g. paused, closed, unplugged).
