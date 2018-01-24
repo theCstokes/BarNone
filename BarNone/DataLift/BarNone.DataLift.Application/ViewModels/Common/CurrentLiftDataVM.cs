@@ -50,9 +50,9 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         /// </summary>
         public CurrentLiftDataVM()
         {
-            var lift = Converters.NewConvertion(new DebugContext()).Lift.CreateDataModel(JsonConvert.DeserializeObject<LiftDTO>(File.ReadAllText(Path.GetFullPath(@"./res/Squat_Debug.json"))));
-            lift.BodyData.BodyDataFrames.ForEach(f => f.Joints.ForEach(j => { j.JointType = new JointType((EJointType)j.JointTypeID); j.JointTrackingStateType = new JointTrackingStateType((EJointTrackingStateType)j.JointTrackingStateTypeID); }));
-            lift.BodyData.BodyDataFrames.ForEach(f => CurrentRecordedData.Add(f));
+            //var lift = Converters.NewConvertion(new DebugContext()).Lift.CreateDataModel(JsonConvert.DeserializeObject<LiftDTO>(File.ReadAllText(Path.GetFullPath(@"./res/Squat_Debug.json"))));
+            //lift.BodyData.BodyDataFrames.ForEach(f => f.Joints.ForEach(j => { j.JointType = new JointType((EJointType)j.JointTypeID); j.JointTrackingStateType = new JointTrackingStateType((EJointTrackingStateType)j.JointTrackingStateTypeID); }));
+            //lift.BodyData.BodyDataFrames.ForEach(f => CurrentRecordedData.Add(f));
         }
     }
 #endif

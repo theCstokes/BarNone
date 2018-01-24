@@ -321,6 +321,7 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             KinectToImage.DrawFrameFrontView(CurrentLifts.CurrentRecordedData[currentFrame], _leftImageDrawingGroup, 424, 424);
             KinectToImage.DrawFrameSideView(CurrentLifts.CurrentRecordedData[currentFrame], _rightImageDrawingGroup, 424, 424);
+
             using (DrawingContext dc = _middleImageDrawingGroup.Open())
             {
                 var currColor = CurrentLifts.CurrentRecordedColorData[currentFrame].Image;
@@ -341,7 +342,7 @@ namespace BarNone.DataLift.UI.ViewModels
             //Init Images
             _leftImage = new DrawingImage(_leftImageDrawingGroup);
             _rightImage = new DrawingImage(_rightImageDrawingGroup);
-            _middleImage = new DrawingImage(_rightImageDrawingGroup);
+            _middleImage = new DrawingImage(_middleImageDrawingGroup);
 
             //Init Timer
             VideoTimer = new DispatcherTimer()

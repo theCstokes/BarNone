@@ -63,7 +63,7 @@
                     <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                     <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                 </Grid.ColumnDefinitions>
-                <cmpnts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="3" ImageSourceLeft="{Binding LeftImage}" ImageSourceRight="{Binding RightImage}"/>
+                <cmpnts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="3" ImageSourceLeft="{Binding LeftImage}" ImageSourceMiddle="{Binding MiddleImage}" ImageSourceRight="{Binding RightImage}"/>
             </Grid>
             <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}" 
                                  CommandPause="{Binding CommandPauseVideo}" 
