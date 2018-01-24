@@ -2,16 +2,23 @@
 	left: 0;
 }
 
-.UEye-Breadcrumb > .Crumb-Holder {
+.UEye-Breadcrumb > .Crumb-Holder >  {
 	// padding: 10px 16px;
 	list-style: none;
 	// background-color: #eee;
 }
 
-.UEye-Breadcrumb > .Crumb-Holder > .Crumb {
+.UEye-Breadcrumb > .Crumb-Holder > .Crumb  {
+	// padding: 10px 16px;
+	display: inline
+	// background-color: #eee;
+}
+
+
+.UEye-Breadcrumb > .Crumb-Holder > .Crumb > .Content{
 	display: inline;
-	font-size: 18px;
-	content: "123";
+	font-size: 10px;
+	
 }
 
 .UEye-Breadcrumb > .Crumb-Holder > .Crumb+.Crumb::before {
@@ -20,12 +27,12 @@
 	content: "/\00a0";
 }
 
-.UEye-Breadcrumb > .Crumb-Holder > .Crumb.Unselected {
+.UEye-Breadcrumb > .Crumb-Holder > .Crumb.Unselected > .Content {
 	color: #0275d8;
 	text-decoration: none;
 }
 
-.UEye-Breadcrumb > .Crumb-Holder > .Crumb.Unselected:hover {
+.UEye-Breadcrumb > .Crumb-Holder > .Crumb.Unselected:hover > .Content {
 	color: #01447e;
 	text-decoration: underline;
 }

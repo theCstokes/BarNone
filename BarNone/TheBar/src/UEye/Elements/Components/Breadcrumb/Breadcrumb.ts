@@ -24,6 +24,7 @@ export default class Breadcrumb extends BaseComponent {
     private _crumbHolder: HTMLElement;
     private _crumbElements: HTMLElement[];
     private _items: BreadcrumbItem[];
+    private _crumbContent:HTMLElement;
     private _onSelectCallback: OnSelectCallback;
 
     public constructor(parent: HTMLElement) {
@@ -92,11 +93,14 @@ export default class Breadcrumb extends BaseComponent {
     }
 
     private _pushItem(item: BreadcrumbItem, select: boolean) {
+       
         var el = Core.create('li', this._crumbHolder, "Crumb");
+         this._crumbContent= Core.create('div', el, "Content");
+        this._crumbContent.innerHTML=item.value;
         if (!select) {
             Core.addClass(el, 'Unselected');
         }
-        el.textContent = item.value;
+      
         el.onclick = () => {
             this.onSelectHandler(item);
         };
