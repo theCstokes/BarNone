@@ -18,6 +18,7 @@ export default class Video extends BaseComponent {
     private _thumb: HTMLElement;
     private _src: string;
     private _frameDataList: FrameData[];
+    private _timeStamp: HTMLElement;
 
     constructor(parent: HTMLElement) {
         super(parent, "UEye-Video");
@@ -35,18 +36,29 @@ export default class Video extends BaseComponent {
         this._actionButton = Core.create("div", this._controlBar, "Action-Button fa fa-pause");
         this._actionButton.onclick = this._onActionHandel.bind(this);
 
+        this._timeStamp=Core.create("div", this._controlBar, "Time-Stamp");
+
         this._slider = Core.create("div", this._controlBar, "Slider");
         this._bar = Core.create("div", this._slider, "Bar");
         this._thumb =Core.create("div",this._bar, "Thumb");
+
+    
+        this._timeStamp.innerHTML="0:00/0:00";
 
         this._slider.onclick = (e) => {
             console.log(e);
             this._bar.style.width=  this._thumb.style.marginLeft = e.offsetX + "px";
             var percent = (e.offsetX / this._slider.offsetWidth);
-
-            // this._video.seekable.
+            var currentTime= percent*this._video.duration;
+            var minutesC = Math.floor(currentTime/ 60);
+            var secondsC= Math.floor(currentTime - minutesC * 60);
+            var minutesD = Math.floor(this._video.duration / 60);
+            var secondsD= Math.floor(this._video.duration - minutesD * 60);
+            this._timeStamp.innerHTML=minutesC+":"+secondsC+"/"+minutesD+":"+secondsD;
+                       // this._video.seekable.111
 
             this._video.currentTime = (this._video.duration * percent);
+            
         };
 
         var c = this._canvas.getContext('2d');
@@ -72,14 +84,19 @@ export default class Video extends BaseComponent {
             this.draw(this._canvas.width, this._canvas.height);
         }, false);
 
-        // this._video.addEventListener('timeupdate', () => {
-        //     var percent = (this._video.currentTime / this._video.duration);
-        //     this._bar.style.width = (this._slider.offsetWidth * percent) + "px";
-        // }, false);
+        this._video.addEventListener('timeupdate', () => {
+            var percent = (this._video.currentTime / this._video.duration);
+            this._bar.style.width = this._thumb.style.marginLeft= (this._slider.offsetWidth * percent) + "px";
+            var minutesC = Math.floor(this._video.currentTime/ 60);
+            var secondsC= Math.floor(this._video.currentTime - minutesC * 60);
+            var minutesD = Math.floor(this._video.duration / 60);
+            var secondsD= Math.floor(this._video.duration - minutesD * 60);
+            this._timeStamp.innerHTML=minutesC+":"+secondsC+"/"+minutesD+":"+secondsD;
+        }, false);
 
-        //     this._video.addEventListener("loadedmetadata", function() {
-        //         this.currentTime = 3;
-        //    }, false);
+            this._video.addEventListener("loadedmetadata", function() {
+                this.currentTime = 3;
+           }, false);
     }
 
     public set frameData(value: FrameData[]) {
@@ -100,12 +117,12 @@ export default class Video extends BaseComponent {
         if (this._video.paused || this._video.ended) {
             return;
         }
-        // {
-        //     this._video.pause();
-        //     this._video.currentTime = 3;
-        //     this._video.play();
-        //     return;
-        // }
+            // {
+            //     this._video.pause();
+            //     this._video.currentTime = 3;
+            //     this._video.play();
+            //     return;
+            // }
 
         var percent = (this._video.currentTime / this._video.duration);
 
@@ -117,8 +134,12 @@ export default class Video extends BaseComponent {
             // var bit = createImageBitmap(frameData);
             // this._context.putImageData(frameData, 0, 0, w, h);
         }
-
-        this._bar.style.width=this._thumb.style.width = (this._slider.offsetWidth * percent) + "px";
+        var minutesC = Math.floor(this._video.currentTime/ 60);
+        var secondsC= Math.floor(this._video.currentTime - minutesC * 60);
+        var minutesD = Math.floor(this._video.duration / 60);
+        var secondsD= Math.floor(this._video.duration - minutesD * 60);
+        this._timeStamp.innerHTML=minutesC+":"+secondsC+"/"+minutesD+":"+secondsD;
+        this._bar.style.width=this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
         setTimeout(this.draw.bind(this), 20, w, h);
     }
 
