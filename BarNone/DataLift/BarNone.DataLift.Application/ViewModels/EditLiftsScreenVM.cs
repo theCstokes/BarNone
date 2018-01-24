@@ -346,8 +346,8 @@ namespace BarNone.DataLift.UI.ViewModels
                 //increment timer value
                 currentMs += VideoTimerInterval;
 
-                int nextBodyFrame = currentBodyDataFrame + 1 % CurrentLifts.CurrentRecordedColorData.Count;
-                int nextColorFrame = currentBodyDataFrame + 1 % CurrentLifts.CurrentRecordedData.Count;
+                int nextBodyFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedData.Count;
+                int nextColorFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedColorData.Count;
                 colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[nextColorFrame];
                 bodyFrameToDraw = CurrentLifts.CurrentRecordedData[nextBodyFrame];
                 
