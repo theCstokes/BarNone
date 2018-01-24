@@ -48,7 +48,7 @@ namespace BarNone.DataLift.DataConverters.KinectToDM
         public static S.BodyDataFrame KinectBdfToDmBdf(this K.BodyFrame kData, K.Body kBody)
         {
             var sBodyDataFrame = new S.BodyDataFrame();
-            //sBodyDataFrame.TimeOfFrame = kData.RelativeTime;
+            sBodyDataFrame.TimeOfFrame = kData.RelativeTime;
             sBodyDataFrame.Joints =
                 kBody.Joints
                 .Keys

@@ -1,6 +1,8 @@
 ﻿using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Drawing;
+using BarNone.DataLift.UI.Models;
 using BarNone.DataLift.UI.ViewModels.Common;
+using BarNone.Shared.DomainModel;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -303,6 +305,10 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #region Video Controls
         /// <summary>
+        /// Video playback synchronizer timer in Ms
+        /// </summary>
+        private const int VideoTimerInterval = 2;
+        /// <summary>
         /// Control Timer in the UI thread to handle VM to UI timed requests
         /// </summary>
         DispatcherTimer VideoTimer;
@@ -310,7 +316,10 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Current Video frame to draw
         /// </summary>
-        private int currentFrame = 0;
+        private int currentBodyDataFrame = 0;
+        private int currentColorDataFrame = 0;
+
+        private double currentMs = 0;
 
         /// <summary>
         /// Redraws each image if required
@@ -319,16 +328,55 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <param name="e">Event parameters, unused</param>
         private void Redraw(object sender, EventArgs e)
         {
-            KinectToImage.DrawFrameFrontView(CurrentLifts.CurrentRecordedData[currentFrame], _leftImageDrawingGroup, 424, 424);
-            KinectToImage.DrawFrameSideView(CurrentLifts.CurrentRecordedData[currentFrame], _rightImageDrawingGroup, 424, 424);
+            BodyDataFrame bodyFrameToDraw;
+            ColorImageFrame colorFrameToDraw;
 
-            using (DrawingContext dc = _middleImageDrawingGroup.Open())
-            {
-                var currColor = CurrentLifts.CurrentRecordedColorData[currentFrame].Image;
-                ImageBrush colorBrush = new ImageBrush(currColor);
-                dc.DrawImage(currColor, new System.Windows.Rect(0, 0, 1920, 1080));
+            bool drawColor = false, drawBody = false;
+            if (currentMs == 0)
+            {//Will only happen on loaded
+                colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[currentBodyDataFrame];
+                bodyFrameToDraw = CurrentLifts.CurrentRecordedData[currentBodyDataFrame];
+
+                currentMs = Math.Max(bodyFrameToDraw.TimeOfFrame.TotalMilliseconds, colorFrameToDraw.Time.TotalMilliseconds);
+                drawColor = true;
+                drawBody = true;
             }
-            currentFrame = (currentFrame + 1) % CurrentLifts.CurrentRecordedData.Count;
+            else
+            {
+                //increment timer value
+                currentMs += VideoTimerInterval;
+
+                int nextBodyFrame = currentBodyDataFrame + 1 % CurrentLifts.CurrentRecordedColorData.Count;
+                int nextColorFrame = currentBodyDataFrame + 1 % CurrentLifts.CurrentRecordedData.Count;
+                colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[nextColorFrame];
+                bodyFrameToDraw = CurrentLifts.CurrentRecordedData[nextBodyFrame];
+                
+                if (colorFrameToDraw.Time.TotalMilliseconds < currentMs)
+                {
+                    drawColor = true;
+                    currentColorDataFrame = nextColorFrame;
+                }
+                if (bodyFrameToDraw.TimeOfFrame.TotalMilliseconds < currentMs)
+                {
+                    drawBody = true;
+                    currentBodyDataFrame = nextBodyFrame;
+                }
+
+            }
+            if (drawBody)
+            {
+                KinectToImage.DrawFrameFrontView(bodyFrameToDraw, _leftImageDrawingGroup, 424, 424);
+                KinectToImage.DrawFrameSideView(bodyFrameToDraw, _rightImageDrawingGroup, 424, 424);
+            }
+            if (drawColor)
+            {
+                using (DrawingContext dc = _middleImageDrawingGroup.Open())
+                {
+                    var currentColorImage = colorFrameToDraw.Image;
+                    ImageBrush colorBrush = new ImageBrush(currentColorImage);
+                    dc.DrawImage(currentColorImage, new System.Windows.Rect(0, 0, 1920, 1080));
+                }
+            }
         }
 
         #endregion
@@ -348,7 +396,7 @@ namespace BarNone.DataLift.UI.ViewModels
             VideoTimer = new DispatcherTimer()
             {
                 IsEnabled = false,
-                Interval = new TimeSpan(0, 0, 0, 0, 10)
+                Interval = new TimeSpan(0, 0, 0, 0, 2)
 
             };
 
