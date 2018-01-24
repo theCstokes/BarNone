@@ -120,56 +120,56 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region Public Properties
-        /// <summary>
-        /// Field representation for the <see cref="IsRecorderVisible"/> bindable property
-        /// </summary>
-        private bool _isRecorderVisible = true;
-        /// <summary>
-        /// Variable that controls the visibility of the Recorder Screen.
-        /// </summary>
-        public bool IsRecorderVisible
-        {
-            get => _isRecorderVisible;
-            set
-            {
-                _isRecorderVisible = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("IsRecorderVisible"));
-            }
-        }
+        ///// <summary>
+        ///// Field representation for the <see cref="IsRecorderVisible"/> bindable property
+        ///// </summary>
+        //private bool _isRecorderVisible = true;
+        ///// <summary>
+        ///// Variable that controls the visibility of the Recorder Screen.
+        ///// </summary>
+        //public bool IsRecorderVisible
+        //{
+        //    get => _isRecorderVisible;
+        //    set
+        //    {
+        //        _isRecorderVisible = value;
+        //        OnPropertyChanged(new PropertyChangedEventArgs("IsRecorderVisible"));
+        //    }
+        //}
 
-        /// <summary>
-        /// Field representation for the <see cref="IsEditorVisible"/> bindable property
-        /// </summary>
-        private bool _isEditorVisible = false;
-        /// <summary>
-        /// Variable that controls the visibility of the Editor Screen.
-        /// </summary>
-        public bool IsEditorVisible
-        {
-            get => _isEditorVisible;
-            set
-            {
-                _isEditorVisible = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("IsEditorVisible"));
-            }
-        }
+        ///// <summary>
+        ///// Field representation for the <see cref="IsEditorVisible"/> bindable property
+        ///// </summary>
+        //private bool _isEditorVisible = false;
+        ///// <summary>
+        ///// Variable that controls the visibility of the Editor Screen.
+        ///// </summary>
+        //public bool IsEditorVisible
+        //{
+        //    get => _isEditorVisible;
+        //    set
+        //    {
+        //        _isEditorVisible = value;
+        //        OnPropertyChanged(new PropertyChangedEventArgs("IsEditorVisible"));
+        //    }
+        //}
 
-        /// <summary>
-        /// Field representation for the <see cref="IsSavingVisible"/> bindable property
-        /// </summary>
-        private bool _isSavingVisible = false;
-        /// <summary>
-        /// Variable that controls the visibility of the Saving Screen.
-        /// </summary>
-        public bool IsSavingVisible
-        {
-            get => _isSavingVisible;
-            set
-            {
-                _isSavingVisible = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("IsSavingVisible"));
-            }
-        }
+        ///// <summary>
+        ///// Field representation for the <see cref="IsSavingVisible"/> bindable property
+        ///// </summary>
+        //private bool _isSavingVisible = false;
+        ///// <summary>
+        ///// Variable that controls the visibility of the Saving Screen.
+        ///// </summary>
+        //public bool IsSavingVisible
+        //{
+        //    get => _isSavingVisible;
+        //    set
+        //    {
+        //        _isSavingVisible = value;
+        //        OnPropertyChanged(new PropertyChangedEventArgs("IsSavingVisible"));
+        //    }
+        //}
 
         /// <summary>
         /// Field representation for the <see cref="IsBackwardsEnabled"/> bindable property
@@ -335,11 +335,13 @@ namespace BarNone.DataLift.UI.ViewModels
 
             // Edit the progress bar accordingly.
             StepTwoProgressController = 0;
-            
+
             // Display the correct screen in the XAML.
-            IsRecorderVisible = true;
-            IsEditorVisible = false;
-            IsSavingVisible = false;
+            UserControlManager.SwitchPage(UIPages.DataRecorderView);
+            
+            //IsRecorderVisible = true;
+            //IsEditorVisible = false;
+            //IsSavingVisible = false;
         }
 
         /// <summary>
@@ -362,9 +364,11 @@ namespace BarNone.DataLift.UI.ViewModels
             StepThreeProgressController = 0;
 
             // Display the correct screen in the XAML.
-            IsRecorderVisible = false;
-            IsEditorVisible = true;
-            IsSavingVisible = false;
+            UserControlManager.SwitchPage(UIPages.EditLiftView);
+
+            //IsRecorderVisible = false;
+            //IsEditorVisible = true;
+            //IsSavingVisible = false;
         }
 
         /// <summary>
@@ -383,9 +387,11 @@ namespace BarNone.DataLift.UI.ViewModels
             IsStepThreeEnabledController = 1;
 
             // Display the correct screen in the XAML.
-            IsRecorderVisible = false;
-            IsEditorVisible = false;
-            IsSavingVisible = true;
+            UserControlManager.SwitchPage(UIPages.SaveLiftView);
+
+            //IsRecorderVisible = false;
+            //IsEditorVisible = false;
+            //IsSavingVisible = true;
         }
 
         #endregion 
