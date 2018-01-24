@@ -19,6 +19,10 @@ export default class Video extends BaseComponent {
     private _src: string;
     private _frameDataList: FrameData[];
     private _timeStamp: HTMLElement;
+    private _minutesCurrent: number;
+    private _secondsCurrent: number;
+    private _minutesDuration: number;
+    private _secondsDuration: number;
 
     constructor(parent: HTMLElement) {
         super(parent, "UEye-Video");
@@ -44,17 +48,18 @@ export default class Video extends BaseComponent {
 
     
         this._timeStamp.innerHTML="0:00/0:00";
+        this._minutesDuration =0;
+        this._secondsDuration= 0;
 
         this._slider.onclick = (e) => {
             console.log(e);
             this._bar.style.width=  this._thumb.style.marginLeft = e.offsetX + "px";
             var percent = (e.offsetX / this._slider.offsetWidth);
             var currentTime= percent*this._video.duration;
-            var minutesC = Math.floor(currentTime/ 60);
-            var secondsC= Math.floor(currentTime - minutesC * 60);
-            var minutesD = Math.floor(this._video.duration / 60);
-            var secondsD= Math.floor(this._video.duration - minutesD * 60);
-            this._timeStamp.innerHTML=minutesC+":"+secondsC+"/"+minutesD+":"+secondsD;
+            this._minutesCurrent= Math.floor(currentTime/ 60);
+            this._secondsCurrent= Math.floor(currentTime - this._minutesCurrent * 60);
+            this._timeStamp.innerHTML=this._minutesCurrent+":"+this._secondsCurrent+"/"+this._minutesDuration+":"+this._secondsDuration;
+             
                        // this._video.seekable.111
 
             this._video.currentTime = (this._video.duration * percent);
@@ -87,11 +92,13 @@ export default class Video extends BaseComponent {
         this._video.addEventListener('timeupdate', () => {
             var percent = (this._video.currentTime / this._video.duration);
             this._bar.style.width = this._thumb.style.marginLeft= (this._slider.offsetWidth * percent) + "px";
-            var minutesC = Math.floor(this._video.currentTime/ 60);
-            var secondsC= Math.floor(this._video.currentTime - minutesC * 60);
-            var minutesD = Math.floor(this._video.duration / 60);
-            var secondsD= Math.floor(this._video.duration - minutesD * 60);
-            this._timeStamp.innerHTML=minutesC+":"+secondsC+"/"+minutesD+":"+secondsD;
+           
+            this._minutesCurrent= Math.floor(this._video.currentTime/ 60);
+            this._secondsCurrent= Math.floor(this._video.currentTime - this._minutesCurrent * 60);
+            this._minutesDuration = Math.floor(this._video.duration / 60);
+            this._secondsDuration= Math.floor(this._video.duration - this._minutesDuration * 60);
+            this._timeStamp.innerHTML=this._minutesCurrent+":"+this._secondsCurrent+"/"+this._minutesDuration+":"+this._secondsDuration;
+             
         }, false);
 
             this._video.addEventListener("loadedmetadata", function() {
@@ -131,14 +138,13 @@ export default class Video extends BaseComponent {
         if (this._frameDataList !== undefined) {
             var frameIndex = Math.round((this._frameDataList.length - 1) * percent);
             var frameData = this._createFrame(this._frameDataList[frameIndex], w, h);
-            // var bit = createImageBitmap(frameData);
-            // this._context.putImageData(frameData, 0, 0, w, h);
+            var bit = createImageBitmap(frameData);
+            this._context.putImageData(frameData, 0, 0, w, h);
         }
-        var minutesC = Math.floor(this._video.currentTime/ 60);
-        var secondsC= Math.floor(this._video.currentTime - minutesC * 60);
-        var minutesD = Math.floor(this._video.duration / 60);
-        var secondsD= Math.floor(this._video.duration - minutesD * 60);
-        this._timeStamp.innerHTML=minutesC+":"+secondsC+"/"+minutesD+":"+secondsD;
+       this._minutesCurrent= Math.floor(this._video.currentTime/ 60);
+       this._secondsCurrent= Math.floor(this._video.currentTime - this._minutesCurrent * 60);
+        this._timeStamp.innerHTML=this._minutesCurrent+":"+this._secondsCurrent+"/"+this._minutesDuration+":"+this._secondsDuration;
+
         this._bar.style.width=this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
         setTimeout(this.draw.bind(this), 20, w, h);
     }
@@ -158,8 +164,11 @@ export default class Video extends BaseComponent {
             this._source.src = this._src;
 
             this._video.load();
+    
             this._video.currentTime = 0;
+            
             this._video.play();
+           
         }
         if (this._src !== undefined) {
             Core.addClass(this._source, "Visible");
