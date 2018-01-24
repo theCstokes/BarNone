@@ -89,5 +89,31 @@ namespace TheRack.ResourceServer.API.Controllers
             }
             //return null;
         }
+
+        [HttpGet("EM")]
+        public void EM()
+        {
+            using (var context = new DomainContext(UserID))
+            {
+                using (var repo = new LiftRepository(context))
+                {
+                    //var lift = repo.GetWithDetails(id);
+
+                    var path = "C:\\VideoDB\\EM.mp4";
+
+                    HttpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={path}");
+                    var file = new FileInfo(path);
+                    //Check the file exist,  it will be written into the response 
+                    if (file.Exists)
+                    {
+                        var stream = file.OpenRead();
+                        var bytesinfile = new byte[stream.Length];
+                        stream.Read(bytesinfile, 0, (int)file.Length);
+                        HttpContext.Response.Body.Write(bytesinfile, 0, bytesinfile.Length);
+                    }
+                }
+            }
+            //return null;
+        }
     }
 }

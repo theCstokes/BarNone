@@ -12,6 +12,8 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using BarNone.Shared.Core;
+using Newtonsoft.Json.Linq;
 
 namespace TheRack.ResourceServer.API.Response
 {
@@ -106,7 +108,8 @@ namespace TheRack.ResourceServer.API.Response
         /// <returns></returns>
         public static IActionResult DetailResponse(IDomainModel entity, HttpStatusCode code = HttpStatusCode.OK)
         {
-            var dto = Converters.NewConvertion().GetConverterFromData(entity.GetType()).CreateDTO(entity);
+            var dto = Converters.NewConvertion()
+                .GetConverterFromData(entity.GetType()).CreateDTO(entity) as IParentDTO;
             var response = new EntityDTO
             {
                 Entity = dto
@@ -115,14 +118,28 @@ namespace TheRack.ResourceServer.API.Response
             return CreateResult(response, code);
         }
 
-        private static void FilterDetail(IParentDTO dto)
+        private static ITrackableDTO FilterDetail(IParentDTO dto)
         {
-
+            _FilterDetail(dto, 0, 3);
+            return dto;
         }
 
-        private static void _FilterDetail(IParentDTO dto, int depth, int target)
+        private static IParentDTO _FilterDetail(IParentDTO dto, int depth, int target)
         {
+            if (depth == target) return null;
+            //var d = ((IEnumerable<KeyValuePair<string, JToken>>)dto.Details);
 
+            //  Dictionary<string, string> newDict =
+            //((IEnumerable<KeyValuePair<string, JToken>>)dto.Details)
+            //           .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
+
+            var d = (IDictionary<string, object>)dto.Details;
+
+            //var t = d.Select(pair => pair.Value.Type);
+            //.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.);
+
+            dto.Details = _FilterDetail(dto.Details, depth + 1, target);
+            return dto;
         }
 
 
