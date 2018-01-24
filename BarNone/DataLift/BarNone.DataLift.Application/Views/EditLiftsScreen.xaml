@@ -9,9 +9,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:validation="clr-namespace:BarNone.DataLift.UI.Validation"
              mc:Ignorable="d"
-             d:DesignHeight="1000"
-             d:DesignWidth="1000"
-             >
+             d:DesignHeight="720"
+             d:DesignWidth="1080">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -54,45 +53,47 @@
             </ListView>
         </materialDesign:Card>
         <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="20" DockPanel.Dock="Right">
-        <StackPanel VerticalAlignment="Top">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                </Grid.ColumnDefinitions>
-                <cmpnts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="3" ImageSourceLeft="{Binding LeftImage}" ImageSourceMiddle="{Binding MiddleImage}" ImageSourceRight="{Binding RightImage}"/>
-            </Grid>
-            <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}" 
+            <StackPanel VerticalAlignment="Top">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    </Grid.ColumnDefinitions>
+                    <cmpnts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="5" ImageSourceLeft="{Binding LeftImage}" ImageSourceMiddle="{Binding MiddleImage}" ImageSourceRight="{Binding RightImage}"/>
+                </Grid>
+                <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}" 
                                  CommandPause="{Binding CommandPauseVideo}" 
                                  CommandResetInterval="{Binding CommandResetVideo}" 
                                  CommandSlowMo="{Binding CommandSlowMotionVideo}" 
-                                 CommandFastForward="{Binding CommandFastForwardVideo}" />
-            <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
-                <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 CommandFastForward="{Binding CommandFastForwardVideo}"/>
+                <StackPanel Orientation="Horizontal" Margin="0 20 0 0" HorizontalAlignment="Center">
+                    <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 0 10 0"
                          materialDesign:HintAssist.Hint="Start Time">
-                    <TextBox.Text >
-                        <Binding  Path="SelectedLift.LiftStartTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <validation:TimeInputRule />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-                <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        <TextBox.Text >
+                            <Binding  Path="SelectedLift.LiftStartTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validation:TimeInputRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="10 0 0 0"
                          materialDesign:HintAssist.Hint="End Time">
-                    <TextBox.Text >
-                        <Binding Path="SelectedLift.LiftEndTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <validation:TimeInputRule />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                        <TextBox.Text >
+                            <Binding Path="SelectedLift.LiftEndTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validation:TimeInputRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
-    </materialDesign:Card>
+        </materialDesign:Card>
     </DockPanel>
 </UserControl>
