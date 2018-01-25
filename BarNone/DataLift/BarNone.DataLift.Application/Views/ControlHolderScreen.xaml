@@ -79,9 +79,6 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Width="200" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" IsEnabled="{Binding IsBackwardsEnabled}"  Content="Previous Step" Command="{Binding RunDialogCommand}" />
-                <Button Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Content="Next Step" Command="{Binding MoveWorflowForwardCmd}" />
-
             </Grid>
             </Grid>
         </DockPanel>
