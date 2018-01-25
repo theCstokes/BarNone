@@ -62,9 +62,8 @@
 
                 <local:WorkflowScreen Grid.Column="1" Grid.Row="1"  Grid.RowSpan="2" VerticalAlignment="Stretch" 
                                       StepOneStyle="{Binding StepOneStyleController}"
-                                      StepTwoOpacity="{Binding Path=StepTwoOpacityController}"
-                                      StepThreeOpacity="{Binding Path=StepThreeOpacityController}"
-                                      IsStepThreeEnabled="{Binding Path=IsStepThreeEnabledController}"
+                                      StepTwoStyle="{Binding Path=StepTwoStyleController}"
+                                      StepThreeStyle="{Binding Path=StepThreeStyleController}"
                                       StepTwoProgress="{Binding Path=StepTwoProgressController}"
                                       StepThreeProgress="{Binding Path=StepThreeProgressController}"
                                       StepOneCommand="{Binding Path=ControlStepOneCommand}"
