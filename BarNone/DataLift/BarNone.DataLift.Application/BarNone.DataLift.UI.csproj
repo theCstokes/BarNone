@@ -109,6 +109,7 @@
     <Compile Include="Navigation\UserControlManager.cs" />
     <Compile Include="Validation\TimeInputRule.cs" />
     <Compile Include="ViewModels\Common\CurrentLiftDataVM.cs" />
+    <Compile Include="ViewModels\SaveLiftVM.cs" />
     <Compile Include="ViewModels\ControlHolderVM.cs" />
     <Compile Include="ViewModels\EditLiftsScreenVM.cs" />
     <Compile Include="ViewModels\LiftListVM.cs" />
