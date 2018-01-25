@@ -372,6 +372,7 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             isCurrentlyRecording = false;
             IsRecording = false;
+            CurrentLiftData.NormalizeTimes();
             return;
             //TODO CLEAN!
             //TempAddCurrentLift();

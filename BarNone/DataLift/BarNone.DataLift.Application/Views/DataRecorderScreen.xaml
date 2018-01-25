@@ -19,8 +19,7 @@
     <UserControl.DataContext>
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
-    <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Center" Padding="20">
+    <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="20">
             <DockPanel>
                 <Grid DockPanel.Dock="Top" >
                     <Grid.ColumnDefinitions>
@@ -40,5 +39,5 @@
                 </StackPanel>
             </DockPanel>
         </materialDesign:Card>
-    </Viewbox>
+    
 </UserControl>

@@ -2,16 +2,91 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:BarNone.DataLift.UI.Views.CustomComponents"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
+             Name="VideoScrubberControl"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-
+        <ResourceDictionary>
+            <ControlTemplate x:Key="ScrubberTemplate" TargetType="{x:Type Slider}">
+                <Border SnapsToDevicePixels="true" 
+            BorderBrush="{TemplateBinding BorderBrush}" 
+            BorderThickness="{TemplateBinding BorderThickness}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Rectangle x:Name="PART_SelectionRange"/>
+                        <Track x:Name="PART_Track" Grid.Row="1">
+                            <Track.Thumb>
+                                <Thumb x:Name="Thumb">
+                                    <Thumb.Template>
+                                        <ControlTemplate TargetType="Thumb">
+                                            <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3" Width="10" Height="18" Background="{DynamicResource PrimaryHueMidBrush}" SnapsToDevicePixels="True"/>
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+            <ControlTemplate x:Key="ScrubberPosition" TargetType="{x:Type Slider}">
+                <Border SnapsToDevicePixels="true" 
+            BorderBrush="{TemplateBinding BorderBrush}" 
+            BorderThickness="{TemplateBinding BorderThickness}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Rectangle x:Name="PART_SelectionRange"/>
+                        <Track x:Name="PART_Track" Grid.Row="1">
+                            <Track.Thumb>
+                                <Thumb x:Name="Thumb">
+                                    <Thumb.Template>
+                                        <ControlTemplate TargetType="Thumb">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="10"/>
+                                                    <RowDefinition Height="20"/>
+                                                    <RowDefinition Height="10"/>
+                                                </Grid.RowDefinitions>
+                                                <Polygon Points="0,0 5,10, 10,0" Fill="DarkGray" Grid.Row="0"/>
+                                                <Rectangle Fill="DarkGray" Width="2" Height="40" SnapsToDevicePixels="True" Grid.Row="0" Grid.RowSpan="3"/>
+                                                <Polygon Points="5,0 10,10, 0,10" Fill="DarkGray" Grid.Row="2"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-
-
+    <Grid VerticalAlignment="Top">
+        <Border BorderThickness="0,1,0,0" BorderBrush="Black" VerticalAlignment="Center" Height="1" Margin="5,0,5,0"/>
+        <Slider x:Name="ScrubberPosition"
+            Minimum="{Binding Path=Minimum}"
+            Maximum="{Binding Path=Maximum}"
+            Value="{Binding Path=CurrentValue}"
+            Template="{DynamicResource ScrubberPosition}"/>
+        <Slider x:Name="LowerSlider" VerticalAlignment="Center"
+            Minimum="{Binding Path=Minimum}"
+            Maximum="{Binding Path=Maximum}"
+            Value="{Binding Path=LowerValue}"
+            Template="{DynamicResource ScrubberTemplate}"
+            Margin="0,0,10,0"/>
+        <Slider x:Name="UpperSlider" VerticalAlignment="Center"
+            Minimum="{Binding Path=Minimum}"
+            Maximum="{Binding Path=Maximum}"
+            Value="{Binding Path=UpperValue}"
+            Margin="10,0,0,0"
+            Template="{DynamicResource ScrubberTemplate}"/>
     </Grid>
 </UserControl>
