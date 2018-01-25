@@ -6,7 +6,7 @@ namespace BarNone.DataLift.UI.Models
     public class ColorImageFrame
     {
         public WriteableBitmap Image { get; }
-        public TimeSpan Time { get; }
+        public TimeSpan Time { get; set; }
 
         public ColorImageFrame(WriteableBitmap image, TimeSpan time)
         {

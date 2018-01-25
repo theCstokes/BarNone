@@ -6,10 +6,9 @@ using BarNone.Shared.DomainModel;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace BarNone.DataLift.UI.ViewModels
@@ -113,16 +112,16 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 LiftName = "Test1",
                 LiftType = "Squat",
-                LiftStartTime = "00:00:000",
-                LiftEndTime = "00:01:000",
+                LiftStartTime = "00:00:.000",
+                LiftEndTime = "00:01.000",
                 Count = 0
             },
             new LiftListVM
             {
                 LiftName = "Test2",
                 LiftType = "Clean and Jerk",
-                LiftStartTime = "00:01:001",
-                LiftEndTime = "00:02:000",
+                LiftStartTime = "00:01.001",
+                LiftEndTime = "00:02.000",
                 Count =  1
             }
         };
@@ -162,6 +161,11 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 _selectedLift = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("SelectedLift"));
+                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberCurrentPosition"));
+                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
+                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
+                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberMaxValue"));
+                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberMinValue"));
             }
         }
 
@@ -337,20 +341,20 @@ namespace BarNone.DataLift.UI.ViewModels
                 colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[currentBodyDataFrame];
                 bodyFrameToDraw = CurrentLifts.CurrentRecordedData[currentBodyDataFrame];
 
-                currentMs = Math.Max(bodyFrameToDraw.TimeOfFrame.TotalMilliseconds, colorFrameToDraw.Time.TotalMilliseconds);
+                ScrubberCurrentPosition = Math.Max(bodyFrameToDraw.TimeOfFrame.TotalMilliseconds, colorFrameToDraw.Time.TotalMilliseconds);
                 drawColor = true;
                 drawBody = true;
             }
             else
             {
                 //increment timer value
-                currentMs += VideoTimerInterval;
+                ScrubberCurrentPosition += VideoTimerInterval;
 
                 int nextBodyFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedData.Count;
                 int nextColorFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedColorData.Count;
                 colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[nextColorFrame];
                 bodyFrameToDraw = CurrentLifts.CurrentRecordedData[nextBodyFrame];
-                
+
                 if (colorFrameToDraw.Time.TotalMilliseconds < currentMs)
                 {
                     drawColor = true;
@@ -376,6 +380,59 @@ namespace BarNone.DataLift.UI.ViewModels
                     ImageBrush colorBrush = new ImageBrush(currentColorImage);
                     dc.DrawImage(currentColorImage, new System.Windows.Rect(0, 0, 1920, 1080));
                 }
+            }
+        }
+
+        #endregion
+
+        #region Scrubber Controls
+        public double ScrubberCurrentPosition
+        {
+            get => currentMs;
+            set
+            {
+                currentMs = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentScrubberPosition"));
+            }
+        }
+
+        public double ScrubberUpperThumb
+        {
+            get
+            {
+                try { return TimeSpan.Parse(SelectedLift.LiftEndTime).TotalMilliseconds; }
+                catch { return 0d; }
+            }
+        }
+
+        public double ScrubberLowerThumb
+        {
+            get
+            {
+                try { return TimeSpan.Parse(SelectedLift.LiftStartTime).TotalMilliseconds; }
+                catch { return 0d; }
+            }
+        }
+
+        public double ScrubberMaxValue
+        {
+            get
+            {
+                if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedData.Count == 0)
+                    return 0d;
+
+                return Math.Max(CurrentLifts.CurrentRecordedColorData.Max(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedData.Max(x => x.TimeOfFrame.TotalMilliseconds));
+            }
+        }
+
+        public double ScrubberMinValue
+        {
+            get
+            {
+                if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedData.Count == 0)
+                    return 0d;
+
+                return Math.Min(CurrentLifts.CurrentRecordedColorData.Min(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedData.Min(x => x.TimeOfFrame.TotalMilliseconds));
             }
         }
 

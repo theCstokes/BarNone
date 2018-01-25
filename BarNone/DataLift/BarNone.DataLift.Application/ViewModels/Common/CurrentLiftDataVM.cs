@@ -4,8 +4,10 @@ using BarNone.Shared.DataConverters;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
 using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.IO;
 
 namespace BarNone.DataLift.UI.ViewModels.Common
@@ -41,6 +43,30 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             {
                 _currentRecordedColorData = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("CurrentRecordedColorData"));
+            }
+        }
+
+        private bool isNormalized = false;
+        /// <summary>
+        /// Data may only be normalized once currently!
+        /// </summary>
+        public void NormalizeTimes()
+        {
+            if (isNormalized)
+                return;
+            if(CurrentRecordedColorData.Count > 0 && CurrentRecordedData.Count > 0)
+            {
+                TimeSpan bodyCandidate = CurrentRecordedData[0].TimeOfFrame, colorCandidate = CurrentRecordedColorData[0].Time;
+
+                TimeSpan candidate = (colorCandidate < bodyCandidate) ? colorCandidate : bodyCandidate;
+                
+                CurrentRecordedData.ToList().ForEach(x => x.TimeOfFrame = x.TimeOfFrame.Subtract(candidate));
+                CurrentRecordedColorData.ToList().ForEach(x => x.Time = x.Time.Subtract(candidate));
+
+            }
+            else
+            {
+                throw new Exception("Cannot Normalize, No Data!");
             }
         }
 
