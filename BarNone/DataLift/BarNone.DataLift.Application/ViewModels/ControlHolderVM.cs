@@ -157,6 +157,24 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        /// Field representation for the <see cref="StepTwoOpacityController"/> bindable property
+        /// </summary>
+        private int _stepOneStyleController = 0;
+        /// <summary>
+        /// Determines the opacity of the button for step 2 of the workflow.  0.5 is 50% opacity.
+        /// </summary>
+        public int StepOneStyleController
+        {
+            get => _stepOneStyleController;
+            set
+            {
+                _stepOneStyleController = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("StepOneStyleController"));
+            }
+        }
+
         /// <summary>
         /// Field representation for the <see cref="StepTwoOpacityController"/> bindable property
         /// </summary>
@@ -346,7 +364,9 @@ namespace BarNone.DataLift.UI.ViewModels
         private void GotoRecordingState()
         {
             // Change state to recording.
-            _currentState = State.Recording;           
+            _currentState = State.Recording;
+
+            StepOneStyleController = 0;
             
             // Disable the button to go to the third step
             IsStepThreeEnabledController = false;
@@ -370,6 +390,8 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             // Change state to editing.
             _currentState = State.Editing;
+
+            StepOneStyleController = 1;
 
             // Enable the button to go to the third step
             IsStepThreeEnabledController = true;

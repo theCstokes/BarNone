@@ -17,6 +17,20 @@ namespace BarNone.DataLift.UI.Views
             InitializeComponent();
         }
 
+
+
+        public int StepOneStyle
+        {
+            get { return (int)GetValue(StepOneStyleProperty); }
+            set { SetValue(StepOneStyleProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for StepOneStyle.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty StepOneStyleProperty =
+            DependencyProperty.Register("StepOneStyle", typeof(int), typeof(WorkflowScreen), new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+
+
         /// <summary>
         /// Bindable parameter to set the opacity of the 2nd workflow
         /// </summary>

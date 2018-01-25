@@ -11,6 +11,30 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
+                <ResourceDictionary>
+                    <Style x:Key="ButtonOne" BasedOn="{StaticResource MaterialDesignFloatingActionDarkButton}" TargetType="Button">
+                        <Style.Triggers>
+                            <!--<DataTrigger Binding="{Binding test}" Value="0">
+                                <Setter Property="Background" Value="Purple" />
+                                <Setter Property= "BorderBrush" Value="Purple" />
+                                <Setter Property="Opacity" Value="0.5" />
+                                <Setter Property="IsEnabled" Value="True" />
+                            </DataTrigger>-->
+                            <DataTrigger Binding="{Binding Path=StepOneStyle, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Value="0">
+                                <Setter Property="Background" Value="{DynamicResource SecondaryAccentBrush}" />
+                                <Setter Property= "BorderBrush" Value="{DynamicResource SecondaryAccentBrush}" />
+                                <Setter Property="Opacity" Value="1" />
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=StepOneStyle, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Value="1">
+                                <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}" />
+                                <Setter Property= "BorderBrush" Value="{DynamicResource PrimaryHueMidBrush}" />
+                                <Setter Property="Opacity" Value="1" />
+                                <Setter Property="IsEnabled" Value="True" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -32,7 +56,7 @@
                 <ColumnDefinition Width="20" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Grid.Row="1"  Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+            <Button Grid.Column="1" Grid.Row="1" Style="{StaticResource ResourceKey=ButtonOne}"
                         Margin="10" HorizontalAlignment="Center" 
                         ToolTip="Step 1: Record Lift" IsEnabled="True" Opacity="100"
                         Command="{Binding Path=StepOneCommand, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
