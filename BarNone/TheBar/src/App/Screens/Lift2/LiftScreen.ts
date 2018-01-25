@@ -58,7 +58,7 @@ export default class LiftScreen extends Screen<LiftView> {
 			if (this.subScreen !== undefined) {
 				UEye.popTo(this);
 			}
-
+			// this.view.mainPanel.content=this.
 			if (userData.type === LiftListType.Lift) {
 				this.subScreen = UEye.push(LiftEditScreen) as LiftEditScreen;
 			} else if (userData.type === LiftListType.Folder) {

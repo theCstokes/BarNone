@@ -24,11 +24,12 @@ export default class SettingsScreen extends Screen<SettingsView> {
 	}
 
 	private _onRender(current: State, original: State): void {
-		this.view.userList.items = current.SettingsElementList.map(item => {
+		this.view.settingsList.items = current.SettingsElementList.map(item => {
 			return {
 				selected: (item.id === current.selectionId),
 				id: item.id,
-				name: item.name
+				name: item.name,
+				icon: item.icon
 			}
 		});
 		var settingsElement = current.SettingsElementList.find(item => {
@@ -43,7 +44,7 @@ export default class SettingsScreen extends Screen<SettingsView> {
 	}
 
 	public onShow(): void {
-		this.view.userList.onSelect = (data: IListItem) => {
+		this.view.settingsList.onSelect = (data: IListItem) => {
 			UEye.popTo(this);
 			this._stateManager.SelectionChange.trigger({ id: data.id });
 

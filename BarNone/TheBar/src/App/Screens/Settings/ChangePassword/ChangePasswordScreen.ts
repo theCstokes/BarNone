@@ -31,6 +31,9 @@ export default class ChangePasswordScreen extends EditScreen<ChangePasswordView,
 		this.view.retypePassword.onChange = (data) => {
 			this.stateManager.RetypePassword.trigger(data);
 		};
+		this.view.saveButton.onClick =() => {
+			this.stateManager.onSave();
+		};
 	}
 
 	// public nameBind = ScreenBind

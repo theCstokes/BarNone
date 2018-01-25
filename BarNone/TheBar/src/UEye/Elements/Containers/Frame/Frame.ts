@@ -2,7 +2,7 @@ import { BaseContainer } from "UEye/Elements/Core/BaseContainer/BaseContainer";
 import Core from "UEye/Elements/Core/Core";
 
 export default class Frame extends BaseContainer {
-    private _globalDock: HTMLElement;
+    // private _globalDock: HTMLElement;
     private _contextDock: HTMLElement;
     private _navDock: HTMLElement;
     private _statusArea: HTMLElement;
@@ -18,8 +18,8 @@ export default class Frame extends BaseContainer {
         super(parent);
         Core.addClass(this.element, "UEye-Frame");
 
-        this._globalDock = Core.create("div", this.element, "Global-Dock");
-        this.linkComponentContainer("globalDock", this._globalDock);
+      //  this._globalDock = Core.create("div", this.element, "Global-Dock");
+       // this.linkComponentContainer("globalDock", this._globalDock);
         
         this._contextDock = Core.create("div", this.element, "Context-Dock");
         this.linkComponentContainer("contextDock", this._contextDock);
@@ -40,12 +40,12 @@ export default class Frame extends BaseContainer {
         this.linkScreenContainer("content", this._content);
     }
     
-    public set globalDock(value: any[]) {
-        this.setComponentContainer("globalDock", value);
-    }
-    public get globalDock(): any[] {
-        return this.getComponentContainer("globalDock");
-    }
+    // public set globalDock(value: any[]) {
+    //     this.setComponentContainer("globalDock", value);
+    // }
+    // public get globalDock(): any[] {
+    //     return this.getComponentContainer("globalDock");
+    // }
 
     public set contextDock(value: any[]) {
         this.setComponentContainer("contextDock", value);

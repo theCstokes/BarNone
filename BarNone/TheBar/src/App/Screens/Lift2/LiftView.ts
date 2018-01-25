@@ -1,9 +1,11 @@
 import { View } from "UEye/View/View";
 import ControlTypes from "UEye/ControlTypes";
 import List from "UEye/Elements/Components/List/List";
+import Panel from "UEye/Elements/Containers/Panel/Panel";
 
 export default class LiftView extends View {
 	public userList: List;
+	public mainPanel: Panel;
 	
 	public get content(): any[] {
 		return [
