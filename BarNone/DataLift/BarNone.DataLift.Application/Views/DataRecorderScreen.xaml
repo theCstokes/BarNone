@@ -36,7 +36,7 @@
                 <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button Content="Start Recording." Command="{Binding StartRecording}" Margin="10" Width="300" FontSize="16" />
                     <Button Content="Stop" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
-                    <Button Content="Send recordings to Rack." Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
+                    <!--<Button Content="Send recordings to Rack." Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />-->
                 </StackPanel>
             </DockPanel>
         </materialDesign:Card>
