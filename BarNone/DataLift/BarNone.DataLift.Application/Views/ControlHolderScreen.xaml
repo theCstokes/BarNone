@@ -59,10 +59,14 @@
                 </Grid.ColumnDefinitions>
 
                 <local:WorkflowScreen Grid.Column="1" Grid.Row="1"  Grid.RowSpan="2" VerticalAlignment="Stretch" 
-                                      IsStepTwoEnabled="{Binding Path=IsStepTwoEnabledController}" 
+                                      StepTwoOpacity="{Binding Path=StepTwoOpacityController}"
+                                      StepThreeOpacity="{Binding Path=StepThreeOpacityController}"
                                       IsStepThreeEnabled="{Binding Path=IsStepThreeEnabledController}"
                                       StepTwoProgress="{Binding Path=StepTwoProgressController}"
-                                      StepThreeProgress="{Binding Path=StepThreeProgressController}"/>
+                                      StepThreeProgress="{Binding Path=StepThreeProgressController}"
+                                      StepOneCommand="{Binding Path=ControlStepOneCommand}"
+                                      StepTwoCommand="{Binding Path=ControlStepTwoCommand}"
+                                      StepThreeCommand="{Binding Path=ControlStepThreeCommand}"/>
 
                 <DockPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <local:ControlScreen DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -86,10 +90,6 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-
-                    <Button Grid.Column="0" Width="200" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" IsEnabled="{Binding IsBackwardsEnabled}"  Content="Previous Step" Command="{Binding RunDialogCommand}" />
-                    <Button Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Content="Next Step" Command="{Binding MoveWorflowForwardCmd}" />
-
                 </Grid>
             </Grid>
         </DockPanel>
