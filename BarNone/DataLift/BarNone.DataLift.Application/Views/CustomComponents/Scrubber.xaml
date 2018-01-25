@@ -72,20 +72,20 @@
     <Grid VerticalAlignment="Top">
         <Border BorderThickness="0,1,0,0" BorderBrush="Black" VerticalAlignment="Center" Height="1" Margin="5,0,5,0"/>
         <Slider x:Name="ScrubberPosition"
-            Minimum="{Binding Path=Minimum}"
-            Maximum="{Binding Path=Maximum}"
-            Value="{Binding Path=CurrentValue}"
+            Minimum="{Binding Path=Minimum, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+            Maximum="{Binding Path=Maximum, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+            Value="{Binding Path=CurrentValue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
             Template="{DynamicResource ScrubberPosition}"/>
         <Slider x:Name="LowerSlider" VerticalAlignment="Center"
-            Minimum="{Binding Path=Minimum}"
-            Maximum="{Binding Path=Maximum}"
-            Value="{Binding Path=LowerValue}"
+            Minimum="{Binding Path=Minimum, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+            Maximum="{Binding Path=Maximum, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+            Value="{Binding Path=LowerValue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
             Template="{DynamicResource ScrubberTemplate}"
             Margin="0,0,10,0"/>
         <Slider x:Name="UpperSlider" VerticalAlignment="Center"
-            Minimum="{Binding Path=Minimum}"
-            Maximum="{Binding Path=Maximum}"
-            Value="{Binding Path=UpperValue}"
+            Minimum="{Binding Path=Minimum, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+            Maximum="{Binding Path=Maximum, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+            Value="{Binding Path=UpperValue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
             Margin="10,0,0,0"
             Template="{DynamicResource ScrubberTemplate}"/>
     </Grid>
