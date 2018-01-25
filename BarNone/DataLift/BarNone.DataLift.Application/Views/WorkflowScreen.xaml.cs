@@ -133,9 +133,5 @@ namespace BarNone.DataLift.UI.Views
         /// </summary>
         public static readonly DependencyProperty StepThreeCommandProperty =
             DependencyProperty.Register("StepThreeCommand", typeof(ICommand), typeof(WorkflowScreen), new FrameworkPropertyMetadata(null));
-
-
-
     }
-
 }
