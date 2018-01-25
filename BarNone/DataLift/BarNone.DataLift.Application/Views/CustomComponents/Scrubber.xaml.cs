@@ -68,7 +68,7 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
         }
 
         public static readonly DependencyProperty CurrentValueProperty =
-            DependencyProperty.Register("CurrentValue", typeof(double), typeof(Scrubber), new UIPropertyMetadata(1d));
+            DependencyProperty.Register("CurrentValue", typeof(double), typeof(Scrubber), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public double Maximum
         {
