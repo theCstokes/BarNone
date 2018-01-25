@@ -104,7 +104,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Drawing\KinectToImage.cs" />
-    <Compile Include="Models\LiftInterval.cs" />
     <Compile Include="Navigation\INavigatable.cs" />
     <Compile Include="Models\ColorImageFrame.cs" />
     <Compile Include="Navigation\UserControlManager.cs" />

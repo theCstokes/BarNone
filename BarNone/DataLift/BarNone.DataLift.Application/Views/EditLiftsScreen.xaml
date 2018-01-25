@@ -9,9 +9,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:validation="clr-namespace:BarNone.DataLift.UI.Validation"
              mc:Ignorable="d"
-             d:DesignHeight="1000"
-             d:DesignWidth="1000"
-             >
+             d:DesignHeight="720"
+             d:DesignWidth="1080">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -62,12 +61,14 @@
                         <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                         <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                         <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <cmpnts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="0" ImageSourceLeft="{Binding LeftImage}" ImageSourceMiddle="{Binding MiddleImage}" ImageSourceRight="{Binding RightImage}"/>
+                    <cmpnts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="0" ImageSourceLeft="{Binding LeftImage}" ImageSourceMiddle="{Binding MiddleImage}" ImageSourceRight="{Binding RightImage}"/>
                     <cmpnts:Scrubber Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="10, 10, 10, 0" Minimum="{Binding ScrubberMinValue}" LowerValue="{Binding ScrubberLowerThumb}" CurrentValue="{Binding ScrubberCurrentPosition}" UpperValue="{Binding ScrubberUpperThumb}" Maximum="{Binding ScrubberMaxValue}"/>
                 </Grid>
                 <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}" 
@@ -75,8 +76,8 @@
                                  CommandResetInterval="{Binding CommandResetVideo}" 
                                  CommandSlowMo="{Binding CommandSlowMotionVideo}" 
                                  CommandFastForward="{Binding CommandFastForwardVideo}"/>
-                <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
-                    <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                <StackPanel Orientation="Horizontal" Margin="0 20 0 0" HorizontalAlignment="Center">
+                    <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 0 10 0"
                          materialDesign:HintAssist.Hint="Start Time">
                         <TextBox.Text >
                             <Binding  Path="SelectedLift.LiftStartTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
@@ -86,7 +87,7 @@
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
-                    <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="10 0 0 0"
                          materialDesign:HintAssist.Hint="End Time">
                         <TextBox.Text >
                             <Binding Path="SelectedLift.LiftEndTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
@@ -95,7 +96,7 @@
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
-                    </TextBox>
+                        </TextBox>
                 </StackPanel>
             </StackPanel>
         </materialDesign:Card>

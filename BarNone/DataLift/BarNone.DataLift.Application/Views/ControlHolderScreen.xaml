@@ -7,7 +7,9 @@
              xmlns:local="clr-namespace:BarNone.DataLift.UI.Views"
              xmlns:vms="clr-namespace:BarNone.DataLift.UI.ViewModels"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             d:DesignHeight ="1080"
+             d:DesignWidth ="1920">
     <UserControl.Resources>
         <ResourceDictionary>
             <vms:ControlHolderVM x:Key="vm"/>
@@ -58,29 +60,15 @@
                     <ColumnDefinition Width="20" />
                 </Grid.ColumnDefinitions>
 
-                <local:WorkflowScreen Grid.Column="1" Grid.Row="1"  Grid.RowSpan="2" VerticalAlignment="Stretch" 
+                <local:WorkflowScreen Grid.Column="1" Grid.Row="1"  Grid.RowSpan="2" 
+                                      VerticalAlignment="Stretch" HorizontalAlignment="Center"
                                       IsStepTwoEnabled="{Binding Path=IsStepTwoEnabledController}" 
                                       IsStepThreeEnabled="{Binding Path=IsStepThreeEnabledController}"
                                       StepTwoProgress="{Binding Path=StepTwoProgressController}"
                                       StepThreeProgress="{Binding Path=StepThreeProgressController}"/>
 
-                <DockPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <local:ControlScreen DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <local:ControlScreen Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 
-                    <!--<Border DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsRecorderVisible, Converter={StaticResource BoolToVisConverter} }">
-                        <local:DataRecorderScreen/>
-                    </Border>
-
-                    <Border DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding IsEditorVisible, Converter={StaticResource BoolToVisConverter} }">
-                        <local:EditLiftsScreen/>
-                    </Border>
-
-                    <Border DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsSavingVisible, Converter={StaticResource BoolToVisConverter} }">
-                        <TextBlock FontSize="36">
-                        Placeholder For Saving Screen.
-                        </TextBlock>
-                    </Border>-->
-                </DockPanel>
                 <Grid Grid.Column="2" Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
