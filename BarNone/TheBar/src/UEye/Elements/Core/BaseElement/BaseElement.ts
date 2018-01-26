@@ -7,6 +7,7 @@ export abstract class BaseElement {
 	private _modified: boolean;
 	private _readonly: boolean;
 	private _error: string;
+	private _visible: boolean = true;
 
 	public constructor(parent: HTMLElement, ...styles: string[]) {
 		this._element = Core.create('div', parent, ...styles);
@@ -28,6 +29,20 @@ export abstract class BaseElement {
 	}
 	public set instance(value: any) {
 		this._instance = value;
+	}
+
+	public get visible(): boolean {
+		return this._visible;
+	}
+	public set visible(value: boolean) {
+		if (value !== this._visible) {
+			this._visible = value;
+			if (!this._visible) {
+				Core.addClass(this.element, "UEye-Invisible");
+			} else {
+				Core.removeClass(this.element, "UEye-Invisible");
+			}
+		}
 	}
 
 	public get modified(): boolean {
