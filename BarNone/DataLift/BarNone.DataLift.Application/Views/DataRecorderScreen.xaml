@@ -20,24 +20,26 @@
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
     <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="20">
-            <DockPanel>
-                <Grid DockPanel.Dock="Top" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                    </Grid.ColumnDefinitions>
-                    <cmpts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="3" ImageSourceLeft="{Binding ImageSourceFront}" ImageSourceMiddle="{Binding ImageSourceColor}" ImageSourceRight="{Binding ImageSourceSide}"/>
-                    
-                </Grid>
-                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="Start Recording." Command="{Binding StartRecording}" Margin="10" Width="300" FontSize="16" />
-                    <Button Content="Stop" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
-                    <!--<Button Content="Send recordings to Rack." Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />-->
-                </StackPanel>
-            </DockPanel>
-        </materialDesign:Card>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="200">
+
+            
+            <!--<Button Content="Send recordings to Rack." Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />-->
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                </Grid.ColumnDefinitions>
+                <cmpts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="3" ImageSourceLeft="{Binding ImageSourceFront}" ImageSourceMiddle="{Binding ImageSourceColor}" ImageSourceRight="{Binding ImageSourceSide}"/>
+
+            </Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Start Recording." Command="{Binding StartRecording}" Margin="10" Width="300" FontSize="16" />
+                <Button Content="Stop" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
+            </StackPanel>
+        </StackPanel>
+    </materialDesign:Card>
     
 </UserControl>
