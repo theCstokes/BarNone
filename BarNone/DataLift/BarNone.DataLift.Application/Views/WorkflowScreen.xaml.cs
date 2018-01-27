@@ -18,47 +18,51 @@ namespace BarNone.DataLift.UI.Views
         }
 
         /// <summary>
-        /// Bindable parameter to set the opacity of the 2nd workflow
+        /// Bindable parameter to set the style of the 1st workflow
         /// </summary>
-        public double StepTwoOpacity
+        public ViewModels.ControlHolderVM.ButtonState StepOneStyle
         {
-            get { return (double)GetValue(StepTwoOpacityProperty); }
-            set { SetValue(StepTwoOpacityProperty, value); }
+            get { return (ViewModels.ControlHolderVM.ButtonState)GetValue(StepOneStyleProperty); }
+            set { SetValue(StepOneStyleProperty, value); }
         }
-        /// <summary>
-        /// Dependency parameter to bind to <see cref="StepTwoOpacity"/> on object creation, this binding is two way
-        /// </summary>
-        public static readonly DependencyProperty StepTwoOpacityProperty =
-            DependencyProperty.Register("StepTwoOpacity", typeof(double), typeof(WorkflowScreen), new FrameworkPropertyMetadata(0.5, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-        
-        // <summary>
-        /// Bindable parameter to set the opacity of the 3rd workflow
-        /// </summary>
-        public double StepThreeOpacity
-        {
-            get { return (double)GetValue(StepThreeOpacityProperty); }
-            set { SetValue(StepThreeOpacityProperty, value); }
-        }
-        /// <summary>
-        /// Dependency parameter to bind to <see cref="StepThreeOpacity"/> on object creation, this binding is two way
-        /// </summary>
-        public static readonly DependencyProperty StepThreeOpacityProperty =
-            DependencyProperty.Register("StepThreeOpacity", typeof(double), typeof(WorkflowScreen), new FrameworkPropertyMetadata(0.5, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
 
         /// <summary>
-        /// Bindable parameter to check if the third workflow step is enabled
+        /// Dependency parameter to bind to <see cref="StepOneStyle"/> on object creation, this binding is two way
         /// </summary>
-        public bool IsStepThreeEnabled
+        public static readonly DependencyProperty StepOneStyleProperty =
+            DependencyProperty.Register("StepOneStyle", typeof(ViewModels.ControlHolderVM.ButtonState), typeof(WorkflowScreen),
+                new FrameworkPropertyMetadata(ViewModels.ControlHolderVM.ButtonState.Selected, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        /// <summary>
+        /// Bindable parameter to set the style of the 2nd workflow
+        /// </summary>
+        public ViewModels.ControlHolderVM.ButtonState StepTwoStyle
         {
-            get { return (bool)GetValue(IsStepThreeEnabledProperty); }
-            set { SetValue(IsStepThreeEnabledProperty, value); }
+            get { return (ViewModels.ControlHolderVM.ButtonState)GetValue(StepTwoStyleProperty); }
+            set { SetValue(StepTwoStyleProperty, value); }
         }
         /// <summary>
-        /// Dependency parameter to bind to <see cref="IsStepThreeEnabled"/> on object creation, this binding is two way
+        /// Dependency parameter to bind to <see cref="StepTwoStyle"/> on object creation, this binding is two way
         /// </summary>
-        public static readonly DependencyProperty IsStepThreeEnabledProperty =
-            DependencyProperty.Register("IsStepThreeEnabled", typeof(bool), typeof(WorkflowScreen), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+        public static readonly DependencyProperty StepTwoStyleProperty =
+            DependencyProperty.Register("StepTwoStyle", typeof(ViewModels.ControlHolderVM.ButtonState), typeof(WorkflowScreen),
+                new FrameworkPropertyMetadata(ViewModels.ControlHolderVM.ButtonState.CanGoTo, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        /// <summary>
+        /// Bindable parameter to set the style of the 3rd workflow
+        /// </summary>
+        public ViewModels.ControlHolderVM.ButtonState StepThreeStyle
+        {
+            get { return (ViewModels.ControlHolderVM.ButtonState)GetValue(StepThreeStyleProperty); }
+            set { SetValue(StepThreeStyleProperty, value); }
+        }
+
+        /// <summary>
+        /// Dependency parameter to bind to <see cref="StepThreeStyle"/> on object creation, this binding is two way
+        /// </summary>
+        public static readonly DependencyProperty StepThreeStyleProperty =
+            DependencyProperty.Register("StepThreeStyle", typeof(ViewModels.ControlHolderVM.ButtonState), typeof(WorkflowScreen),
+                new FrameworkPropertyMetadata(ViewModels.ControlHolderVM.ButtonState.Disabled, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
         /// Bindable parameter to control the progress bar animation between the first and second workflow options

@@ -41,7 +41,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// Bitmap to display the color video
         /// </summary>
         private WriteableBitmap colorBitmap = null;
-        
+
         #endregion
 
         #region UI Components
@@ -150,7 +150,7 @@ namespace BarNone.DataLift.UI.ViewModels
             IsRecording = false;
             isCurrentlyRecording = false;
 
-            CurrentLiftData.CurrentRecordedData.Clear();
+            CurrentLiftData.CurrentRecordedBodyData.Clear();
         }
 
         internal override void Closed()
@@ -194,7 +194,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 var dataFrame = frame.KinectBdfToDmBdf(body);
 
                 if (isCurrentlyRecording)
-                    CurrentLiftData.CurrentRecordedData.Add(dataFrame);
+                    CurrentLiftData.CurrentRecordedBodyData.Add(dataFrame);
 
                 //Update The Side And Front Views
                 KinectToImage.DrawFrameSideView(dataFrame, SideProfileDrawingGroup, displayHeight, displayWidth);
@@ -336,7 +336,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private void StartNewRecording()
         {
-            CurrentLiftData.CurrentRecordedData.Clear();
+            CurrentLiftData.CurrentRecordedBodyData.Clear();
             isCurrentlyRecording = true;
         }
 
@@ -372,6 +372,15 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             isCurrentlyRecording = false;
             IsRecording = false;
+            try
+            {
+                CurrentLiftData.NormalizeTimes();
+                //TODO Notify To Switch Page
+            }
+            catch (ArgumentException)
+            {
+                //Argument exception if the data cannot be normalized for processing
+            }
             return;
             //TODO CLEAN!
             //TempAddCurrentLift();
@@ -387,10 +396,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             };
 
-
-
-
-            var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(KinectDepthFrameConverter.KinectBodyDataToDmBodyData(CurrentLiftData.CurrentRecordedData));
+            var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(KinectDepthFrameConverter.KinectBodyDataToDmBodyData(CurrentLiftData.CurrentRecordedBodyData));
             toSend.Details.BodyData = bodyDto;
 
             var temp = await DataManager.Flex.Post(new FlexDTO
@@ -406,7 +412,7 @@ namespace BarNone.DataLift.UI.ViewModels
             });
 
         }
-        
+
         #endregion
 
         #region Constructor(s) and Destructor
@@ -467,7 +473,7 @@ namespace BarNone.DataLift.UI.ViewModels
             imageSourceSide = new DrawingImage(SideProfileDrawingGroup);
         }
 
-#endregion
+        #endregion
 
         /// <summary>
         /// Event fired when the kinect sends any data frame type, depth and color are monitored

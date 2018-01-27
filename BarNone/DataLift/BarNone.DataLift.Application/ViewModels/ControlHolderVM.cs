@@ -16,6 +16,30 @@ namespace BarNone.DataLift.UI.ViewModels
     {
         #region Types
         /// <summary>
+        /// Public enumeration defining the state of a button on the workflow screen.
+        /// </summary>
+        public enum ButtonState
+        {
+            /// <summary>
+            /// The Button is selected.
+            /// </summary>
+            Selected,
+            /// <summary>
+            /// The user can use the button to move backwards in the workflow.
+            /// </summary>
+            CanGoBackTo,
+            /// <summary>
+            /// The user can use the button to move forwards in the workflow.
+            /// </summary>
+            CanGoTo,
+            /// <summary>
+            /// The button is disabled.
+            /// </summary>
+            Disabled,
+        }
+        
+        
+        /// <summary>
         /// Private enumeration defininng which state DataLift is in.
         /// </summary>
         private enum State
@@ -157,54 +181,55 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region Public Properties
+
         /// <summary>
-        /// Field representation for the <see cref="StepTwoOpacityController"/> bindable property
+        /// Field representation for the <see cref="StepOneStyleController"/> bindable property
         /// </summary>
-        private double _stepTwoOpacityController = 0.5;
+        private ButtonState _stepOneStyleController = ButtonState.Selected;
         /// <summary>
-        /// Determines the opacity of the button for step 2 of the workflow.  0.5 is 50% opacity.
+        /// Determines the style using data triggers of the button for step 1 of the workflow based off the screen.
         /// </summary>
-        public double StepTwoOpacityController
+        public ButtonState StepOneStyleController
         {
-            get => _stepTwoOpacityController;
+            get => _stepOneStyleController;
             set
             {
-                _stepTwoOpacityController = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("StepTwoOpacityController"));
+                _stepOneStyleController = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("StepOneStyleController"));
             }
         }
 
         /// <summary>
-        /// Field representation for the <see cref="StepThreeOpacityController"/> bindable property
+        /// Field representation for the <see cref="StepTwoStyleController"/> bindable property
         /// </summary>
-        private double _stepThreeOpacityController = 0.5;
+        private ButtonState _stepTwoStyleController = ButtonState.CanGoTo;
         /// <summary>
-        /// Determines the opacity of the button for step 3 of the workflow.  0.5 is 50% opacity.
+        /// Determines the style using data triggers of the button for step 2 of the workflow based off the screen.
         /// </summary>
-        public double StepThreeOpacityController
+        public ButtonState StepTwoStyleController
         {
-            get => _stepThreeOpacityController;
+            get => _stepTwoStyleController;
             set
             {
-                _stepThreeOpacityController = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("StepThreeOpacityController"));
+                _stepTwoStyleController = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("StepTwoStyleController"));
             }
         }
 
         /// <summary>
-        /// Field representation for the <see cref="IsStepThreeEnabledController"/> bindable property
+        /// Field representation for the <see cref="StepThreeStyleController"/> bindable property
         /// </summary>
-        private bool _isStepThreeEnabledController = false;
+        private ButtonState _stepThreeStyleController = ButtonState.Disabled;
         /// <summary>
-        /// Determines whether the button to go to the third step is enabled or not (so you cannot go from record to send).
+        /// Determines the style using data triggers of the button for step 3 of the workflow based off the screen.
         /// </summary>
-        public bool IsStepThreeEnabledController
+        public ButtonState StepThreeStyleController
         {
-            get => _isStepThreeEnabledController;
+            get => _stepThreeStyleController;
             set
             {
-                _isStepThreeEnabledController = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("IsStepThreeEnabledController"));
+                _stepThreeStyleController = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("StepThreeStyleController"));
             }
         }
         
@@ -346,14 +371,11 @@ namespace BarNone.DataLift.UI.ViewModels
         private void GotoRecordingState()
         {
             // Change state to recording.
-            _currentState = State.Recording;           
-            
-            // Disable the button to go to the third step
-            IsStepThreeEnabledController = false;
+            _currentState = State.Recording;
 
-            // Make sure that the two buttons in the workflow have low opacity.
-            StepTwoOpacityController = 0.5;
-            StepThreeOpacityController = 0.5;
+            StepOneStyleController = ButtonState.Selected;
+            StepTwoStyleController = ButtonState.CanGoTo;
+            StepThreeStyleController = ButtonState.Disabled;
 
             // Edit the progress bar accordingly.
             StepTwoProgressController = 0;
@@ -371,12 +393,9 @@ namespace BarNone.DataLift.UI.ViewModels
             // Change state to editing.
             _currentState = State.Editing;
 
-            // Enable the button to go to the third step
-            IsStepThreeEnabledController = true;
-
-            // Set the correct opacities for the workflow view.
-            StepTwoOpacityController = 1;
-            StepThreeOpacityController = 0.5;
+            StepOneStyleController = ButtonState.CanGoBackTo;
+            StepTwoStyleController = ButtonState.Selected;
+            StepThreeStyleController = ButtonState.CanGoTo;
 
             // Set the correct value for the progress bars.
             StepTwoProgressController = 100;
@@ -394,12 +413,13 @@ namespace BarNone.DataLift.UI.ViewModels
             // Change state to saving.
             _currentState = State.Saving;
 
+            StepOneStyleController = ButtonState.CanGoBackTo;
+            StepTwoStyleController = ButtonState.CanGoBackTo;
+            StepThreeStyleController = ButtonState.Selected;
+           
             // Set the correct value for the progress bars.
+            StepTwoProgressController = 100;
             StepThreeProgressController = 100;
-
-            // Set the correct opacities for the workflow view.
-             StepTwoOpacityController = 1;
-            StepThreeOpacityController = 1;
 
             // Display the correct screen in the XAML.
             UserControlManager.SwitchPage(UIPages.SaveLiftView);

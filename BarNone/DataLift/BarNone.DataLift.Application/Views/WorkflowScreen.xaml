@@ -11,6 +11,68 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
+                <ResourceDictionary>
+                    <Style x:Key="ButtonOne" BasedOn="{StaticResource MaterialDesignFloatingActionDarkButton}" TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=StepOneStyle, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Value="0">
+                                <Setter Property="Background" Value="{DynamicResource SecondaryAccentBrush}" />
+                                <Setter Property= "BorderBrush" Value="{DynamicResource SecondaryAccentBrush}" />
+                                <Setter Property="Opacity" Value="1" />
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=StepOneStyle, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Value="1">
+                                <Setter Property="Background" Value="{DynamicResource PrimaryHueDarkBrush}" />
+                                <Setter Property= "BorderBrush" Value="{DynamicResource PrimaryHueDarkBrush}" />
+                                <Setter Property="Opacity" Value="1" />
+                                <Setter Property="IsEnabled" Value="True" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style x:Key="ButtonTwo" BasedOn="{StaticResource MaterialDesignFloatingActionDarkButton}" TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=StepTwoStyle, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Value="0">
+                                <Setter Property="Background" Value="{DynamicResource SecondaryAccentBrush}" />
+                                <Setter Property= "BorderBrush" Value="{DynamicResource SecondaryAccentBrush}" />
+                                <Setter Property="Opacity" Value="1" />
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=StepTwoStyle, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Value="1">
+                                <Setter Property="Background" Value="{DynamicResource PrimaryHueDarkBrush}" />
+                                <Setter Property= "BorderBrush" Value="{DynamicResource PrimaryHueDarkBrush}" />
+                                <Setter Property="Opacity" Value="1" />
+                                <Setter Property="IsEnabled" Value="True" />
+                            </DataTrigger>
+                            <DataTrigger  Binding="{Binding Path=StepTwoStyle, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Value="2">
+                                <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}" />
+                                <Setter Property= "BorderBrush"  Value="{DynamicResource PrimaryHueMidBrush}" />
+                                <Setter Property="Opacity" Value="0.5" />
+                                <Setter Property="IsEnabled" Value="True" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style x:Key="ButtonThree" BasedOn="{StaticResource MaterialDesignFloatingActionDarkButton}" TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=StepThreeStyle, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Value="0">
+                                <Setter Property="Background" Value="{DynamicResource SecondaryAccentBrush}" />
+                                <Setter Property= "BorderBrush" Value="{DynamicResource SecondaryAccentBrush}" />
+                                <Setter Property="Opacity" Value="1" />
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger  Binding="{Binding Path=StepThreeStyle, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Value="2">
+                                <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}" />
+                                <Setter Property= "BorderBrush"  Value="{DynamicResource PrimaryHueMidBrush}" />
+                                <Setter Property="Opacity" Value="0.5" />
+                                <Setter Property="IsEnabled" Value="True" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=StepThreeStyle, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Value="3">
+                                <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}" />
+                                <Setter Property= "BorderBrush" Value="{DynamicResource PrimaryHueMidBrush}" />
+                                <Setter Property="Opacity" Value="0.5" />
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -32,10 +94,11 @@
                 <ColumnDefinition Width="20" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Grid.Row="1"  Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+            <Button Grid.Column="1" Grid.Row="1" Style="{StaticResource ResourceKey=ButtonOne}"
                         Margin="10" HorizontalAlignment="Center" 
-                        ToolTip="Step 1: Record Lift" IsEnabled="True" Opacity="100"
+                        ToolTip="Step 1: Record Lift"
                         Command="{Binding Path=StepOneCommand, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
+                
                 <materialDesign:PackIcon Kind="Video" Height="24" Width="24" />
             </Button>
             <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="0 0 8 0" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -45,8 +108,7 @@
                          Value="{Binding Path=StepTwoProgress, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"/>
 
             <!-- Trim Lifts -->
-            <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" HorizontalAlignment="Center" ToolTip="Step 2: Trim Lifts" Margin="10"
-                        Opacity="{Binding Path=StepTwoOpacity, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"
+            <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource ButtonTwo}" HorizontalAlignment="Center" ToolTip="Step 2: Trim Lifts" Margin="10"
                         Command="{Binding Path=StepTwoCommand, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
                 <materialDesign:PackIcon Kind="LeadPencil" Height="24" Width="24" />
             </Button>
@@ -59,10 +121,8 @@
                          Value="{Binding Path=StepThreeProgress, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"/>
 
             <!-- Save Lifts -->
-            <Button Grid.Column="1" Grid.Row="5"  Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Margin="10" HorizontalAlignment="Center"
-                        ToolTip="Step 3: Save Lifts" IsEnabled="{Binding Path=IsStepThreeEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"
-                        Opacity="{Binding Path=StepThreeOpacity, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"
-                        Command="{Binding Path=StepThreeCommand, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Click="Button_Click">
+            <Button Grid.Column="1" Grid.Row="5"  Style="{StaticResource ButtonThree}" Margin="10" HorizontalAlignment="Center"
+                        ToolTip="Step 3: Save Lifts" Command="{Binding Path=StepThreeCommand, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
                 <materialDesign:PackIcon Kind="Floppy" Height="24" Width="24" />
             </Button>
             <TextBlock Grid.Column="2" Grid.Row="5" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="0 0 8 0" HorizontalAlignment="Center" VerticalAlignment="Center"
