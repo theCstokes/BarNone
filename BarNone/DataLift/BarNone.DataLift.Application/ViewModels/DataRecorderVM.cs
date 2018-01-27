@@ -11,6 +11,7 @@ using BarNone.Shared.DomainModel;
 using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -192,6 +193,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 var body = GetPrimaryBody(Bodies);
                 //Convert the frame to a more usable form
                 var dataFrame = frame.KinectBdfToDmBdf(body);
+                dataFrame.TimeOfFrame = TimeSpan.FromMilliseconds(lastRecievedBodyFrameMs);
 
                 if (isCurrentlyRecording)
                     CurrentLiftData.CurrentRecordedBodyData.Add(dataFrame);
@@ -273,7 +275,7 @@ namespace BarNone.DataLift.UI.ViewModels
                     if (isCurrentlyRecording)
                     {
                         var toSave = new WriteableBitmap(colorBitmap);
-                        CurrentLiftData.CurrentRecordedColorData.Add(new Models.ColorImageFrame(toSave, frame.RelativeTime));
+                        CurrentLiftData.CurrentRecordedColorData.Add(new Models.ColorImageFrame(toSave, TimeSpan.FromMilliseconds(lastRecievedColorFrameMs)));
                     }
                 }
             }
@@ -336,8 +338,12 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private void StartNewRecording()
         {
+            //TODO move this to the VM
             CurrentLiftData.CurrentRecordedBodyData.Clear();
+            CurrentLiftData.CurrentRecordedColorData.Clear();
             isCurrentlyRecording = true;
+
+            GlobalFrameTimer.Restart();
         }
 
         /// <summary>
@@ -370,6 +376,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <returns></returns>
         private async Task EndCurrentRecording()
         {
+            GlobalFrameTimer.Stop();
             isCurrentlyRecording = false;
             IsRecording = false;
             try
@@ -475,6 +482,11 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
+        private Stopwatch GlobalFrameTimer = new Stopwatch();
+        long lastRecievedBodyFrameMs = 0;
+        long lastRecievedColorFrameMs = 0;
+
+
         /// <summary>
         /// Event fired when the kinect sends any data frame type, depth and color are monitored
         /// </summary>
@@ -490,6 +502,7 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (frame != null)
                 {
+                    lastRecievedColorFrameMs = GlobalFrameTimer.ElapsedMilliseconds;
                     Reader_ColorFrameArrived(frame);
                 }
             }
@@ -499,6 +512,7 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (frame != null)
                 {
+                    lastRecievedBodyFrameMs = GlobalFrameTimer.ElapsedMilliseconds;
                     Reader_FrameArrived(frame);
                 }
             }

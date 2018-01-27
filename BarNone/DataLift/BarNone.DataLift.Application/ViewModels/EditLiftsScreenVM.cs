@@ -6,6 +6,7 @@ using BarNone.Shared.DomainModel;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
@@ -312,7 +313,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Video playback synchronizer timer in Ms
         /// </summary>
-        private const int VideoTimerInterval = 2;
+        private const int VideoTimerInterval = 15;
         /// <summary>
         /// Control Timer in the UI thread to handle VM to UI timed requests
         /// </summary>
@@ -324,7 +325,8 @@ namespace BarNone.DataLift.UI.ViewModels
         private int currentBodyDataFrame = 0;
         private int currentColorDataFrame = 0;
 
-        private double currentMs = 0;
+        private int currentMs = 0;
+        private int LoopTime;
 
         /// <summary>
         /// Redraws each image if required
@@ -335,24 +337,28 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             BodyDataFrame bodyFrameToDraw;
             ColorImageFrame colorFrameToDraw;
-
+            
             bool drawColor = false, drawBody = false;
             if (currentMs == 0)
-            {//Will only happen on loaded
-                colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[currentBodyDataFrame];
-                bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[currentBodyDataFrame];
+            {
+                GlobalTimer.Restart();
 
-                ScrubberCurrentPosition = Math.Max(bodyFrameToDraw.TimeOfFrame.TotalMilliseconds, colorFrameToDraw.Time.TotalMilliseconds);
+                //Will only happen on loaded
+                colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[currentColorDataFrame];
+                bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[currentBodyDataFrame];
+                
                 drawColor = true;
                 drawBody = true;
+                var ianTheCaptainLater = CurrentLifts.CurrentRecordedColorData.Select(x => x.Time)
+                    .Concat(CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame));
+                LoopTime = (int)(ianTheCaptainLater.Max(x => x.TotalMilliseconds) + 1/30d * 1000);
             }
             else
             {
-                //increment timer value
-                ScrubberCurrentPosition += VideoTimerInterval;
 
+                currentMs = (int)GlobalTimer.ElapsedMilliseconds;
                 int nextBodyFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedBodyData.Count;
-                int nextColorFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedColorData.Count;
+                int nextColorFrame = (currentColorDataFrame + 1) % CurrentLifts.CurrentRecordedColorData.Count;
                 colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[nextColorFrame];
                 bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[nextBodyFrame];
 
@@ -366,8 +372,8 @@ namespace BarNone.DataLift.UI.ViewModels
                     drawBody = true;
                     currentBodyDataFrame = nextBodyFrame;
                 }
-
             }
+
             if (drawBody)
             {
                 KinectToImage.DrawFrameFrontView(bodyFrameToDraw, _leftImageDrawingGroup, 424, 424);
@@ -381,6 +387,24 @@ namespace BarNone.DataLift.UI.ViewModels
                     ImageBrush colorBrush = new ImageBrush(currentColorImage);
                     dc.DrawImage(currentColorImage, new System.Windows.Rect(0, 0, 1920, 1080));
                 }
+
+                Console.WriteLine("Redraw at: {0}", GlobalTimer.ElapsedMilliseconds);
+
+            }
+
+            
+            if (currentMs > LoopTime)
+            {
+                currentMs = 0;
+                //increment timer value
+                ScrubberCurrentPosition = 0;
+
+            }
+            else
+            {
+                currentMs += VideoTimerInterval;
+                //increment timer value
+                ScrubberCurrentPosition += VideoTimerInterval;
             }
         }
 
@@ -392,7 +416,7 @@ namespace BarNone.DataLift.UI.ViewModels
             get => currentMs;
             set
             {
-                currentMs = value;
+                currentMs = (int)value;
                 OnPropertyChanged(new PropertyChangedEventArgs("CurrentScrubberPosition"));
             }
         }
@@ -439,12 +463,15 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
+        Stopwatch GlobalTimer = new Stopwatch();
+
         #region Constructor(s) & Desctructor
         /// <summary>
         /// Instantiates a new EditLiftsScreenVM and sets up the draws
         /// </summary>
         public EditLiftsScreenVM()
         {
+            GlobalTimer.Start();
             //Init Images
             _leftImage = new DrawingImage(_leftImageDrawingGroup);
             _rightImage = new DrawingImage(_rightImageDrawingGroup);
@@ -454,7 +481,7 @@ namespace BarNone.DataLift.UI.ViewModels
             VideoTimer = new DispatcherTimer()
             {
                 IsEnabled = false,
-                Interval = new TimeSpan(0, 0, 0, 0, 2)
+                Interval = new TimeSpan(0, 0, 0, 0, VideoTimerInterval)
 
             };
 
