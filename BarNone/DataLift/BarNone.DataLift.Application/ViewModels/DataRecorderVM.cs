@@ -372,7 +372,7 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             isCurrentlyRecording = false;
             IsRecording = false;
-            CurrentLiftData.NormalizeTimes();
+            CurrentLiftData?.NormalizeTimes();
             return;
             //TODO CLEAN!
             //TempAddCurrentLift();
@@ -387,10 +387,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 }
 
             };
-
-
-
-
+            
             var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(KinectDepthFrameConverter.KinectBodyDataToDmBodyData(CurrentLiftData.CurrentRecordedData));
             toSend.Details.BodyData = bodyDto;
 

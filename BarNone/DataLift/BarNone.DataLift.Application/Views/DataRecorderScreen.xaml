@@ -24,21 +24,30 @@
 
             
             <!--<Button Content="Send recordings to Rack." Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />-->
-            <Grid >
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                     <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                     <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                     <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                     <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                 </Grid.ColumnDefinitions>
-                <cmpts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="3" ImageSourceLeft="{Binding ImageSourceFront}" ImageSourceMiddle="{Binding ImageSourceColor}" ImageSourceRight="{Binding ImageSourceSide}"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <cmpts:VideoViewer Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="5" ImageSourceLeft="{Binding ImageSourceFront}" ImageSourceMiddle="{Binding ImageSourceColor}" ImageSourceRight="{Binding ImageSourceSide}"/>
 
+                <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Start Recording." Command="{Binding StartRecording}" Margin="10" Width="300" FontSize="16" />
+                    <Button Content="Stop" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
+                </StackPanel>
             </Grid>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Start Recording." Command="{Binding StartRecording}" Margin="10" Width="300" FontSize="16" />
-                <Button Content="Stop" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
-            </StackPanel>
         </StackPanel>
     </materialDesign:Card>
     
