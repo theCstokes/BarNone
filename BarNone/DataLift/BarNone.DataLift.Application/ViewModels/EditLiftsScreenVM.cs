@@ -340,7 +340,7 @@ namespace BarNone.DataLift.UI.ViewModels
             if (currentMs == 0)
             {//Will only happen on loaded
                 colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[currentBodyDataFrame];
-                bodyFrameToDraw = CurrentLifts.CurrentRecordedData[currentBodyDataFrame];
+                bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[currentBodyDataFrame];
 
                 ScrubberCurrentPosition = Math.Max(bodyFrameToDraw.TimeOfFrame.TotalMilliseconds, colorFrameToDraw.Time.TotalMilliseconds);
                 drawColor = true;
@@ -351,10 +351,10 @@ namespace BarNone.DataLift.UI.ViewModels
                 //increment timer value
                 ScrubberCurrentPosition += VideoTimerInterval;
 
-                int nextBodyFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedData.Count;
+                int nextBodyFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedBodyData.Count;
                 int nextColorFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedColorData.Count;
                 colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[nextColorFrame];
-                bodyFrameToDraw = CurrentLifts.CurrentRecordedData[nextBodyFrame];
+                bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[nextBodyFrame];
 
                 if (colorFrameToDraw.Time.TotalMilliseconds < currentMs)
                 {
@@ -419,10 +419,10 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             get
             {
-                if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedData.Count == 0)
+                if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
                     return 0d;
 
-                return Math.Max(CurrentLifts.CurrentRecordedColorData.Max(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedData.Max(x => x.TimeOfFrame.TotalMilliseconds));
+                return Math.Max(CurrentLifts.CurrentRecordedColorData.Max(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Max(x => x.TimeOfFrame.TotalMilliseconds));
             }
         }
 
@@ -430,10 +430,10 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             get
             {
-                if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedData.Count == 0)
+                if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
                     return 0d;
 
-                return Math.Min(CurrentLifts.CurrentRecordedColorData.Min(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedData.Min(x => x.TimeOfFrame.TotalMilliseconds));
+                return Math.Min(CurrentLifts.CurrentRecordedColorData.Min(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Min(x => x.TimeOfFrame.TotalMilliseconds));
             }
         }
 

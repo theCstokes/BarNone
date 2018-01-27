@@ -50,7 +50,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 .CreateDTO(
                     new Lift()
                     {
-                        BodyData = new BodyData() { BodyDataFrames = CurrentLiftData.CurrentRecordedData.ToList(), RecordDate = DateTime.Now },
+                        BodyData = new BodyData() { BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData.ToList(), RecordDate = DateTime.Now },
                         Name = "LiftName_Temp"
                     }
                 );
