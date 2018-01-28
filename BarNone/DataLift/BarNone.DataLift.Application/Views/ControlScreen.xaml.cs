@@ -1,5 +1,4 @@
-﻿using BarNone.DataLift.UI.Nav;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,25 +12,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BarNone.DataLift.UI.Nav;
 
-namespace BarNone.DataLift.UI
+namespace BarNone.DataLift.UI.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ControlViewHolderScreen.xaml
     /// </summary>
-    public partial class MainWindow : Window, INavigatable
+    public partial class ControlScreen : UserControl, INavigatable
     {
-        /// <summary>
-        /// Instantiates a new Data Lift window
-        /// </summary>
-        public MainWindow()
+        public ControlScreen()
         {
             InitializeComponent();
-            //Remove junk page management
-            PageManager.Window = this;
-            PageManager.SwitchPage(UIPages.ControlHolderView);
-
-            UserControlManager.SwitchPage(UIPages.DataRecorderView);
+            UserControlManager.ControlledView = this;
+            
         }
 
         public void Navigate(UIPages nextPage)

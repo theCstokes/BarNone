@@ -22,6 +22,19 @@ namespace BarNone.DataLift.UI.Nav
         public static readonly UIPages ControlHolderView = new UIPages(new ControlHolderScreen());
 
         /// <summary>
+        /// Reference to the login page
+        /// </summary>
+        public static readonly UIPages DataRecorderView = new UIPages(new DataRecorderScreen());
+        /// <summary>
+        /// Reference to the registration page
+        /// </summary>
+        public static readonly UIPages EditLiftView = new UIPages(new EditLiftsScreen());
+        /// <summary>
+        /// Reference to the control holder page
+        /// </summary>
+        public static readonly UIPages SaveLiftView = new UIPages(new SaveLiftScreen());
+
+        /// <summary>
         /// UserControl reference for the UIPage instance
         /// </summary>
         public UserControl Page { get; }
