@@ -462,7 +462,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             FrameDescription colorFrameDescription = kinectSensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
             // create the bitmap to display
-            colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
+            colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 72.0, 72.0, PixelFormats.Bgr32, null);
 
             // open the sensor
             kinectSensor.Open();
