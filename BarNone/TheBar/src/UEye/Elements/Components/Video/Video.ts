@@ -28,16 +28,19 @@ export default class Video extends BaseComponent {
         super(parent, "UEye-Video");
 
         this._canvas = Core.create("canvas", this.element, "Canvas") as HTMLCanvasElement;
+    
 
         this._video = Core.create("video", this.element, "Video") as HTMLVideoElement;
         this._video.width = this._canvas.width;
+        this._video.crossOrigin = "Anonymous";
+        
 
         this._source = Core.create("source", this._video, "Source") as HTMLSourceElement;
         this._source.type = "video/mp4";
 
         this._controlBar = Core.create("div", this.element, "Control-Bar");
 
-        this._actionButton = Core.create("div", this._controlBar, "Action-Button fa fa-pause");
+        this._actionButton = Core.create("div", this._controlBar, "Action-Button fa fa-play");
         this._actionButton.onclick = this._onActionHandel.bind(this);
 
         this._timeStamp=Core.create("div", this._controlBar, "Time-Stamp");
@@ -50,6 +53,7 @@ export default class Video extends BaseComponent {
         this._timeStamp.innerHTML="0:00/0:00";
         this._minutesDuration =0;
         this._secondsDuration= 0;
+        this._video.autoplay=false;
 
         this._slider.onclick = (e) => {
             console.log(e);
@@ -97,13 +101,21 @@ export default class Video extends BaseComponent {
             this._secondsCurrent= Math.floor(this._video.currentTime - this._minutesCurrent * 60);
             this._minutesDuration = Math.floor(this._video.duration / 60);
             this._secondsDuration= Math.floor(this._video.duration - this._minutesDuration * 60);
+            if(isNaN(this._minutesDuration) || isNaN(this._secondsDuration )){
+                this._minutesDuration=this._secondsDuration=0;
+            }
+
             this._timeStamp.innerHTML=this._minutesCurrent+":"+this._secondsCurrent+"/"+this._minutesDuration+":"+this._secondsDuration;
+            console.log(this._minutesDuration);
              
         }, false);
 
-            this._video.addEventListener("loadedmetadata", function() {
-                this.currentTime = 3;
-           }, false);
+        this._video.addEventListener("loadedmetadata", () => {
+            this._minutesDuration=this._secondsDuration=0;
+         }, false);
+        this._video.addEventListener("ended", ()=>{
+            Core.replaceClass(this._actionButton, "fa-pause", "fa-play");
+        })
     }
 
     public set frameData(value: FrameData[]) {
@@ -121,6 +133,7 @@ export default class Video extends BaseComponent {
     }
 
     private draw(w: number, h: number) {
+      
         if (this._video.paused || this._video.ended) {
             return;
         }
@@ -135,18 +148,24 @@ export default class Video extends BaseComponent {
 
         this._context.drawImage(this._video, 0, 0, w, h);
 
+
         if (this._frameDataList !== undefined) {
             var frameIndex = Math.round((this._frameDataList.length - 1) * percent);
             var frameData = this._createFrame(this._frameDataList[frameIndex], w, h);
             var bit = createImageBitmap(frameData);
-            this._context.putImageData(frameData, 0, 0, w, h);
+            this._context.putImageData(frameData, 0, 0);
+            console.log(frameData);
         }
+    
+
        this._minutesCurrent= Math.floor(this._video.currentTime/ 60);
        this._secondsCurrent= Math.floor(this._video.currentTime - this._minutesCurrent * 60);
         this._timeStamp.innerHTML=this._minutesCurrent+":"+this._secondsCurrent+"/"+this._minutesDuration+":"+this._secondsDuration;
-
         this._bar.style.width=this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
+        
         setTimeout(this.draw.bind(this), 20, w, h);
+       
+    
     }
 
     public get src(): string {
@@ -161,13 +180,13 @@ export default class Video extends BaseComponent {
             this._video.removeChild(this._source);
             this._source = Core.create("source", this._video, "Source") as HTMLSourceElement;
             this._source.type = "video/mp4";
+           
             this._source.src = this._src;
-
+            Core.replaceClass(this._actionButton, "fa-pause", "fa-play");
             this._video.load();
-    
             this._video.currentTime = 0;
             
-            this._video.play();
+            // this._video.play();
            
         }
         if (this._src !== undefined) {
