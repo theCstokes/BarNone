@@ -27,10 +27,10 @@ export default class LiftFolderEditView extends EditView {
 					{
 						id: "tab",
 						instance: ControlTypes.TabLayout,
-						selected: true,
 						tabs: [
 							{
 								title: "Lifts",
+								selected: true,
 								content: [
 									{
 										id: "liftList",
