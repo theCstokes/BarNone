@@ -3,9 +3,12 @@ import Core from "UEye/Elements/Core/Core";
 import { BaseListItem } from "UEye/Elements/Core/BaseListItem/BaseListItem";
 import ComponentType from "UEye/Elements/Inflater/ComponentInflater";
 import { OnSelectCallback } from "UEye/Elements/Core/EventCallbackTypes";
+import { BaseView } from "UEye/Elements/Core/BaseView";
 
 export default class UEyeList extends BaseComponent {
     private _elementList: HTMLElement;
+
+    private _view: BaseView;
 
     private _items: any[]
     private _listElements: HTMLElement[];
@@ -14,8 +17,8 @@ export default class UEyeList extends BaseComponent {
     private _selected: BaseListItem;
 
     public constructor(parent: HTMLElement) {
-        super(parent);
-        Core.addClass(this.element, "UEye-List");
+        super(parent, "UEye-List");
+        this.onShow.on(view => this._view = view);
 
         this._elementList = Core.create("ul", this.element, "Element-List");
     }
@@ -52,7 +55,7 @@ export default class UEyeList extends BaseComponent {
         this._items.forEach(async element => {
             var listElement = Core.create("li", this._elementList, "Element");
             // var pipeline = new InflaterPipeline();
-            var instance: BaseListItem = this._style.create(listElement, element) as BaseListItem;
+            var instance: BaseListItem = this._style.create(listElement, element, this._view) as BaseListItem;
 
             // if (this._selected !== instance && instance.selected) {
             //     instance.selected = false;

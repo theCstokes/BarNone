@@ -22,6 +22,8 @@ import OrderLayout from "UEye/Elements/Containers/OrderLayout/OrderLayout";
 import Panel from "UEye/Elements/Containers/Panel/Panel";
 import PartitionLayout from "UEye/Elements/Containers/PartitionLayout/PartitionLayout";
 import ContentContainer from "UEye/Elements/Containers/ContentContainer/ContentContainer";
+import TabLayout from "UEye/Elements/Containers/TabLayout/TabLayout";
+import Tab from "UEye/Elements/Containers/Tab/Tab";
 
 export default class ControlTypes {
 
@@ -71,4 +73,8 @@ export default class ControlTypes {
 	public static readonly PartitionLayout = new ContainerType(p => new PartitionLayout(p));
 	/**Content Container Container Type */
 	public static readonly ContentContainer = new ContainerType(p => new ContentContainer(p));
+	/**Tab Layout Container Type */
+	public static readonly TabLayout = new ContainerType(p => new TabLayout(p));
+	/**Tab Container Type */
+	public static readonly Tab = new ContainerType(p => new Tab(p));
 }

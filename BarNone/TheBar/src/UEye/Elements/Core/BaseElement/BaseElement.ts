@@ -1,4 +1,6 @@
 import Core from "UEye/Elements/Core/Core";
+import { BaseView } from "UEye/Elements/Core/BaseView";
+import DataEvent from "UEye/Core/DataEvent/DataEvent";
 
 export abstract class BaseElement {
 	private _element: HTMLElement;
@@ -9,8 +11,11 @@ export abstract class BaseElement {
 	private _error: string;
 	private _visible: boolean = true;
 
+	protected onShow: DataEvent<BaseView>;
+
 	public constructor(parent: HTMLElement, ...styles: string[]) {
 		this._element = Core.create('div', parent, ...styles);
+		this.onShow = new DataEvent<BaseView>();
 	}
 
 	public get element(): HTMLElement {
@@ -75,6 +80,14 @@ export abstract class BaseElement {
 			parentNode.removeChild(this.element);
 		}
 	}
+
+	public show(view: BaseView): void {
+		this.onShow.trigger(view);
+	}
+
+	// public onShow(view: BaseView): void {
+
+	// }
 
 	public onModifiedChange(): void {
 		throw("No onModifiedChange implemented for component.")

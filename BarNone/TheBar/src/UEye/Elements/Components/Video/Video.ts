@@ -171,9 +171,9 @@ export default class Video extends BaseComponent {
         }
     }
 
-    public onShow(): void {
-        console.warn("error");
-    }
+    // public onShow(): void {
+    //     console.warn("error");
+    // }
 
     private _createFrame(frame: FrameData, w: number, h: number): ImageData {
         // if (this._context != null) {
