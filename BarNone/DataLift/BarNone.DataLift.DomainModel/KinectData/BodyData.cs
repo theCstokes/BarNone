@@ -1,15 +1,18 @@
 ﻿using BarNone.DataLift.DomainModel.Core;
-using BarNone.Shared.DataTransfer;
-
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BarNone.DataLift.DataModel.KinectData
 {
+    /// <summary>
+    /// Kinect Body Data Domain Model
+    /// </summary>
     public class BodyData : IDataModel<BodyData>
     {
         #region Properties
+        /// <summary>
+        /// ID of the item on the DB
+        /// </summary>
         public int ID { get; set; }
 
         /// <summary>

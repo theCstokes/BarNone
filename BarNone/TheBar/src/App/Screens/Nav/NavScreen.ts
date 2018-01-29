@@ -3,10 +3,13 @@ import Screen from "UEye/Screen/Screen";
 import { StateManager, State } from "App/Screens/Nav/StateManager";
 import UEye from "UEye/UEye";
 import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
-
+/**
+ *  Represents NavScreen class .
+ */
 export default class NavScreen extends Screen<NavView> {
 	private _stateManager: StateManager;
-
+ /** Constructor intialized Screen Component and binds corresponding View and StateManager 
+     * */
 	public constructor() {
 		super(NavView);
 		this._stateManager = new StateManager();
@@ -16,7 +19,8 @@ export default class NavScreen extends Screen<NavView> {
 
 		
 	}
-
+/** Method renders list items of Navigation
+     * */
 	private _onRender(current: State, original: State): void {
 		this.view.navList.items = current.navElementList.map(item => {
 			return {
@@ -68,12 +72,14 @@ export default class NavScreen extends Screen<NavView> {
 	// 			await UEye.push(NextScreen.default);
 	// 		}
 	// 	});
-
+	/** Method pops navigation on selecting back
+     * */
 	private _backAction() {
 		UEye.popTo(this);
 		// this.stateManager.navigateBack.trigger();
 	}
-
+		/** Method defines UI properties when shown
+     * */
 	public onShow() {
 		this.view.navList.onSelect = (data: IListItem) => {
 			UEye.popTo(this);
