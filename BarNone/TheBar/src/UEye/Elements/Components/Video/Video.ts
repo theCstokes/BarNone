@@ -203,13 +203,6 @@ export default class Video extends BaseComponent {
         }
     }
 
-    /** Method that llogs internally an error flag.
-     * @returns Nothing (return part of property definition).
-     * */
-
-    public onShow(): void {
-        console.warn("error");
-    }
     /** Method creates seekable frame of skeletal data
      * @param w Parameter represents width of canvas.
      *  @param h Parameter represents height of canvas.

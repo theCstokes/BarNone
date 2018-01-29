@@ -6,7 +6,7 @@ namespace BarNone.Shared.DomainModel
     /// <summary>
     /// Joint type domain model
     /// </summary>
-    /// <seealso cref="BarNone.Shared.DomainModel.Core.BaseEnumDomainModel{BarNone.Shared.DomainModel.JointType, BarNone.Shared.DomainModel.EJointType}" />
+    /// <seealso cref="Core.BaseEnumDomainModel{JointType, EJointType}" />
     [Table("JointType", Schema = "public")]
     public class JointType : BaseEnumDomainModel<JointType, EJointType>
     {
@@ -44,7 +44,7 @@ namespace BarNone.Shared.DomainModel
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static implicit operator EJointType(JointType joint) => (EJointType)joint.ID; 
+        public static implicit operator EJointType(JointType joint) => (EJointType)joint.Value; 
         #endregion
     }
 }

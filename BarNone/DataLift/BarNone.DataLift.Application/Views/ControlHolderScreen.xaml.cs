@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using BarNone.DataLift.UI.Nav;
+using System.Windows.Controls;
 
 namespace BarNone.DataLift.UI.Views
 {

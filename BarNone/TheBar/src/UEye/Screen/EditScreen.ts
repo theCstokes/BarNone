@@ -20,6 +20,9 @@ export default abstract class EditScreen<TView extends EditView, TStateManager e
         super(ViewType);
         this._stateManager = new StateManagerType();
         this._stateManager.bind(this._onBaseRender.bind(this));
+
+        // Default config.
+        this.config.addScreenToHistory = false;
     }
 
     /**

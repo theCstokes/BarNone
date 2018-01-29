@@ -45,7 +45,7 @@ namespace BarNone.Shared.DomainModel
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static implicit operator EJointTrackingStateType(JointTrackingStateType joint) => (EJointTrackingStateType)joint.ID;
+        public static implicit operator EJointTrackingStateType(JointTrackingStateType joint) => (EJointTrackingStateType)joint.Value;
         #endregion
     }
 }

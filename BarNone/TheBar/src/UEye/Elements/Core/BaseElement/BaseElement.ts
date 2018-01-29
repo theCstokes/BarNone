@@ -1,4 +1,7 @@
 import Core from "UEye/Elements/Core/Core";
+import { BaseView } from "UEye/Elements/Core/BaseView";
+import DataEvent from "UEye/Core/DataEvent/DataEvent";
+
 /**Parent Class to all components including BaseComponent.BaseElement provides the basic HTML functionality*/
 export abstract class BaseElement {
 	/** Represents Base HTMLElement  */
@@ -13,22 +16,28 @@ export abstract class BaseElement {
 	private _readonly: boolean;
 	/** Represents error flag property  */
 	private _error: string;
+	/** Represents visible flag property  */
+	private _visible: boolean = true;
+	/** Represents onShow callback  */
+	protected onShow: DataEvent<BaseView>;
+
 	/** Constructor makes basic HTMLElement
 	 * @param parent HTMLElement
 	 * @param styles Specific style of component
 	*/
 	public constructor(parent: HTMLElement, ...styles: string[]) {
 		this._element = Core.create('div', parent, ...styles);
+		this.onShow = new DataEvent<BaseView>();
 	}
-	 /** Accessor to get _element property.
-     * @returns Returns element property.
-     * */
+	/** Accessor to get _element property.
+	* @returns Returns element property.
+	* */
 	public get element(): HTMLElement {
 		return this._element;
-	}	
-	 /** Accessor to get _id property.
-     * @returns Returns id property.
-     * */
+	}
+	/** Accessor to get _id property.
+	* @returns Returns id property.
+	* */
 	public get id(): any {
 		return this._id;
 	}
@@ -38,9 +47,9 @@ export abstract class BaseElement {
 	public set id(value: any) {
 		this._id = value;
 	}
-	 /** Accessor to get _instance property.
-     * @returns Returns instance property.
-     * */
+	/** Accessor to get _instance property.
+	* @returns Returns instance property.
+	* */
 	public get instance(): any {
 		return this._instance;
 	}
@@ -50,15 +59,30 @@ export abstract class BaseElement {
 	public set instance(value: any) {
 		this._instance = value;
 	}
+
+	public get visible(): boolean {
+		return this._visible;
+	}
+	public set visible(value: boolean) {
+		if (value !== this._visible) {
+			this._visible = value;
+			if (!this._visible) {
+				Core.addClass(this.element, "UEye-Invisible");
+			} else {
+				Core.removeClass(this.element, "UEye-Invisible");
+			}
+		}
+	}
+
 	/** Accessor to get _modified property.
      * @returns Returns modified property.
      * */
 	public get modified(): boolean {
 		return this._modified;
 	}
-		/**Method sets _modified property
-	 * @param value Represents modified of type boolean
-	 */
+	/**Method sets _modified property
+ * @param value Represents modified of type boolean
+ */
 	public set modified(value: boolean) {
 		this._modified = value;
 		this.onModifiedChange();
@@ -69,9 +93,9 @@ export abstract class BaseElement {
 	public get readonly(): boolean {
 		return this._readonly;
 	}
-		/**Method sets _readonly property
-	 * @param value Represents modified of type boolean
-	 */
+	/**Method sets _readonly property
+ * @param value Represents modified of type boolean
+ */
 	public set readonly(value: boolean) {
 		this._readonly = value;
 		this.onReadonlyChange();
@@ -82,31 +106,36 @@ export abstract class BaseElement {
 	public get error(): string {
 		return this._error;
 	}
-		/**Method sets _error property
-	 * @param value Represents flag error of type string
-	 */
+	/**Method sets _error property
+ * @param value Represents flag error of type string
+ */
 	public set error(value: string) {
 		this._error = value;
 		this.onErrorChange();
 	}
-		/**Method destorys element 
-	 */
+	/**Method destorys element
+ */
 	public destroy(): void {
 		var parentNode = this.element.parentNode;
 		if (parentNode !== null) {
 			parentNode.removeChild(this.element);
 		}
 	}
+
+	public show(view: BaseView): void {
+		this.onShow.trigger(view);
+	}
+
 	/**Abstract event listener */
 	public onModifiedChange(): void {
-		throw("No onModifiedChange implemented for component.")
+		throw ("No onModifiedChange implemented for component.")
 	}
 	/**Abstract event listener */
-	public onReadonlyChange(): void  {
-		throw("No onModifiedChange implemented for component.")
+	public onReadonlyChange(): void {
+		throw ("No onModifiedChange implemented for component.")
 	}
 	/**Abstract event listener */
 	public onErrorChange(): void {
-		throw("No onModifiedChange implemented for component.")
+		throw ("No onModifiedChange implemented for component.")
 	}
 }

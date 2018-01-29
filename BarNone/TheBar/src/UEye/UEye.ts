@@ -1,6 +1,6 @@
 import { IUtils } from 'UEye/UEye.config';
 import Screen from 'UEye/Screen/Screen';
-import DataEvent, { IDataEvent } from 'UEye/DataEvent/DataEvent';
+import CallableEvent, { ICallableEvent } from 'UEye/CallableEvent/CallableEvent';
 
 declare global {
 	const Utils: IUtils
@@ -78,7 +78,7 @@ export default class UEye {
 	/**
 	 * Back events for back click
 	 */
-    private static readonly _onBack = new DataEvent();
+    private static readonly _onBack = new CallableEvent();
 
 	/**
 	 * Start the application.
@@ -102,7 +102,7 @@ export default class UEye {
 	/**
 	 * Expose on back events.
 	 */
-	public static get onBack(): IDataEvent {
+	public static get onBack(): ICallableEvent {
 		return UEye._onBack.expose();
 	}
 
