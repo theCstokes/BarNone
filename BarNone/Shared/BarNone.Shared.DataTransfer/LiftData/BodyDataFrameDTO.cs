@@ -28,7 +28,7 @@ namespace BarNone.Shared.DataTransfer
         public override int ID { get; set; }
 
         [JsonProperty(Order = 1)]
-        public DateTime TimeOfFrame { get; set; }
+        public TimeSpan TimeOfFrame { get; set; }
 
         [JsonProperty(Order = 2)]
         public TimeSpan TimeUntilNextFrame { get; set; }

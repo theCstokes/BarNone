@@ -16,6 +16,30 @@ namespace BarNone.DataLift.UI.ViewModels
     {
         #region Types
         /// <summary>
+        /// Public enumeration defining the state of a button on the workflow screen.
+        /// </summary>
+        public enum ButtonState
+        {
+            /// <summary>
+            /// The Button is selected.
+            /// </summary>
+            Selected,
+            /// <summary>
+            /// The user can use the button to move backwards in the workflow.
+            /// </summary>
+            CanGoBackTo,
+            /// <summary>
+            /// The user can use the button to move forwards in the workflow.
+            /// </summary>
+            CanGoTo,
+            /// <summary>
+            /// The button is disabled.
+            /// </summary>
+            Disabled,
+        }
+        
+        
+        /// <summary>
         /// Private enumeration defininng which state DataLift is in.
         /// </summary>
         private enum State
@@ -52,7 +76,7 @@ namespace BarNone.DataLift.UI.ViewModels
             // If the user wishes to take the risk and potentially loose data move backwards in the workflow.
             if (Equals(result, false))
             {
-                MoveWorkflowBackward();
+                MoveWorflowState();
             }
         }
 
@@ -72,6 +96,62 @@ namespace BarNone.DataLift.UI.ViewModels
                     _runDialogCommand =  new RelayCommand(ExecuteRunDialog);
                 }
                 return _runDialogCommand;
+            }
+        }
+        /// <summary>
+        /// Field representation for the <see cref="ControlStepOneCommand"/> bindable command
+        /// </summary>
+        private RelayCommand _controlStepOneCommand;
+        /// <summary>
+        /// Bindable command to move workflow to record step (1st)
+        /// </summary>
+        public ICommand ControlStepOneCommand
+        {
+            get
+            {
+                if (_controlStepOneCommand == null)
+                {
+                    _controlStepOneCommand = new RelayCommand(action => StepOnePressed());
+                }
+                return _controlStepOneCommand;
+            }
+        }
+
+        /// <summary>
+        /// Field representation for the <see cref="ControlStepTwoCommand"/> bindable command
+        /// </summary>
+        private RelayCommand _controlStepTwoCommand;
+        /// <summary>
+        /// Bindable command to move workflow to edit step (2nd)
+        /// </summary>
+        public ICommand ControlStepTwoCommand
+        {
+            get
+            {
+                if(_controlStepTwoCommand == null)
+                {
+                    _controlStepTwoCommand = new RelayCommand(action => StepTwoPressed());
+                }
+                return _controlStepTwoCommand;
+            }
+        }
+
+        /// <summary>
+        /// Field representation for the <see cref="ControlStepThreeCommand"/> bindable command
+        /// </summary>
+        private RelayCommand _controlStepThreeCommand;
+        /// <summary>
+        /// Bindable command to move workflow to send step (3rd)
+        /// </summary>
+        public ICommand ControlStepThreeCommand
+        {
+            get
+            {
+                if (_controlStepThreeCommand == null)
+                {
+                    _controlStepThreeCommand = new RelayCommand(action => StepThreePressed());
+                }
+                return _controlStepThreeCommand;
             }
         }
 
@@ -95,131 +175,61 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         /// <summary>
-        /// Field representation for the <see cref="MoveWorflowForwardCmd"/> bindable command
-        /// </summary>
-        private RelayCommand _moveWorflowForwardCmd;
-        /// <summary>
-        /// Bound command to move wordlow forwards in XAML.
-        /// </summary>
-        public ICommand MoveWorflowForwardCmd
-        {
-            get
-            {
-                if (_moveWorflowForwardCmd == null)
-                {
-                    _moveWorflowForwardCmd = new RelayCommand(action => MoveWorflowForward());
-                }
-                return _moveWorflowForwardCmd;
-            }
-        }
-
-        /// <summary>
         /// Logout command.Disposes user data and moves back to the login page.
         /// </summary>
         public ICommand LogoutCommand { get; } = new RelayCommand(action => PageManager.SwitchPage(UIPages.LoginView));
         #endregion
 
         #region Public Properties
+
         /// <summary>
-        /// Field representation for the <see cref="IsRecorderVisible"/> bindable property
+        /// Field representation for the <see cref="StepOneStyleController"/> bindable property
         /// </summary>
-        private bool _isRecorderVisible = true;
+        private ButtonState _stepOneStyleController = ButtonState.Selected;
         /// <summary>
-        /// Variable that controls the visibility of the Recorder Screen.
+        /// Determines the style using data triggers of the button for step 1 of the workflow based off the screen.
         /// </summary>
-        public bool IsRecorderVisible
+        public ButtonState StepOneStyleController
         {
-            get => _isRecorderVisible;
+            get => _stepOneStyleController;
             set
             {
-                _isRecorderVisible = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("IsRecorderVisible"));
+                _stepOneStyleController = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("StepOneStyleController"));
             }
         }
 
         /// <summary>
-        /// Field representation for the <see cref="IsEditorVisible"/> bindable property
+        /// Field representation for the <see cref="StepTwoStyleController"/> bindable property
         /// </summary>
-        private bool _isEditorVisible = false;
+        private ButtonState _stepTwoStyleController = ButtonState.CanGoTo;
         /// <summary>
-        /// Variable that controls the visibility of the Editor Screen.
+        /// Determines the style using data triggers of the button for step 2 of the workflow based off the screen.
         /// </summary>
-        public bool IsEditorVisible
+        public ButtonState StepTwoStyleController
         {
-            get => _isEditorVisible;
+            get => _stepTwoStyleController;
             set
             {
-                _isEditorVisible = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("IsEditorVisible"));
+                _stepTwoStyleController = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("StepTwoStyleController"));
             }
         }
 
         /// <summary>
-        /// Field representation for the <see cref="IsSavingVisible"/> bindable property
+        /// Field representation for the <see cref="StepThreeStyleController"/> bindable property
         /// </summary>
-        private bool _isSavingVisible = false;
+        private ButtonState _stepThreeStyleController = ButtonState.Disabled;
         /// <summary>
-        /// Variable that controls the visibility of the Saving Screen.
+        /// Determines the style using data triggers of the button for step 3 of the workflow based off the screen.
         /// </summary>
-        public bool IsSavingVisible
+        public ButtonState StepThreeStyleController
         {
-            get => _isSavingVisible;
+            get => _stepThreeStyleController;
             set
             {
-                _isSavingVisible = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("IsSavingVisible"));
-            }
-        }
-
-        /// <summary>
-        /// Field representation for the <see cref="IsBackwardsEnabled"/> bindable property
-        /// </summary>
-        private bool _isBackwardsEnabled = false;
-        /// <summary>
-        /// Controls whether the move backwards in workflow button can be pressed.  
-        /// Because you cannot move backwards in the worflow if you are in the first step.
-        /// </summary>
-        public bool IsBackwardsEnabled
-        {
-            get => _isBackwardsEnabled;
-            set
-            {
-                _isBackwardsEnabled = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("IsBackwardsEnabled"));
-            }
-        }
-
-        /// <summary>
-        /// Field representation for the <see cref="IsStepTwoEnabledController"/> bindable property
-        /// </summary>
-        private double _isStepTwoEnabledController = 0.5;
-        /// <summary>
-        /// Determines the opacity of the button for step 2 of the workflow.  0.5 is 50% opacity.
-        /// </summary>
-        public double IsStepTwoEnabledController
-        {
-            get => _isStepTwoEnabledController;
-            set
-            {
-                _isStepTwoEnabledController = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("IsStepTwoEnabledController"));
-            }
-        }
-
-        /// <summary>
-        /// Field representation for the <see cref="IsStepThreeEnabledController"/> bindable property
-        /// </summary>
-        private double _isStepThreeEnabledController = 0.5;
-        /// <summary>
-        /// Determines the opacity of the button for step 3 of the workflow.  0.5 is 50% opacity.
-        /// </summary>
-        public double IsStepThreeEnabledController
-        {
-            get => _isStepThreeEnabledController;
-            set
-            {
-                _isStepThreeEnabledController = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("IsStepThreeEnabledController"));
+                _stepThreeStyleController = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("StepThreeStyleController"));
             }
         }
         
@@ -262,12 +272,17 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #region Private Variables
         /// <summary>
-        /// Variable to track waht state of the workflow the system is in.
+        /// Variable to track what state of the workflow the system is in.
         /// </summary>
         private State _currentState = State.Recording;
 
+        /// <summary>
+        /// Variable to track what state of the workflow the system wants to go to.
+        /// </summary>
+        private State _stateToMoveTo = State.Recording;
+
         #endregion
-        
+
         #region Private Functions
         /// <summary>
         /// Currently unused function.  Bound to a button in the UI.  May be used in the future.
@@ -281,39 +296,71 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         /// <summary>
-        /// Moves forward in the Data Lift Workflow.  Changes state to move the workflow along.
+        /// Private function that handles when the goto step one button is pressed.
         /// </summary>
-        private void MoveWorflowForward()
+        private void StepOnePressed()
         {
-            switch (_currentState)
+            if(_currentState != State.Recording)
             {
-                case State.Recording:
-                    GotoEditingState();
-                    break;
-                case State.Editing:
-                    GotoSavingState();
-                    break;
-                case State.Saving:
-                    GotoRecordingState();
-                    break;
+                _stateToMoveTo = State.Recording;
+
+                if (RunDialogCommand.CanExecute(null))
+                {
+                    RunDialogCommand.Execute(null);
+                }
             }
         }
 
         /// <summary>
-        /// Moves backward in the Data Lift Workflow.  Changes state to move the workflow back.
-        /// </summary>        
-        private void MoveWorkflowBackward()
+        /// Private function that handles when the goto step two button is pressed.
+        /// </summary>
+        private void StepTwoPressed()
         {
-            switch (_currentState)
+            if(_currentState != State.Editing)
+            {
+                _stateToMoveTo = State.Editing;
+                switch (_currentState)
+                {
+                    case State.Recording:
+                        MoveWorflowState();
+                        break;
+                    case State.Saving:
+                        if(RunDialogCommand.CanExecute(null))
+                        {
+                            RunDialogCommand.Execute(null);
+                        }
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Private function that handles when the goto step three button is pressed.
+        /// </summary>
+        private void StepThreePressed()
+        {
+            if(_currentState != State.Saving)
+            {
+                _stateToMoveTo = State.Saving;
+                MoveWorflowState();
+            }
+        }
+
+        /// <summary>
+        /// Moves forward in the Data Lift Workflow.  Changes state to move the workflow along.
+        /// </summary>
+        private void MoveWorflowState()
+        {
+            switch (_stateToMoveTo)
             {
                 case State.Recording:
-                    // Do nothing.  Button should be disabled.
-                    break;
-                case State.Editing:
                     GotoRecordingState();
                     break;
-                case State.Saving:
+                case State.Editing:
                     GotoEditingState();
+                    break;
+                case State.Saving:
+                    GotoSavingState();
                     break;
             }
         }
@@ -326,20 +373,16 @@ namespace BarNone.DataLift.UI.ViewModels
             // Change state to recording.
             _currentState = State.Recording;
 
-            // Make sure the user cannot go further back in the workflow.
-            IsBackwardsEnabled = false;
-            
-            // Make sure that the two buttons in the workflow have low opacity.
-            IsStepTwoEnabledController = 0.5;
-            IsStepThreeEnabledController = 0.5;
+            StepOneStyleController = ButtonState.Selected;
+            StepTwoStyleController = ButtonState.CanGoTo;
+            StepThreeStyleController = ButtonState.Disabled;
 
             // Edit the progress bar accordingly.
             StepTwoProgressController = 0;
-            
+            StepThreeProgressController = 0;
+
             // Display the correct screen in the XAML.
-            IsRecorderVisible = true;
-            IsEditorVisible = false;
-            IsSavingVisible = false;
+            UserControlManager.SwitchPage(UIPages.DataRecorderView);
         }
 
         /// <summary>
@@ -350,21 +393,16 @@ namespace BarNone.DataLift.UI.ViewModels
             // Change state to editing.
             _currentState = State.Editing;
 
-            // Make sure the user can go backwards in the worflow.
-            IsBackwardsEnabled = true;
-
-            // Set the correct opacities for the workflow view.
-            IsStepTwoEnabledController = 1;
-            IsStepThreeEnabledController = 0.5;
+            StepOneStyleController = ButtonState.CanGoBackTo;
+            StepTwoStyleController = ButtonState.Selected;
+            StepThreeStyleController = ButtonState.CanGoTo;
 
             // Set the correct value for the progress bars.
             StepTwoProgressController = 100;
             StepThreeProgressController = 0;
 
             // Display the correct screen in the XAML.
-            IsRecorderVisible = false;
-            IsEditorVisible = true;
-            IsSavingVisible = false;
+            UserControlManager.SwitchPage(UIPages.EditLiftView);
         }
 
         /// <summary>
@@ -375,17 +413,16 @@ namespace BarNone.DataLift.UI.ViewModels
             // Change state to saving.
             _currentState = State.Saving;
 
+            StepOneStyleController = ButtonState.CanGoBackTo;
+            StepTwoStyleController = ButtonState.CanGoBackTo;
+            StepThreeStyleController = ButtonState.Selected;
+           
             // Set the correct value for the progress bars.
+            StepTwoProgressController = 100;
             StepThreeProgressController = 100;
 
-            // Set the correct opacities for the workflow view.
-            IsStepTwoEnabledController = 1;
-            IsStepThreeEnabledController = 1;
-
             // Display the correct screen in the XAML.
-            IsRecorderVisible = false;
-            IsEditorVisible = false;
-            IsSavingVisible = true;
+            UserControlManager.SwitchPage(UIPages.SaveLiftView);
         }
 
         #endregion 

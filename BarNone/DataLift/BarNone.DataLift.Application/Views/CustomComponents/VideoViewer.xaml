@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BarNone.DataLift.UI.Views.CustomComponents"
              mc:Ignorable="d">
     <Viewbox Stretch="Uniform">
-        <Grid Height="2040" Width="1920">
+        <Grid Height="2040" Width="1920" Background="Black">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="960"/>
                 <ColumnDefinition Width="960"/>
