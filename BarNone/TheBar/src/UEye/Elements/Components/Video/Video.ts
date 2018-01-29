@@ -1,23 +1,44 @@
 import { BaseComponent } from "UEye/Elements/Core/BaseComponent/BaseComponent";
 import Core from "UEye/Elements/Core/Core";
 import { OnChangeCallback } from "UEye/Elements/Core/EventCallbackTypes";
-
-type LineData = { x1: number, y1: number, x2: number, y2: number };
+/**Type Definition: for LineData to be drawn on canvas */
+type LineData = {
+    /**x-coordinate for point 1*/
+      x1: number,
+      /**y-coordinate for point 1*/
+      y1: number, 
+      /**x-coordinate for point 2*/
+      x2: number, 
+      /**y-coordinate for point 2*/
+      y2: number };
+/**FrameData represents an array of line data */
 type FrameData = LineData[];
 
 export default class Video extends BaseComponent {
-
+    /**Represents HTMLCanvasElement to draw frame data on*/
     private _canvas: HTMLCanvasElement;
+    /**Represents context to render on the canvas element (paintbrush)*/
     private _context: CanvasRenderingContext2D;
+    /**Represents the embedded video playback */
     private _video: HTMLVideoElement;
+     /**Represents the streaming source of video playback */
     private _source: HTMLSourceElement;
+     /**Represents the container for the video controls */
     private _controlBar: HTMLElement;
+      /**Represents the play and pause button for video*/
     private _actionButton: HTMLElement;
+    /**Represents the control for seeking in video playback*/
     private _slider: HTMLElement;
+       /**Represents the visual bar for controls of seeking in video playback*/
     private _bar: HTMLElement;
+     /**Represents the source of content as string path*/
     private _src: string;
+    /**Represents array of framedata that makes one complete video */
     private _frameDataList: FrameData[];
-
+     /** Constructor intializes and defines the Video component as an HTMLElement tag named UEye-Video as well as the context needed for drawing skeletal data 
+     * @param parent - Represents properties of the current element as an HTMLElement.
+	 * * @returns Returns a Video  type with the referenced 2d context.   
+     * */
     constructor(parent: HTMLElement) {
         super(parent, "UEye-Video");
 
@@ -79,21 +100,30 @@ export default class Video extends BaseComponent {
         //         this.currentTime = 3;
         //    }, false);
     }
-
+    /** Method for setting property _frameData
+     * @param value Parameter represents array of skeletal data to be viewed on the video.
+     * */
     public set frameData(value: FrameData[]) {
         if (this._frameDataList !== value) {
             this._frameDataList = value;
         }
     }
-
+     /** Accessor to get height of _canvas property.
+     * @returns Returns height of type number.
+     * */
     public get height(): number {
         return this._canvas.height;
     }
-
+     /** Accessor to get width of _canvas property.
+     * @returns Returns width of type number.
+     * */
     public get width(): number {
         return this._canvas.width;
     }
-
+    /** Method to draw joint and connective bone data on canvas alongside the embedded video
+     * @param w Width parameter of the canvas
+     * @param h Height parameter of the canvas
+     * */
     private draw(w: number, h: number) {
         if (this._video.paused || this._video.ended) {
             return;
@@ -119,10 +149,15 @@ export default class Video extends BaseComponent {
         this._bar.style.width = (this._slider.offsetWidth * percent) + "px";
         setTimeout(this.draw.bind(this), 20, w, h);
     }
-
+     /** Accessor to get source path of video.
+     * @returns Returns string path
+     * */
     public get src(): string {
         return this._src;
     }
+    /** Method for setting property _src. Previous/Current playback is paused before new playback can be loaded andstreamed.
+     * @param value string representation of the source path
+     * */
     public set src(value: string) {
         if (this._src !== value) {
             this._src = value;
@@ -142,7 +177,9 @@ export default class Video extends BaseComponent {
             Core.addClass(this._source, "Visible");
         }
     }
-
+    /** Method responsible for toggling on action of playing the video
+     * @returns Nothing
+     * */
     public play(): void {
         this._video.play();
     }
@@ -154,15 +191,10 @@ export default class Video extends BaseComponent {
     //     this._onChangeCallback = value;
     // }
 
-    public onModifiedChange(): void {
-        throw new Error("Method not implemented.");
-    }
-    public onReadonlyChange(): void {
-        throw new Error("Method not implemented.");
-    }
-    public onErrorChange(): void {
-        throw new Error("Method not implemented.");
-    }
+    /** Method that toggles enable and disable state of a Video element.
+     * @returns Nothing (return part of property definition).
+     * */
+   
     public onEnabledChange(): void {
         if (this.enabled) {
             Core.removeClass(this.element, "disabled");
@@ -171,10 +203,12 @@ export default class Video extends BaseComponent {
         }
     }
 
-    // public onShow(): void {
-    //     console.warn("error");
-    // }
-
+    /** Method creates seekable frame of skeletal data
+     * @param w Parameter represents width of canvas.
+     *  @param h Parameter represents height of canvas.
+     *  @param frame Parameter represents particular instance of frame data being rendered.
+     * @returns Image data that can played back.
+     * */
     private _createFrame(frame: FrameData, w: number, h: number): ImageData {
         // if (this._context != null) {
         var context = this._context;
@@ -211,7 +245,7 @@ export default class Video extends BaseComponent {
         return context.getImageData(0, 0, w, h);
         // }
     }
-
+    /**Method handles toggling between pause and play actions */
     private _onActionHandel() {
         if (this._video.paused || this._video.ended) {
             // Pause put in play more.

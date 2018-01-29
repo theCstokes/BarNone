@@ -11,18 +11,24 @@ import LiftEditScreen from "App/Screens/Lifts/Edit/LiftEditScreen";
 import { StateManager, State } from "App/Screens/Lifts/StateManager";
 import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import UEye from "UEye/UEye";
-
+/**
+ *  Represents LiftScreen class .
+ */
 export default class LiftScreen extends Screen<LiftView> {
+/**  Represents subscreen.*/
 	private subScreen: LiftEditScreen;
+	/**  Represents state manager*/
 	private _stateManager: StateManager;
-	
+	 /** Constructor intialized Screen Component and binds corresponding View and StateManager 
+     * */
 	public constructor() {
 		super(LiftView);
-
+		
 		this._stateManager = new StateManager();
 		this._stateManager.bind(this._onRender.bind(this));
 	}
-
+	/** Method renders list items of Lifts
+     * */
 	private _onRender(current: State, original: State): void {
 		this.view.userList.items = current.selectionList.map(item => {
 			return {
@@ -43,7 +49,8 @@ export default class LiftScreen extends Screen<LiftView> {
 			});
 		}
 	}
-
+		/** Method defines UI properties when shown
+     * */
 	public onShow(): void {
 		this.view.userList.onSelect = (data: IListItem) => {
 			this._stateManager.SelectionChange.trigger({ id: data.id });

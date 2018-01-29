@@ -9,6 +9,9 @@ import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import { ContextState } from "App/Screens/Nav/ContextStateManager";
 import ParentStateManager from "UEye/StateManager/ParentStateManager";
 
+/**
+ *  Represents Definition for Navigation Element 
+ */
 class NavElement {
 	public id: number;
 	public name: string;
@@ -16,11 +19,24 @@ class NavElement {
 	public screen: { new(): Screen<any> };
 }
 
-
+/**
+ *  Represents State for Nav Screen.
+ */
 export class State {
+	/**
+ *  Represents Current screen id
+ */
 	public currentScreenId: number;
+	/**
+ *  Represents array storing navigation history
+ */
 	public navHistory: number[] = [];
+
 	public context: ContextState = new ContextState();
+
+	/**
+ *  Represents lists seen as part Navigation List
+ */
 	public navElementList: NavElement[] = [
 		{
 			id: 1,

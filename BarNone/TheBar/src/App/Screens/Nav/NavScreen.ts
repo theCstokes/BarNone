@@ -6,12 +6,17 @@ import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import App from "App/App";
 import { ContextStateManager, ContextState } from "App/Screens/Nav/ContextStateManager";
 
+/**
+ *  Represents NavScreen class .
+ */
 export default class NavScreen extends Screen<NavView> {
 	private _stateManager: StateManager;
 	private _contextStateManager: ContextStateManager;
 	private _subScreen: Screen<any>
 	private _subScreenID: number;
 
+ /** Constructor intialized Screen Component and binds corresponding View and StateManager 
+     * */
 	public constructor() {
 		super(NavView);
 		this._stateManager = new StateManager();
@@ -98,12 +103,14 @@ export default class NavScreen extends Screen<NavView> {
 	// 			await UEye.push(NextScreen.default);
 	// 		}
 	// 	});
-
+	/** Method pops navigation on selecting back
+     * */
 	private _backAction() {
 		UEye.popTo(this);
 		// this.stateManager.navigateBack.trigger();
 	}
-
+		/** Method defines UI properties when shown
+     * */
 	public onShow() {
 		App.breadcrumbs = this.view.navBreadcrumbs;
 		App.Navigation = this._contextStateManager;

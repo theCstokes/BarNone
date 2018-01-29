@@ -2,14 +2,32 @@ import { View } from "UEye/View/View";
 import ControlTypes from "UEye/ControlTypes";
 import Input from "UEye/Elements/Components/Input/Input";
 import Button from "UEye/Elements/Components/Button/Button";
-
+/**
+ *  Represents View for Create Account Screen .
+ */
 export default class CreateAccountView extends View {
+	/**
+ *  Represents username input.
+ */
 	public usernameInput: Input;
+	/**
+ *  Represents password input 1.
+ */
 	public passwordInput1: Input;
+	/**
+ *  Represents password input 2.
+ */
 	public passwordInput2: Input;
+	/**
+ *  Represents Button to Cancel .
+ */
 	public cancelButton: Button;
+	/**
+ *  Represents Button to Create profile .
+ */
 	public createButton: Button;
-
+/** Accesor gets content
+     * */
 	public get content(): any[] {
 		return [
 			{
