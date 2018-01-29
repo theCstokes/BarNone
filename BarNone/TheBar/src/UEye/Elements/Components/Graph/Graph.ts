@@ -11,6 +11,8 @@ type LineData = {
     y: number };
 
 
+
+
 const Chart = require("chartjs");
 console.log(Chart);
 /**Describes the properties for Chart and Graph related operations. Wrapper for API required from Chart.js*/
@@ -21,14 +23,21 @@ export default class Graph extends BaseComponent {
     private _context: CanvasRenderingContext2D;
      /**Represents type of graph being draw as a string value (eg. Bar for Bar graph and Line for Line graph)*/
     private _type: string;
+
+
     /**Represents array of linedata that plots the complete graph */
     private _data: LineData[];
+
+    
+
      /**Represents the label along the X-Axis */
     private _xAxisLabel: string;
       /**Represents the label along the Y-Axis */
     private _yAxisLabel: string;
+
       /**Represents Title of Graph*/
     private _title: string;
+
       /** Constructor intializes and defines the Graph component as an HTMLElement tag named UEye-Graph as well as the context needed for plotting graphs. 
      * @param parent - Represents properties of the current element as an HTMLElement.
 	 * * @returns Returns a Graph type with the referenced 2d context.   
@@ -45,6 +54,7 @@ export default class Graph extends BaseComponent {
         if (c !== null) { this._context = c; }
 
         // Chart(this._context);
+
 
     }
     public get type(): string {
@@ -124,6 +134,7 @@ export default class Graph extends BaseComponent {
         }
         }
     
+
 
     public onEnabledChange(): void {
         throw new Error("Method not implemented.");

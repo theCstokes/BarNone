@@ -41,17 +41,10 @@ export default abstract class Screen<TView extends View> {
             content: this._view.config
         };
 
-        var results = Inflater.execute(parent, config);
+        var results = Inflater.execute(parent, config, this._view);
         this._screenObj = results.componentMap.screenObj as ContentContainer;
 
-        for (var key in results.componentMap) {
-            if (!results.componentMap.hasOwnProperty(key)) continue;
-            (this._view as any)[key] = results.componentMap[key];
-
-            if (!(key in this._view)) {
-                console.warn(StringUtils.format("{0} is not exposed in view.", key));
-            }
-        }
+        this._view.setElements(results.componentMap);
 
         return results;
     }

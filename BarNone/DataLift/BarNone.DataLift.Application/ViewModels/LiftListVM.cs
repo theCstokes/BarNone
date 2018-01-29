@@ -97,18 +97,13 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Field representation for the <see cref="LiftTypeList"/> bindable property
         /// </summary>
-        private List<string> _liftTypeList;
+        private readonly List<string> _liftTypeList = new List<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", "Other" };
         /// <summary>
         /// List that dictates the drop down for the list of lifts.  
         /// </summary>
         public List<string> LiftTypeList
         {
-            get { return new List<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", "Other" }; }
-
-            private set
-            {
-                _liftTypeList = value;
-            }
+            get => _liftTypeList;
         }
 
         //TODO make this list reference somewhere from shared, so we only need to maintain it in one place.

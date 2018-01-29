@@ -1,0 +1,51 @@
+.UEye-Tab-Layout {
+    // position: absolute;
+    height: 100%;
+    width: 100%; // bottom: 0;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    .Content {
+        // position: absolute;
+        height: 100%;
+        width: 100%;
+        border: 1px black outset;
+    }
+    .Tab-Button-List {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333333;
+        .Tab-Button {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 7px 3px;
+            text-decoration: none;
+            
+            -webkit-border-radius: 4;
+            -moz-border-radius: 4;
+            border-radius: 4px;
+            width: 100px;
+
+            background-color: #286090;
+            border-color: #204d74;
+        }
+
+        .Tab-Button.Selected {
+            background: @DefaultElementAccent;
+        }
+
+        .Tab-Button:hover {
+            background: @DefaultElementAccent;
+            text-decoration: none;
+        }
+        
+        .Tab-Button.disabled {
+            background-color: #B2B4B6;
+            color: #333333;
+            text-decoration: none;
+        }
+    }
+}

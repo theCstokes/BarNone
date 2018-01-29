@@ -38,7 +38,7 @@ namespace BarNone.Shared.DomainModel
         /// <value>
         /// The time of frame.
         /// </value>
-        public DateTime TimeOfFrame { get; set; }
+        public TimeSpan TimeOfFrame { get; set; }
 
         /// <summary>
         /// Gets or sets the joints.

@@ -64,19 +64,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters.cs" />
-    <Compile Include="KinectData\BodyDataConverter.cs" />
-    <Compile Include="KinectData\BodyDataFrameConverter.cs" />
+    <Compile Include="KinectToDM\KinectDepthFrameConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataLift\BarNone.DataLift.DomainModel\BarNone.DataLift.DataModel.csproj">
-      <Project>{707ADE0D-0C8D-4EDF-81B9-889B4538EFA1}</Project>
-      <Name>BarNone.DataLift.DataModel</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Shared\BarNone.Shared.Core\BarNone.Shared.Core.csproj">
       <Project>{1c1d8d67-dbac-484b-8631-cd28ad0499f1}</Project>
       <Name>BarNone.Shared.Core</Name>
@@ -89,6 +83,11 @@
       <Project>{DC7C09E7-27E2-496C-9823-F048BB031174}</Project>
       <Name>BarNone.Shared.DataTransfer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj">
+      <Project>{b985f9c5-9463-4574-9eb6-684f9c4a3c92}</Project>
+      <Name>BarNone.Shared.DomainModel</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

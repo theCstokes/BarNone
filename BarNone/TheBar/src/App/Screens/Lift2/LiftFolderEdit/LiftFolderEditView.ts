@@ -25,9 +25,21 @@ export default class LiftFolderEditView extends EditView {
 						hint: "Name"
 					},
 					{
-						id: "liftList",
-						instance: ControlTypes.List,
-						style: ControlTypes.LiftFolderListItem
+						id: "tab",
+						instance: ControlTypes.TabLayout,
+						selected: true,
+						tabs: [
+							{
+								title: "Lifts",
+								content: [
+									{
+										id: "liftList",
+										instance: ControlTypes.List,
+										style: ControlTypes.LiftFolderListItem
+									}
+								]
+							}
+						]
 					}
 				]
 			}

@@ -7,16 +7,39 @@ import LoginFrame from "UEye/Elements/Containers/LoginFrame/LoginFrame";
 import ContentContainer from "UEye/Elements/Containers/ContentContainer/ContentContainer";
 import Video from "UEye/Elements/Components/Video/Video";
 
+/**
+ *  Represents View for Login Screen .
+ */
 export default class LoginView extends View {
 	public frame: LoginFrame;
 	public container: ContentContainer;
+
+	/**
+ *  Represents Button to Create profile .
+ */
 	public createButton: Button;
+	/**
+ *  Represents Button to login .
+ */
 	public loginButton: Button;
+	/**
+ *  Represents username input.
+ */
 	public usernameInput: Input;
+	/**
+ *  Represents password input.
+ */
 	public passwordInput: Input;
+	/**
+ *  Represents status label .
+ */
 	public statusLabel: Label;
+
 	public video: Video;
 
+
+	/** Accesor gets content
+     * */
 	public get content(): any[] {
 		return [
 			{
