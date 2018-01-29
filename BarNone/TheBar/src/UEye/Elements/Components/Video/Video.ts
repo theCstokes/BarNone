@@ -33,6 +33,7 @@ export default class Video extends BaseComponent {
         this._video = Core.create("video", this.element, "Video") as HTMLVideoElement;
         this._video.width = this._canvas.width;
         this._video.crossOrigin = "Anonymous";
+        this._video.muted=true;
         
 
         this._source = Core.create("source", this._video, "Source") as HTMLSourceElement;
@@ -56,7 +57,7 @@ export default class Video extends BaseComponent {
         this._video.autoplay=false;
 
         this._slider.onclick = (e) => {
-            console.log(e);
+           
             this._bar.style.width=  this._thumb.style.marginLeft = e.offsetX + "px";
             var percent = (e.offsetX / this._slider.offsetWidth);
             var currentTime= percent*this._video.duration;
@@ -106,7 +107,7 @@ export default class Video extends BaseComponent {
             }
 
             this._timeStamp.innerHTML=this._minutesCurrent+":"+this._secondsCurrent+"/"+this._minutesDuration+":"+this._secondsDuration;
-            console.log(this._minutesDuration);
+           
              
         }, false);
 
@@ -154,7 +155,7 @@ export default class Video extends BaseComponent {
             var frameData = this._createFrame(this._frameDataList[frameIndex], w, h);
             var bit = createImageBitmap(frameData);
             this._context.putImageData(frameData, 0, 0);
-            console.log(frameData);
+          
         }
     
 
