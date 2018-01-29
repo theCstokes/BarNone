@@ -23,9 +23,9 @@ export default class LiftFolderListItem extends BaseListItem {
         this._typeIcon = Core.create("div", content, "Type-Icon fa", this._icon);
 
         this._nameElement = Core.create("div", content, "Name");
-
+        this._nameElement.onclick = this._onOpenActionClickHandler.bind(this);
         this._openActionElement = Core.create("div", this.element, "Open-Action fa fa-arrow-circle-right");
-        this._openActionElement.onclick = this._onOpenActionClickHandler.bind(this);
+        // this._openActionElement.onclick = this._onOpenActionClickHandler.bind(this);
     }
 
     public set name(value: any) {

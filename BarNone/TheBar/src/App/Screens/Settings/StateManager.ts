@@ -14,6 +14,7 @@ import Screen from "UEye/Screen/Screen";
 class SettingsElement {
 	public id: number;
 	public name: string;
+	public icon: string;
 	public screen: { new(): Screen<any> };
 }
 
@@ -24,15 +25,14 @@ export class State {
 		{
 			id: 1,
 			name: "Edit Profile",
-			screen: EditProfile
-
-			
+			icon: "fa-edit",
+			screen: EditProfile	
 		},
 		{
 			id: 2,
 			name: "Change Password",
+			icon: "fa-key",
 			screen: ChangePassword
-			
 		}
 	]
 }

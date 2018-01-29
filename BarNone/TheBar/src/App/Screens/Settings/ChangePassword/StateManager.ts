@@ -75,6 +75,11 @@ export class StateManager extends BaseStateManager<State> {
 
 	public async onSave(): Promise<void> {
 		var currentState = this.getCurrentState();
+		
+		if(currentState.newPassword==currentState.retypePassword){
+			console.log(currentState.newPassword);
+		}
+
 		await DataManager.Users.update(currentState.id, {
 			id: currentState.id,
 			name: "",

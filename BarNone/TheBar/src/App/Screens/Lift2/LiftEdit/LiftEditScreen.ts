@@ -21,7 +21,7 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		this.view.nameInput.text = current.name;
 		this.view.nameInput.modified = (original.name !== current.name);
 
-		this.view.player.src = StringUtils.format("http://localhost:58428/api/v1/Lift/{0}/Video?access_token={1}",
+		this.view.player.src = StringUtils.format("https://www.rmp-streaming.com/media/bbb-360p.mp4",
 			current.lift.id,
 			BaseDataManager.auth.access_token);
 

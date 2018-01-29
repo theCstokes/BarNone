@@ -31,6 +31,7 @@ export default class Breadcrumb extends BaseComponent {
     private _crumbElements: HTMLElement[];
     /**  Represents an array of additional data that is mapped to view of the corresponding screen.  */
     private _items: BreadcrumbItem[];
+    private _crumbContent:HTMLElement;
     private _onSelectCallback: OnSelectCallback;
 
     /**  Represents event listner that is called when even occurs*/
@@ -137,11 +138,14 @@ export default class Breadcrumb extends BaseComponent {
      * @param select Boolean parameter represents "selection" style property of the element type
      * */
     private _pushItem(item: BreadcrumbItem, select: boolean) {
+       
         var el = Core.create('li', this._crumbHolder, "Crumb");
+         this._crumbContent= Core.create('div', el, "Content");
+        this._crumbContent.innerHTML=item.value;
         if (!select) {
             Core.addClass(el, 'Unselected');
         }
-        el.textContent = item.value;
+      
         el.onclick = () => {
             this.onSelectHandler(item);
         };

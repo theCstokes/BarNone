@@ -9,8 +9,9 @@ type LineData = {
     x: number, 
       /**y-coordinate on canvas*/
     y: number };
-/**GraphData represents an array of line data */
-type GraphData = LineData[];
+
+
+
 
 const Chart = require("chartjs");
 console.log(Chart);
@@ -22,14 +23,21 @@ export default class Graph extends BaseComponent {
     private _context: CanvasRenderingContext2D;
      /**Represents type of graph being draw as a string value (eg. Bar for Bar graph and Line for Line graph)*/
     private _type: string;
-    /**Represents array of graphdata that plots the complete graph */
-    private _data: GraphData[];
+
+
+    /**Represents array of linedata that plots the complete graph */
+    private _data: LineData[];
+
+    
+
      /**Represents the label along the X-Axis */
     private _xAxisLabel: string;
       /**Represents the label along the Y-Axis */
     private _yAxisLabel: string;
-      /**Represents the Range and ID along the X-Axis*/
-    private _xRange: GraphData[];
+
+      /**Represents Title of Graph*/
+    private _title: string;
+
       /** Constructor intializes and defines the Graph component as an HTMLElement tag named UEye-Graph as well as the context needed for plotting graphs. 
      * @param parent - Represents properties of the current element as an HTMLElement.
 	 * * @returns Returns a Graph type with the referenced 2d context.   
@@ -40,56 +48,93 @@ export default class Graph extends BaseComponent {
 
         this._canvas = Core.create("canvas", this.element, "Canvas") as HTMLCanvasElement;
         var c = this._canvas.getContext('2d');
+        this._title= "Graph";
+       
+        
         if (c !== null) { this._context = c; }
 
         // Chart(this._context);
 
-        var chart = new Chart(this._context, {
-            type: 'line',
-            data: {
-                labels: ["0", "15", "30", "45", "60", "75"],
-                datasets: [{
-                    label: '# of Votes',
-                     data: [{
-                        x: 15,
-                        y: 20
-                    }, {
-                        x: 15,
-                        y: 15
-                    }, {
-                        x: 60,
-                        y: 15
-                    }, 
-                    {
-                        x: 95,
-                        y: 20
-                    } 
-                ],
 
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        },
-                      scaleLabel: {
-                        display: true,
-                        labelString: 'probability'
-                       
-                      }
-                    }],
-                    xAxes: [{
-                        scaleLabel: {
-                          display: true,
-                          labelString: 'Name'
-                        }
-                      }],
-                  }  
-            }
-        });
     }
+    public get type(): string {
+		return this._type;
+    }
+    
+	public set type(value: string) {
+		this._type = value;
+		
+    }
+    public set xAxisLabel(value: string) {
+		this._xAxisLabel = value;
+    }
+    public get xAxisLabel (): string {
+		return this._xAxisLabel;
+    }
+    public set yAxisLabel(value: string) {
+		this._yAxisLabel = value;
+    }
+    public get yAxisLabel (): string {
+		return this._yAxisLabel;
+    }
+    public set title(value: string) {
+		this._title = value;
+    }
+    public get title (): string {
+		return this._title;
+    }
+    public set data(value: LineData[]) {
+		this._data = value;
+    }
+    public get data (): LineData[] {
+		return this._data;
+    }
+    public set draw (value:boolean) {
+       
+        if(value==true){
+            var chart = new Chart(this._context, {
+                type: 'line',
+                data: {
+                  //  labels: ["0", "15", "30", "45", "60", "75"],
+                    datasets: [{
+                        label: this._title,
+                        fill: false,
+                         data: this._data,
+    
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            },
+                          scaleLabel: {
+                            display: true,
+                            labelString: this._xAxisLabel
+                           
+                          }
+                        }],
+                        xAxes: [{
+                            type: 'linear',
+                            ticks: {
+                                beginAtZero: true,
+                                min: 0,
+                                max: 100,
+                                stepSize: 15
+                            },
+                            scaleLabel: {
+                              display: true,
+                              labelString: this._yAxisLabel
+                            }
+                          }],
+                      }  
+                }
+            });
+        }
+        }
+    
+
 
     public onEnabledChange(): void {
         throw new Error("Method not implemented.");

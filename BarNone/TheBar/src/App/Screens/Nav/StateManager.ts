@@ -50,18 +50,18 @@ export class State {
 			icon: "fa-cog",
 			screen: SettingsScreen
 		},
-		{
-			id: 3,
-			name: "Videos",
-			icon: "fa-video-camera",
-			screen: UserScreen
-		},
-		{
-			id: 4,
-			name: "Lifts",
-			icon: "fa-universal-access",
-			screen: LiftScreen
-		},
+		// {
+		// 	id: 3,
+		// 	name: "Videos",
+		// 	icon: "fa-video-camera",
+		// 	screen: UserScreen
+		// },
+		// {
+		// 	id: 4,
+		// 	name: "Lifts",
+		// 	icon: "fa-universal-access",
+		// 	screen: LiftScreen
+		// },
 		{
 			id: 5,
 			name: "Lifts2",
