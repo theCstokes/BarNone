@@ -7,7 +7,7 @@ import Core from "UEye/Elements/Core/Core";
 import { BaseView } from "UEye/Elements/Core/BaseView";
 import InflaterData from "UEye/Elements/Inflater/InflaterData";
 
-class TabElement implements IListItem {
+class TabConfig implements IListItem {
     public id: number | string;
 
     public title: string;
@@ -15,6 +15,7 @@ class TabElement implements IListItem {
     public selected: boolean;
 
     public content: any[];    
+   
 }
 
 export default class TabLayout extends BaseContainer {
@@ -24,7 +25,7 @@ export default class TabLayout extends BaseContainer {
     private _contentElement: HTMLElement;
     private _tabButtonList: HTMLElement;
 
-    private _tabs: TabElement[];
+    private _tabElements: TabConfig[];
     private _tabContainers: BaseContainer[];
     
 
@@ -37,28 +38,37 @@ export default class TabLayout extends BaseContainer {
         this.onShow.on(view => this._view = view);
     }
 
-    public set tabs(value: TabElement[]) {
-        this._tabs = value;
+    public set tabs(value: TabConfig[]) {
+        this._tabElements = value;
         this._renderTabs();
     }
-    public get tabs(): TabElement[] {
-        return this._tabs;
+    public get tabs(): TabConfig[] {
+        return this._tabElements;
     }
 
     private _renderTabs(): void {
-        if (this._tabs === undefined) return;
+        if (this._tabElements === undefined) return;
 
         var data = new InflaterData();
-        this._tabContainers = this._tabs.map(tab => {
+        this._tabContainers = this._tabElements.map((tabManager, index) => {
+            
             var button = Core.create("li", this._tabButtonList, "Tab-Button");
-            button.textContent = tab.title;
-            if (tab.selected) {
-                Core.addClass(button, "Selected");
+            button.textContent = tabManager.title;
+            if(index==0){
+                tabManager.selected=true;
             }
-            var ueyeTab = ControlTypes.Tab.create(this._contentElement, tab as any, this._view, data) as Tab;
-            ueyeTab.selected = tab.selected;
+            if (tabManager.selected) {
+                Core.addClass(button, "Selected");
+            }else if (tabManager.selected==null){
+                tabManager.selected=false;
+            }
+            var ueyeTab = ControlTypes.Tab.create(this._contentElement, tabManager as any, this._view, data) as Tab;
+            ueyeTab.selected = tabManager.selected;
             return ueyeTab;
         });
         this._view.setElements(data.componentMap);
     }
+   
+
+    
 }
