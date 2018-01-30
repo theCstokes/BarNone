@@ -5,20 +5,17 @@ using NDtw;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 
 namespace BarNone.Shared.Analysis
 {
-
-    public class SessionSplitter
+    public class MomentIdentifier
     {
-
         private static Dictionary<string, BodyData> templateLifts;
         private static Dictionary<string, List<JointTimeSeries>> templateTimeSeriesSets;
 
-        static SessionSplitter()
+        static MomentIdentifier()
         {
             byte[] jsonBytes = Properties.Resources.Chris_Single_Squat_1;
             string json = System.Text.Encoding.UTF8.GetString(jsonBytes);
@@ -44,19 +41,15 @@ namespace BarNone.Shared.Analysis
 
         private List<JointTimeSeries> inputTimeSeriesSet;
 
-        public SessionSplitter(BodyData bodyData)
+        public MomentIdentifier(BodyData bodyData)
         {
             inputBodyData = bodyData;
             inputTimeSeriesSet = Utils.ConvertBodyDataToTimeSeriesSet(inputBodyData);
         }
 
-        /// <summary>
-        /// Determines indices for the frame numbers that best fit as candidates for the beginning of lifts.
-        /// </summary>
-        /// <returns>List containing the indexes of the beginning of lifts.</returns>
-        public List<int> SplitSquats()
+        public int FindBottomOfSquat()
         {
-            double[] lsHeight = Array.ConvertAll<float,double>(inputTimeSeriesSet[0].Y, x => (double)x);
+            double[] lsHeight = Array.ConvertAll<float, double>(inputTimeSeriesSet[0].Y, x => (double)x);
             double[] tlsHeight = Array.ConvertAll<float, double>(templateTimeSeriesSets["Squat"][0].Y, x => (double)x);
 
             float d2f = inputTimeSeriesSet[0].Y[0] - inputTimeSeriesSet[15].Y[0];
@@ -65,17 +58,11 @@ namespace BarNone.Shared.Analysis
             lsHeight = lsHeight.Select(x => x / d2f).ToArray();
             tlsHeight = tlsHeight.Select(x => x / d2f_t).ToArray();
 
-            List<double> distances = new List<double> { };
-            const int resolution = 1;
-            for (int offset = 0; offset < lsHeight.Length - tlsHeight.Length; offset += resolution)
-            {
-                double[] lsHeightSubset = lsHeight.Skip(offset).Take(tlsHeight.Length).ToArray();
-                distances.Add(new Dtw(lsHeightSubset, tlsHeight).GetCost());
-            }
-
-
-
-            return new List<int> { 0 };
+            Dtw dtw = new Dtw(lsHeight, tlsHeight);
+            int warpedIndex = dtw.GetPath().Select(x => x.Item2).ToList().IndexOf(30);
+            int unwarpedSampleIndex = dtw.GetPath()[warpedIndex].Item1;
+            var path = dtw.GetPath();
+            return unwarpedSampleIndex;
         }
     }
 }
