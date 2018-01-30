@@ -170,15 +170,15 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 try
                 {
-                    ScrubberLowerDisplayed = TimeSpan.ParseExact(SelectedLift.LiftStartTime, @"m\:s\.fff", CultureInfo.InvariantCulture).TotalMilliseconds;
+                    ScrubberLowerThumb = TimeSpan.ParseExact(SelectedLift.LiftStartTime, @"m\:s\.fff", CultureInfo.InvariantCulture).TotalMilliseconds;
                 }
-                catch { ScrubberLowerDisplayed = 0d; }
+                catch { ScrubberLowerThumb = 0d; }
 
                 try
                 {
-                    ScrubberUpperDisplayed = TimeSpan.ParseExact(SelectedLift.LiftEndTime, @"m\:s\.fff", CultureInfo.InvariantCulture).TotalMilliseconds;
+                    ScrubberUpperThumb = TimeSpan.ParseExact(SelectedLift.LiftEndTime, @"m\:s\.fff", CultureInfo.InvariantCulture).TotalMilliseconds;
                 }
-                catch { ScrubberUpperDisplayed = 0d; }
+                catch { ScrubberUpperThumb = 0d; }
 
             }
          }
@@ -458,8 +458,8 @@ namespace BarNone.DataLift.UI.ViewModels
                //if(SelectedLift != null) SelectedLift.LiftEndTime = value.ToString();
 
                 _scrubberUpperThumb = value;
-                new PropertyChangedEventArgs("ScrubberUpperThumb");
-                new PropertyChangedEventArgs("ScrubberUpperDisplayed");
+                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
+                //new PropertyChangedEventArgs("ScrubberUpperDisplayed");
             }
         }
 
@@ -478,48 +478,9 @@ namespace BarNone.DataLift.UI.ViewModels
                 //if (SelectedLift != null) SelectedLift.LiftStartTime = value.ToString();
 
                 _scrubberLowerThumb = value;
-                _scrubberLowerDsiplayed = value;
-                new PropertyChangedEventArgs("ScrubberLowerThumb");
-                new PropertyChangedEventArgs("ScrubberLowerDisplayed");
+                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
             }
         }
-
-        private double _scrubberLowerDsiplayed;
-
-        public double ScrubberLowerDisplayed
-        {
-            get { return _scrubberLowerDsiplayed; }
-
-            set
-            {
-                //Console.WriteLine($"This is the display value of the lower thumb {value}");
-
-                _scrubberLowerThumb = value;
-                _scrubberLowerDsiplayed = value;
-
-                new PropertyChangedEventArgs("ScrubberLowerThumb");
-                new PropertyChangedEventArgs("ScrubberLowerDisplayed");
-            }
-        }
-
-        private double _scrubberUpperDisplayed;
-        public double ScrubberUpperDisplayed
-        {
-            get { return _scrubberUpperDisplayed;  }
-
-            set
-            {
-                //Console.WriteLine($"This is the value of the upper thumb {value}");
-
-                _scrubberUpperThumb = value;
-                _scrubberUpperDisplayed = value;
-
-                new PropertyChangedEventArgs("ScrubberUpperThumb");
-                new PropertyChangedEventArgs("ScrubberUpperDisplayed");
-            }
-        }
-
-
 
         public double ScrubberMaxValue
         {

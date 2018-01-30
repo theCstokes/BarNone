@@ -75,7 +75,7 @@
                 </Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="2" Grid.ColumnSpan="5">
                     <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 0 10 0"
-                         materialDesign:HintAssist.Hint="Start Time" Text="{Binding Path=ScrubberLowerDisplayed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                         materialDesign:HintAssist.Hint="Start Time" Text="{Binding ScrubberLowerThumb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     </TextBox>
                     <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="10 0 0 0"
                          materialDesign:HintAssist.Hint="End Time" Text="{Binding ScrubberUpperThumb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
