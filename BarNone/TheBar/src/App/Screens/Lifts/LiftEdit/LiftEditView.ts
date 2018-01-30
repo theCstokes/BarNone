@@ -32,13 +32,13 @@ export default class LiftEditView extends EditView {
 						id: "player",
 						instance: ControlTypes.Video
 					},
-					{
-						id: "ageInput",
-						instance: ControlTypes.Input,
-						readonly: true,
-						hint: "Age",
-						text: 21
-					}
+					// {
+					// 	id: "ageInput",
+					// 	instance: ControlTypes.Input,
+					// 	readonly: true,
+					// 	hint: "Age",
+					// 	text: 21
+					// }
 				]
 			}
 		];
