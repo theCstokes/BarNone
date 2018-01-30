@@ -42,7 +42,7 @@ namespace BarNone.Shared.DataConverters
                 BodyDataFrameID = dto.BodyDataFrameID,
                 JointTrackingStateTypeID = dto.JointTrackingStateTypeID,
                 JointTypeID = dto.JointTypeID,
-                UserID = context.UserID
+                UserID = context != null ? context.UserID : 0
             };
         }
 
