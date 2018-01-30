@@ -104,29 +104,50 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
+        #region Loaded and Closed
+        internal override void Loaded()
+        {
+            CurrentLifts.LiftInformation.Add(new LiftListVM
+            {
+                LiftStartTime = 0,
+                LiftEndTime = 0,
+                LiftName = String.Format($"Temp_name_{CurrentLifts.LiftInformation.Count()}"),
+                LiftType = "Squat"
+            });
+
+            Console.WriteLine($"This is how long we are shizz: {CurrentLifts.LiftInformation.Count}");
+        }
+
+        internal override void Closed()
+        {
+            base.Closed();
+        }
+
+        #endregion
+
         #region ListView properties
         /// <summary>
         /// Field representation for the <see cref="LiftIntervals"/> bindable property
         /// </summary>
-        private ObservableCollection<LiftListVM> _liftIntervals = new ObservableCollection<LiftListVM>
-        {
-            new LiftListVM
-            {
-                LiftName = "Test1",
-                LiftType = "Squat",
-                LiftStartTime = @"00:00.000",
-                LiftEndTime = @"00:01.000",
-                Count = 0
-            },
-            new LiftListVM
-            {
-                LiftName = "Test2",
-                LiftType = "Clean and Jerk",
-                LiftStartTime = @"00:01.001",
-                LiftEndTime = @"00:02.000",
-                Count =  1
-            }
-        };
+        //private ObservableCollection<LiftListVM> _liftIntervals = new ObservableCollection<LiftListVM>
+        //{
+        //    new LiftListVM
+        //    {
+        //        LiftName = "Test1",
+        //        LiftType = "Squat",
+        //        LiftStartTime = @"00:00.000",
+        //        LiftEndTime = @"00:01.000",
+        //        Count = 0
+        //    },
+        //    new LiftListVM
+        //    {
+        //        LiftName = "Test2",
+        //        LiftType = "Clean and Jerk",
+        //        LiftStartTime = @"00:01.001",
+        //        LiftEndTime = @"00:02.000",
+        //        Count =  1
+        //    }
+        //};
 
         /// <summary>
         /// Observable collection to be displayed in the ListView.
@@ -135,16 +156,18 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             get
             {
-                return _liftIntervals;
+                return CurrentLifts.LiftInformation;
             }
             set
             {
-                if (_liftIntervals == value) return;
+                if (CurrentLifts.LiftInformation == value) return;
 
-                _liftIntervals = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Test"));
+                CurrentLifts.LiftInformation = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("LiftIntervals"));
             }
         }
+
+
 
         /// <summary>
         /// Field representation for the <see cref="SelectedLift"/> bindable property
@@ -170,13 +193,14 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 try
                 {
-                    ScrubberLowerThumb = TimeSpan.ParseExact(SelectedLift.LiftStartTime, @"m\:s\.fff", CultureInfo.InvariantCulture).TotalMilliseconds;
+                    ScrubberLowerThumb = SelectedLift.LiftStartTime;
                 }
                 catch { ScrubberLowerThumb = 0d; }
 
                 try
                 {
-                    ScrubberUpperThumb = TimeSpan.ParseExact(SelectedLift.LiftEndTime, @"m\:s\.fff", CultureInfo.InvariantCulture).TotalMilliseconds;
+                    //ScrubberUpperThumb = TimeSpan.ParseExact(SelectedLift.LiftEndTime, @"m\:s\.fff", CultureInfo.InvariantCulture).TotalMilliseconds;
+                    ScrubberUpperThumb = SelectedLift.LiftEndTime;
                 }
                 catch { ScrubberUpperThumb = 0d; }
 
@@ -527,6 +551,14 @@ namespace BarNone.DataLift.UI.ViewModels
                 Interval = new TimeSpan(0, 0, 0, 0, VideoTimerInterval)
 
             };
+
+            CurrentLifts.LiftInformation.Add(new LiftListVM
+            {
+                LiftStartTime = 0,
+                LiftEndTime = 0,
+                LiftName = String.Format($"Temp_name_{CurrentLifts.LiftInformation.Count()}"),
+                LiftType = "Squat"
+            });
 
             VideoTimer.Tick += Redraw;
         }
