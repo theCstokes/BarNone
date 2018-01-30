@@ -12,6 +12,15 @@ namespace BarNone.TheRack.ResourceServer.API.Response
     public class JsonPropertiesResolver : DefaultContractResolver
     {
         
+        public JsonPropertiesResolver()
+        {
+            NamingStrategy = new CamelCaseNamingStrategy
+            {
+                ProcessDictionaryKeys = true,
+                OverrideSpecifiedNames = true
+            };
+        }
+
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
             var property = base.CreateProperty(member, memberSerialization); ;
