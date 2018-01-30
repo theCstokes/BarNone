@@ -35,10 +35,11 @@ export default class Video extends BaseComponent {
     private _thumb: HTMLElement;
 
      /**Represents the source of content as string path*/
-
+    private _currentIndex: number;
     private _src: string;
     /**Represents array of framedata that makes one complete video */
     private _frameDataList: FrameData[];
+    private _totalNumber: number;
 
     private _timeStamp: HTMLElement;
     private _minutesCurrent: number;
@@ -77,11 +78,12 @@ export default class Video extends BaseComponent {
         this._slider = Core.create("div", this._controlBar, "Slider");
         this._bar = Core.create("div", this._slider, "Bar");
         this._thumb =Core.create("div",this._bar, "Thumb");
-
+       
     
         this._timeStamp.innerHTML="0:00/0:00";
         this._minutesDuration =0;
         this._secondsDuration= 0;
+        this._currentIndex=0;
         this._video.autoplay=false;
 
         this._slider.onclick = (e) => {
@@ -95,7 +97,7 @@ export default class Video extends BaseComponent {
              
                        // this._video.seekable.111
 
-            this._video.currentTime = (this._video.duration * percent);
+          //  this._video.currentTime = (this._video.duration * percent);
             
         };
 
@@ -116,7 +118,6 @@ export default class Video extends BaseComponent {
             this._context.fillStyle = 'yellow';
             this._context.fill();
             this._context.closePath();
-            this._context.scale(0.5, 0.5);
         };
 
         this._video.addEventListener('play', () => {
@@ -167,12 +168,38 @@ export default class Video extends BaseComponent {
     public get width(): number {
         return this._canvas.width;
     }
+
+    private drawBodyDataOnly(w: number, h: number, frameIndex: number ) {
+            // var frameIndex = Math.round((this._frameDataList.length - 1) * percent);
+            var frameData = this._createFrame(this._frameDataList[frameIndex], w, h);
+            var bit = createImageBitmap(frameData);
+            // this._context.scale(0.5,0.5);
+            this._context.putImageData(frameData, 0, 0);
+            //  this._context.scale(2,2);
+            console.log("JEJEJEJEJ");
+            var percentTwo = ((frameIndex) / this._totalNumber);
+            
+            this._minutesCurrent= Math.floor(this._video.currentTime/ 60);
+            this._secondsCurrent= Math.floor(this._video.currentTime - this._minutesCurrent * 60);
+             this._timeStamp.innerHTML=this._minutesCurrent+":"+this._secondsCurrent+"/"+this._minutesDuration+":"+this._secondsDuration;
+             this._bar.style.width=this._thumb.style.marginLeft = (this._slider.offsetWidth * percentTwo + "px");
+             this._currentIndex=frameIndex+1;
+        setTimeout(this.drawBodyDataOnly.bind(this), 20, w, h, frameIndex + 1);
+    }
+
     /** Method to draw joint and connective bone data on canvas alongside the embedded video
      * @param w Width parameter of the canvas
      * @param h Height parameter of the canvas
      * */
     private draw(w: number, h: number) {
-      
+
+        if(this._video.src=="" && this._frameDataList!=undefined ){
+            this._totalNumber=this._frameDataList.length;
+            this.drawBodyDataOnly(w, h, this._currentIndex);
+            
+        
+        }
+        else{
         if (this._video.paused || this._video.ended) {
             return;
         }
@@ -186,24 +213,26 @@ export default class Video extends BaseComponent {
         var percent = (this._video.currentTime / this._video.duration);
 
         this._context.drawImage(this._video, 0, 0, w, h);
-
-
-        if (this._frameDataList !== undefined) {
-            var frameIndex = Math.round((this._frameDataList.length - 1) * percent);
-            var frameData = this._createFrame(this._frameDataList[frameIndex], w, h);
-            var bit = createImageBitmap(frameData);
-            this._context.putImageData(frameData, 0, 0);
+   
+        // if (this._frameDataList !== undefined) {
+        //     var frameIndex = Math.round((this._frameDataList.length - 1) * percent);
+        //     var frameData = this._createFrame(this._frameDataList[frameIndex], w, h);
+        //     var bit = createImageBitmap(frameData);
+        //     // this._context.scale(0.5,0.5);
+        //     this._context.putImageData(frameData, 0, 0);
+        //     //  this._context.scale(2,2);
           
-        }
-    
+        // }
+        
+        
 
        this._minutesCurrent= Math.floor(this._video.currentTime/ 60);
        this._secondsCurrent= Math.floor(this._video.currentTime - this._minutesCurrent * 60);
         this._timeStamp.innerHTML=this._minutesCurrent+":"+this._secondsCurrent+"/"+this._minutesDuration+":"+this._secondsDuration;
         this._bar.style.width=this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
         
-        setTimeout(this.draw.bind(this), 20, w, h);
-       
+        setTimeout(this.draw.bind(this), 33, w, h);
+    }
     
     }
      /** Accessor to get source path of video.
@@ -273,8 +302,8 @@ export default class Video extends BaseComponent {
         // if (this._context != null) {
         var context = this._context;
         // context.clearRect(0, 0, this._canvas.width, this._canvas.height);
-        context.lineWidth = 5;
-
+        context.lineWidth = 2;
+        // context.scale(0.1, 0.1);
         frame.forEach(line => {
             context.beginPath();
             context.moveTo(line.x1, line.y1);
@@ -282,11 +311,12 @@ export default class Video extends BaseComponent {
             context.strokeStyle = "green";
             context.stroke();
             context.closePath();
+          
         });
 
         frame.forEach(line => {
             context.beginPath();
-            context.arc(line.x1, line.y1, 4, 0, 2 * Math.PI);
+            context.arc(line.x1, line.y1, 2, 0, 2 * Math.PI);
             context.strokeStyle = "blue";
             context.stroke();
             context.fillStyle = 'blue';
@@ -294,12 +324,13 @@ export default class Video extends BaseComponent {
             context.closePath();
 
             context.beginPath();
-            context.arc(line.x2, line.y2, 4, 0, 2 * Math.PI);
+            context.arc(line.x2, line.y2, 2, 0, 2 * Math.PI);
             context.strokeStyle = "blue";
             context.stroke();
             context.fillStyle = 'blue';
             context.fill();
             context.closePath();
+        
         });
 
         return context.getImageData(0, 0, w, h);
