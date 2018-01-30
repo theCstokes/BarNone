@@ -6,9 +6,10 @@ import { BaseElement } from "UEye/Elements/Core/BaseElement/BaseElement";
 import { BaseListItem } from "UEye/Elements/Core/BaseListItem/BaseListItem";
 import ComponentConfig from "UEye/Elements/Core/ComponentConfig";
 import InflaterData from "UEye/Elements/Inflater/InflaterData";
+import { BaseView } from "UEye/Elements/Core/BaseView";
 
 export default class Inflater {
-	public static execute(parent: HTMLElement, config: ComponentConfig[] | ComponentConfig): InflaterData {
+	public static execute(parent: HTMLElement, config: ComponentConfig[] | ComponentConfig, view: BaseView): InflaterData {
 		if (!Array.isArray(config)) config = [config];
 
 		var validConfigList = config.filter(config => Inflater.validateConfig(config));
@@ -22,7 +23,7 @@ export default class Inflater {
 				return true;
 			})
 			.map(config => {
-			return config.instance.create(parent, config, data);
+			return config.instance.create(parent, config, view, data);
 		}));
 
 		return data;

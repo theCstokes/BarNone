@@ -45,9 +45,12 @@ namespace BarNone.DataLift.APIRequest
             using (var client = CreateClient())
             {
                 using (var content =
-                    new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json"))
+                    new StringContent(JsonConvert.SerializeObject(data, new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    }), Encoding.UTF8, "application/json"))
                 {
-                    File.WriteAllText(@"C:\Users\Aamir\Documents\McMaster\Year_4\Capstone\File1.json", JsonConvert.SerializeObject(data));
+                    //File.WriteAllText(@"C:\Users\Aamir\Documents\McMaster\Year_4\Capstone\File1.json", JsonConvert.SerializeObject(data));
 
                     HttpResponseMessage response = await client.PostAsync(url, content);
 

@@ -3,6 +3,8 @@ import ContainerType from "UEye/Elements/Inflater/ContainerInflater";
 
 import Button from "UEye/Elements/Components/Button/Button";
 import ContactListItem from "UEye/Elements/Components/ContactListItem/ContactListItem";
+import LiftFolderListItem from "UEye/Elements/Components/LiftFolderListItem/LiftFolderListItem";
+import DataListItem from "UEye/Elements/Components/DataListItem/DataListItem";
 import NavigationListItem from "UEye/Elements/Components/NavigationListItem/NavigationListItem";
 import Input from "UEye/Elements/Components/Input/Input";
 import PasswordInput from "UEye/Elements/Components/PasswordInput/PasswordInput";
@@ -21,6 +23,8 @@ import OrderLayout from "UEye/Elements/Containers/OrderLayout/OrderLayout";
 import Panel from "UEye/Elements/Containers/Panel/Panel";
 import PartitionLayout from "UEye/Elements/Containers/PartitionLayout/PartitionLayout";
 import ContentContainer from "UEye/Elements/Containers/ContentContainer/ContentContainer";
+import TabLayout from "UEye/Elements/Containers/TabLayout/TabLayout";
+import Tab from "UEye/Elements/Containers/Tab/Tab";
 
 export default class ControlTypes {
 
@@ -30,6 +34,10 @@ export default class ControlTypes {
 	public static readonly Button = new ComponentType(p => new Button(p));
 	/**Contact List Item Component Type */
 	public static readonly ContactListItem = new ComponentType(p => new ContactListItem(p));
+	/**Lift Folder List Item Component Type */
+	public static readonly LiftFolderListItem = new ComponentType(p => new LiftFolderListItem(p));
+	/**Lift Folder List Item Component Type */
+	public static readonly DataListItem = new ComponentType(p => new DataListItem(p));
 	/**Navigation List Item Component Type */
 	public static readonly NavigationListItem = new ComponentType(p => new NavigationListItem(p));
 	/**Input Component Type */
@@ -68,4 +76,8 @@ export default class ControlTypes {
 	public static readonly PartitionLayout = new ContainerType(p => new PartitionLayout(p));
 	/**Content Container Container Type */
 	public static readonly ContentContainer = new ContainerType(p => new ContentContainer(p));
+	/**Tab Layout Container Type */
+	public static readonly TabLayout = new ContainerType(p => new TabLayout(p));
+	/**Tab Container Type */
+	public static readonly Tab = new ContainerType(p => new Tab(p));
 }

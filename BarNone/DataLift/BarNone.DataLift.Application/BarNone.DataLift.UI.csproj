@@ -104,8 +104,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Drawing\KinectToImage.cs" />
+    <Compile Include="Navigation\INavigatable.cs" />
+    <Compile Include="Models\ColorImageFrame.cs" />
+    <Compile Include="Navigation\UserControlManager.cs" />
     <Compile Include="Validation\TimeInputRule.cs" />
     <Compile Include="ViewModels\Common\CurrentLiftDataVM.cs" />
+    <Compile Include="ViewModels\SaveLiftVM.cs" />
     <Compile Include="ViewModels\ControlHolderVM.cs" />
     <Compile Include="ViewModels\EditLiftsScreenVM.cs" />
     <Compile Include="ViewModels\LiftListVM.cs" />
@@ -115,6 +119,9 @@
     <Compile Include="ViewModels\RegisterScreenVM.cs" />
     <Compile Include="Views\ControlHolderScreen.xaml.cs">
       <DependentUpon>ControlHolderScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ControlScreen.xaml.cs">
+      <DependentUpon>ControlScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CustomComponents\Scrubber.xaml.cs" />
     <Compile Include="Views\CustomComponents\VideoControlsBar.xaml.cs" />
@@ -136,6 +143,9 @@
     </Compile>
     <Compile Include="Views\RegistrationScreen.xaml.cs">
       <DependentUpon>RegistrationScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SaveLiftScreen.xaml.cs">
+      <DependentUpon>SaveLiftScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WorkflowScreen.xaml.cs">
       <DependentUpon>WorkflowScreen.xaml</DependentUpon>
@@ -159,6 +169,10 @@
     <Page Include="Views\ControlHolderScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ControlScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CustomComponents\Scrubber.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -196,6 +210,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SaveLiftScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\WorkflowScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -230,15 +248,16 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="res\Squat_Debug.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="res\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\BarNone.DataLift.DataConverters\BarNone.DataLift.DataConverters.csproj">
       <Project>{c8aac2c2-b0e1-4814-b15e-f2db1f4c897f}</Project>
@@ -263,10 +282,6 @@
     <ProjectReference Include="..\BarNone.DataLift.APIRequest\BarNone.DataLift.APIRequest.csproj">
       <Project>{3a9be071-8a01-47a8-85cc-a3f712d3c6a9}</Project>
       <Name>BarNone.DataLift.APIRequest</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BarNone.DataLift.DomainModel\BarNone.DataLift.DataModel.csproj">
-      <Project>{707ade0d-0c8d-4edf-81b9-889b4538efa1}</Project>
-      <Name>BarNone.DataLift.DataModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

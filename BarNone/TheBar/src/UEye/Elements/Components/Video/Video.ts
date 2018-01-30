@@ -31,41 +31,72 @@ export default class Video extends BaseComponent {
     private _slider: HTMLElement;
        /**Represents the visual bar for controls of seeking in video playback*/
     private _bar: HTMLElement;
+
+    private _thumb: HTMLElement;
+
      /**Represents the source of content as string path*/
+
     private _src: string;
     /**Represents array of framedata that makes one complete video */
     private _frameDataList: FrameData[];
+
+    private _timeStamp: HTMLElement;
+    private _minutesCurrent: number;
+    private _secondsCurrent: number;
+    private _minutesDuration: number;
+    private _secondsDuration: number;
+
+
      /** Constructor intializes and defines the Video component as an HTMLElement tag named UEye-Video as well as the context needed for drawing skeletal data 
      * @param parent - Represents properties of the current element as an HTMLElement.
 	 * * @returns Returns a Video  type with the referenced 2d context.   
      * */
+
     constructor(parent: HTMLElement) {
         super(parent, "UEye-Video");
 
         this._canvas = Core.create("canvas", this.element, "Canvas") as HTMLCanvasElement;
+    
 
         this._video = Core.create("video", this.element, "Video") as HTMLVideoElement;
         this._video.width = this._canvas.width;
+        this._video.crossOrigin = "Anonymous";
+        this._video.muted=true;
+        
 
         this._source = Core.create("source", this._video, "Source") as HTMLSourceElement;
         this._source.type = "video/mp4";
 
         this._controlBar = Core.create("div", this.element, "Control-Bar");
 
-        this._actionButton = Core.create("div", this._controlBar, "Action-Button fa fa-pause");
+        this._actionButton = Core.create("div", this._controlBar, "Action-Button fa fa-play");
         this._actionButton.onclick = this._onActionHandel.bind(this);
+
+        this._timeStamp=Core.create("div", this._controlBar, "Time-Stamp");
 
         this._slider = Core.create("div", this._controlBar, "Slider");
         this._bar = Core.create("div", this._slider, "Bar");
+        this._thumb =Core.create("div",this._bar, "Thumb");
+
+    
+        this._timeStamp.innerHTML="0:00/0:00";
+        this._minutesDuration =0;
+        this._secondsDuration= 0;
+        this._video.autoplay=false;
 
         this._slider.onclick = (e) => {
-            console.log(e);
-            this._bar.style.width = e.offsetX + "px";
+           
+            this._bar.style.width=  this._thumb.style.marginLeft = e.offsetX + "px";
             var percent = (e.offsetX / this._slider.offsetWidth);
-
-            // this._video.seekable.
+            var currentTime= percent*this._video.duration;
+            this._minutesCurrent= Math.floor(currentTime/ 60);
+            this._secondsCurrent= Math.floor(currentTime - this._minutesCurrent * 60);
+            this._timeStamp.innerHTML=this._minutesCurrent+":"+this._secondsCurrent+"/"+this._minutesDuration+":"+this._secondsDuration;
+             
+                       // this._video.seekable.111
 
             this._video.currentTime = (this._video.duration * percent);
+            
         };
 
         var c = this._canvas.getContext('2d');
@@ -91,14 +122,29 @@ export default class Video extends BaseComponent {
             this.draw(this._canvas.width, this._canvas.height);
         }, false);
 
-        // this._video.addEventListener('timeupdate', () => {
-        //     var percent = (this._video.currentTime / this._video.duration);
-        //     this._bar.style.width = (this._slider.offsetWidth * percent) + "px";
-        // }, false);
+        this._video.addEventListener('timeupdate', () => {
+            var percent = (this._video.currentTime / this._video.duration);
+            this._bar.style.width = this._thumb.style.marginLeft= (this._slider.offsetWidth * percent) + "px";
+           
+            this._minutesCurrent= Math.floor(this._video.currentTime/ 60);
+            this._secondsCurrent= Math.floor(this._video.currentTime - this._minutesCurrent * 60);
+            this._minutesDuration = Math.floor(this._video.duration / 60);
+            this._secondsDuration= Math.floor(this._video.duration - this._minutesDuration * 60);
+            if(isNaN(this._minutesDuration) || isNaN(this._secondsDuration )){
+                this._minutesDuration=this._secondsDuration=0;
+            }
 
-        //     this._video.addEventListener("loadedmetadata", function() {
-        //         this.currentTime = 3;
-        //    }, false);
+            this._timeStamp.innerHTML=this._minutesCurrent+":"+this._secondsCurrent+"/"+this._minutesDuration+":"+this._secondsDuration;
+           
+             
+        }, false);
+
+        this._video.addEventListener("loadedmetadata", () => {
+            this._minutesDuration=this._secondsDuration=0;
+         }, false);
+        this._video.addEventListener("ended", ()=>{
+            Core.replaceClass(this._actionButton, "fa-pause", "fa-play");
+        })
     }
     /** Method for setting property _frameData
      * @param value Parameter represents array of skeletal data to be viewed on the video.
@@ -125,29 +171,39 @@ export default class Video extends BaseComponent {
      * @param h Height parameter of the canvas
      * */
     private draw(w: number, h: number) {
+      
         if (this._video.paused || this._video.ended) {
             return;
         }
-        // {
-        //     this._video.pause();
-        //     this._video.currentTime = 3;
-        //     this._video.play();
-        //     return;
-        // }
+            // {
+            //     this._video.pause();
+            //     this._video.currentTime = 3;
+            //     this._video.play();
+            //     return;
+            // }
 
         var percent = (this._video.currentTime / this._video.duration);
 
         this._context.drawImage(this._video, 0, 0, w, h);
 
+
         if (this._frameDataList !== undefined) {
             var frameIndex = Math.round((this._frameDataList.length - 1) * percent);
             var frameData = this._createFrame(this._frameDataList[frameIndex], w, h);
-            // var bit = createImageBitmap(frameData);
-            // this._context.putImageData(frameData, 0, 0, w, h);
+            var bit = createImageBitmap(frameData);
+            this._context.putImageData(frameData, 0, 0);
+          
         }
+    
 
-        this._bar.style.width = (this._slider.offsetWidth * percent) + "px";
+       this._minutesCurrent= Math.floor(this._video.currentTime/ 60);
+       this._secondsCurrent= Math.floor(this._video.currentTime - this._minutesCurrent * 60);
+        this._timeStamp.innerHTML=this._minutesCurrent+":"+this._secondsCurrent+"/"+this._minutesDuration+":"+this._secondsDuration;
+        this._bar.style.width=this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
+        
         setTimeout(this.draw.bind(this), 20, w, h);
+       
+    
     }
      /** Accessor to get source path of video.
      * @returns Returns string path
@@ -167,11 +223,14 @@ export default class Video extends BaseComponent {
             this._video.removeChild(this._source);
             this._source = Core.create("source", this._video, "Source") as HTMLSourceElement;
             this._source.type = "video/mp4";
+           
             this._source.src = this._src;
-
+            Core.replaceClass(this._actionButton, "fa-pause", "fa-play");
             this._video.load();
             this._video.currentTime = 0;
-            this._video.play();
+            
+            // this._video.play();
+           
         }
         if (this._src !== undefined) {
             Core.addClass(this._source, "Visible");
@@ -203,13 +262,6 @@ export default class Video extends BaseComponent {
         }
     }
 
-    /** Method that llogs internally an error flag.
-     * @returns Nothing (return part of property definition).
-     * */
-
-    public onShow(): void {
-        console.warn("error");
-    }
     /** Method creates seekable frame of skeletal data
      * @param w Parameter represents width of canvas.
      *  @param h Parameter represents height of canvas.

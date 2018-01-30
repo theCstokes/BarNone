@@ -1,7 +1,13 @@
-﻿using BarNone.Shared.DataTransfer;
+﻿using BarNone.DataLift.UI.Models;
+using BarNone.Shared.Core;
+using BarNone.Shared.DataConverters;
+using BarNone.Shared.DataTransfer;
+using BarNone.Shared.DomainModel;
 using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.IO;
 
 namespace BarNone.DataLift.UI.ViewModels.Common
@@ -13,13 +19,13 @@ namespace BarNone.DataLift.UI.ViewModels.Common
     {
         //If we need to get item modified ask me -Riley
         /// <summary>
-        /// Field representation for the <see cref="CurrentRecordedData"/> bindable property list
+        /// Field representation for the <see cref="CurrentRecordedBodyData"/> bindable property list
         /// </summary>
-        private ObservableCollection<LiftDTO> _currentRecordedData = new ObservableCollection<LiftDTO>();
+        private ObservableCollection<BodyDataFrame> _currentRecordedData = new ObservableCollection<BodyDataFrame>();
         /// <summary>
         /// Binding property for the currently recorded data. This data represents all recorded data from start recording to stop recorrding.
         /// </summary>
-        public ObservableCollection<LiftDTO> CurrentRecordedData
+        public ObservableCollection<BodyDataFrame> CurrentRecordedBodyData
         {
             get => _currentRecordedData;
             set
@@ -28,13 +34,50 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                 OnPropertyChanged(new PropertyChangedEventArgs("CurrentRecordedData"));
             }
         }
+
+        private ObservableCollection<ColorImageFrame> _currentRecordedColorData = new ObservableCollection<ColorImageFrame>();
+        public ObservableCollection<ColorImageFrame> CurrentRecordedColorData
+        {
+            get => _currentRecordedColorData;
+            set
+            {
+                _currentRecordedColorData = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentRecordedColorData"));
+            }
+        }
+
+        private bool isNormalized = false;
+        /// <summary>
+        /// Data may only be normalized once currently!
+        /// </summary>
+        public void NormalizeTimes()
+        {
+            if (isNormalized || CurrentRecordedColorData == null || CurrentRecordedBodyData == null)
+                return;
+            if(CurrentRecordedColorData.Count > 0 && CurrentRecordedBodyData.Count > 0)
+            {
+                TimeSpan bodyCandidate = CurrentRecordedBodyData[0].TimeOfFrame, colorCandidate = CurrentRecordedColorData[0].Time;
+
+                TimeSpan candidate = (colorCandidate < bodyCandidate) ? colorCandidate : bodyCandidate;
+                
+                CurrentRecordedBodyData.ToList().ForEach(x => x.TimeOfFrame = x.TimeOfFrame.Subtract(candidate));
+                CurrentRecordedColorData.ToList().ForEach(x => x.Time = x.Time.Subtract(candidate));
+            }
+            else
+            {
+                throw new ArgumentException("Data recorded cannot be normailized, missing content!");
+            }
+        }
+
 #if DEBUG
         /// <summary>
         /// Constructor for CurrentLiftDataVM which initializes test data into the system for UI validation
         /// </summary>
         public CurrentLiftDataVM()
         {
-            //CurrentRecordedData.Add(JsonConvert.DeserializeObject<LiftDTO>(File.ReadAllText(@"C:\Users\Aamir\Documents\McMaster\Year_4\Capstone\barnone\BarNone\DataLift\BarNone.DataLift.Application\bin\Debug\SQUAT_2018_01_13.json")));
+            //var lift = Converters.NewConvertion(new DebugContext()).Lift.CreateDataModel(JsonConvert.DeserializeObject<LiftDTO>(File.ReadAllText(Path.GetFullPath(@"./res/Squat_Debug.json"))));
+            //lift.BodyData.BodyDataFrames.ForEach(f => f.Joints.ForEach(j => { j.JointType = new JointType((EJointType)j.JointTypeID); j.JointTrackingStateType = new JointTrackingStateType((EJointTrackingStateType)j.JointTrackingStateTypeID); }));
+            //lift.BodyData.BodyDataFrames.ForEach(f => CurrentRecordedData.Add(f));
         }
     }
 #endif
@@ -64,5 +107,15 @@ namespace BarNone.DataLift.UI.ViewModels.Common
 
     }
     #endregion
+
+#if DEBUG
+    /// <summary>
+    /// Used to force debug code to have rack provided feilds
+    /// </summary>
+    public class DebugContext : IDomainContext
+    {
+        public int UserID { get => 0; set { return; } }
+    }
+#endif
 
 }

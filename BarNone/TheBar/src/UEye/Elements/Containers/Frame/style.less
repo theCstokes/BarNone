@@ -90,24 +90,25 @@
         }
     }
 
-    > .Global-Dock {
-        position: absolute;
-        top: 0;
-        left: @NormalNavBarWidth;
-        right: 0;
-        height: 40px;   
+    // > .Global-Dock {
+    //     position: absolute;
+    //     top: 0;
+    //     left: @NormalNavBarWidth;
+    //     right: 0;
+    //     height: 40px;   
 
-        @media screen and (max-width: @ResizeThreshold) {
-            left: @SmallNavBarWidth;
-        }
-    }
+    //     @media screen and (max-width: @ResizeThreshold) {
+    //         left: @SmallNavBarWidth;
+    //     }
+    // }
 
     > .Context-Dock {
         position: absolute;
-        top: 40px;
+        top: 0px;
         left: @NormalNavBarWidth;
         right: 0;
         height: 40px;
+        // background-color: @DefaultAccent;
 
         @media screen and (max-width: @ResizeThreshold) {
             left: @SmallNavBarWidth;
@@ -116,7 +117,7 @@
 
     > .Content {
         position: absolute;
-        top: @SmallNavBarWidth;
+        top: 40px;
         bottom: 0;
         right: 0;
         left: @NormalNavBarWidth;

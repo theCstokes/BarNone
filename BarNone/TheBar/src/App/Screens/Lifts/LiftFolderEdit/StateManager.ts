@@ -1,17 +1,15 @@
 import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 import StateBind from "UEye/StateManager/StateBind";
 import DataManager from "App/Data/DataManager";
-import Lift from "App/Data/Models/Lift/Lift";
+import LiftFolder from "App/Data/Models/LiftFolder/LiftFolder";
 
 export class State {
 	public id: number;
 	public name: string = "";
 	public age: number;
-	public lift: Lift;
+	public folder: LiftFolder;
 }
-/**
- *  Represents State for Lift Edit Screen.
- */
+
 export class StateManager extends BaseStateManager<State> {
 	public constructor() {
 		super(State);
@@ -25,9 +23,9 @@ export class StateManager extends BaseStateManager<State> {
 		}>(this, async (state, data) => {
 			var nextState = state.empty();
 
-			var lift = await DataManager.Lifts.single(data.id, { includeDetails: true });
-			console.log(lift);
-			nextState.current.lift = lift;
+			var folder = await DataManager.LiftFolders.single(data.id, { includeDetails: true });
+			console.log(folder);
+			nextState.current.folder = folder;
 
 			nextState.current.id = data.id;
 			nextState.current.name = data.name;

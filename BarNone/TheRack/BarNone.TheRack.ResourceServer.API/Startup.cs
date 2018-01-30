@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Newtonsoft.Json;
 using System.Web;
+using BarNone.TheRack.ResourceServer.API.Response;
 
 namespace BarNone.TheRack.ResourceServer.API
 {
@@ -53,6 +54,7 @@ namespace BarNone.TheRack.ResourceServer.API
             })
             .AddJsonOptions(options =>
             {
+                options.SerializerSettings.ContractResolver = new JsonPropertiesResolver();
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 //options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
             });

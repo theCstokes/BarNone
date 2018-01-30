@@ -18,17 +18,17 @@ export default class ChangePasswordView extends EditView {
 				content: [
 					{
 						id: "currentPassword",
-						instance: ControlTypes.Input,
+						instance: ControlTypes.PasswordInput,
 						hint: "Current Password"
 					},
 					{
 						id: "newPassword",
-						instance: ControlTypes.Input,
+						instance: ControlTypes.PasswordInput,
 						hint: "New Password"
 					},
 					{
 						id: "retypePassword",
-						instance: ControlTypes.Input,
+						instance: ControlTypes.PasswordInput,
 						hint: "Retype New Password"
 					}
 				]

@@ -1,5 +1,5 @@
 export interface IListItem {
-    id: any;    
+    id: any | string;
 }
 
 export type OnChangeCallback = (data: any) => void;

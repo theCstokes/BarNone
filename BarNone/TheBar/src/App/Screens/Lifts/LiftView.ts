@@ -1,17 +1,12 @@
 import { View } from "UEye/View/View";
 import ControlTypes from "UEye/ControlTypes";
 import List from "UEye/Elements/Components/List/List";
-/**
- *  Represents View for Lifts Screen .
- */
+import Panel from "UEye/Elements/Containers/Panel/Panel";
+
 export default class LiftView extends View {
-		/**
- * Represents lift list 
- * */
 	public userList: List;
-	/**
- * Acessor gets content layout of Lifts Screen 
- * */
+	public mainPanel: Panel;
+	
 	public get content(): any[] {
 		return [
 			{
@@ -25,7 +20,7 @@ export default class LiftView extends View {
 							{
 								instance: ControlTypes.List,
 								id: "userList",
-								style: ControlTypes.ContactListItem
+								style: ControlTypes.LiftFolderListItem
 								// items: [
 								// 	{
 								// 		name: "Christopher Stokes",

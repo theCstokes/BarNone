@@ -1,6 +1,7 @@
 import ComponentConfig from "UEye/Elements/Core/ComponentConfig";
+import { BaseView } from "UEye/Elements/Core/BaseView";
 
-export abstract class View {
+export abstract class View extends BaseView {
     
     /**
      * View configuration.

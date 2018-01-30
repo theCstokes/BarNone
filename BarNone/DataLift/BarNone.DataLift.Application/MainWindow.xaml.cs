@@ -19,7 +19,7 @@ namespace BarNone.DataLift.UI
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INavigatable
     {
         /// <summary>
         /// Instantiates a new Data Lift window
@@ -29,14 +29,12 @@ namespace BarNone.DataLift.UI
             InitializeComponent();
             //Remove junk page management
             PageManager.Window = this;
-            PageManager.SwitchPage(UIPages.ControlHolderView);
+            PageManager.SwitchPage(UIPages.LoginView);
+
+            UserControlManager.SwitchPage(UIPages.DataRecorderView);
         }
 
-        /// <summary>
-        /// Page navigation within the main window
-        /// </summary>
-        /// <param name="nextPage">Page to switch to/param>
-        internal void Navigate(UIPages nextPage)
+        public void Navigate(UIPages nextPage)
         {
             Content = nextPage.Page;
         }
