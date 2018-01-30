@@ -65,7 +65,9 @@ export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView,
 		this.view.nameInput.onChange = (data) => {
 			this.stateManager.NameChange.trigger(data);
 		};
-
+		this.view.tab.onClick= () =>{
+		
+		}
 		// this.view.player.play();
 	}
 

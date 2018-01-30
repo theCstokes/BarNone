@@ -6,6 +6,7 @@ import ComponentConfig from "UEye/Elements/Core/ComponentConfig";
 import Core from "UEye/Elements/Core/Core";
 import { BaseView } from "UEye/Elements/Core/BaseView";
 import InflaterData from "UEye/Elements/Inflater/InflaterData";
+import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
 
 class TabConfig implements IListItem {
     public id: number | string;
@@ -27,6 +28,7 @@ export default class TabLayout extends BaseContainer {
 
     private _tabElements: TabConfig[];
     private _tabContainers: BaseContainer[];
+    private _onClickCallback: OnClickCallback;
     
 
     public constructor(parent: HTMLElement) {
@@ -35,6 +37,7 @@ export default class TabLayout extends BaseContainer {
         this._tabButtonList = Core.create("ul", this.element, "Tab-Button-List");
         this._contentElement = Core.create("div", this.element, "Content");
 
+     
         this.onShow.on(view => this._view = view);
     }
 
@@ -53,6 +56,7 @@ export default class TabLayout extends BaseContainer {
         this._tabContainers = this._tabElements.map((tabManager, index) => {
             
             var button = Core.create("li", this._tabButtonList, "Tab-Button");
+            button.onclick = this.onClickHandler.bind(button);
             button.textContent = tabManager.title;
             if(index==0){
                 tabManager.selected=true;
@@ -67,8 +71,19 @@ export default class TabLayout extends BaseContainer {
             return ueyeTab;
         });
         this._view.setElements(data.componentMap);
+        console.log("Tab Container", this._tabContainers);
     }
    
-
+    private onClickHandler(): void {
+		if (this._onClickCallback !== undefined) {
+			this._onClickCallback();
+		}
+	}
     
+    public get onClick(): OnClickCallback {
+        return this._onClickCallback;
+    }
+    public set onClick(value: OnClickCallback) {
+		this._onClickCallback = value;
+	}
 }
