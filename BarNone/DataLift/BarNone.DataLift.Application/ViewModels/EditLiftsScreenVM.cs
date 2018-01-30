@@ -107,6 +107,8 @@ namespace BarNone.DataLift.UI.ViewModels
         #region Loaded and Closed
         internal override void Loaded()
         {
+            // TODO.  Send raw data to jon then have him send us a list of stuff back.
+
             CurrentLifts.LiftInformation.Add(new LiftListVM
             {
                 LiftStartTime = 0,
@@ -552,13 +554,13 @@ namespace BarNone.DataLift.UI.ViewModels
 
             };
 
-            CurrentLifts.LiftInformation.Add(new LiftListVM
-            {
-                LiftStartTime = 0,
-                LiftEndTime = 0,
-                LiftName = String.Format($"Temp_name_{CurrentLifts.LiftInformation.Count()}"),
-                LiftType = "Squat"
-            });
+            //CurrentLifts.LiftInformation.Add(new LiftListVM
+            //{
+            //    LiftStartTime = 0,
+            //    LiftEndTime = 0,
+            //    LiftName = String.Format($"Temp_name_{CurrentLifts.LiftInformation.Count()}"),
+            //    LiftType = "Squat"
+            //});
 
             VideoTimer.Tick += Redraw;
         }

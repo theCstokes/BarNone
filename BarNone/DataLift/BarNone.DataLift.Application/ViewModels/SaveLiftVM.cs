@@ -53,7 +53,7 @@ namespace BarNone.DataLift.UI.ViewModels
                     new Lift()
                     {
                         BodyData = new BodyData() { BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData.ToList(), RecordDate = DateTime.Now },
-                        Name = "LiftName_Temp"
+                        Name = CurrentLiftData.LiftInformation[0].LiftName // TODO.  Not make this a hardcoded 0.
                     }
                 );
             var toSend = JsonConvert.SerializeObject(liftDTO, Formatting.Indented,
