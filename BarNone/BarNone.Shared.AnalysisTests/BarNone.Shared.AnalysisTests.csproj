@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\BarNone.Shared.Analysis\BarNone.Shared.Analysis.csproj" />
+    <ProjectReference Include="..\Shared\BarNone.Shared.DataConverter\BarNone.Shared.DataConverter.csproj" />
+    <ProjectReference Include="..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj" />
+    <ProjectReference Include="..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj" />
+  </ItemGroup>
+
+</Project>
