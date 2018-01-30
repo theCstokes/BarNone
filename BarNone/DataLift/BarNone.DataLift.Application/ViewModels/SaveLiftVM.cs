@@ -1,6 +1,8 @@
-﻿using BarNone.DataLift.UI.Commands;
+﻿using BarNone.DataLift.APIRequest;
+using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DataConverters;
+using BarNone.Shared.DataTransfer.Flex;
 using BarNone.Shared.DomainModel;
 using Newtonsoft.Json;
 using System;
@@ -43,7 +45,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Private function that handles sending lifts to The Rack
         /// </summary>
-        private void SendLiftCommand()
+        private async void SendLiftCommand()
         {
             var liftDTO = Converters.NewConvertion()
                 .Lift
@@ -60,6 +62,19 @@ namespace BarNone.DataLift.UI.ViewModels
                     ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 }
             );
+
+            var temp = await DataManager.Flex.Post(new FlexDTO
+            {
+                Entities = new List<FlexEntityDTO>
+                {
+                    new FlexEntityDTO
+                    {
+                        Resource = "LIFT",
+                        Entity = liftDTO
+                    }
+                }
+            });
+
             string fname = string.Format("{0}.json", liftDTO.Name);
             if (File.Exists(fname))
                 File.Delete(fname);

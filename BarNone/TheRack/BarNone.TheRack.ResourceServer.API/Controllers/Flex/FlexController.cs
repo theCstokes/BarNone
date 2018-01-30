@@ -5,6 +5,7 @@ using BarNone.TheRack.FlexEngine;
 using BarNone.TheRack.Repository;
 using BarNone.TheRack.Repository.Core;
 using BarNone.TheRack.ResourceServer.API.Controllers.Core;
+using BarNone.TheRack.ResourceServer.API.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -78,8 +79,11 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
                 byte[] data = ms.ToArray();
                 var jsonString = Encoding.ASCII.GetString(data);
                 //var dto = JsonConvert.DeserializeObject<LiftDTO>(jsonString);
-
-                var dto = JsonConvert.DeserializeObject<FlexDTO>(jsonString);
+                var settings = new JsonSerializerSettings
+                {
+                    ContractResolver = new JsonPropertiesResolver()
+                };
+                var dto = JsonConvert.DeserializeObject<FlexDTO>(jsonString,settings);
 
                 try
                 {
@@ -97,7 +101,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
                             var flex = repoMap[entity.Resource];
                             var repo = flex.Builder(context);
 
-                            var val = ((JObject)entity.Entity).ToObject(flex.Type);
+                            var val = ((JObject)entity.Entity).ToObject(flex.Type, JsonSerializer.Create(settings));
                             entityResult.Entity = repo.Create(val);
 
                             return entityResult;

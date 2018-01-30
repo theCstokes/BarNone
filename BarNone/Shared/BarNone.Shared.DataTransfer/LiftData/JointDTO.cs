@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.DataTransfer.Core;
+﻿using BarNone.Shared.Core;
+using BarNone.Shared.DataTransfer.Core;
 using BarNone.Shared.DataTransfer.LiftData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -18,6 +19,7 @@ namespace BarNone.Shared.DataTransfer
         /// The type of the joint.
         /// </value>
         [JsonProperty(Order = 0)]
+        [JsonIgnoreDeserialize]
         public JointTypeDTO JointType { get; set; }
 
         /// <summary>
@@ -27,6 +29,7 @@ namespace BarNone.Shared.DataTransfer
         /// The type of the joint tracking state.
         /// </value>
         [JsonProperty(Order = 1)]
+        [JsonIgnoreDeserialize]
         public JointTrackingStateTypeDTO JointTrackingStateType { get; set; }
 
         /// <summary>
