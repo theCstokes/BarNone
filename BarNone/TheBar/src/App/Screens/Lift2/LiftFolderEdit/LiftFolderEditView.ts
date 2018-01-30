@@ -6,11 +6,13 @@ import Video from "UEye/Elements/Components/Video/Video";
 // import Stream from "UEye/Elements/Components/Stream/Stream";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import List from "UEye/Elements/Components/List/List";
+import TabLayout from "UEye/Elements/Containers/TabLayout/TabLayout"
 
 export default class LiftFolderEditView extends EditView {
 	public editPanel: Panel;
 	public nameInput: Input;
 	public liftList: List;
+	public tab: TabLayout;
 
 	public get content(): any[] {
 		return [
@@ -30,7 +32,6 @@ export default class LiftFolderEditView extends EditView {
 						tabs: [
 							{
 								title: "Lifts",
-								selected: true,
 								content: [
 									{
 										id: "liftList",
