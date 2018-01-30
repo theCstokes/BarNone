@@ -116,6 +116,7 @@ export default class Video extends BaseComponent {
             this._context.fillStyle = 'yellow';
             this._context.fill();
             this._context.closePath();
+            this._context.scale(0.5, 0.5);
         };
 
         this._video.addEventListener('play', () => {
