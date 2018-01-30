@@ -11,6 +11,7 @@ import Video from "UEye/Elements/Components/Video/Video";
  *  Represents View for Login Screen .
  */
 export default class LoginView extends View {
+	
 	public frame: LoginFrame;
 	public container: ContentContainer;
 
