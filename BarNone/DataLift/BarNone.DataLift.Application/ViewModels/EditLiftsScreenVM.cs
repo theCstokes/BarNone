@@ -163,13 +163,25 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 _selectedLift = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("SelectedLift"));
-                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberCurrentPosition"));
-                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
-                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
-                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberMaxValue"));
-                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberMinValue"));
+
+                //OnPropertyChanged(new PropertyChangedEventArgs("ScrubberCurrentPosition"));
+                //OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
+                //OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
+
+                try
+                {
+                    ScrubberLowerDisplayed = TimeSpan.ParseExact(SelectedLift.LiftStartTime, @"m\:s\.fff", CultureInfo.InvariantCulture).TotalMilliseconds;
+                }
+                catch { ScrubberLowerDisplayed = 0d; }
+
+                try
+                {
+                    ScrubberUpperDisplayed = TimeSpan.ParseExact(SelectedLift.LiftEndTime, @"m\:s\.fff", CultureInfo.InvariantCulture).TotalMilliseconds;
+                }
+                catch { ScrubberUpperDisplayed = 0d; }
+
             }
-        }
+         }
 
         #endregion
 
@@ -352,6 +364,12 @@ namespace BarNone.DataLift.UI.ViewModels
                 var ianTheCaptainLater = CurrentLifts.CurrentRecordedColorData.Select(x => x.Time)
                     .Concat(CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame));
                 LoopTime = (int)(ianTheCaptainLater.Max(x => x.TotalMilliseconds) + 1/30d * 1000);
+
+                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberMaxValue"));
+                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberMinValue"));
+
+                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
+                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
             }
             else
             {
@@ -376,11 +394,15 @@ namespace BarNone.DataLift.UI.ViewModels
 
             if (drawBody)
             {
+                Console.WriteLine($"Time of body print {GlobalTimer.ElapsedMilliseconds}");
+
                 KinectToImage.DrawFrameFrontView(bodyFrameToDraw, _leftImageDrawingGroup, 424, 424);
                 KinectToImage.DrawFrameSideView(bodyFrameToDraw, _rightImageDrawingGroup, 424, 424);
             }
             if (drawColor)
             {
+                Console.WriteLine($"Time of color print {GlobalTimer.ElapsedMilliseconds}");
+
                 using (DrawingContext dc = _middleImageDrawingGroup.Open())
                 {
                     var currentColorImage = colorFrameToDraw.Image;
@@ -388,7 +410,7 @@ namespace BarNone.DataLift.UI.ViewModels
                     dc.DrawImage(currentColorImage, new System.Windows.Rect(0, 0, 1920, 1080));
                 }
 
-                Console.WriteLine("Redraw at: {0}", GlobalTimer.ElapsedMilliseconds);
+                //Console.WriteLine("Redraw at: {0}", GlobalTimer.ElapsedMilliseconds);
 
             }
 
@@ -405,6 +427,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 currentMs += VideoTimerInterval;
                 //increment timer value
                 ScrubberCurrentPosition += VideoTimerInterval;
+                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberCurrentPosition"));
             }
         }
 
@@ -421,23 +444,82 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        private double _scrubberUpperThumb;
         public double ScrubberUpperThumb
         {
             get
             {
-                try { return TimeSpan.ParseExact(SelectedLift.LiftEndTime, @"m\:s\.fff", CultureInfo.InvariantCulture).TotalMilliseconds; }
-                catch { return 0d; }
+                return _scrubberUpperThumb;
+            }
+            set
+            {
+                //Console.WriteLine($"This is the value of the lower thumb {value}");
+
+               //if(SelectedLift != null) SelectedLift.LiftEndTime = value.ToString();
+
+                _scrubberUpperThumb = value;
+                new PropertyChangedEventArgs("ScrubberUpperThumb");
+                new PropertyChangedEventArgs("ScrubberUpperDisplayed");
             }
         }
 
+        private double _scrubberLowerThumb;
         public double ScrubberLowerThumb
         {
             get
             {
-                try { return TimeSpan.ParseExact(SelectedLift.LiftStartTime, @"m\:s\.fff", CultureInfo.InvariantCulture).TotalMilliseconds; }
-                catch { return 0d; }
+                 return _scrubberLowerThumb;
+            }
+
+            set
+            {
+                //Console.WriteLine($"This is the value of the lower thumb {value}");
+
+                //if (SelectedLift != null) SelectedLift.LiftStartTime = value.ToString();
+
+                _scrubberLowerThumb = value;
+                _scrubberLowerDsiplayed = value;
+                new PropertyChangedEventArgs("ScrubberLowerThumb");
+                new PropertyChangedEventArgs("ScrubberLowerDisplayed");
             }
         }
+
+        private double _scrubberLowerDsiplayed;
+
+        public double ScrubberLowerDisplayed
+        {
+            get { return _scrubberLowerDsiplayed; }
+
+            set
+            {
+                //Console.WriteLine($"This is the display value of the lower thumb {value}");
+
+                _scrubberLowerThumb = value;
+                _scrubberLowerDsiplayed = value;
+
+                new PropertyChangedEventArgs("ScrubberLowerThumb");
+                new PropertyChangedEventArgs("ScrubberLowerDisplayed");
+            }
+        }
+
+        private double _scrubberUpperDisplayed;
+        public double ScrubberUpperDisplayed
+        {
+            get { return _scrubberUpperDisplayed;  }
+
+            set
+            {
+                //Console.WriteLine($"This is the value of the upper thumb {value}");
+
+                _scrubberUpperThumb = value;
+                _scrubberUpperDisplayed = value;
+
+                new PropertyChangedEventArgs("ScrubberUpperThumb");
+                new PropertyChangedEventArgs("ScrubberUpperDisplayed");
+            }
+        }
+
+
 
         public double ScrubberMaxValue
         {

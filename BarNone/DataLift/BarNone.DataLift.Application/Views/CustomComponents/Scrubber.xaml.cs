@@ -26,12 +26,12 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
 
         private void LowerSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            UpperSlider.Value = Math.Max(UpperSlider.Value, LowerSlider.Value);
+            //UpperSlider.Value = Math.Max(UpperSlider.Value, LowerSlider.Value);
         }
 
         private void UpperSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            LowerSlider.Value = Math.Min(UpperSlider.Value, LowerSlider.Value);
+            //LowerSlider.Value = Math.Min(UpperSlider.Value, LowerSlider.Value);
         }
 
         public double Minimum
@@ -50,7 +50,8 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
         }
 
         public static readonly DependencyProperty LowerValueProperty =
-            DependencyProperty.Register("LowerValue", typeof(double), typeof(Scrubber), new UIPropertyMetadata(0d));
+            DependencyProperty.Register("LowerValue", typeof(double), typeof(Scrubber), 
+                new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public double UpperValue
         {
@@ -59,7 +60,8 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
         }
 
         public static readonly DependencyProperty UpperValueProperty =
-            DependencyProperty.Register("UpperValue", typeof(double), typeof(Scrubber), new UIPropertyMetadata(1d));
+            DependencyProperty.Register("UpperValue", typeof(double), typeof(Scrubber), 
+                new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public double CurrentValue
         {

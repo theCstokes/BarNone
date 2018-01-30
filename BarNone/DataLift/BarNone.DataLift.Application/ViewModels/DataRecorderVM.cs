@@ -22,6 +22,8 @@ namespace BarNone.DataLift.UI.ViewModels
 {
     public class DataRecorderVM : ViewModelBase
     {
+        Stopwatch GlobalTimer;
+
         #region Bound Properties
         /// <summary>
         /// Vm holding all information shared between video data dependent viewmodels
@@ -151,6 +153,9 @@ namespace BarNone.DataLift.UI.ViewModels
             IsRecording = false;
             isCurrentlyRecording = false;
 
+            GlobalTimer = new Stopwatch();
+            GlobalTimer.Start();
+
             CurrentLiftData.CurrentRecordedBodyData.Clear();
         }
 
@@ -158,6 +163,8 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             IsRecording = false;
             isCurrentlyRecording = false;
+
+            GlobalTimer.Stop();
 
         }
 
@@ -254,6 +261,9 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             if (frame != null)
             {
+                Console.WriteLine($"Time of color print {GlobalTimer.ElapsedMilliseconds}");
+
+
                 FrameDescription colorFrameDescription = frame.FrameDescription;
 
                 using (KinectBuffer colorBuffer = frame.LockRawImageBuffer())
@@ -443,6 +453,9 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         public DataRecorderVM()
         {
+            GlobalTimer = new Stopwatch();
+            GlobalTimer.Start();
+
             //Task.Run(() => SetUser());
 
             // one sensor is currently supported

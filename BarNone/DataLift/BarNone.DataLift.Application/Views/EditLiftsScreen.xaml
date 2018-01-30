@@ -56,6 +56,7 @@
             <StackPanel VerticalAlignment="Top">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                         <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                         <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
@@ -63,41 +64,36 @@
                         <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                         <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                         <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <cmpnts:VideoViewer  Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="0" ImageSourceLeft="{Binding LeftImage}" ImageSourceMiddle="{Binding MiddleImage}" ImageSourceRight="{Binding RightImage}"/>
-                    <cmpnts:Scrubber Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="10, 10, 10, 0" Minimum="{Binding ScrubberMinValue}" LowerValue="{Binding ScrubberLowerThumb}" CurrentValue="{Binding ScrubberCurrentPosition}" UpperValue="{Binding ScrubberUpperThumb}" Maximum="{Binding ScrubberMaxValue}"/>
+                    <cmpnts:VideoViewer  Grid.Column="2" Grid.ColumnSpan="5" Grid.Row="0" ImageSourceLeft="{Binding LeftImage}" ImageSourceMiddle="{Binding MiddleImage}" ImageSourceRight="{Binding RightImage}"/>
+                    <cmpnts:Scrubber Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="5" Margin="10, 10, 10, 0" Minimum="{Binding ScrubberMinValue}" LowerValue="{Binding ScrubberLowerThumb}" CurrentValue="{Binding ScrubberCurrentPosition}" UpperValue="{Binding ScrubberUpperThumb}" Maximum="{Binding ScrubberMaxValue}"/>
                 </Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="2" Grid.ColumnSpan="5">
+                    <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 0 10 0"
+                         materialDesign:HintAssist.Hint="Start Time" Text="{Binding Path=ScrubberLowerDisplayed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    </TextBox>
+                    <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="10 0 0 0"
+                         materialDesign:HintAssist.Hint="End Time" Text="{Binding ScrubberUpperThumb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <!--<TextBox.Text >
+                            <Binding Path="{Binding ScrubberUpperThumb}" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"> Text="{Binding Path=ScrubberUpperDisplayed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                --><!--<Binding.ValidationRules>
+                                    <validation:TimeInputRule />
+                                </Binding.ValidationRules>--><!--
+                            </Binding>
+                        </TextBox.Text>-->
+                    </TextBox>
+                </StackPanel>
                 <cmpnts:VideoControlsBar CommandPlay="{Binding CommandPlayVideo}" 
                                  CommandPause="{Binding CommandPauseVideo}" 
                                  CommandResetInterval="{Binding CommandResetVideo}" 
                                  CommandSlowMo="{Binding CommandSlowMotionVideo}" 
                                  CommandFastForward="{Binding CommandFastForwardVideo}"/>
-                <StackPanel Orientation="Horizontal" Margin="0 20 0 0" HorizontalAlignment="Center">
-                    <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 0 10 0"
-                         materialDesign:HintAssist.Hint="Start Time">
-                        <TextBox.Text >
-                            <Binding  Path="SelectedLift.LiftStartTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <validation:TimeInputRule />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                    <TextBox Width="250" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="10 0 0 0"
-                         materialDesign:HintAssist.Hint="End Time">
-                        <TextBox.Text >
-                            <Binding Path="SelectedLift.LiftEndTime" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <validation:TimeInputRule />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                        </TextBox>
-                </StackPanel>
+                
             </StackPanel>
         </materialDesign:Card>
     </DockPanel>
