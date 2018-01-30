@@ -19,22 +19,27 @@ class TabConfig implements IListItem {
    
 }
 
+class TabButtonContentBind {
+    public button: HTMLElement;
+    public content: Tab;
+}
+
 export default class TabLayout extends BaseContainer {
 
     private _view: BaseView;
 
     private _contentElement: HTMLElement;
-    private _tabButtonList: HTMLElement;
-
+    private _tabList: HTMLElement;
     private _tabElements: TabConfig[];
-    private _tabContainers: BaseContainer[];
+    private _tabContainers: TabButtonContentBind[];
     private _onClickCallback: OnClickCallback;
     
 
     public constructor(parent: HTMLElement) {
         super(parent, "UEye-Tab-Layout");
 
-        this._tabButtonList = Core.create("ul", this.element, "Tab-Button-List");
+        this._tabList = Core.create("ul", this.element, "Tab-Button-List");
+        
         this._contentElement = Core.create("div", this.element, "Content");
 
      
@@ -48,15 +53,13 @@ export default class TabLayout extends BaseContainer {
     public get tabs(): TabConfig[] {
         return this._tabElements;
     }
-
+    
     private _renderTabs(): void {
         if (this._tabElements === undefined) return;
-
+      
         var data = new InflaterData();
         this._tabContainers = this._tabElements.map((tabManager, index) => {
-            
-            var button = Core.create("li", this._tabButtonList, "Tab-Button");
-            button.onclick = this.onClickHandler.bind(button);
+            var button = Core.create("li", this._tabList, "Tab-Button") ;
             button.textContent = tabManager.title;
             if(index==0){
                 tabManager.selected=true;
@@ -68,16 +71,32 @@ export default class TabLayout extends BaseContainer {
             }
             var ueyeTab = ControlTypes.Tab.create(this._contentElement, tabManager as any, this._view, data) as Tab;
             ueyeTab.selected = tabManager.selected;
-            return ueyeTab;
+            button.onclick = this.onClickHandler.bind(this);
+            var newTab= new TabButtonContentBind();
+            newTab.button=button;
+            newTab.content=ueyeTab;
+            return newTab;
+        
         });
         this._view.setElements(data.componentMap);
         console.log("Tab Container", this._tabContainers);
+     ;
     }
    
-    private onClickHandler(): void {
-		if (this._onClickCallback !== undefined) {
-			this._onClickCallback();
-		}
+    private onClickHandler(e: Event): void {
+        this._tabContainers.forEach(tc => {
+            if(tc.button === e.target){
+                tc.content.selected = true;
+                Core.replaceClass(tc.button,"Tab-Button", "Tab-Button Selected");
+            }
+            else{
+                Core.replaceClass(tc.button,"Tab-Button Selected", "Tab-Button");
+                tc.content.selected=false;
+            }
+        });
+		// if (this._onClickCallback !== undefined) {
+		// 	this._onClickCallback();
+		// }
 	}
     
     public get onClick(): OnClickCallback {
