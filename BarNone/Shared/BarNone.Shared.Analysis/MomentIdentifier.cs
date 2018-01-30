@@ -21,6 +21,8 @@ namespace BarNone.Shared.Analysis
             string json = System.Text.Encoding.UTF8.GetString(jsonBytes);
             LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
             Lift lift = Converters.NewConvertion().Lift.CreateDataModel(liftDTO);
+            lift.BodyData.BodyDataFrames = lift.BodyData.BodyDataFrames.Skip(10).SkipLast(3).ToList();
+
 
             templateLifts = new Dictionary<string, BodyData>
             {
@@ -39,7 +41,7 @@ namespace BarNone.Shared.Analysis
         /// </summary>
         private BodyData inputBodyData;
 
-        private List<JointTimeSeries> inputTimeSeriesSet;
+        public List<JointTimeSeries> inputTimeSeriesSet;
 
         public MomentIdentifier(BodyData bodyData)
         {
@@ -59,7 +61,7 @@ namespace BarNone.Shared.Analysis
             tlsHeight = tlsHeight.Select(x => x / d2f_t).ToArray();
 
             Dtw dtw = new Dtw(lsHeight, tlsHeight);
-            int warpedIndex = dtw.GetPath().Select(x => x.Item2).ToList().IndexOf(30);
+            int warpedIndex = dtw.GetPath().Select(x => x.Item2).ToList().IndexOf(20);
             int unwarpedSampleIndex = dtw.GetPath()[warpedIndex].Item1;
             var path = dtw.GetPath();
             return unwarpedSampleIndex;

@@ -29,15 +29,15 @@ namespace BarNone.Shared.AnalysisTests
         [TestMethod]
         public void FullTest()
         {
-            byte[] jsonBytes = Analysis.Properties.Resources.Chris_Three_Squats_1;
+            byte[] jsonBytes = Analysis.Properties.Resources.Aamir_Single_Squat_1;
             string json = System.Text.Encoding.UTF8.GetString(jsonBytes);
             //string json = File.ReadAllText(@"\Users\jon\developer\barnone\analysis\lifts\Chris_Three_Squats_1.json");
             LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
             Lift lift = Converters.NewConvertion().Lift.CreateDataModel(liftDTO);
 
-            SessionSplitter ss = new SessionSplitter(lift.BodyData);
-
-            ss.SplitSquats();
+            MomentIdentifier mi = new MomentIdentifier(lift.BodyData);
+            int frame = mi.FindBottomOfSquat();
+            var d = Utils.GetSquatAnalyticsBottom(mi.inputTimeSeriesSet, frame);
 
         }
 

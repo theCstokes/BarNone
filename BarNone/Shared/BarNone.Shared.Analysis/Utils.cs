@@ -76,6 +76,29 @@ namespace BarNone.Shared.Analysis
             return d.ToArray();
         }
 
+        public static Dictionary<string, double> GetSquatAnalyticsBottom(List<JointTimeSeries> timeSeries, int frame)
+        {
+            double hipKneeAngle = HipKneeAngle(timeSeries[16].Y[frame],
+                timeSeries[16].Z[frame], timeSeries[17].Y[frame], timeSeries[17].Z[frame]);
+
+            double stanceWidth = timeSeries[19].X[frame] - timeSeries[15].X[frame];
+            double shoulderWidth = timeSeries[8].X[frame] - timeSeries[4].X[frame];
+            double relativeStanceWidth = stanceWidth / shoulderWidth;
+
+            Dictionary<string,double> r = new Dictionary<string, double> { };
+            r.Add("HipKneeAngle", hipKneeAngle);
+            r.Add("RelativeStanceWidth", relativeStanceWidth);
+
+            return r;
+        }
+
+        private static double HipKneeAngle(double hh, double hd, double kh, double kd)
+        {
+            var deltaD = hd - kd;
+            var deltaH = hh - kh;
+            return Math.Atan(deltaH / deltaD)*180/Math.PI;
+        }
+
         
     }
 }
