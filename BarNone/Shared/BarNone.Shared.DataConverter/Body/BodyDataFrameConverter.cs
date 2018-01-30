@@ -39,7 +39,7 @@ namespace BarNone.Shared.DataConverters
                 ID = dto.ID,
                 TimeOfFrame = dto.TimeOfFrame,
                 BodyDataID = dto.BodyDataID,
-                UserID = context.UserID
+                UserID = context != null ? context.UserID : 0
             };
         }
 

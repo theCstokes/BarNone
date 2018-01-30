@@ -37,7 +37,7 @@ namespace BarNone.Shared.DataConverters
                 Name = dto.Name,
                 ParentID = dto.ParentID,
                 BodyDataID = dto.BodyDataID,
-                UserID = context.UserID
+                UserID = context != null ? context.UserID : 0 
             };
         }
 

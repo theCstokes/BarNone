@@ -1,0 +1,188 @@
+\hypertarget{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter}{}\section{Bar\+None.\+Shared.\+Data\+Converter.\+Core.\+Base\+Converter$<$ T\+Converters $>$ Class Template Reference}
+\label{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter}\index{Bar\+None.\+Shared.\+Data\+Converter.\+Core.\+Base\+Converter$<$ T\+Converters $>$@{Bar\+None.\+Shared.\+Data\+Converter.\+Core.\+Base\+Converter$<$ T\+Converters $>$}}
+
+
+Base Converter  
+
+
+Inheritance diagram for Bar\+None.\+Shared.\+Data\+Converter.\+Core.\+Base\+Converter$<$ T\+Converters $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a93868363b26ecdb92ab3f14cb7aceb88}{Base\+Converter}} ()
+\begin{DoxyCompactList}\small\item\em Initializes a new instance of the \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a93868363b26ecdb92ab3f14cb7aceb88}{Base\+Converter$<$\+T\+Converters$>$}} class. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a4961089607a438fe36e3936e5fa14db0}\label{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a4961089607a438fe36e3936e5fa14db0}} 
+\mbox{\hyperlink{interface_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_i_data_converter}{I\+Data\+Converter}} {\bfseries Get\+Converter\+From\+Data} (Type type)
+\item 
+\mbox{\Hypertarget{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a6a64c97e2e3dce42826731aa3ae1da96}\label{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a6a64c97e2e3dce42826731aa3ae1da96}} 
+\mbox{\hyperlink{interface_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_i_data_converter}{I\+Data\+Converter}} {\bfseries Get\+Converter\+From\+D\+TO} (Type type)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static T\+Converters \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_acaee80d822a2beafe77941615a0bbf78}{New\+Convertion}} (\mbox{\hyperlink{interface_bar_none_1_1_shared_1_1_core_1_1_i_domain_context}{I\+Domain\+Context}} context=null)
+\begin{DoxyCompactList}\small\item\em Creates a new converter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+T\+Converter \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a18cccd9a951fe46931311fbfe8c2bc1c}{Register$<$ T\+Data, T\+D\+T\+O, T\+Converter $>$}} (T\+Converter converter)
+\begin{DoxyCompactList}\small\item\em Registers the specified converter. \end{DoxyCompactList}\item 
+abstract void \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a574f398eafa83f0fc3bd5f69ac344850}{Init}} (\mbox{\hyperlink{interface_bar_none_1_1_shared_1_1_core_1_1_i_domain_context}{I\+Domain\+Context}} context)
+\begin{DoxyCompactList}\small\item\em Initializes the specified context. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_share_data_converter_cache}{Share\+Data\+Converter\+Cache}} \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a272d16077d3d7753fab1649b57288f5e}{Cache}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, private set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets the cache of data converters. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Dictionary$<$ Type, \mbox{\hyperlink{interface_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_i_data_converter}{I\+Data\+Converter}} $>$ \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a93a6cac2afcb2b933670a222f8c0349d}{data\+Converter\+Map}}
+\begin{DoxyCompactList}\small\item\em The data converter map \end{DoxyCompactList}\item 
+Dictionary$<$ Type, \mbox{\hyperlink{interface_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_i_data_converter}{I\+Data\+Converter}} $>$ \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_af3bc02b8dae539fdfabf1d1e3b12c16c}{dto\+Converter\+Map}}
+\begin{DoxyCompactList}\small\item\em The dto converter map \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Base Converter 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Converters} & The type of the converters.\\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{interface_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_i_converter}{Bar\+None.\+Shared.\+Data\+Converter.\+Core.\+I\+Converter}}
+
+
+\end{DoxySeeAlso}
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Converters} : {\em \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter}{Base\+Converter}}$<$T\+Converters$>$}]\item[{\em T\+Converters} : {\em new()}]\end{description}
+\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a93868363b26ecdb92ab3f14cb7aceb88}\label{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a93868363b26ecdb92ab3f14cb7aceb88}} 
+\index{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}!Base\+Converter@{Base\+Converter}}
+\index{Base\+Converter@{Base\+Converter}!Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}}
+\subsubsection{\texorpdfstring{Base\+Converter()}{BaseConverter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter}{Bar\+None.\+Shared.\+Data\+Converter.\+Core.\+Base\+Converter}}$<$ T\+Converters $>$.\mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter}{Base\+Converter}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initializes a new instance of the \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a93868363b26ecdb92ab3f14cb7aceb88}{Base\+Converter$<$\+T\+Converters$>$}} class. 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a574f398eafa83f0fc3bd5f69ac344850}\label{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a574f398eafa83f0fc3bd5f69ac344850}} 
+\index{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}!Init@{Init}}
+\index{Init@{Init}!Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}}
+\subsubsection{\texorpdfstring{Init()}{Init()}}
+{\footnotesize\ttfamily abstract void \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter}{Bar\+None.\+Shared.\+Data\+Converter.\+Core.\+Base\+Converter}}$<$ T\+Converters $>$.Init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interface_bar_none_1_1_shared_1_1_core_1_1_i_domain_context}{I\+Domain\+Context}}}]{context }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
+
+
+
+Initializes the specified context. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em context} & The context.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_acaee80d822a2beafe77941615a0bbf78}\label{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_acaee80d822a2beafe77941615a0bbf78}} 
+\index{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}!New\+Convertion@{New\+Convertion}}
+\index{New\+Convertion@{New\+Convertion}!Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}}
+\subsubsection{\texorpdfstring{New\+Convertion()}{NewConvertion()}}
+{\footnotesize\ttfamily static T\+Converters \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter}{Bar\+None.\+Shared.\+Data\+Converter.\+Core.\+Base\+Converter}}$<$ T\+Converters $>$.New\+Convertion (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interface_bar_none_1_1_shared_1_1_core_1_1_i_domain_context}{I\+Domain\+Context}}}]{context = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Creates a new converter. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em context} & The context.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a18cccd9a951fe46931311fbfe8c2bc1c}\label{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a18cccd9a951fe46931311fbfe8c2bc1c}} 
+\index{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}!Register$<$ T\+Data, T\+D\+T\+O, T\+Converter $>$@{Register$<$ T\+Data, T\+D\+T\+O, T\+Converter $>$}}
+\index{Register$<$ T\+Data, T\+D\+T\+O, T\+Converter $>$@{Register$<$ T\+Data, T\+D\+T\+O, T\+Converter $>$}!Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}}
+\subsubsection{\texorpdfstring{Register$<$ T\+Data, T\+D\+T\+O, T\+Converter $>$()}{Register< TData, TDTO, TConverter >()}}
+{\footnotesize\ttfamily T\+Converter \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter}{Bar\+None.\+Shared.\+Data\+Converter.\+Core.\+Base\+Converter}}$<$ T\+Converters $>$.Register$<$ T\+Data, T\+D\+TO, T\+Converter $>$ (\begin{DoxyParamCaption}\item[{T\+Converter}]{converter }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Registers the specified converter. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Data} & The type of the data.\\
+\hline
+{\em T\+D\+TO} & The type of the dto.\\
+\hline
+{\em T\+Converter} & The type of the converter.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em converter} & The converter.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+T\+O\+DO -\/ Dont do this. Should just us properties to construct elements.... faster. \begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Data} : {\em I\+Trackable$<$T\+Data$>$}]\item[{\em T\+Data} : {\em new()}]\item[{\em T\+D\+TO} : {\em I\+Trackable\+D\+TO$<$T\+D\+TO$>$}]\item[{\em T\+D\+TO} : {\em new()}]\item[{\em T\+Converter} : {\em I\+Data\+Converter}]\end{description}
+\end{Desc}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a93a6cac2afcb2b933670a222f8c0349d}\label{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a93a6cac2afcb2b933670a222f8c0349d}} 
+\index{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}!data\+Converter\+Map@{data\+Converter\+Map}}
+\index{data\+Converter\+Map@{data\+Converter\+Map}!Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}}
+\subsubsection{\texorpdfstring{data\+Converter\+Map}{dataConverterMap}}
+{\footnotesize\ttfamily Dictionary$<$Type, \mbox{\hyperlink{interface_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_i_data_converter}{I\+Data\+Converter}}$>$ \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter}{Bar\+None.\+Shared.\+Data\+Converter.\+Core.\+Base\+Converter}}$<$ T\+Converters $>$.data\+Converter\+Map\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The data converter map 
+
+\mbox{\Hypertarget{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_af3bc02b8dae539fdfabf1d1e3b12c16c}\label{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_af3bc02b8dae539fdfabf1d1e3b12c16c}} 
+\index{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}!dto\+Converter\+Map@{dto\+Converter\+Map}}
+\index{dto\+Converter\+Map@{dto\+Converter\+Map}!Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}}
+\subsubsection{\texorpdfstring{dto\+Converter\+Map}{dtoConverterMap}}
+{\footnotesize\ttfamily Dictionary$<$Type, \mbox{\hyperlink{interface_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_i_data_converter}{I\+Data\+Converter}}$>$ \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter}{Bar\+None.\+Shared.\+Data\+Converter.\+Core.\+Base\+Converter}}$<$ T\+Converters $>$.dto\+Converter\+Map\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The dto converter map 
+
+
+
+\subsection{Property Documentation}
+\mbox{\Hypertarget{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a272d16077d3d7753fab1649b57288f5e}\label{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter_a272d16077d3d7753fab1649b57288f5e}} 
+\index{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}!Cache@{Cache}}
+\index{Cache@{Cache}!Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter@{Bar\+None\+::\+Shared\+::\+Data\+Converter\+::\+Core\+::\+Base\+Converter}}
+\subsubsection{\texorpdfstring{Cache}{Cache}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_share_data_converter_cache}{Share\+Data\+Converter\+Cache}} \mbox{\hyperlink{class_bar_none_1_1_shared_1_1_data_converter_1_1_core_1_1_base_converter}{Bar\+None.\+Shared.\+Data\+Converter.\+Core.\+Base\+Converter}}$<$ T\+Converters $>$.Cache\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [private set]}}
+
+
+
+Gets the cache of data converters. 
+
+The cache. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Bar\+None.\+Shared.\+Data\+Converter/\+Core/Converters.\+cs\end{DoxyCompactItemize}

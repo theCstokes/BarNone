@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{77D27D1C-4BFF-4CBC-8102-2B311548C1FE}"
 EndProject
@@ -48,6 +48,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.DataLift.DataConverters", "BarNone.DataLift.DataConverters\BarNone.DataLift.DataConverters.csproj", "{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.Shared.DomainModel", "Shared\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj", "{B985F9C5-9463-4574-9EB6-684F9C4A3C92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.Shared.Analysis", "Shared\BarNone.Shared.Analysis\BarNone.Shared.Analysis.csproj", "{3878439B-265E-48B9-A405-4966B220AB7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.Shared.AnalysisTests", "BarNone.Shared.AnalysisTests\BarNone.Shared.AnalysisTests.csproj", "{542145FC-2FAC-449E-BDFC-43C9810B6B0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -231,6 +235,30 @@ Global
 		{B985F9C5-9463-4574-9EB6-684F9C4A3C92}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B985F9C5-9463-4574-9EB6-684F9C4A3C92}.WorkingWithTheRack|Any CPU.ActiveCfg = Debug|Any CPU
 		{B985F9C5-9463-4574-9EB6-684F9C4A3C92}.WorkingWithTheRack|Any CPU.Build.0 = Debug|Any CPU
+		{3878439B-265E-48B9-A405-4966B220AB7E}.DataLift - Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3878439B-265E-48B9-A405-4966B220AB7E}.DataLift - Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3878439B-265E-48B9-A405-4966B220AB7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3878439B-265E-48B9-A405-4966B220AB7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3878439B-265E-48B9-A405-4966B220AB7E}.DebugRack|Any CPU.ActiveCfg = Debug|Any CPU
+		{3878439B-265E-48B9-A405-4966B220AB7E}.DebugRack|Any CPU.Build.0 = Debug|Any CPU
+		{3878439B-265E-48B9-A405-4966B220AB7E}.DL|Any CPU.ActiveCfg = Debug|Any CPU
+		{3878439B-265E-48B9-A405-4966B220AB7E}.DL|Any CPU.Build.0 = Debug|Any CPU
+		{3878439B-265E-48B9-A405-4966B220AB7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3878439B-265E-48B9-A405-4966B220AB7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3878439B-265E-48B9-A405-4966B220AB7E}.WorkingWithTheRack|Any CPU.ActiveCfg = Debug|Any CPU
+		{3878439B-265E-48B9-A405-4966B220AB7E}.WorkingWithTheRack|Any CPU.Build.0 = Debug|Any CPU
+		{542145FC-2FAC-449E-BDFC-43C9810B6B0D}.DataLift - Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{542145FC-2FAC-449E-BDFC-43C9810B6B0D}.DataLift - Debug|Any CPU.Build.0 = Debug|Any CPU
+		{542145FC-2FAC-449E-BDFC-43C9810B6B0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{542145FC-2FAC-449E-BDFC-43C9810B6B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{542145FC-2FAC-449E-BDFC-43C9810B6B0D}.DebugRack|Any CPU.ActiveCfg = Debug|Any CPU
+		{542145FC-2FAC-449E-BDFC-43C9810B6B0D}.DebugRack|Any CPU.Build.0 = Debug|Any CPU
+		{542145FC-2FAC-449E-BDFC-43C9810B6B0D}.DL|Any CPU.ActiveCfg = Debug|Any CPU
+		{542145FC-2FAC-449E-BDFC-43C9810B6B0D}.DL|Any CPU.Build.0 = Debug|Any CPU
+		{542145FC-2FAC-449E-BDFC-43C9810B6B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{542145FC-2FAC-449E-BDFC-43C9810B6B0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{542145FC-2FAC-449E-BDFC-43C9810B6B0D}.WorkingWithTheRack|Any CPU.ActiveCfg = Debug|Any CPU
+		{542145FC-2FAC-449E-BDFC-43C9810B6B0D}.WorkingWithTheRack|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -255,6 +283,8 @@ Global
 		{B4A5D9FC-911D-4C7E-830E-2BD61A9A6108} = {77D27D1C-4BFF-4CBC-8102-2B311548C1FE}
 		{C8AAC2C2-B0E1-4814-B15E-F2DB1F4C897F} = {6CDB2177-EAA1-4F16-88C1-37B1F97EC4B5}
 		{B985F9C5-9463-4574-9EB6-684F9C4A3C92} = {77D27D1C-4BFF-4CBC-8102-2B311548C1FE}
+		{3878439B-265E-48B9-A405-4966B220AB7E} = {77D27D1C-4BFF-4CBC-8102-2B311548C1FE}
+		{542145FC-2FAC-449E-BDFC-43C9810B6B0D} = {77D27D1C-4BFF-4CBC-8102-2B311548C1FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BBD0D095-9433-4102-B857-FD70440F37D3}
