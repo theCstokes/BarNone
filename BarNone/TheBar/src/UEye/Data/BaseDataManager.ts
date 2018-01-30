@@ -30,7 +30,7 @@ export abstract class BaseDataManager {
 	/**
 	 * Auth object.
 	 */
-	private static _auth: Auth;
+	private static _auth: Auth | undefined;
 
 	/**
 	 * Get token from auth API.
@@ -39,6 +39,12 @@ export abstract class BaseDataManager {
 	 */
 	public static async authorize(username: string, password: string): Promise<boolean> {
 		return BaseDataManager.authServerRequest(BaseDataManager.authorizationAddress, username, password);
+	}
+
+	public static async logout(): Promise<boolean> {
+		// return BaseDataManager.authServerRequest(BaseDataManager.authorizationAddress, username, password);
+		BaseDataManager._auth = undefined;
+		return await true;
 	}
 
 	/**

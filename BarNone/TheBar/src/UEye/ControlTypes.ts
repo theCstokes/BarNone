@@ -4,6 +4,7 @@ import ContainerType from "UEye/Elements/Inflater/ContainerInflater";
 import Button from "UEye/Elements/Components/Button/Button";
 import ContactListItem from "UEye/Elements/Components/ContactListItem/ContactListItem";
 import LiftFolderListItem from "UEye/Elements/Components/LiftFolderListItem/LiftFolderListItem";
+import DataListItem from "UEye/Elements/Components/DataListItem/DataListItem";
 import NavigationListItem from "UEye/Elements/Components/NavigationListItem/NavigationListItem";
 import Input from "UEye/Elements/Components/Input/Input";
 import PasswordInput from "UEye/Elements/Components/PasswordInput/PasswordInput";
@@ -35,6 +36,8 @@ export default class ControlTypes {
 	public static readonly ContactListItem = new ComponentType(p => new ContactListItem(p));
 	/**Lift Folder List Item Component Type */
 	public static readonly LiftFolderListItem = new ComponentType(p => new LiftFolderListItem(p));
+	/**Lift Folder List Item Component Type */
+	public static readonly DataListItem = new ComponentType(p => new DataListItem(p));
 	/**Navigation List Item Component Type */
 	public static readonly NavigationListItem = new ComponentType(p => new NavigationListItem(p));
 	/**Input Component Type */

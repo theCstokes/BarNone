@@ -3,16 +3,14 @@ import { EditView } from "UEye/View/EditView";
 import Input from "UEye/Elements/Components/Input/Input";
 import Panel from "UEye/Elements/Containers/Panel/Panel";
 import Video from "UEye/Elements/Components/Video/Video";
-// import Stream from "UEye/Elements/Components/Stream/Stream";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
-import List from "UEye/Elements/Components/List/List";
-import TabLayout from "UEye/Elements/Containers/TabLayout/TabLayout"
 
-export default class LiftFolderEditView extends EditView {
-	public editPanel: Panel;
+export default class LiftEditView extends EditView {
 	public nameInput: Input;
-	public liftList: List;
-	public tab: TabLayout;
+	public ageInput: Input;
+	public editPanel: Panel;
+	// public liftPlayer: Video;
+	public player: Video;
 
 	public get content(): any[] {
 		return [
@@ -26,21 +24,20 @@ export default class LiftFolderEditView extends EditView {
 						instance: ControlTypes.Input,
 						hint: "Name"
 					},
+					// {
+					// 	id: "liftPlayer",
+					// 	instance: ControlTypes.Video
+					// },
 					{
-						id: "tab",
-						instance: ControlTypes.TabLayout,
-						tabs: [
-							{
-								title: "Lifts",
-								content: [
-									{
-										id: "liftList",
-										instance: ControlTypes.List,
-										style: ControlTypes.LiftFolderListItem
-									}
-								]
-							}
-						]
+						id: "player",
+						instance: ControlTypes.Video
+					},
+					{
+						id: "ageInput",
+						instance: ControlTypes.Input,
+						readonly: true,
+						hint: "Age",
+						text: 21
 					}
 				]
 			}

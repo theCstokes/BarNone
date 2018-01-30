@@ -2,6 +2,7 @@ import { View } from "UEye/View/View";
 import ControlTypes from "UEye/ControlTypes";
 import List from "UEye/Elements/Components/List/List";
 import Breadcrumb from "UEye/Elements/Components/Breadcrumb/Breadcrumb";
+import Button from "UEye/Elements/Components/Button/Button";
 /**
  *  Represents View for NavigationScreen .
  */
@@ -14,6 +15,9 @@ export default class NavView extends View {
  *  Represents Breadcrumb UI component .
  */
 	public navBreadcrumbs: Breadcrumb;
+
+	public logoutButton: Button;
+
 	/**
  * Acessor gets content layout of Lifts Edit Screen 
  * */

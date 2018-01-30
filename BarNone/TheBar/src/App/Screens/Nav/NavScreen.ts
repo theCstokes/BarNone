@@ -5,6 +5,8 @@ import UEye from "UEye/UEye";
 import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import App from "App/App";
 import { ContextStateManager, ContextState } from "App/Screens/Nav/ContextStateManager";
+import LoginScreen from "App/Screens/Login/LoginScreen";
+import DataManager from "App/Data/DataManager";
 
 /**
  *  Represents NavScreen class .
@@ -25,9 +27,7 @@ export default class NavScreen extends Screen<NavView> {
 		this._contextStateManager = new ContextStateManager(this._stateManager);
 		this._contextStateManager.bind(this._onContextRender.bind(this));
 		// super(NavView, StateManager, true);
-		UEye.onBack.register(() => this._backAction());
-
-		
+		UEye.onBack.register(() => this._backAction());		
 	}
 
 	private _onContextRender(current: ContextState, original: ContextState): void {
@@ -114,6 +114,12 @@ export default class NavScreen extends Screen<NavView> {
 	public onShow() {
 		App.breadcrumbs = this.view.navBreadcrumbs;
 		App.Navigation = this._contextStateManager;
+
+		this.view.logoutButton.onClick = () => {
+			DataManager.logout();
+			UEye.popAll();
+			UEye.push(LoginScreen);
+		}
 		
 		this.view.navList.onSelect = (data: IListItem) => {
 			UEye.popTo(this);

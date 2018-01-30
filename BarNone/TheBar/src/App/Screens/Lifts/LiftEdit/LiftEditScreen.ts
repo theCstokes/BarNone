@@ -1,7 +1,7 @@
-import LiftEditView from "App/Screens/Lifts/Edit/LiftEditView";
+import LiftEditView from "App/Screens/Lifts/LiftEdit/LiftEditView";
 import EditScreen from "UEye/Screen/EditScreen";
-import { StateManager, State } from "App/Screens/Lifts/Edit/StateManager";
-import { SkeletonBuilder } from "App/Screens/Lifts/Edit/SkeletonBuilder";
+import { StateManager, State } from "App/Screens/Lifts/LiftEdit/StateManager";
+import { SkeletonBuilder } from "App/Screens/Lifts/LiftEdit/SkeletonBuilder";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import StringUtils from "UEye/Core/StringUtils";
 
@@ -9,24 +9,19 @@ import StringUtils from "UEye/Core/StringUtils";
 // import ScreenBind from "UEye/Screen/ScreenBind";
 // import LiftEditView from "Application/Screens/Lifts/Edit/LiftEditView";
 // import { StateManager, State } from "Application/Screens/Lifts/Edit/StateManager";
-/**
- *  Represents LiftEditScreen class .
- */
+
 export default class LiftEditScreen extends EditScreen<LiftEditView, StateManager> {
-	 /** Constructor intialized Screen Component and binds corresponding View and StateManager 
-     * */
 	public constructor() {
 		super(LiftEditView, StateManager);
 		this.stateManager.bind(this._onRender.bind(this));
 	}
-	/** Method renders data corresponding to API requests made in State for LiftsEdit
-     * */
+
 	private _onRender(current: State, original: State) {
 		console.log(current);
 		this.view.nameInput.text = current.name;
 		this.view.nameInput.modified = (original.name !== current.name);
 
-		this.view.player.src = StringUtils.format("http://localhost:58428/api/v1/Lift/{0}/Video?access_token={1}",
+		this.view.player.src = StringUtils.format("https://www.rmp-streaming.com/media/bbb-360p.mp4",
 			current.lift.id,
 			BaseDataManager.auth.access_token);
 
@@ -35,8 +30,7 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		var isModified = (JSON.stringify(original) !== JSON.stringify(current));
 		this.view.editPanel.modified = isModified;
 	}
-	/** Method Method defines UI properties when shown
-     * */
+
 	public onShow(): void {
 		this.view.nameInput.onChange = (data) => {
 			this.stateManager.NameChange.trigger(data);

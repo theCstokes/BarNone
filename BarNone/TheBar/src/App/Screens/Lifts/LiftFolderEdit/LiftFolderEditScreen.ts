@@ -1,17 +1,10 @@
-// import LiftEditView from "App/Screens/Lifts/Edit/LiftEditView";
 import EditScreen from "UEye/Screen/EditScreen";
-import { StateManager, State } from "App/Screens/Lift2/LiftFolderEdit/StateManager";
-import { SkeletonBuilder } from "App/Screens/Lifts/Edit/SkeletonBuilder";
+import { StateManager, State } from "App/Screens/Lifts/LiftFolderEdit/StateManager";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import StringUtils from "UEye/Core/StringUtils";
-import LiftFolderEditView from "App/Screens/Lift2/LiftFolderEdit/LiftFolderEditView";
-import LiftScreen from "App/Screens/Lift2/LiftScreen";
-import { LiftListType } from "App/Screens/Lift2/Models";
-
-// import EditScreen from "Application/Core/EditScreen";
-// import ScreenBind from "UEye/Screen/ScreenBind";
-// import LiftEditView from "Application/Screens/Lifts/Edit/LiftEditView";
-// import { StateManager, State } from "Application/Screens/Lifts/Edit/StateManager";
+import LiftFolderEditView from "App/Screens/Lifts/LiftFolderEdit/LiftFolderEditView";
+import LiftScreen from "App/Screens/Lifts/LiftScreen";
+import { LiftListType } from "App/Screens/Lifts/Models";
 
 export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView, StateManager> {
 	public constructor() {

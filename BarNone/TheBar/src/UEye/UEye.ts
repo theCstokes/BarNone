@@ -200,6 +200,14 @@ export default class UEye {
 		}
 	}
 
+	public static popAll(): void {
+		while (UEye._screenList.length > 0) {
+			var lastIndex = UEye._screenList.length - 1;
+
+			UEye.pop();
+		}
+	}
+
 	/**
 	 * Gets current screen.
 	 */
