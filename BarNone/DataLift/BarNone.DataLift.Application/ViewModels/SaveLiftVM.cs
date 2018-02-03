@@ -49,17 +49,20 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             var liftDTO = Converters.NewConvertion()
                 .Lift
-                .CreateDTO(
-                    new Lift()
+                .CreateDTO(new Lift()
+                {
+                    BodyData = new BodyData
                     {
-                        BodyData = new BodyData() { BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData.ToList(), RecordDate = DateTime.Now },
-                        Name = "LiftName_Temp"
-                    }
-                );
+                        BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData.ToList(),
+                        RecordDate = DateTime.Now
+                    },
+                    Name = CurrentLiftData.LiftInformation[0].LiftName // TODO.  Not make this a hardcoded 0.
+                });
+
             var toSend = JsonConvert.SerializeObject(liftDTO, Formatting.Indented,
                 new JsonSerializerSettings()
                 {
-                    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 }
             );
 

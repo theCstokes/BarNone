@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using BarNone.DataLift.UI.ViewModels;
+using System.Windows.Controls;
 
 namespace BarNone.DataLift.UI.Views
 {
@@ -13,6 +14,10 @@ namespace BarNone.DataLift.UI.Views
         public EditLiftsScreen()
         {
             InitializeComponent();
+            var vm = DataContext as ViewModelBase;
+
+            Loaded += (a, b) => vm.Loaded();
+            Unloaded += (a, b) => vm.Closed();
         }
     }
 }
