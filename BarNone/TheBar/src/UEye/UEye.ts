@@ -14,49 +14,49 @@ class ScreenMountPoint {
 	 * Screen parent
 	 */
 	public parent: Screen<any>;
-	
+
 	/**
 	 * Screen element
 	 */
-    public element: HTMLElement;
+	public element: HTMLElement;
 
 	/**
 	 * Child screen.
 	 * Undefined if no child attached.
 	 */
-    private _child?: Screen<any>;
+	private _child?: Screen<any>;
 
 	/**
 	 * Initialize screen mount point
 	 * @param element - html element
 	 * @param parent - screen parent
 	 */
-    public constructor(element: HTMLElement, parent: Screen<any>) {
-        this.parent = parent;
-        this.element = element
-    }
+	public constructor(element: HTMLElement, parent: Screen<any>) {
+		this.parent = parent;
+		this.element = element
+	}
 
 	/**
 	 * Get child
 	 */
-    public get child(): Screen<any> | undefined {
-        return this._child;
+	public get child(): Screen<any> | undefined {
+		return this._child;
 	}
 
 	/**
 	 * Set child
 	 */
-    public set child(value: Screen<any> | undefined) {
-        this._child = value;
-    }
+	public set child(value: Screen<any> | undefined) {
+		this._child = value;
+	}
 
 	/**
 	 * Is the screen used.
 	 * True if child is not undefined, false otherwise.
 	 */
-    public get isUsed(): boolean {
-        return (this._child !== undefined);
-    }
+	public get isUsed(): boolean {
+		return (this._child !== undefined);
+	}
 }
 
 export default class UEye {
@@ -64,21 +64,21 @@ export default class UEye {
 	 * Base element for application.
 	 */
 	private static _base: HTMLElement;
-	
+
 	/**
 	 * Screen mounting points.
 	 */
 	private static _screenMountPointList: ScreenMountPoint[];
-	
+
 	/**
 	 * Pushed screen objects.
 	 */
-    private static _screenList: Screen<any>[];
+	private static _screenList: Screen<any>[];
 
 	/**
 	 * Back events for back click
 	 */
-    private static readonly _onBack = new CallableEvent();
+	private static readonly _onBack = new CallableEvent();
 
 	/**
 	 * Start the application.
@@ -112,17 +112,16 @@ export default class UEye {
 	 * @param data - data for screen.
 	 */
 	public static push(ScreenType: { new(): Screen<any> }, data?: any): Screen<any> {
-        var screen = new ScreenType();
+		var screen = new ScreenType();
 
-        // Handle config.
+		// Handle config.
 		if (screen.config.addScreenToHistory) {
 			history.pushState(null, document.title, location.href);
-        }
+		}
 
 		// Find the parent for the next screen.
-        var parent = this._base;
-        
-        
+		var parent = this._base;
+
 		if (this._screenMountPointList.length > 0) {
 			var mountPoint = this._screenMountPointList.find(mountPoint => {
 				return (mountPoint.isUsed === false);
@@ -133,34 +132,25 @@ export default class UEye {
 				parent = mountPoint.element;
 				mountPoint.child = screen;
 			}
-        }
-        
-        // Inflate screen.
-        var inflationData = screen.create(parent);
+		}
 
-        // Map the points on a screen where a new screen can be added.
-        this._screenMountPointList = this._screenMountPointList.concat(inflationData.mountingPoints.map(element => {
-			return new ScreenMountPoint(element, screen);
-		}));
+		// If full screen override parent.
+		if (screen.config.fullScreen) {
+			parent = this._base;
+		}
 
-		// // Inflate the screen.
-		// var results = Inflater.execute(parent, screen.content);
-		// screen.components = results.components;
+		// Inflate screen.
+		var inflationData = screen.create(parent);
 
-		// this._screenMounts = this._screenMounts.concat(results.mountingPoints.map(element => {
-		// 	return new MountElement(element, false, screen);
-		// }));
-
-		// for (var key in results.componentMap) {
-		// 	if (!results.componentMap.hasOwnProperty(key)) continue;
-		// 	screen.view[key] = results.componentMap[key];
-		// }
+		// Map the points on a screen where a new screen can be added.
+		this._screenMountPointList = this._screenMountPointList
+			.concat(inflationData.mountingPoints.map(element => {
+				return new ScreenMountPoint(element, screen);
+			}));
 
 		UEye._screenList.push(screen);
 		screen.onShow();
 
-		// screen.trigger("onShow", data);
-		// screen.show(data);
 		return screen;
 	}
 

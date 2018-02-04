@@ -1,6 +1,8 @@
 /**
  * Auth create url string.
  */
+import CallableEvent, { ICallableEvent } from "UEye/CallableEvent/CallableEvent";
+
 const CREATE_URL = "/api/v1/Authorization/Create";
 
 /**
@@ -17,20 +19,14 @@ const RESOURCE_URL = "/api/v1/";
  * Base data manager.
  */
 export abstract class BaseDataManager {
-	/**
-	 * API grant type string.
-	 */
+	/** API grant type string.*/
 	private static readonly grant_type = "password";
-
-	/**
-	 * API client id.
-	 */
+	/** API client id. */
 	private static readonly client_id = "099153c2625149bc8ecb3e85e03f0022";
-
-	/**
-	 * Auth object.
-	 */
+	/** Auth object. */
 	private static _auth: Auth | undefined;
+	/** On auth expire event. */
+	private static _onAuthExpire: CallableEvent = new CallableEvent();
 
 	/**
 	 * Get token from auth API.
@@ -44,6 +40,16 @@ export abstract class BaseDataManager {
 	public static async logout(): Promise<boolean> {
 		// return BaseDataManager.authServerRequest(BaseDataManager.authorizationAddress, username, password);
 		BaseDataManager._auth = undefined;
+		return await true;
+	}
+
+	public static async fail(): Promise<boolean> {
+		// return BaseDataManager.authServerRequest(BaseDataManager.authorizationAddress, username, password);
+		if (BaseDataManager._auth !== undefined) {
+			BaseDataManager._auth = undefined;
+			this._onAuthExpire.trigger();
+		}
+		
 		return await true;
 	}
 
@@ -85,6 +91,10 @@ export abstract class BaseDataManager {
 		http.send(args);
 
 		return result;
+	}
+
+	public static get onAuthExpire(): ICallableEvent {
+		return BaseDataManager._onAuthExpire.expose();
 	}
 
 	/**

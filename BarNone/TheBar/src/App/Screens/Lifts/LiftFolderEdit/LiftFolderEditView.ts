@@ -7,6 +7,8 @@ import Video from "UEye/Elements/Components/Video/Video";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import List from "UEye/Elements/Components/List/List";
 import TabLayout from "UEye/Elements/Containers/TabLayout/TabLayout"
+import UEye from "UEye/UEye";
+import RefreshTokenScreen from "App/Screens/RefreshToken/RefreshTokenScreen";
 
 export default class LiftFolderEditView extends EditView {
 	public editPanel: Panel;
@@ -25,6 +27,14 @@ export default class LiftFolderEditView extends EditView {
 						id: "nameInput",
 						instance: ControlTypes.Input,
 						hint: "Name"
+					},
+					{
+						instance: ControlTypes.Button,
+						text: "Open",
+						onClick: () => {
+							// alert(123);
+							UEye.push(RefreshTokenScreen);
+						}
 					},
 					{
 						id: "tab",
