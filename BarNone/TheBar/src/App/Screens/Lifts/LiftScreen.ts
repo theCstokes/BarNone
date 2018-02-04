@@ -17,7 +17,6 @@ export default class LiftScreen extends Screen<LiftView> {
 	private _stateManager: StateManager;
 
 	public static ParentChange: DataEvent<LiftListItem>;
-
 	public static LiftChange: DataEvent<Lift>;
 	
 	public constructor() {
@@ -34,7 +33,7 @@ export default class LiftScreen extends Screen<LiftView> {
 	}
 
 	private _onRender(current: State, original: State): void {
-		this.view.userList.items = current.selectionList.map(item => {
+		this.view.liftList.items = current.selectionList.map(item => {
 			return {
 				selected: (item.id === current.selectionId),
 				id: item.id,
@@ -48,6 +47,7 @@ export default class LiftScreen extends Screen<LiftView> {
 				}
 			}
 		});
+		this.view.liftListInfo.visible = (current.selectionList.length < 0);
 
 		var userData = current.selectionList.find(item => {
 			return (item.id === current.selectionId);
@@ -73,7 +73,7 @@ export default class LiftScreen extends Screen<LiftView> {
 	}
 
 	public onShow(): void {
-		this.view.userList.onSelect = (data: IListItem) => {
+		this.view.liftList.onSelect = (data: IListItem) => {
 			this._stateManager.SelectionChange.trigger({ id: data.id });
 		};
 

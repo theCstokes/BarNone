@@ -14,6 +14,7 @@ import Breadcrumb from "UEye/Elements/Components/Breadcrumb/Breadcrumb";
 import Video from "UEye/Elements/Components/Video/Video";
 import Range from "UEye/Elements/Components/Range/Range";
 import Graph from "UEye/Elements/Components/Graph/Graph";
+import Info from "UEye/Elements/Components/Info/Info";
 
 import Column from "UEye/Elements/Containers/Column/Column";
 import ColumnLayout from "UEye/Elements/Containers/ColumnLayout/ColumnLayout";
@@ -56,6 +57,8 @@ export default class ControlTypes {
 	public static readonly Range = new ComponentType(p => new Range(p));
 	/**Graph Component Type */
 	public static readonly Graph = new ComponentType(p => new Graph(p));
+	/**Info Component Type */
+	public static readonly Info = new ComponentType(p => new Info(p));
 	
 
 	//---------------------Containers--------------------
