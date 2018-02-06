@@ -93,6 +93,20 @@
             width: @SmallNavBarWidth;
         }
     }
+    .Help-Dock {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: @NormalHelpBarWidth;
+        background-color: @DefaultGrey;
+        z-index: 100;
+        box-shadow: 0 4px 8px 0 @DefaultGrey, 0 6px 20px 0 @DefaultGrey;
+
+        @media screen and (max-width: @ResizeThreshold) {
+            width: @SmallNavBarWidth;
+        }
+    }
 
     // > .Global-Dock {
     //     position: absolute;

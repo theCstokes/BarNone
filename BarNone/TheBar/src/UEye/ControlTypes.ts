@@ -2,6 +2,7 @@ import ComponentType from "UEye/Elements/Inflater/ComponentInflater";
 import ContainerType from "UEye/Elements/Inflater/ContainerInflater";
 
 import Button from "UEye/Elements/Components/Button/Button";
+import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 import ContactListItem from "UEye/Elements/Components/ContactListItem/ContactListItem";
 import LiftFolderListItem from "UEye/Elements/Components/LiftFolderListItem/LiftFolderListItem";
 import DataListItem from "UEye/Elements/Components/DataListItem/DataListItem";
@@ -34,6 +35,8 @@ export default class ControlTypes {
 
 	/**Button Component Type */
 	public static readonly Button = new ComponentType(p => new Button(p));
+	/**Button Component Type */
+	public static readonly IconButton = new ComponentType(p => new IconButton(p));
 	/**Contact List Item Component Type */
 	public static readonly ContactListItem = new ComponentType(p => new ContactListItem(p));
 	/**Lift Folder List Item Component Type */

@@ -12,6 +12,8 @@ export default class Frame extends BaseContainer {
     private _contextDock: HTMLElement;
      /**  Represents the dock layout for the navigation side bar HTMLElement  */
     private _navDock: HTMLElement;
+        /**  Represents the dock layout for the help side bar HTMLElement  */
+     private _helpDock:HTMLElement;
      /**  Represents parent layout that contains and views user information in the UI (Above nav bar). */
     private _statusArea: HTMLElement;
     /**  Represents image of used for user profile*/
@@ -24,6 +26,7 @@ export default class Frame extends BaseContainer {
     private _content: HTMLElement;
 
     private _statusImageSource: string;
+    private _showHelp: boolean;
     private _statusTitle: string;
      /** Constructor intializes and defines the FrameContainer as an encompassing HTMLElement tag named UEye-Frame (using Core.addClass). 
 	 * * @returns Returns Frame with a variety of Docks (context, global, nav and statusArea) to describe the different sections of the Single Page Frame.   
@@ -52,6 +55,10 @@ export default class Frame extends BaseContainer {
         
         this._content = Core.create("div", this.element, "Content");
         this.linkScreenContainer("content", this._content);
+        
+        this._helpDock =Core.create("div", this.element, "Help-Dock");
+        this.linkComponentContainer("helpDock", this._helpDock);
+        this._helpDock.style.visibility="hidden";
     }
 
     
@@ -113,6 +120,22 @@ export default class Frame extends BaseContainer {
      * */
     public get navDock(): any[] {
         return this.getComponentContainer("navDock");
+    }
+    public set helpDock(value: any[]) {
+        this.setComponentContainer("helpDock", value);
+    }
+        /** Accersor gets the array of contents of navDock Layout.
+	 * * @returns  Array of contents of type any viewed in navDock.
+     * */
+    public get helpDock(): any[] {
+        return this.getComponentContainer("helpDock");
+    }
+    public toggleHelpBar(value: boolean) {
+      if(value){
+          this._helpDock.style.visibility="visible";
+      }else{
+        this._helpDock.style.visibility="hidden";
+      }
     }
      /** Method sets the content of the Frame.
 	 * * @param value Array of contents of type any to be viewed as screen. 
