@@ -15,12 +15,12 @@ using System.IO;
 
 namespace BarNone.TheRack.Repository
 {
-    public class LiftRepository : DefaultDetailRepository<Lift, LiftDTO, LiftDetailDTO>
+    public class SharedLiftRepository : DefaultDetailRepository<Lift, LiftDTO, LiftDetailDTO>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LiftRepository"/> class.
         /// </summary>
-        public LiftRepository() : base()
+        public SharedLiftRepository() : base()
         {
         }
 
@@ -28,7 +28,7 @@ namespace BarNone.TheRack.Repository
         /// Initializes a new instance of the <see cref="LiftRepository"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public LiftRepository(DomainContext context) : base(context)
+        public SharedLiftRepository(DomainContext context) : base(context)
         {
 
         }
@@ -58,7 +58,6 @@ namespace BarNone.TheRack.Repository
         protected override DetailResolverDelegate<Lift> DetailEntityResolver => (lifts) => lifts
                 .Include(u => u.Parent)
                 .Include(u => u.Video)
-                .Include(u => u.Permissions)
                 .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints)
                 .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointType)
                 .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointTrackingStateType);
@@ -69,7 +68,12 @@ namespace BarNone.TheRack.Repository
         /// <value>
         /// The entity resolver.
         /// </value>
-        protected override EntityResolverDelegate<Lift> EntityResolver => (lifts) => lifts.Where(l => l.UserID == context.UserID);
+        protected override EntityResolverDelegate<Lift> EntityResolver => (lifts) =>
+        {
+            return context.LiftPermissions
+                .Where(p => p.UserID == context.UserID)
+                .Select(p => lifts.Where(l => l.ID == p.LiftID).FirstOrDefault());
+        };
 
         /// <summary>
         /// Creates the specified lift.

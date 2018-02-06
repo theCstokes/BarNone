@@ -149,7 +149,7 @@ export default class UEye {
 			}));
 
 		UEye._screenList.push(screen);
-		screen.onShow();
+		screen.onShow(data);
 
 		return screen;
 	}

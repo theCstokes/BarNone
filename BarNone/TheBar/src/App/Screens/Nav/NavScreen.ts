@@ -71,7 +71,7 @@ export default class NavScreen extends Screen<NavView> {
 			// var NextScreen = Loader.sync(navElement.screenPath);
 			this._subScreenID = navElement.id;
 			UEye.popTo(this);
-			this._subScreen = UEye.push(navElement.screen);
+			this._subScreen = UEye.push(navElement.screen, navElement.initData);
 		}
 	}
 

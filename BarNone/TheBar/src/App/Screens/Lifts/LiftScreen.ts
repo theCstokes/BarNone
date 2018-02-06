@@ -2,7 +2,7 @@ import Screen from "UEye/Screen/Screen"
 import LiftView from "App/Screens/Lifts/LiftView";
 import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import UEye from "UEye/UEye";
-import { StateManager, State } from "App/Screens/Lifts/StateManager";
+import { StateManager, State, LiftType } from "App/Screens/Lifts/StateManager";
 import EditScreen from "UEye/Screen/EditScreen";
 import { LiftListType, LiftListItem } from "App/Screens/Lifts/Models";
 import LiftFolderEditScreen from "App/Screens/Lifts/LiftFolderEdit/LiftFolderEditScreen";
@@ -21,9 +21,6 @@ export default class LiftScreen extends Screen<LiftView> {
 	
 	public constructor() {
 		super(LiftView);
-
-		this._stateManager = new StateManager();
-		this._stateManager.bind(this._onRender.bind(this));
 
 		LiftScreen.ParentChange = new DataEvent();
 		LiftScreen.ParentChange.on(this._onFolderOpenHandler.bind(this));
@@ -72,7 +69,10 @@ export default class LiftScreen extends Screen<LiftView> {
 		}
 	}
 
-	public onShow(): void {
+	public onShow(type: LiftType): void {
+		this._stateManager = new StateManager(type);
+		this._stateManager.bind(this._onRender.bind(this));
+
 		this.view.liftList.onSelect = (data: IListItem) => {
 			this._stateManager.SelectionChange.trigger({ id: data.id });
 		};
