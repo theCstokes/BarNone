@@ -50,6 +50,7 @@ export default class NavScreen extends Screen<NavView> {
 			}
 		});
 
+
 		var navElement = current.navElementList.find(item => {
 			return (item.id === current.currentScreenId);
 		});
@@ -120,7 +121,12 @@ export default class NavScreen extends Screen<NavView> {
 			UEye.popAll();
 			UEye.push(LoginScreen);
 		}
-		
+		this.view.helpButton.onClick=() =>{
+			 this.view.pageFrame.toggleHelpBar(true);
+		}
+		this.view.exitHelpButton.onClick=() =>{
+			this.view.pageFrame.toggleHelpBar(false);
+	   }
 		this.view.navList.onSelect = (data: IListItem) => {
 			UEye.popTo(this);
 
