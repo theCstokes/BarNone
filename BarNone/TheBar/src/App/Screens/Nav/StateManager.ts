@@ -7,6 +7,7 @@ import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import { ContextState } from "App/Screens/Nav/ContextStateManager";
 import ParentStateManager from "UEye/StateManager/ParentStateManager";
 import LiftScreen from "App/Screens/Lifts/LiftScreen";
+import DataManager from "App/Data/DataManager";
 
 /**
  *  Represents Definition for Navigation Element 
@@ -16,6 +17,7 @@ class NavElement {
 	public name: string;
 	public icon: string;
 	public screen: { new(): Screen<any> };
+	public initData?: any;
 }
 
 /**
@@ -58,9 +60,17 @@ export class State {
 		// },
 		{
 			id: 5,
-			name: "Lifts",
+			name: "My Lifts",
 			icon: "fa-universal-access",
-			screen: LiftScreen
+			screen: LiftScreen,
+			initData: "Lift"
+		},
+		{
+			id: 6,
+			name: "Shared Lifts",
+			icon: "fa-universal-access",
+			screen: LiftScreen,
+			initData: "Shared"
 		},
 		{
 			id: 2,

@@ -136,7 +136,7 @@ namespace BarNone.TheRack.Repository.Core
             dto.ID = id;
 
             var dm = DataConverter(dto);
-            var result = Update(dm);
+            var result = Update(dm, dto.UpdateFilter);
 
             //context.SaveChanges();
             return result;

@@ -1,5 +1,6 @@
 ﻿using BarNone.Shared.DataTransfer.Core;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace BarNone.Shared.DataTransfer
 {
@@ -35,6 +36,9 @@ namespace BarNone.Shared.DataTransfer
         /// </value>
         [JsonProperty(Order = 2, NullValueHandling = NullValueHandling.Ignore)]
         public VideoDTO Video { get; set; }
+
+        [JsonProperty(Order = 3, NullValueHandling = NullValueHandling.Ignore)]
+        public List<LiftPermissionDTO> Permissions { get; set; }
     }
 
     /// <summary>

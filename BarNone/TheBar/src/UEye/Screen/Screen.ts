@@ -78,6 +78,6 @@ export default abstract class Screen<TView extends View> {
     //#endregion
 
     //#region Public Abstract Member(s).
-    public abstract onShow(): void;
+    public abstract onShow(data?: any): void;
     //#endregion
 }

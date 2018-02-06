@@ -26,7 +26,7 @@ namespace BarNone.Shared.DataTransfer.Core
         /// <value>
         /// The update filter.
         /// </value>
-        [JsonIgnore]
+        //[JsonIgnoreDeserialize]
         public List<string> UpdateFilter { get; set; }
     }
 }
