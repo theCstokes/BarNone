@@ -80,14 +80,14 @@ export class BaseRequestBuilder {
 						resolve(xhr.responseText);
 					} else {
 						console.warn(xhr.statusText);
-						reject();
+						reject(xhr.status);
 					}
 				}
 			};
 
 			xhr.onerror = () => {
 				console.warn(xhr.statusText);
-				reject();
+				reject(xhr.status);
 			};
 
 			xhr.send(JSON.stringify(data));

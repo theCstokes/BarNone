@@ -97,7 +97,7 @@ export class Resource<TData> extends BaseResource {
             var data: ListResult<TData> = JSON.parse(result);
             return data.entities;
         } catch (error) {
-            BaseDataManager.fail();
+            BaseDataManager.fail(error);
             throw error;
         }
     }
@@ -120,7 +120,7 @@ export class Resource<TData> extends BaseResource {
             var data: EntityResult<TData> = JSON.parse(result);
             return data.entity;
         } catch (error) {
-            BaseDataManager.fail();
+            BaseDataManager.fail(error);
             throw error;
         }
     }
@@ -143,7 +143,7 @@ export class Resource<TData> extends BaseResource {
             var data: ListResult<TData> = JSON.parse(result);
             return data.entities;
         } catch (error) {
-            BaseDataManager.fail();
+            BaseDataManager.fail(error);
             throw error;
         }
     }
@@ -192,7 +192,7 @@ export class DetailResource<TData> extends BaseResource {
             var data: ListResult<TData> = JSON.parse(result);
             return data.entities;
         } catch (error) {
-            BaseDataManager.fail();
+            BaseDataManager.fail(error);
             throw error;
         }
     }
@@ -224,7 +224,7 @@ export class DetailResource<TData> extends BaseResource {
             var data: EntityResult<TData> = JSON.parse(result);
             return data.entity;
         } catch (error) {
-            BaseDataManager.fail();
+            BaseDataManager.fail(error);
             throw error;
         }
     }
@@ -247,7 +247,7 @@ export class DetailResource<TData> extends BaseResource {
             var data: ListResult<TData> = JSON.parse(result);
             return data.entities;
         } catch (error) {
-            BaseDataManager.fail();
+            BaseDataManager.fail(error);
             throw error;
         }
     }

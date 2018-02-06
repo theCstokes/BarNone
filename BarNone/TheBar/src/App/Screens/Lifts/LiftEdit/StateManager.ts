@@ -2,12 +2,14 @@ import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 import StateBind from "UEye/StateManager/StateBind";
 import DataManager from "App/Data/DataManager";
 import Lift from "App/Data/Models/Lift/Lift";
+import Comment from "App/Data/Models/Comment/Comment";
 
 export class State {
 	public id: number;
 	public name: string = "";
 	public age: number;
 	public lift: Lift;
+	public comments: Comment[];
 }
 
 export class StateManager extends BaseStateManager<State> {
@@ -24,8 +26,17 @@ export class StateManager extends BaseStateManager<State> {
 			var nextState = state.empty();
 
 			var lift = await DataManager.Lifts.single(data.id, { includeDetails: true });
+			var comments = await DataManager.Comments.all({
+				filter: {
+					property: (comment) => comment.liftID,
+					comparisons: "eq",
+					value: data.id
+				}
+			});
+
 			console.log(lift);
 			nextState.current.lift = lift;
+			nextState.current.comments = comments;
 
 			nextState.current.id = data.id;
 			nextState.current.name = data.name;

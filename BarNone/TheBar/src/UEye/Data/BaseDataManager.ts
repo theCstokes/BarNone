@@ -43,10 +43,12 @@ export abstract class BaseDataManager {
 		return await true;
 	}
 
-	public static async fail(): Promise<boolean> {
-		// return BaseDataManager.authServerRequest(BaseDataManager.authorizationAddress, username, password);
+	public static async fail(error: any): Promise<boolean> {
 		if (BaseDataManager._auth !== undefined) {
 			BaseDataManager._auth = undefined;
+		}
+
+		if (error === 401) {
 			this._onAuthExpire.trigger();
 		}
 		

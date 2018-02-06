@@ -17,6 +17,8 @@
         background-color: @DefaultAccent;
         justify-content: space-around;
         align-items: center;
+        z-index: 100;
+        box-shadow: 0 4px 8px 0 @DefaultAccent, 0 6px 20px 0 @DefaultAccent;
 
         @media screen and (max-width: @ResizeThreshold) {
             width: @SmallNavBarWidth;
@@ -84,6 +86,8 @@
         left: 0;
         width: @NormalNavBarWidth;
         background-color: @DefaultAccent;
+        z-index: 100;
+        box-shadow: 0 4px 8px 0 @DefaultAccent, 0 6px 20px 0 @DefaultAccent;
 
         @media screen and (max-width: @ResizeThreshold) {
             width: @SmallNavBarWidth;
@@ -109,6 +113,9 @@
         right: 0;
         height: 40px;
         // background-color: @DefaultAccent;
+
+        z-index: 100;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
         @media screen and (max-width: @ResizeThreshold) {
             left: @SmallNavBarWidth;

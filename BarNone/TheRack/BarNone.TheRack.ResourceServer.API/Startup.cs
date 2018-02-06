@@ -16,6 +16,8 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Web;
 using BarNone.TheRack.ResourceServer.API.Response;
+using System.Net.WebSockets;
+using System.Threading;
 
 namespace BarNone.TheRack.ResourceServer.API
 {
@@ -111,24 +113,57 @@ namespace BarNone.TheRack.ResourceServer.API
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.Use(async (context, next) =>
-            {
-                if (context.Request.QueryString.HasValue)
-                {
-                    if (string.IsNullOrWhiteSpace(context.Request.Headers["Authorization"]))
-                    {
-                        var queryString = HttpUtility.ParseQueryString(context.Request.QueryString.Value);
-                        string token = queryString.Get("access_token");
+            app.UseWebSockets();
 
-                        if (!string.IsNullOrWhiteSpace(token))
+            app.Use(async (http, next) =>
+            {
+                if (http.Request.Path == "/ws" && http.WebSockets.IsWebSocketRequest)
+                {
+                    var webSocket = await http.WebSockets.AcceptWebSocketAsync();
+                    while (webSocket.State == WebSocketState.Open)
+                    {
+                        var token = CancellationToken.None;
+                        var buffer = new ArraySegment<Byte>(new Byte[4096]);
+                        var received = await webSocket.ReceiveAsync(buffer, token);
+
+                        switch (received.MessageType)
                         {
-                            context.Request.Headers.Add("Authorization", new[] { string.Format("Bearer {0}", token) });
+                            case WebSocketMessageType.Text:
+                                var request = Encoding.UTF8.GetString(buffer.Array,
+                                                        buffer.Offset,
+                                                        buffer.Count);
+                                var type = WebSocketMessageType.Text;
+                                var data = Encoding.UTF8.GetBytes("Echo from server :" + request);
+                                buffer = new ArraySegment<Byte>(data);
+                                await webSocket.SendAsync(buffer, type, true, token);
+                                break;
                         }
                     }
                 }
-
-                await next.Invoke();
+                else
+                {
+                    await next();
+                }
             });
+
+            app.Use(async (context, next) =>
+             {
+                 if (context.Request.QueryString.HasValue)
+                 {
+                     if (string.IsNullOrWhiteSpace(context.Request.Headers["Authorization"]))
+                     {
+                         var queryString = HttpUtility.ParseQueryString(context.Request.QueryString.Value);
+                         string token = queryString.Get("access_token");
+
+                         if (!string.IsNullOrWhiteSpace(token))
+                         {
+                             context.Request.Headers.Add("Authorization", new[] { string.Format("Bearer {0}", token) });
+                         }
+                     }
+                 }
+
+                 await next.Invoke();
+             });
             app.UseAuthentication();
             app.UseMvc();
 

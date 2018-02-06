@@ -14,6 +14,24 @@ export default class App {
 
     public static start(): void {
 
+
+        var ws = new WebSocket("ws://localhost:58428/ws");   
+        ws.onopen = () => {
+            console.log("onopen");
+
+            ws.send("Hello World!");
+        };    
+        ws.onmessage = function(e) {
+            console.log("echo from server : " + e.data);   
+        };
+
+        ws.onclose = function() {   
+            console.log("onclose");
+        };
+        ws.onerror = function() {
+            console.log("onerror");    
+        };
+
         DataManager.onAuthExpire.register(() => {
             UEye.push(RefreshTokenScreen);
         });

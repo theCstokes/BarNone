@@ -24,6 +24,14 @@ namespace BarNone.Shared.DataConverters
         public UserConverter User { get; private set; }
 
         /// <summary>
+        /// Comment Converter.
+        /// </summary>
+        /// <value>
+        /// The comment converter.
+        /// </value>
+        public CommentConverter Comment { get; private set; }
+
+        /// <summary>
         /// Lift Converter.
         /// </summary>
         /// <value>
@@ -97,6 +105,7 @@ namespace BarNone.Shared.DataConverters
         {
             /// TODO - pls no.
             User =                      Register<User,          UserDTO, UserConverter>(new UserConverter(this, context));
+            Comment =                   Register<Comment,       CommentDTO, CommentConverter>(new CommentConverter(this, context));
             Lift =                      Register<Lift,          LiftDTO, LiftConverter>(new LiftConverter(this, context));
             LiftFolder =                Register<LiftFolder,    LiftFolderDTO, LiftFolderConverter>(new LiftFolderConverter(this, context));
             BodyData =                  Register<BodyData,      BodyDataDTO, BodyDataConverter>(new BodyDataConverter(this, context));

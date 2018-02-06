@@ -4,13 +4,14 @@ import Input from "UEye/Elements/Components/Input/Input";
 import Panel from "UEye/Elements/Containers/Panel/Panel";
 import Video from "UEye/Elements/Components/Video/Video";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
+import List from "UEye/Elements/Components/List/List";
 
 export default class LiftEditView extends EditView {
 	public nameInput: Input;
 	public ageInput: Input;
 	public editPanel: Panel;
-	// public liftPlayer: Video;
 	public player: Video;
+	public commentList: List;
 
 	public get content(): any[] {
 		return [
@@ -24,21 +25,30 @@ export default class LiftEditView extends EditView {
 						instance: ControlTypes.Input,
 						hint: "Name"
 					},
-					// {
-					// 	id: "liftPlayer",
-					// 	instance: ControlTypes.Video
-					// },
 					{
-						id: "player",
-						instance: ControlTypes.Video
-					},
-					// {
-					// 	id: "ageInput",
-					// 	instance: ControlTypes.Input,
-					// 	readonly: true,
-					// 	hint: "Age",
-					// 	text: 21
-					// }
+						instance: ControlTypes.TabLayout,
+						tabs: [
+							{
+								title: "Video",
+								content: [
+									{
+										id: "player",
+										instance: ControlTypes.Video
+									},
+								]
+							},
+							{
+								title: "Comments",
+								content: [
+									{
+										id: "commentList",
+										instance: ControlTypes.List,
+										style: ControlTypes.DataListItem
+									}
+								]
+							}
+						]
+					}
 				]
 			}
 		];

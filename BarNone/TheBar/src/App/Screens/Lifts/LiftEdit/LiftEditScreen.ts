@@ -27,6 +27,13 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 
 		this.view.player.frameData = SkeletonBuilder.build(current.lift.details.bodyData);
 
+		this.view.commentList.items = current.comments.map(comment => {
+			return {
+				id: comment.id,
+				name: comment.text
+			}
+		});
+
 		var isModified = (JSON.stringify(original) !== JSON.stringify(current));
 		this.view.editPanel.modified = isModified;
 	}
