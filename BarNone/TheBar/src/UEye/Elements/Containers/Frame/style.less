@@ -135,6 +135,13 @@
             left: @SmallNavBarWidth;
         }
     }
+    > .Context-Dock.Show-Help-Dock {
+        right: @NormalHelpBarWidth;
+
+        @media screen and (max-width: @ResizeThreshold) {
+            right: @SmallNavBarWidth;
+        }
+    }
 
     > .Content {
         position: absolute;
@@ -146,6 +153,13 @@
 
         @media screen and (max-width: @ResizeThreshold) {
             left: @SmallNavBarWidth;
+        }
+    }
+    > .Content.Show-Help-Dock {
+        right: @NormalHelpBarWidth;
+
+        @media screen and (max-width: @ResizeThreshold) {
+            right: @SmallNavBarWidth;
         }
     }
 }

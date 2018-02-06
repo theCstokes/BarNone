@@ -20,6 +20,7 @@ export default class NavScreen extends Screen<NavView> {
  /** Constructor intialized Screen Component and binds corresponding View and StateManager 
      * */
 	public constructor() {
+		
 		super(NavView);
 		this._stateManager = new StateManager();
 		this._stateManager.bind(this._onRender.bind(this));
