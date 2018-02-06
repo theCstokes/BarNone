@@ -68,7 +68,7 @@ export class State {
 		{
 			id: 6,
 			name: "Shared Lifts",
-			icon: "fa-universal-access",
+			icon: "fa-share-alt",
 			screen: LiftScreen,
 			initData: "Shared"
 		},
