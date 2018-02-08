@@ -26,6 +26,20 @@ export default class LiftEditView extends EditView {
 						hint: "Name"
 					},
 					{
+					instance: ControlTypes.SearchBar,
+					id:"searchBar",
+					items: [
+						{
+							id:5,
+							title: "HELL"
+						},
+						{
+							id:7,
+							title: "BELL"
+						}
+					]
+				},
+					{
 						instance: ControlTypes.TabLayout,
 						tabs: [
 							{
