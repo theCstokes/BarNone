@@ -53,6 +53,8 @@ export default class Frame extends BaseContainer {
         this._statusImageButtonElement = Core.create("div", statusImageHoverElement, "Status-Image-Button");
         this._statusImageButtonElement.textContent = "Test";
 
+        this.linkComponentContainer("addOns", this.element);
+
         this._navDock = Core.create("div", this.element, "Nav-Dock");
         this.linkComponentContainer("navDock", this._navDock);
 
@@ -172,5 +174,19 @@ export default class Frame extends BaseContainer {
         return this.getScreenContainer("content");
     }
 
+    /** 
+     * Method sets the addOns of the Frame.
+     * @param value Array of addOns of type any to be viewed as screen. 
+     */
+    public set addOns(value: any[]) {
+        this.setScreenContainer("addOns", value);
+    }
+    /** 
+     * Accersor gets the addOns of Frame.
+	 * @returns  Array of addOns viewed as ScreenContainer.
+     */
+    public get addOns(): any[] {
+        return this.getScreenContainer("addOns");
+    }
 
 }

@@ -4,6 +4,7 @@ import List from "UEye/Elements/Components/List/List";
 import Breadcrumb from "UEye/Elements/Components/Breadcrumb/Breadcrumb";
 import Button from "UEye/Elements/Components/Button/Button";
 import Frame from "UEye/Elements/Containers/Frame/Frame";
+import Toast from "UEye/Elements/Components/Toast/Toast";
 
 /**
  *  Represents View for NavigationScreen .
@@ -22,6 +23,7 @@ export default class NavView extends View {
 	public helpButton: Button;
 	public exitHelpButton: Button;
 	public pageFrame: Frame;
+	public toast: Toast;
 
 	/**
  * Acessor gets content layout of Lifts Edit Screen 
@@ -30,7 +32,7 @@ export default class NavView extends View {
 		return [
 			{
 				instance: ControlTypes.Frame,
-				id:"pageFrame",
+				id: "pageFrame",
 				statusImageSource: "res/MacBarBell.jpg",
 				// globalDock: {
 				// 	instance: ControlTypes.OrderLayout,
@@ -42,6 +44,12 @@ export default class NavView extends View {
 				// 		}
 				// 	]
 				// },
+				addOns: [
+					{
+						id: "toast",
+						instance: ControlTypes.Toast
+					}
+				],
 				contextDock: {
 					instance: ControlTypes.ColumnLayout,
 					columns: [
@@ -49,8 +57,8 @@ export default class NavView extends View {
 							instance: ControlTypes.Column,
 							content: [
 								{
-                                    instance: ControlTypes.Breadcrumb,
-                                    id: "navBreadcrumbs",
+									instance: ControlTypes.Breadcrumb,
+									id: "navBreadcrumbs",
 									onClick: () => {
 										console.warn("testst");
 									}
@@ -62,24 +70,24 @@ export default class NavView extends View {
 							instance: ControlTypes.Column,
 							content: [
 								{
-								instance: ControlTypes.OrderLayout,
-								content: [	
-									{
-										instance: ControlTypes.IconButton,
-										id: "helpButton",
-										text: "Help",
-										icon: "fa-info"
-									},
-									{
-										instance: ControlTypes.IconButton,
-										id: "logoutButton",
-										text: "Logout",
-										icon: "fa-sign-out"
-									}
-									
+									instance: ControlTypes.OrderLayout,
+									content: [
+										{
+											instance: ControlTypes.IconButton,
+											id: "helpButton",
+											text: "Help",
+											icon: "fa-info"
+										},
+										{
+											instance: ControlTypes.IconButton,
+											id: "logoutButton",
+											text: "Logout",
+											icon: "fa-sign-out"
+										}
+
+									]
+								}
 							]
-						}
-						]
 						}
 						//{
 						//	instance: ControlTypes.Column,
@@ -104,8 +112,8 @@ export default class NavView extends View {
 				},
 				helpDock:
 				{
-					instance:ControlTypes.IconButton,
-					id:"exitHelpButton",
+					instance: ControlTypes.IconButton,
+					id: "exitHelpButton",
 					icon: "fa-times",
 				}
 			}

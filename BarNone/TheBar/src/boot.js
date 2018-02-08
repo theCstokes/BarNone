@@ -8,6 +8,10 @@ require.config({
 	// urlArgs: "v=" + (new Date()).getTime()
 });
 
+// TODO - Debug.
+var $App = null;
+var $UEye = null;
+
 define([
 	"UEye/UEye",
 	"UEye/UEye.config.d",
@@ -17,6 +21,9 @@ define([
 	// Preload modules.
 	"chartjs"
 ], function (UEye, UEye_config_d, App, PlayGround) {
+	// TODO - Debug.
+	$App = App.default;
+	$UEye = UEye.default;
 	
 	// Flags.
 	var launchPlayGround = false;

@@ -116,6 +116,25 @@ export default class NavScreen extends Screen<NavView> {
 	public onShow() {
 		App.breadcrumbs = this.view.navBreadcrumbs;
 		App.Navigation = this._contextStateManager;
+		App.Toast = this.view.toast;
+
+		var ws = new WebSocket("ws://localhost:58428");   
+		ws.onopen = () => {
+				console.log("onopen");
+
+				// ws.send("Hello World!");
+		};    
+		ws.onmessage = function(e) {
+				console.log("echo from server : " + e.data);
+				App.Toast.showMessage(e.data);   
+		};
+
+		ws.onclose = function() {   
+				console.log("onclose");
+		};
+		ws.onerror = function() {
+				console.log("onerror");    
+		};
 
 		this.view.logoutButton.onClick = () => {
 			DataManager.logout();

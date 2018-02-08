@@ -58,6 +58,7 @@ export default class Panel extends BaseContainer {
     // End Region
 
     // Region Protected Member(s).
+    public onModifiedChange(): void {}
     protected onModify(): void {
         
     }
