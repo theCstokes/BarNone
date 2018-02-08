@@ -16,6 +16,7 @@ using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.Repository;
 using BarNone.TheRack.DataAccess;
 using BarNone.Shared.DataConverters;
+using BarNone.TheRack.ResourceServer.API.Notification;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
@@ -68,6 +69,8 @@ namespace TheRack.ResourceServer.API.Controllers
                     expires_in = 0
                 }, _serializerSettings));
             }
+
+            await NotificationWebSocketMiddleware.NotifyAll($"{applicationUser.Name} has logged in.");
 
             var claims = new[]
             {
