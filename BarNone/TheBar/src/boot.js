@@ -29,10 +29,9 @@ define([
 	var launchPlayGround = false;
 
 	// Start.
-	UEye.default.start();
 	if (launchPlayGround) {
-		PlayGround.default.start();
+		new PlayGround.default();
 	} else {
-		App.default.start();
+		new App.default();
 	}
 });

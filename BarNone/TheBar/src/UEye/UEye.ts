@@ -83,11 +83,11 @@ export default class UEye {
 	/**
 	 * Start the application.
 	 */
-	public static start(): void {
-		var base = document.getElementById("app");
-		if (base !== null) {
+	public static start(base: HTMLElement): void {
+		// var base = document.getElementById("app");
+		// if (base !== null) {
 			UEye._base = base;
-		}
+		// }
 		UEye._screenList = [];
 		UEye._screenMountPointList = [];
 

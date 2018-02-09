@@ -44,12 +44,12 @@ export default class NavView extends View {
 				// 		}
 				// 	]
 				// },
-				addOns: [
-					{
-						id: "toast",
-						instance: ControlTypes.Toast
-					}
-				],
+				// addOns: [
+				// 	{
+				// 		id: "toast",
+				// 		instance: ControlTypes.Toast
+				// 	}
+				// ],
 				contextDock: {
 					instance: ControlTypes.ColumnLayout,
 					columns: [
