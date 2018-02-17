@@ -24,20 +24,14 @@ class NavElement {
  *  Represents State for Nav Screen.
  */
 export class State {
-	/**
- *  Represents Current screen id
- */
+	/** Represents Current screen id */
 	public currentScreenId: number;
-	/**
- *  Represents array storing navigation history
- */
+	/** Represents array storing navigation history */
 	public navHistory: number[] = [];
 
 	public context: ContextState = new ContextState();
 
-	/**
- *  Represents lists seen as part Navigation List
- */
+	/** Represents lists seen as part Navigation List */
 	public navElementList: NavElement[] = [
 		// {
 		// 	id: 1,

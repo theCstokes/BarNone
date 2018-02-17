@@ -95,17 +95,33 @@
     }
     .Help-Dock {
         position: absolute;
-        top: 0;
+        display: none;
+        top: 40px;
         bottom: 0;
         right: 0;
         width: @NormalHelpBarWidth;
         background-color: @DefaultGrey;
-        z-index: 100;
+        // z-index: 100;
         box-shadow: 0 4px 8px 0 @DefaultGrey, 0 6px 20px 0 @DefaultGrey;
 
         @media screen and (max-width: @ResizeThreshold) {
             width: @SmallNavBarWidth;
         }
+        -webkit-animation-timing-function: ease-in-out;
+        animation-timing-function: ease-in-out;
+    }
+    .Help-Dock.Visible {
+        display: block;
+
+        -webkit-animation: UEyeFrameStageRightIn 0.5s;
+        animation: UEyeFrameStageRightIn 0.5s;
+    }
+
+    .Help-Dock.Hidden-Dock {
+        // display: none;
+
+        -webkit-animation: UEyeFrameStageRightOut 0.5s;
+        animation: UEyeFrameStageRightOut 0.5s;
     }
 
     // > .Global-Dock {
@@ -135,13 +151,13 @@
             left: @SmallNavBarWidth;
         }
     }
-    > .Context-Dock.Show-Help-Dock {
-        right: @NormalHelpBarWidth;
+    // > .Context-Dock.Show-Help-Dock {
+    //     right: @NormalHelpBarWidth;
 
-        @media screen and (max-width: @ResizeThreshold) {
-            right: @SmallNavBarWidth;
-        }
-    }
+    //     @media screen and (max-width: @ResizeThreshold) {
+    //         right: @SmallNavBarWidth;
+    //     }
+    // }
 
     > .Content {
         position: absolute;
@@ -154,6 +170,8 @@
         @media screen and (max-width: @ResizeThreshold) {
             left: @SmallNavBarWidth;
         }
+        -webkit-animation-timing-function: ease-in-out;
+        animation-timing-function: ease-in-out;
     }
     > .Content.Show-Help-Dock {
         right: @NormalHelpBarWidth;
@@ -161,5 +179,53 @@
         @media screen and (max-width: @ResizeThreshold) {
             right: @SmallNavBarWidth;
         }
+
+        -webkit-animation: UEyeFrameContentStageRightIn 0.5s;
+        animation: UEyeFrameContentStageRightIn 0.5s;
     }
+
+    > .Content.Hidden-Help-Dock {
+        -webkit-animation: UEyeFrameContentStageRightOut 0.5s;
+        animation: UEyeFrameContentStageRightOut 0.5s;
+    }
+}
+
+@-webkit-keyframes UEyeFrameStageRightIn {
+	from {right: -300px; opacity: 0;} 
+	to {right: 0; opacity: 1;}
+}
+
+@keyframes UEyeFrameStageRightIn {
+	from {right: -300px; opacity: 0;}
+	to {right: 0; opacity: 1;}
+}
+
+@-webkit-keyframes UEyeFrameStageRightOut {
+	from {right: 0; opacity: 1;} 
+	to {right: -300px; opacity: 0;}
+}
+
+@keyframes UEyeFrameStageRightOut {
+	from {right: 0; opacity: 1;}
+	to {right: -300px; opacity: 0;}
+}
+
+@-webkit-keyframes UEyeFrameContentStageRightIn {
+	from {right: 0; opacity: 0;} 
+	to {right: 300px; opacity: 1;}
+}
+
+@keyframes UEyeFrameContentStageRightIn {
+	from {right: 0; opacity: 0;}
+	to {right: 300px; opacity: 1;}
+}
+
+@-webkit-keyframes UEyeFrameContentStageRightOut {
+	from {right: 300px; opacity: 1;} 
+	to {right: 0; opacity: 0;}
+}
+
+@keyframes UEyeFrameContentStageRightOut {
+	from {right: 300px; opacity: 1;}
+	to {right: 0; opacity: 0;}
 }

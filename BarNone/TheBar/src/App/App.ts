@@ -20,6 +20,7 @@ export default class App extends BaseApp {
 
     protected onStartup(): void {
         DataManager.onAuthExpire.register(() => {
+			console.log("open");
             UEye.push(RefreshTokenScreen);
         });
 

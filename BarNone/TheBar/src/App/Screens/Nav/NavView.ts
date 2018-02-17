@@ -5,6 +5,7 @@ import Breadcrumb from "UEye/Elements/Components/Breadcrumb/Breadcrumb";
 import Button from "UEye/Elements/Components/Button/Button";
 import Frame from "UEye/Elements/Containers/Frame/Frame";
 import Toast from "UEye/Elements/Components/Toast/Toast";
+import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 
 /**
  *  Represents View for NavigationScreen .
@@ -19,9 +20,9 @@ export default class NavView extends View {
  */
 	public navBreadcrumbs: Breadcrumb;
 
-	public logoutButton: Button;
-	public helpButton: Button;
-	public exitHelpButton: Button;
+	public logoutButton: IconButton;
+	public helpButton: IconButton;
+	// public exitHelpButton: Button;
 	public pageFrame: Frame;
 	public toast: Toast;
 
@@ -109,13 +110,13 @@ export default class NavView extends View {
 					instance: ControlTypes.List,
 					id: "navList",
 					style: ControlTypes.NavigationListItem
-				},
-				helpDock:
-				{
-					instance: ControlTypes.IconButton,
-					id: "exitHelpButton",
-					icon: "fa-times",
 				}
+				// helpDock:
+				// {
+				// 	instance: ControlTypes.IconButton,
+				// 	id: "exitHelpButton",
+				// 	icon: "fa-times",
+				// }
 			}
 		];
 	}

@@ -63,7 +63,7 @@ export default class Frame extends BaseContainer {
 
         this._helpDock = Core.create("div", this.element, "Help-Dock");
         this.linkComponentContainer("helpDock", this._helpDock);
-        this._helpDock.style.visibility = "hidden";
+        // this._helpDock.style.visibility = "hidden";
     }
 
 
@@ -134,6 +134,7 @@ export default class Frame extends BaseContainer {
     public get navDock(): any[] {
         return this.getComponentContainer("navDock");
     }
+    
     public set helpDock(value: any[]) {
         this.setComponentContainer("helpDock", value);
     }
@@ -150,13 +151,14 @@ export default class Frame extends BaseContainer {
      */
     public toggleHelpBar(value: boolean) {
         if (value) {
-            this._helpDock.style.visibility = "visible";
-            Core.addClass(this._content, "Show-Help-Dock");
-            Core.addClass(this._contextDock, "Show-Help-Dock");
+            Core.replaceClass(this._helpDock, "Hidden-Dock", "Visible");
+            Core.replaceClass(this._content, "Hidden-Help-Dock", "Show-Help-Dock");
+            Core.replaceClass(this._contextDock, "Hidden-Help-Dock", "Show-Help-Dock");
         } else {
-            this._helpDock.style.visibility = "hidden";
-            Core.removeClass(this._content, "Show-Help-Dock");
-            Core.removeClass(this._contextDock, "Show-Help-Dock");
+            Core.replaceClass(this._helpDock, "Visible", "Hidden-Dock");
+            Core.replaceClass(this._content, "Show-Help-Dock", "Hidden-Help-Dock");
+            Core.replaceClass(this._contextDock, "Show-Help-Dock", "Hidden-Help-Dock");
+            
         }
     }
     /** 

@@ -7,6 +7,8 @@ import App from "App/App";
 import { ContextStateManager, ContextState } from "App/Screens/Nav/ContextStateManager";
 import LoginScreen from "App/Screens/Login/LoginScreen";
 import DataManager from "App/Data/DataManager";
+import ControlTypes from "UEye/ControlTypes";
+import Inflater from "UEye/Elements/Inflater/Inflater";
 
 /**
  *  Represents NavScreen class .
@@ -32,6 +34,9 @@ export default class NavScreen extends Screen<NavView> {
 	}
 
 	private _onContextRender(current: ContextState, original: ContextState): void {
+		this.view.pageFrame.toggleHelpBar(current.showHelp);
+		this.view.helpButton.icon = (current.showHelp ? "fa-times" : "fa-info");
+
 		this.view.navBreadcrumbs.items = current.crumbList.map(crumb => {
 			return {
 				id: crumb.id,
@@ -42,6 +47,7 @@ export default class NavScreen extends Screen<NavView> {
 	}
 	
 	private _onRender(current: State, original: State): void {
+
 		this.view.navList.items = current.navElementList.map(item => {
 			return {
 				selected: (item.id === current.currentScreenId),
@@ -105,30 +111,57 @@ export default class NavScreen extends Screen<NavView> {
 	// 			await UEye.push(NextScreen.default);
 	// 		}
 	// 	});
-	/** Method pops navigation on selecting back
-     * */
+	
+	/** 
+	 * Method pops navigation on selecting back
+   */
 	private _backAction() {
 		UEye.popTo(this);
 		// this.stateManager.navigateBack.trigger();
 	}
-		/** Method defines UI properties when shown
-     * */
+
+	/** 
+	 * Method defines UI properties when shown
+   */
 	public onShow() {
 		App.breadcrumbs = this.view.navBreadcrumbs;
 		App.Navigation = this._contextStateManager;
-		// App.Toast = this.view.toast;
 
 		this.view.logoutButton.onClick = () => {
 			DataManager.logout();
 			UEye.popAll();
 			UEye.push(LoginScreen);
 		}
-		this.view.helpButton.onClick=() =>{
-			 this.view.pageFrame.toggleHelpBar(true);
+
+		this.view.pageFrame.helpDock = [
+			{
+				instance: ControlTypes.Input,
+				hint: "test"
+			}
+		];
+
+		var subComponentParent = this.view.pageFrame.getComponentContainerElement("helpDock");
+		if (subComponentParent !== null) {
+			var subComponents = Inflater.execute(subComponentParent, {
+				instance: ControlTypes.Panel,
+				caption: "Help Information",
+				content: [
+					{
+						instance: ControlTypes.Input,
+						hint: "test"
+					}
+				]
+			}, this.view);
 		}
-		this.view.exitHelpButton.onClick=() =>{
-			this.view.pageFrame.toggleHelpBar(false);
-	   }
+		
+		this.view.helpButton.onClick=() =>{
+			//  this.view.pageFrame.toggleHelpBar(true);
+			this._contextStateManager.ToggleShowHelp.trigger();
+		}
+		// this.view.exitHelpButton.onClick=() =>{
+		// 	this.view.pageFrame.toggleHelpBar(false);
+		//  }
+		
 		this.view.navList.onSelect = (data: IListItem) => {
 			UEye.popTo(this);
 
