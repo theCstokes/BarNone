@@ -17,6 +17,7 @@ import Range from "UEye/Elements/Components/Range/Range";
 import Graph from "UEye/Elements/Components/Graph/Graph";
 import Info from "UEye/Elements/Components/Info/Info";
 import Toast from "UEye/Elements/Components/Toast/Toast";
+import HTMLContent from "UEye/Elements/Components/HTMLContent/HTMLContent";
 
 import Column from "UEye/Elements/Containers/Column/Column";
 import ColumnLayout from "UEye/Elements/Containers/ColumnLayout/ColumnLayout";
@@ -66,6 +67,8 @@ export default class ControlTypes {
 	public static readonly Info = new ComponentType(p => new Info(p));
 	/**Toast Component Type */
 	public static readonly Toast = new ComponentType(p => new Toast(p));
+	/**Toast Component Type */
+	public static readonly HTMLContent = new ComponentType(p => new HTMLContent(p));
 
 	//---------------------Containers--------------------
 

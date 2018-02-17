@@ -7,50 +7,45 @@ import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import List from "UEye/Elements/Components/List/List";
 
 export default class LiftEditView extends EditView {
+	protected caption: string = "Lift Edit";
+
 	public nameInput: Input;
 	public ageInput: Input;
-	public editPanel: Panel;
+	// public editPanel: Panel;
 	public player: Video;
 	public commentList: List;
 
 	public get content(): any[] {
 		return [
 			{
-				id: "editPanel",
-				instance: ControlTypes.Panel,
-				caption: "User Edit",
-				content: [
+				id: "nameInput",
+				instance: ControlTypes.Input,
+				hint: "Name"
+			},
+			{
+				instance: ControlTypes.TabLayout,
+				tabs: [
 					{
-						id: "nameInput",
-						instance: ControlTypes.Input,
-						hint: "Name"
+						title: "Video",
+						content: [
+							{
+								id: "player",
+								instance: ControlTypes.Video
+							},
+						]
 					},
 					{
-						instance: ControlTypes.TabLayout,
-						tabs: [
+						title: "Comments",
+						content: [
 							{
-								title: "Video",
-								content: [
-									{
-										id: "player",
-										instance: ControlTypes.Video
-									},
-								]
-							},
-							{
-								title: "Comments",
-								content: [
-									{
-										id: "commentList",
-										instance: ControlTypes.List,
-										style: ControlTypes.DataListItem
-									}
-								]
+								id: "commentList",
+								instance: ControlTypes.List,
+								style: ControlTypes.DataListItem
 							}
 						]
 					}
 				]
 			}
-		];
+		]
 	}
 }

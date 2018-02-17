@@ -86,7 +86,7 @@ export default class UEye {
 	public static start(base: HTMLElement): void {
 		// var base = document.getElementById("app");
 		// if (base !== null) {
-			UEye._base = base;
+		UEye._base = base;
 		// }
 		UEye._screenList = [];
 		UEye._screenMountPointList = [];
@@ -97,6 +97,11 @@ export default class UEye {
 				this._onBack.trigger();
 			}
 		};
+
+		window.addEventListener('resize', () => {
+			this._screenList.forEach(screen =>
+				screen.inflaterData.componentList.forEach(component => component.show(screen.view)));
+		}, true);
 	}
 
 	/**

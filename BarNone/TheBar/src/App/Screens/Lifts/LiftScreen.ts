@@ -10,6 +10,7 @@ import LiftEditScreen from "App/Screens/Lifts/LiftEdit/LiftEditScreen";
 import App from "App/App";
 import DataEvent from "UEye/Core/DataEvent/DataEvent";
 import Lift from "App/Data/Models/Lift/Lift";
+import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
 
 export default class LiftScreen extends Screen<LiftView> {
 	// private subScreen: LiftEditScreen;
@@ -20,7 +21,7 @@ export default class LiftScreen extends Screen<LiftView> {
 	public static LiftChange: DataEvent<Lift>;
 	
 	public constructor() {
-		super(LiftView);
+		super(LiftView, LiftFolderHelp);
 
 		LiftScreen.ParentChange = new DataEvent();
 		LiftScreen.ParentChange.on(this._onFolderOpenHandler.bind(this));

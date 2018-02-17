@@ -7,6 +7,7 @@ import Core from "UEye/Elements/Core/Core";
 import { BaseView } from "UEye/Elements/Core/BaseView";
 import InflaterData from "UEye/Elements/Inflater/InflaterData";
 import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
+import StringUtils from "UEye/Core/StringUtils";
 
 class TabConfig implements IListItem {
     public id: number | string;
@@ -15,8 +16,8 @@ class TabConfig implements IListItem {
 
     public selected: boolean;
 
-    public content: any[];    
-   
+    public content: any[];
+
 }
 
 class TabButtonContentBind {
@@ -33,17 +34,23 @@ export default class TabLayout extends BaseContainer {
     private _tabElements: TabConfig[];
     private _tabContainers: TabButtonContentBind[];
     private _onClickCallback: OnClickCallback;
-    
+
 
     public constructor(parent: HTMLElement) {
         super(parent, "UEye-Tab-Layout");
 
         this._tabList = Core.create("ul", this.element, "Tab-Button-List");
-        
+
         this._contentElement = Core.create("div", this.element, "Content");
 
-     
-        this.onShow.on(view => this._view = view);
+
+        this.onShow.on(view => {
+            this._view = view;
+            var height = (this.element.parentElement!.offsetHeight - this.element.offsetTop);
+
+            this.element.style.height = StringUtils.format("{0}px", height);
+            this._contentElement.style.height = StringUtils.format("{0}px", height - 32);
+        });
     }
 
     public set tabs(value: TabConfig[]) {
@@ -53,56 +60,56 @@ export default class TabLayout extends BaseContainer {
     public get tabs(): TabConfig[] {
         return this._tabElements;
     }
-    
+
     private _renderTabs(): void {
         if (this._tabElements === undefined) return;
-      
+
         var data = new InflaterData();
         this._tabContainers = this._tabElements.map((tabManager, index) => {
-            var button = Core.create("li", this._tabList, "Tab-Button") ;
+            var button = Core.create("li", this._tabList, "Tab-Button");
             button.textContent = tabManager.title;
-            if(index==0){
-                tabManager.selected=true;
+            if (index == 0) {
+                tabManager.selected = true;
             }
             if (tabManager.selected) {
                 Core.addClass(button, "Selected");
-            }else if (tabManager.selected==null){
-                tabManager.selected=false;
+            } else if (tabManager.selected == null) {
+                tabManager.selected = false;
             }
             var ueyeTab = ControlTypes.Tab.create(this._contentElement, tabManager as any, this._view, data) as Tab;
             ueyeTab.selected = tabManager.selected;
             button.onclick = this.onClickHandler.bind(this);
-            var newTab= new TabButtonContentBind();
-            newTab.button=button;
-            newTab.content=ueyeTab;
+            var newTab = new TabButtonContentBind();
+            newTab.button = button;
+            newTab.content = ueyeTab;
             return newTab;
-        
+
         });
         this._view.setElements(data.componentMap);
         console.log("Tab Container", this._tabContainers);
-     ;
+        ;
     }
-   
+
     private onClickHandler(e: Event): void {
         this._tabContainers.forEach(tc => {
-            if(tc.button === e.target){
+            if (tc.button === e.target) {
                 tc.content.selected = true;
-                Core.replaceClass(tc.button,"Tab-Button", "Tab-Button Selected");
+                Core.replaceClass(tc.button, "Tab-Button", "Tab-Button Selected");
             }
-            else{
-                Core.replaceClass(tc.button,"Tab-Button Selected", "Tab-Button");
-                tc.content.selected=false;
+            else {
+                Core.replaceClass(tc.button, "Tab-Button Selected", "Tab-Button");
+                tc.content.selected = false;
             }
         });
-		// if (this._onClickCallback !== undefined) {
-		// 	this._onClickCallback();
-		// }
-	}
-    
+        // if (this._onClickCallback !== undefined) {
+        // 	this._onClickCallback();
+        // }
+    }
+
     public get onClick(): OnClickCallback {
         return this._onClickCallback;
     }
     public set onClick(value: OnClickCallback) {
-		this._onClickCallback = value;
-	}
+        this._onClickCallback = value;
+    }
 }

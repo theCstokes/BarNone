@@ -1,14 +1,22 @@
 .UEye-Tab-Layout {
     // position: absolute;
     height: 100%;
-    width: 100%; // bottom: 0;
-    top: 0;
-    left: 0;
+    width: 100%; 
+    // bottom: 0;
+    // top: 0;
+    // bottom: 0;
+    // left: 0;
+    right: 0;
     overflow: hidden;
     > .Content {
         // position: absolute;
-        height: 100%;
-        width: 96%;
+        // top: 0;
+        // bottom: 0;
+        // left: 0;
+        // right: 0;
+
+        // height: calc(~"100% - 30px;");
+        // width: 96%;
         border-radius: 6px;
         border: solid;
         // border-top-width: 5px;
@@ -17,11 +25,12 @@
         // border-left-width: 1px;
         border: 1px #bcbcbc solid;
         background-color: white;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        // box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         margin: 0 5px 5px 5px;
-        padding: 10px;
+        // padding: 10px;
     }
     > .Tab-Button-List {
+        height: 30px;
         list-style-type: none;
         display: flex;
         flex-direction: row;

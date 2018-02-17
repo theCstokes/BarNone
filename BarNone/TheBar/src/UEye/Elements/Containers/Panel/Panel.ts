@@ -21,8 +21,12 @@ export default class Panel extends BaseContainer {
         this._topDockElement = Core.create("div", this.element, "Top-Dock");
         this._captionElement = Core.create("div", this._topDockElement, "Name");
         this._modeElement = Core.create("div", this._topDockElement, "Mode");
+
+        // var contentHolder = Core.create("div", this.element, "Content-Holder");
+
         this._contentElement = Core.create("div", this.element, "Content");
         this.linkComponentContainer("content", this._contentElement);
+
         this._bottomDockElement = Core.create("div", this.element, "Bottom-Dock");
         this.linkComponentContainer("dockBottom", this._bottomDockElement);
     }
