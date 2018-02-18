@@ -63,6 +63,10 @@ export default class LiftFolderListItem extends BaseListItem {
         throw new Error("Method not implemented.");
     }
 
+    public canSelect(): boolean {
+        return true;
+    }
+
     private _onOpenActionClickHandler() {
         if (this._onOpenActionCallback !== undefined) {
             this._onOpenActionCallback();

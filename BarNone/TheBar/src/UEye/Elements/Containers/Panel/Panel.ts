@@ -1,10 +1,15 @@
 import { BaseContainer } from "UEye/Elements/Core/BaseContainer/BaseContainer";
 import Core from "UEye/Elements/Core/Core";
+import { BaseView } from "UEye/Elements/Core/BaseView";
+import InflaterData from "UEye/Elements/Inflater/InflaterData";
+import IconButton from "UEye/Elements/Components/IconButton/IconButton";
+import ControlTypes from "UEye/ControlTypes";
 
 export default class Panel extends BaseContainer {
 
     //#region Private DOM Element(s).
     private e_topDock: HTMLElement;
+    private e_actionBar: HTMLElement;
     private e_caption: HTMLElement
     private e_mode: HTMLElement;
     private e_content: HTMLElement;
@@ -12,25 +17,28 @@ export default class Panel extends BaseContainer {
     //#endregion
 
     //#region Private Field(s).
-    private _caption: string
+    private _view: BaseView;
+    private _caption: string;
     //#endregion
 
     //#region Public Constructor(s).
     constructor(parent: HTMLElement) {
         super(parent, "UEye-Panel");
-        // Core.addClass(this.element, "UEye-Panel");
 
         this.e_topDock = Core.create("div", this.element, "Top-Dock");
+        this.e_actionBar = Core.create("div", this.e_topDock, "Action-Bar");
+        this.linkComponentContainer("actionBar", this.e_actionBar);
+
         this.e_caption = Core.create("div", this.e_topDock, "Name");
         this.e_mode = Core.create("div", this.e_topDock, "Mode");
-
-        // var contentHolder = Core.create("div", this.element, "Content-Holder");
 
         this.e_content = Core.create("div", this.element, "Content");
         this.linkComponentContainer("content", this.e_content);
 
         this.e_bottomDock = Core.create("div", this.element, "Bottom-Dock");
         this.linkComponentContainer("dockBottom", this.e_bottomDock);
+
+        this.onShow.on(view => this._view = view);
     }
     //#endregion
 
@@ -46,6 +54,19 @@ export default class Panel extends BaseContainer {
     }
     public get caption(): any {
         return this._caption;
+    }
+
+    public set actions(value: IconButton[]) {
+        var data = new InflaterData();
+        value.map(action => {
+            return ControlTypes.IconButton
+                .create(this.e_actionBar, action, this._view, data) as IconButton;
+        });
+        this._view.setElements(data.componentMap);
+        this.setComponentContainer("content", value);
+    }
+    public get actions(): IconButton[] {
+        return this.getComponentContainer("content");
     }
 
     public set content(value: any[]) {

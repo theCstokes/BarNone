@@ -6,7 +6,7 @@ import Video from "UEye/Elements/Components/Video/Video";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import List from "UEye/Elements/Components/List/List";
 import IconButton from "UEye/Elements/Components/IconButton/IconButton";
-import SideBarLayout from "Ueye/Elements/Containers/SideBarLayout/SideBarLayout";
+import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout";
 
 export default class LiftEditView extends EditView {
 	protected caption: string = "Lift Edit";
@@ -52,15 +52,31 @@ export default class LiftEditView extends EditView {
 									{
 										instance: ControlTypes.Panel,
 										caption: "Analytics",
+										actions: [
+											{
+												id: "editButton",
+												text: "Edit",
+												icon: "fa-pencil-alt"
+											}
+										],
 										content: [
 											{
 												instance: ControlTypes.List,
 												id: "liftList",
-												style: ControlTypes.LiftFolderListItem,
+												style: ControlTypes.AnalysisListItem,
 												items: [
 													{
 														id: 1,
-														name: "Acceleration: 55m/s"
+														name: "Acceleration",
+														value: "55m/s",
+														icon: "fa-plus",
+														onAction: () => alert(11)
+													},
+													{
+														id: 2,
+														name: "Knee Angle",
+														value: "30 deg",
+														onAction: () => alert(22)
 													}
 												]
 											}

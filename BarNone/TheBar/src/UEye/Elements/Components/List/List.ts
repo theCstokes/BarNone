@@ -93,6 +93,8 @@ export default class UEyeList extends BaseComponent {
             }
 
             listElement.onclick = (e) => {
+                if (!instance.canSelect()) return;
+                
                 if (this._selected !== undefined) {
                     this._selected.selected = false;
                 }

@@ -63,6 +63,10 @@ export default class DataListItem extends BaseListItem {
         throw new Error("Method not implemented.");
     }
 
+    public canSelect(): boolean {
+        return false;
+    }
+
     private _onOpenActionClickHandler() {
         if (this._onOpenActionCallback !== undefined) {
             this._onOpenActionCallback();

@@ -48,9 +48,13 @@ export abstract class BaseListItem extends BaseComponent implements IListItem {
     }
 
     private onSelectCallback(): void {
+        if (!this.canSelect()) return;
+
         this._selected = true;
         if (this._onSelectCallback !== undefined) {
             this._onSelectCallback(this);
         }
     }
+
+    public abstract canSelect(): boolean;
 }

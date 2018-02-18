@@ -40,4 +40,8 @@ export default class ContactListItem extends BaseListItem {
     public onEnabledChange(): void {
         throw new Error("Method not implemented.");
     }
+
+    public canSelect(): boolean {
+        return false;
+    }
 }
