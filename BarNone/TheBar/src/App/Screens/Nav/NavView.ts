@@ -83,7 +83,7 @@ export default class NavView extends View {
 											instance: ControlTypes.IconButton,
 											id: "logoutButton",
 											text: "Logout",
-											icon: "fa-sign-out"
+											icon: "fa-sign-out-alt"
 										}
 
 									]

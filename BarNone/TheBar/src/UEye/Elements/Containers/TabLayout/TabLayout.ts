@@ -8,6 +8,7 @@ import { BaseView } from "UEye/Elements/Core/BaseView";
 import InflaterData from "UEye/Elements/Inflater/InflaterData";
 import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import StringUtils from "UEye/Core/StringUtils";
+import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 
 class TabConfig implements IListItem {
     public id: number | string;
@@ -18,19 +19,26 @@ class TabConfig implements IListItem {
 
     public content: any[];
 
+    public actions?: any[];
 }
 
 class TabButtonContentBind {
     public button: HTMLElement;
+
     public content: Tab;
+
+    public actions?: IconButton[];
 }
 
 export default class TabLayout extends BaseContainer {
 
     private _view: BaseView;
 
-    private _contentElement: HTMLElement;
-    private _tabList: HTMLElement;
+    private e_content: HTMLElement;
+    private e_tabList: HTMLElement;
+    private e_actionBar: HTMLElement;
+    private e_tabBar: HTMLElement;
+
     private _tabElements: TabConfig[];
     private _tabContainers: TabButtonContentBind[];
     private _onClickCallback: OnClickCallback;
@@ -39,17 +47,27 @@ export default class TabLayout extends BaseContainer {
     public constructor(parent: HTMLElement) {
         super(parent, "UEye-Tab-Layout");
 
-        this._tabList = Core.create("ul", this.element, "Tab-Button-List");
+        this.e_tabBar = Core.create("div", this.element, "Tab-Bar");
+        this.e_tabList = Core.create("ul", this.e_tabBar, "Tab-Button-List");
+        this.e_actionBar = Core.create("div", this.e_tabBar, "Action-Bar");
 
-        this._contentElement = Core.create("div", this.element, "Content");
+        this.e_content = Core.create("div", this.element, "Content");
 
 
         this.onShow.on(view => {
-            this._view = view;
-            var height = (this.element.parentElement!.offsetHeight - this.element.offsetTop);
 
-            this.element.style.height = StringUtils.format("{0}px", height);
-            this._contentElement.style.height = StringUtils.format("{0}px", height - 32);
+            // window.addEventListener('resize', () => {
+            //     console.log("rrrrrrr");
+            // }, true);
+
+            this._view = view;
+            // var height = (this.element.parentElement!.offsetHeight - this.element.offsetTop);
+
+            var top = (this.e_tabList.offsetTop + this.e_tabList.offsetHeight);
+            this.e_content.style.top = StringUtils.format("{0}px", top);
+
+            // this.element.style.height = StringUtils.format("{0}px", height);
+            // this._contentElement.style.height = StringUtils.format("{0}px", height - 32);
         });
     }
 
@@ -66,7 +84,7 @@ export default class TabLayout extends BaseContainer {
 
         var data = new InflaterData();
         this._tabContainers = this._tabElements.map((tabManager, index) => {
-            var button = Core.create("li", this._tabList, "Tab-Button");
+            var button = Core.create("li", this.e_tabList, "Tab-Button");
             button.textContent = tabManager.title;
             if (index == 0) {
                 tabManager.selected = true;
@@ -76,12 +94,18 @@ export default class TabLayout extends BaseContainer {
             } else if (tabManager.selected == null) {
                 tabManager.selected = false;
             }
-            var ueyeTab = ControlTypes.Tab.create(this._contentElement, tabManager as any, this._view, data) as Tab;
+            var ueyeTab = ControlTypes.Tab.create(this.e_content, tabManager as any, this._view, data) as Tab;
             ueyeTab.selected = tabManager.selected;
             button.onclick = this.onClickHandler.bind(this);
+
             var newTab = new TabButtonContentBind();
             newTab.button = button;
             newTab.content = ueyeTab;
+            newTab.actions = tabManager.actions && tabManager.actions.map(action => {
+                return ControlTypes.IconButton
+                    .create(this.e_actionBar, action, this._view) as IconButton;
+            });
+
             return newTab;
 
         });
@@ -95,10 +119,12 @@ export default class TabLayout extends BaseContainer {
             if (tc.button === e.target) {
                 tc.content.selected = true;
                 Core.replaceClass(tc.button, "Tab-Button", "Tab-Button Selected");
+                tc.actions && tc.actions.forEach(a => a.visible = true);
             }
             else {
                 Core.replaceClass(tc.button, "Tab-Button Selected", "Tab-Button");
                 tc.content.selected = false;
+                tc.actions && tc.actions!.forEach(a => a.visible = false);
             }
         });
         // if (this._onClickCallback !== undefined) {

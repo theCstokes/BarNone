@@ -15,17 +15,17 @@ export default class DialogScreen<TView extends DialogView> extends Screen<TView
 	}
 
 	public onShow(): void {
-		for(var i = 0; i < this._screenObj.parent.children.length; i++) {
-			var item = this._screenObj.parent.children[i] as HTMLElement;
-			if (item === this._screenObj.element) continue;
+		for(var i = 0; i < this.screenObj.parent.children.length; i++) {
+			var item = this.screenObj.parent.children[i] as HTMLElement;
+			if (item === this.screenObj.element) continue;
 			item.style.webkitFilter = "blur(5px)";
 		}
 	}
 
 	public destroy(): void {
-		for(var i = 0; i < this._screenObj.parent.children.length; i++) {
-			var item = this._screenObj.parent.children[i] as HTMLElement;
-			if (item === this._screenObj.element) continue;
+		for(var i = 0; i < this.screenObj.parent.children.length; i++) {
+			var item = this.screenObj.parent.children[i] as HTMLElement;
+			if (item === this.screenObj.element) continue;
 			item.style.webkitFilter = "";
 		}
 		super.destroy();

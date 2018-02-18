@@ -80,9 +80,9 @@ export default class NavScreen extends Screen<NavView> {
 			this._subScreenID = navElement.id;
 			UEye.popTo(this);
 			this._subScreen = UEye.push(navElement.screen, navElement.initData);
-			if (this._subScreen.help !== undefined) {
+			// if (this._subScreen.help !== undefined) {
 				this._renderHelp(this._subScreen.help);
-			}
+			// }
 		}
 	}
 
@@ -125,14 +125,18 @@ export default class NavScreen extends Screen<NavView> {
 		// this.stateManager.navigateBack.trigger();
 	}
 
-	private _renderHelp(help: IHelp) {
-		var contentString = help.content.reduce((html, element) => {
-			html += StringUtils.format("<h4>{0}</h4>", element.name);
-			if (element.image !== undefined)
-				html += StringUtils.format("<img src=\"{0}\" style=\"width:100%\">", element.image);
-			html += StringUtils.format("<p>{0}</p>", element.content);
-			return html;
-		}, "");
+	private _renderHelp(help?: IHelp) {
+		var contentString = "";
+
+		if (help !== undefined) {
+			contentString = help.content.reduce((html, element) => {
+				html += StringUtils.format("<h4>{0}</h4>", element.name);
+				if (element.image !== undefined)
+					html += StringUtils.format("<img src=\"{0}\" style=\"width:100%\">", element.image);
+				html += StringUtils.format("<p>{0}</p>", element.content);
+				return html;
+			}, "");
+		}
 
 		this.view.pageFrame.helpDock = [
 			{

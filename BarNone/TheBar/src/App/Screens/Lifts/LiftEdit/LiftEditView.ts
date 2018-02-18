@@ -5,6 +5,7 @@ import Panel from "UEye/Elements/Containers/Panel/Panel";
 import Video from "UEye/Elements/Components/Video/Video";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import List from "UEye/Elements/Components/List/List";
+import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 
 export default class LiftEditView extends EditView {
 	protected caption: string = "Lift Edit";
@@ -14,6 +15,7 @@ export default class LiftEditView extends EditView {
 	// public editPanel: Panel;
 	public player: Video;
 	public commentList: List;
+	public analyticsButton: IconButton;
 
 	public get content(): any[] {
 		return [
@@ -26,6 +28,13 @@ export default class LiftEditView extends EditView {
 				instance: ControlTypes.TabLayout,
 				tabs: [
 					{
+						actions: [
+							{
+								id: "analyticsButton",
+								text: "Logout",
+								icon: "fa-chart-pie"
+							}
+						],
 						title: "Video",
 						content: [
 							{

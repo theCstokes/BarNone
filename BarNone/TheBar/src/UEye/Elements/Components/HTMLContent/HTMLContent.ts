@@ -6,7 +6,7 @@ export default class HTMLContent extends BaseComponent {
 		super(parent, "HTML-Content");
 
 		this.onShow.on((view) => {
-			this.element.style.height = StringUtils.format("{0}px", this.element.offsetHeight);
+			// this.element.style.height = StringUtils.format("{0}px", this.element.offsetHeight);
 		});
 	}
 

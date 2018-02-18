@@ -36,7 +36,7 @@ export default class LiftScreen extends Screen<LiftView> {
 				selected: (item.id === current.selectionId),
 				id: item.id,
 				name: item.name,
-				icon: (item.type === LiftListType.Folder) ? "fa-folder-o" : "fa-universal-access",
+				icon: (item.type === LiftListType.Folder) ? "fa-folder" : "fa-universal-access",
 				onOpen: () => {
 					console.log(item);
 					if (item.type === LiftListType.Folder) {

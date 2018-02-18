@@ -19,7 +19,7 @@ export default class DataListItem extends BaseListItem {
 
         var content = Core.create("div", this.element, "Content");
 
-        this._icon = "fa-folder-o";
+        this._icon = "fa-folder";
         this._typeIcon = Core.create("div", content, "Type-Icon fa", this._icon);
 
         this._nameElement = Core.create("div", content, "Name");
