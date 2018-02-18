@@ -50,8 +50,21 @@ export default class LiftEditView extends EditView {
 								],
 								sideBar: [
 									{
-										instance: ControlTypes.Input,
-										hint: "Value"
+										instance: ControlTypes.Panel,
+										caption: "Analytics",
+										content: [
+											{
+												instance: ControlTypes.List,
+												id: "liftList",
+												style: ControlTypes.LiftFolderListItem,
+												items: [
+													{
+														id: 1,
+														name: "Acceleration: 55m/s"
+													}
+												]
+											}
+										]
 									}
 								]
 							}
