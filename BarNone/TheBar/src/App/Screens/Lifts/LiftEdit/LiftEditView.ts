@@ -6,6 +6,7 @@ import Video from "UEye/Elements/Components/Video/Video";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import List from "UEye/Elements/Components/List/List";
 import IconButton from "UEye/Elements/Components/IconButton/IconButton";
+import SideBarLayout from "Ueye/Elements/Containers/SideBarLayout/SideBarLayout";
 
 export default class LiftEditView extends EditView {
 	protected caption: string = "Lift Edit";
@@ -16,6 +17,7 @@ export default class LiftEditView extends EditView {
 	public player: Video;
 	public commentList: List;
 	public analyticsButton: IconButton;
+	public videoLayout: SideBarLayout;
 
 	public get content(): any[] {
 		return [
@@ -38,9 +40,21 @@ export default class LiftEditView extends EditView {
 						title: "Video",
 						content: [
 							{
-								id: "player",
-								instance: ControlTypes.Video
-							},
+								instance: ControlTypes.SideBarLayout,
+								id: "videoLayout",
+								content: [
+									{
+										id: "player",
+										instance: ControlTypes.Video
+									}
+								],
+								sideBar: [
+									{
+										instance: ControlTypes.Input,
+										hint: "Value"
+									}
+								]
+							}
 						]
 					},
 					{

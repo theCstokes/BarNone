@@ -30,6 +30,7 @@ import ContentContainer from "UEye/Elements/Containers/ContentContainer/ContentC
 import TabLayout from "UEye/Elements/Containers/TabLayout/TabLayout";
 import Tab from "UEye/Elements/Containers/Tab/Tab";
 import Dialog from "UEye/Elements/Containers/Dialog/Dialog";
+import SideBarLayout from "Ueye/Elements/Containers/SideBarLayout/SideBarLayout";
 
 export default class ControlTypes {
 
@@ -94,4 +95,6 @@ export default class ControlTypes {
 	public static readonly Tab = new ContainerType(p => new Tab(p));
 	/**Dialog Container Type */
 	public static readonly Dialog = new ContainerType(p => new Dialog(p));
+	/**Dialog Container Type */
+	public static readonly SideBarLayout = new ContainerType(p => new SideBarLayout(p));
 }

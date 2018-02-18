@@ -103,7 +103,7 @@ export default class TabLayout extends BaseContainer {
             newTab.content = ueyeTab;
             newTab.actions = tabManager.actions && tabManager.actions.map(action => {
                 return ControlTypes.IconButton
-                    .create(this.e_actionBar, action, this._view) as IconButton;
+                    .create(this.e_actionBar, action, this._view, data) as IconButton;
             });
 
             return newTab;

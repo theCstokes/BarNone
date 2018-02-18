@@ -39,6 +39,8 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 	}
 
 	public onShow(): void {
+		this.view.analyticsButton.onClick = () => this.view.videoLayout.toggleSideBar();
+
 		this.view.nameInput.onChange = (data) => {
 			this.stateManager.NameChange.trigger(data);
 		};
