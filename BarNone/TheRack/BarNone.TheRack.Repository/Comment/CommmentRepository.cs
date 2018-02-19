@@ -65,6 +65,6 @@ namespace BarNone.TheRack.Repository
         /// The entity resolver.
         /// </value>
         protected override EntityResolverDelegate<Comment> EntityResolver =>
-            (comments) => comments.Where(comment => comment.UserID == context.UserID);
+            (comments) => comments; //.Where(comment => comment.UserID == context.UserID);
     }
 }

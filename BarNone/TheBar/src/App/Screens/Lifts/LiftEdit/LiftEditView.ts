@@ -7,6 +7,7 @@ import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import List from "UEye/Elements/Components/List/List";
 import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout";
+import Messenger from "UEye/Elements/Components/Messenger/Messenger";
 
 export default class LiftEditView extends EditView {
 	protected caption: string = "Lift Edit";
@@ -15,7 +16,7 @@ export default class LiftEditView extends EditView {
 	public ageInput: Input;
 	// public editPanel: Panel;
 	public player: Video;
-	public commentList: List;
+	public commentList: Messenger;
 	public analyticsButton: IconButton;
 	public videoLayout: SideBarLayout;
 
@@ -91,8 +92,8 @@ export default class LiftEditView extends EditView {
 						content: [
 							{
 								id: "commentList",
-								instance: ControlTypes.List,
-								style: ControlTypes.DataListItem
+								instance: ControlTypes.Messenger,
+								// style: ControlTypes.DataListItem
 							}
 						]
 					}

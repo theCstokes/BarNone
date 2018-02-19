@@ -14,6 +14,8 @@ export default class UEyeList extends BaseComponent {
 
     private _view: BaseView;
 
+    private _isSelectionList: boolean;
+
     /**  Represents an array of additional data that is mapped to corresponding _listElement items  */
     private _items: any[]
     /**  Represents an array of the child elements contained in parent list (li tag).   */
@@ -61,6 +63,23 @@ export default class UEyeList extends BaseComponent {
     public get style(): ComponentType {
         return this._style;
     }
+
+    public set isSelectionList(value: boolean) {
+        if (this._isSelectionList !== value) {
+            this._isSelectionList = value;
+            if (this._isSelectionList) {
+                Core.addClass(this.element, "Selection-List");
+                // Core.addClass(this._elementList, "Selection-List");
+            } else {
+                Core.removeClass(this.element, "Selection-List");
+                // Core.removeClass(this._elementList, "Selection-List");
+            }
+        }
+    }
+    public get isSelectionList(): boolean {
+        return this._isSelectionList;
+    }
+
        /** Method that destroys all list elements of type HTMLElement in _listElements and the correponding elements in property _item
     
      * */
@@ -83,6 +102,8 @@ export default class UEyeList extends BaseComponent {
             var listElement = Core.create("li", this._elementList, "Element");
             // var pipeline = new InflaterPipeline();
             var instance: BaseListItem = this._style.create(listElement, element, this._view) as BaseListItem;
+
+            instance.isSelectionList = this.isSelectionList;
 
             // if (this._selected !== instance && instance.selected) {
             //     instance.selected = false;

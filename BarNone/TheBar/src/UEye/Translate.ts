@@ -12,5 +12,10 @@ export var Translate = {
 	AnalysisListItem: {
 		Name: "Name",
 		Value: "Value"
+	},
+	Components: {
+		Messenger: {
+			InputHint: "Comment"
+		}
 	}
 }

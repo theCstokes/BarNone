@@ -19,6 +19,7 @@ import Graph from "UEye/Elements/Components/Graph/Graph";
 import Info from "UEye/Elements/Components/Info/Info";
 import Toast from "UEye/Elements/Components/Toast/Toast";
 import HTMLContent from "UEye/Elements/Components/HTMLContent/HTMLContent";
+import Messenger from "UEye/Elements/Components/Messenger/Messenger";
 
 import Column from "UEye/Elements/Containers/Column/Column";
 import ColumnLayout from "UEye/Elements/Containers/ColumnLayout/ColumnLayout";
@@ -73,6 +74,8 @@ export default class ControlTypes {
 	public static readonly Toast = new ComponentType(p => new Toast(p));
 	/**Toast Component Type */
 	public static readonly HTMLContent = new ComponentType(p => new HTMLContent(p));
+	/**Messenger Component Type */
+	public static readonly Messenger = new ComponentType(p => new Messenger(p));
 
 	//---------------------Containers--------------------
 

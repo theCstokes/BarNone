@@ -27,10 +27,11 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 
 		this.view.player.frameData = SkeletonBuilder.build(current.lift.details.bodyData);
 
-		this.view.commentList.items = current.comments.map(comment => {
+		this.view.commentList.messages = current.comments.map(comment => {
 			return {
 				id: comment.id,
-				name: comment.text
+				name: comment.text,
+				isCurrentUser: (comment.userID === BaseDataManager.auth.token.UserID)
 			}
 		});
 
