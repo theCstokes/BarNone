@@ -28,7 +28,25 @@ export default class UserEditView extends EditView {
 						text: 21
 					},
 					{
-						instance: ControlTypes.Graph
+						instance: ControlTypes.Graph,
+						data: [{
+							x: 15,
+							y: 20
+						}, {
+							x: 15,
+							y: 15
+						}, {
+							x: 60,
+							y: 15
+						}, 
+						{
+							x: 95,
+							y: 20
+						} ],
+						title: "Snatch",
+						xAxisLabel: "Lift Acceleration",
+						yAxisLabel: "Something",
+						draw: true
 					}
 				]
 			}

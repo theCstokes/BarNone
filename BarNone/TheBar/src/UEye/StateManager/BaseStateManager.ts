@@ -65,7 +65,7 @@ export abstract class BaseStateManager<TState> {
 	/**
 	 * state tracker object.
 	 */
-    private _stateTracker: StateTracker<TState>;
+    protected _stateTracker: StateTracker<TState>;
 
 	/**
 	 * Create new Base state manager
@@ -95,14 +95,14 @@ export abstract class BaseStateManager<TState> {
 	 * Current state from state tracker.
 	 */
 	public getCurrentState(): TState {
-		return Object.freeze(this._stateTracker.current);
+		return Object.freeze(this.getState().current);
 	}
 
 	/**
 	 * Original state from state tracker.
 	 */
 	public getOriginalState(): TState {
-		return Object.freeze(this._stateTracker.original);
+		return Object.freeze(this.getState().original);
 	}
 
 	/**

@@ -4,9 +4,11 @@ import Core from "UEye/Elements/Core/Core";
  *  Represents Frame container that describes the base layout of the Single Page UI.
  */
 export default class Frame extends BaseContainer {
+
+    // private _globalDock: HTMLElement;
+
     /**  Represents the layout header dock as an HTMLElement */
-    private _globalDock: HTMLElement;
-     /**  Represents the dock layout for the contents of screens and sub screens HTMLElement  */
+
     private _contextDock: HTMLElement;
      /**  Represents the dock layout for the navigation side bar HTMLElement  */
     private _navDock: HTMLElement;
@@ -30,8 +32,8 @@ export default class Frame extends BaseContainer {
         super(parent);
         Core.addClass(this.element, "UEye-Frame");
 
-        this._globalDock = Core.create("div", this.element, "Global-Dock");
-        this.linkComponentContainer("globalDock", this._globalDock);
+      //  this._globalDock = Core.create("div", this.element, "Global-Dock");
+       // this.linkComponentContainer("globalDock", this._globalDock);
         
         this._contextDock = Core.create("div", this.element, "Context-Dock");
         this.linkComponentContainer("contextDock", this._contextDock);
@@ -51,21 +53,16 @@ export default class Frame extends BaseContainer {
         this._content = Core.create("div", this.element, "Content");
         this.linkScreenContainer("content", this._content);
     }
-     /** Method sets the content of globalDock container, calling method inheirited by BaseContainer. 
-	 * * @param value Array of contents of type any to be viewed in globalDock.   
-     * */
-    public set globalDock(value: any[]) {
-        this.setComponentContainer("globalDock", value);
-    }
-    /** Accesor gets the content of contextDock container.
-	 * * @returns  Array of type any 
-     * */
-    public get globalDock(): any[] {
-        return this.getComponentContainer("globalDock");
-    }
-    /** Method sets the content of contextDock container, calling method inheirited by BaseContainer. 
-	 * * @param value Array of contents of type any to be viewed in contextDock (includes screens and subscreens).   
-     * */
+
+    
+    // public set globalDock(value: any[]) {
+    //     this.setComponentContainer("globalDock", value);
+    // }
+    // public get globalDock(): any[] {
+    //     return this.getComponentContainer("globalDock");
+    // }
+
+
     public set contextDock(value: any[]) {
         this.setComponentContainer("contextDock", value);
     }

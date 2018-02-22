@@ -1,0 +1,40 @@
+.Lift-Folder-List-Item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px;
+    >.Content {
+        display: flex;
+        justify-content: flex-start;
+        >.Type-Icon {
+            margin-right: 5px;
+        }
+        >.Name:hover{
+            // color: #286090;
+            color: @DefaultElementAccent;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+    }
+    >.Open-Action {
+        background: @DefaultElementAccent;
+        padding: 2px 3px 2px 3px;
+        color: white;
+        border-radius: 2px;
+    }
+    // >.Open-Action:hover {
+    //     background-color: #286090;
+    //     border-color: #204d74;
+    //     text-decoration: none;
+    // }
+    >.Open-Action.disabled {
+        background-color: #B2B4B6;
+        color: #333333;
+        text-decoration: none;
+    }
+}

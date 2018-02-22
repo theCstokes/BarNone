@@ -72,10 +72,10 @@ namespace BarNone.DataLift.DataConverters.KinectToDM
                 X = kJoint.Position.X,
                 Y = kJoint.Position.Y,
                 Z = kJoint.Position.Z,
-                JointTypeID = (int)kJoint.JointType+1,
+                JointTypeID = (int)kJoint.JointType + 1,
                 JointType = (S.EJointType)kJoint.JointType,
                 JointTrackingStateType = (S.EJointTrackingStateType)kJoint.TrackingState,
-                JointTrackingStateTypeID = (int)kJoint.TrackingState
+                JointTrackingStateTypeID = (int)kJoint.TrackingState + 1
             };
         }
 

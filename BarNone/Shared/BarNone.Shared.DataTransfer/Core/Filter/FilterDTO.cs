@@ -75,7 +75,7 @@ namespace BarNone.Shared.DataTransfer.Core
                 {
                     return (p.ToObject<object>() == null);
                 }
-                if (p == null) return false;
+                if (p.ToObject<object>() == null) return false;
                 return (p.ToObject(filter.Value.GetType()).Equals(filter.Value));
             };
         } 

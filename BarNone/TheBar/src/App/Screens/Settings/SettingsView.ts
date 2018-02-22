@@ -3,7 +3,7 @@ import ControlTypes from "UEye/ControlTypes";
 import List from "UEye/Elements/Components/List/List";
 
 export default class SettingsView extends View {
-	public userList: List;
+	public settingsList: List;
 	
 	public get content(): any[] {
 		return [
@@ -13,12 +13,11 @@ export default class SettingsView extends View {
 					{
 						instance: ControlTypes.Panel,
 						id: "mainPanel",
-						caption: "Users",
 						content: [
 							{
 								instance: ControlTypes.List,
-								id: "userList",
-								style: ControlTypes.ContactListItem
+								id: "settingsList",
+								style: ControlTypes.LiftFolderListItem
 								// items: [
 								// 	{
 								// 		name: "Christopher Stokes",

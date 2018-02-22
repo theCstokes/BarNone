@@ -22,16 +22,16 @@ export default class NavView extends View {
 			{
 				instance: ControlTypes.Frame,
 				statusImageSource: "res/MacBarBell.jpg",
-				globalDock: {
-					instance: ControlTypes.OrderLayout,
-					rightToLeft: true,
-					content: [
-						{
-							instance: ControlTypes.Label,
-							text: "Hello World"
-						}
-					]
-				},
+				// globalDock: {
+				// 	instance: ControlTypes.OrderLayout,
+				// 	rightToLeft: true,
+				// 	content: [
+				// 		{
+				// 			instance: ControlTypes.Label,
+				// 			text: "Hello World"
+				// 		}
+				// 	]
+				// },
 				contextDock: {
 					instance: ControlTypes.ColumnLayout,
 					columns: [
@@ -45,7 +45,19 @@ export default class NavView extends View {
 										console.warn("testst");
 									}
 								}
+
 							]
+						},
+						{
+							instance: ControlTypes.Column,
+							content: [
+							{
+								instance: ControlTypes.Button,
+								id: "logoutButton",
+								text: "Logout",
+								icon: "fa-sign-out"
+							}
+						]
 						}
 						//{
 						//	instance: ControlTypes.Column,

@@ -3,6 +3,7 @@ import { BaseComponent } from "UEye/Elements/Core/BaseComponent/BaseComponent";
 import { IControlType } from "UEye/IControlType";
 import Inflater from "UEye/Elements/Inflater/Inflater";
 import InflaterData from "UEye/Elements/Inflater/InflaterData";
+import { BaseView } from "UEye/Elements/Core/BaseView";
 
 type ComponentBuilder = (parent: HTMLElement) => BaseComponent;
 
@@ -13,9 +14,11 @@ export default class ComponentType implements IControlType<BaseComponent> {
         this._builder = builder;
 	}
 
-    public create(parent: HTMLElement, config: ComponentConfig, data?: InflaterData): BaseComponent {
+    public create(parent: HTMLElement, config: ComponentConfig, view: BaseView, data?: InflaterData): BaseComponent {
         if (data === undefined) data = new InflaterData();
 		var component = this._builder(parent);
+
+		component.show(view);
 
 		// if ("onShow" in component) {
 		// 	component.onShow();

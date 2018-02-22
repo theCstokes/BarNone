@@ -1,10 +1,12 @@
-﻿namespace BarNone.Shared.DataTransfer.Core
+﻿using BarNone.Shared.Core;
+
+namespace BarNone.Shared.DataTransfer.Core
 {
     /// <summary>
     /// Parent dto.
     /// </summary>
     /// <seealso cref="BarNone.Shared.DataTransfer.Core.IDTO" />
-    public interface IParentDTO : IDTO
+    public interface IParentDTO : ITrackableDTO
     {
         dynamic Details { get; set; }
     }

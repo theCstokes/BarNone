@@ -3,6 +3,7 @@ import ComponentConfig from "UEye/Elements/Core/ComponentConfig";
 import { IControlType } from "UEye/IControlType";
 import InflaterData from "UEye/Elements/Inflater/InflaterData";
 import Inflater from "UEye/Elements/Inflater/Inflater";
+import { BaseView } from "UEye/Elements/Core/BaseView";
 
 type ComponentBuilder = (parent: HTMLElement) => BaseContainer;
 
@@ -13,9 +14,11 @@ export default class ContainerType implements IControlType<BaseContainer> {
         this._builder = builder;
     }
     
-    public create(parent: HTMLElement, config: ComponentConfig, data: InflaterData): BaseContainer {
+    public create(parent: HTMLElement, config: ComponentConfig, view: BaseView, data?: InflaterData): BaseContainer {
         if (data === undefined) data = new InflaterData();
-        var component = this._builder(parent);
+		var component = this._builder(parent);
+		
+		component.show(view);
 
 		for (var key in config) {
 			if (!config.hasOwnProperty(key)) continue;
@@ -26,7 +29,7 @@ export default class ContainerType implements IControlType<BaseContainer> {
 			if (component.isComponentContainer(key)) {
 				var subComponentParent = component.getComponentContainerElement(key);
 				if (subComponentParent !== null) {
-					var subComponents = Inflater.execute(subComponentParent, property);
+					var subComponents = Inflater.execute(subComponentParent, property, view);
 					(component as any)[key] = subComponents;
 					data.componentList = data.componentList.concat(subComponents.componentList);
 				}
@@ -34,7 +37,7 @@ export default class ContainerType implements IControlType<BaseContainer> {
 				(component as any)[key] = property;
 			}
 		}
-
+		
 		data.componentList.push(component);
 		return component;
 	}

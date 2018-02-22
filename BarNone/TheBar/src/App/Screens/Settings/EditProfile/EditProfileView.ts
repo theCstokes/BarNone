@@ -16,17 +16,122 @@ export default class EditProfileView extends EditView {
 				caption: "User Edit",
 				content: [
 					{
-						id: "nameInput",
-						instance: ControlTypes.Input,
-						hint: "Name"
+						instance: ControlTypes.ColumnLayout,
+						columns: [
+							{
+								instance: ControlTypes.Column,
+								content: [
+									{
+										id: "nameInput",
+										instance: ControlTypes.Input,
+										readonly:true,
+										hint: "Account Name"
+									}
+	
+								]
+							},
+							{
+								instance: ControlTypes.Column,
+								content: [
+								{
+									instance: ControlTypes.Button,
+									id: "editName",
+									text: "Edit",
+									icon: "fa-pencil"
+								}
+							]
+							}
+						
+						]
 					},
 					{
-						id: "ageInput",
-						instance: ControlTypes.Input,
-						readonly: true,
-						hint: "Age",
-						text: 21
+						instance: ControlTypes.ColumnLayout,
+						columns: [
+							{
+								instance: ControlTypes.Column,
+								content: [
+									{
+										id: "userNameInput",
+										instance: ControlTypes.Input,
+										readonly:true,
+										hint: "User Name"
+									}
+	
+								]
+							},
+							{
+								instance: ControlTypes.Column,
+								content: [
+								{
+									instance: ControlTypes.Button,
+									id: "editName",
+									text: "Edit",
+									icon: "fa-pencil"
+								}
+							]
+							}
+						
+						]
+					},
+					{
+						instance: ControlTypes.ColumnLayout,
+						columns: [
+							{
+								instance: ControlTypes.Column,
+								content: [
+									{
+										id: "ageInput",
+										instance: ControlTypes.Input,
+										readonly:true,
+										hint: "Age"
+									}
+	
+								]
+							},
+							{
+								instance: ControlTypes.Column,
+								content: [
+								{
+									instance: ControlTypes.Button,
+									id: "editName",
+									text: "Edit",
+									icon: "fa-pencil"
+								}
+							]
+							}
+						
+						]
+					},
+					{
+						instance: ControlTypes.ColumnLayout,
+						columns: [
+							{
+								instance: ControlTypes.Column,
+								content: [
+									{
+										id: "genderInput",
+										instance: ControlTypes.Input,
+										readonly:true,
+										hint: "Gender"
+									}
+	
+								]
+							},
+							{
+								instance: ControlTypes.Column,
+								content: [
+								{
+									instance: ControlTypes.Button,
+									id: "editName",
+									text: "Edit",
+									icon: "fa-pencil"
+								}
+							]
+							}
+						
+						]
 					}
+				
 				]
 			}
 		];

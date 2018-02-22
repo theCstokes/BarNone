@@ -9,7 +9,7 @@ export default class DataManager extends BaseDataManager {
 
 	public static readonly Users: Resource<User> = new Resource<User>("User");
 
-	public static readonly LiftFolders: Resource<LiftFolder> = new Resource<LiftFolder>("LiftFolder");
+	public static readonly LiftFolders: DetailResource<LiftFolder> = new DetailResource<LiftFolder>("LiftFolder");
 
 	public static readonly Lifts: DetailResource<Lift> = new DetailResource<Lift>("Lift");
 

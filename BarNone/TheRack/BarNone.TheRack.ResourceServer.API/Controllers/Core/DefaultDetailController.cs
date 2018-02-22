@@ -76,6 +76,11 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
             {
                 using (var repo = _builder(context))
                 {
+                    var filter = FilterRequest;
+                    if (filter != null)
+                    {
+                        return EntityResponse.Response(repo.Get(filter.GetWhere()));
+                    }
                     return EntityResponse.Response(repo.Get());
                 }
             }
