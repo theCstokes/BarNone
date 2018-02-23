@@ -1,6 +1,6 @@
-// import { Chart } from "chart.js";
-// var Chart = require("../../../../../../node_modules/chart.js/src/chart");
-// import { Chart } from "../../../../../node_modules/chart.js/src/chart";
+// Stub a local require for the ts compiler.
+declare function require(moduleNames: string): any;
+
 import { BaseComponent } from "UEye/Elements/Core/BaseComponent/BaseComponent";
 import Core from "UEye/Elements/Core/Core";
 /**Type Definition: for LineData to be drawn on canvas */

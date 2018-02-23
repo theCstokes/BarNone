@@ -15,19 +15,23 @@ export interface IListElement {
 	id: number;
 }
 
-type SelectionListProvider<TData> = () => Promise<TData[]>;
+// type SelectionListProvider<TData> = () => Promise<TData[]>;
 
-export class SelectionStateManager<TData extends IListElement, TState extends ISelectionState<TData>>
+export abstract class SelectionStateManager<
+	TData extends IListElement,
+	TState extends ISelectionState<TData>>
 	extends BaseStateManager<TState> {
 
-	private _provider: SelectionListProvider<TData>;
+	// private _provider: SelectionListProvider<TData>;
 	private _TStateType: { new(): TState };
 
-	public constructor(TStateType: { new(): TState }, provider: SelectionListProvider<TData>) {
+	public constructor(TStateType: { new(): TState }) {
 		super(TStateType);
 		this._TStateType = TStateType;
-		this._provider = provider;
+		// this._provider = provider;
 	}
+
+	protected abstract async onLoad(): Promise<TData[]>;
 
 	public readonly ResetState = StateBind
 		.onAction<TState, TData[]>(this, (state, data) => {
@@ -47,7 +51,7 @@ export class SelectionStateManager<TData extends IListElement, TState extends IS
 
 			return nextState;
 		});
-	
+
 	// public readonly resetState = StateBind
 	// 	.create<TState>(this, true)
 	// 	.onAction().expose();
@@ -62,7 +66,7 @@ export class SelectionStateManager<TData extends IListElement, TState extends IS
 	// 	}).expose();
 
 	public async init(): Promise<void> {
-		var data = await this._provider();
+		var data = await this.onLoad();
 		this.ResetState.trigger(data);
 	}
 

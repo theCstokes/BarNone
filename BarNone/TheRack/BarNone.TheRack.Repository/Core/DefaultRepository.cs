@@ -98,7 +98,7 @@ namespace BarNone.TheRack.Repository.Core
         {
             var entity = DataConverter(dto);
             entity.ID = id;
-            var result = Update(entity);
+            var result = Update(entity, dto.UpdateFilter);
 
             return result;
         }

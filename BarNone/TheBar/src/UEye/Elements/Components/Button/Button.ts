@@ -8,13 +8,13 @@ import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
  */
 export default class Button extends BaseComponent {
 	 /**  Represents text content of the Button component as a string value. Used as an identifier. */
-	private _text: string;
+	protected _text: string;
 	/**  Represents icon content of the Button component as a string value. Used as an identifier. */
 	private _icon: string;
 	/**  Represents event listner that is called when even occurs.*/
 	private _onClickCallback: OnClickCallback;
 	/**  Represents text content of the the Button component as an HTMLElement (and generate a HTML tag). */
-	private _textElement: HTMLElement;
+	protected _textElement: HTMLElement;
 	/**  Represents icon content of the the Button component as an HTMLElement (and generate a HTML tag).*/
 	private _iconElement: HTMLElement;
 

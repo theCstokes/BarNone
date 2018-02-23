@@ -35,33 +35,6 @@ namespace TheRack.ResourceServer.API.Controllers
 
         }
 
-        //[HttpPost]
-        //public override IActionResult Post([FromBody] LiftDTO dto)
-        //{
-        //    if (dto == null)
-        //    {
-        //        using (MemoryStream ms = new MemoryStream())
-        //        {
-        //            HttpContext.Request.Body.CopyTo(ms);
-        //            byte[] data = ms.ToArray();
-        //            var jsonString = Encoding.ASCII.GetString(data);
-        //            dto = JsonConvert.DeserializeObject<LiftDTO>(jsonString);
-        //        }
-        //    }
-
-        //    try
-        //    {
-        //        using (LiftRepository repository = new LiftRepository())
-        //        {
-        //            return EntityResponse.Response(repository.Create(dto));
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return EntityResponse.Error(e);
-        //    }
-        //}
-
         /// <summary>
         /// Gets video stream for the video linked with the lift from the specified identifier.
         /// </summary>

@@ -25,6 +25,7 @@ namespace BarNone.DataLift.UI.ViewModels
 {
     public class DataRecorderVM : ViewModelBase
     {
+
         #region Bound Properties
         /// <summary>
         /// Vm holding all information shared between video data dependent viewmodels
@@ -153,7 +154,6 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             IsRecording = false;
             isCurrentlyRecording = false;
-
             CurrentLiftData.CurrentRecordedBodyData.Clear();
         }
 
@@ -161,7 +161,6 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             IsRecording = false;
             isCurrentlyRecording = false;
-
         }
 
         #endregion

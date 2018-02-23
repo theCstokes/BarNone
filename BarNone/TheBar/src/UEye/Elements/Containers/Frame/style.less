@@ -17,6 +17,8 @@
         background-color: @DefaultAccent;
         justify-content: space-around;
         align-items: center;
+        z-index: 100;
+        box-shadow: 0 4px 8px 0 @DefaultAccent, 0 6px 20px 0 @DefaultAccent;
 
         @media screen and (max-width: @ResizeThreshold) {
             width: @SmallNavBarWidth;
@@ -84,6 +86,22 @@
         left: 0;
         width: @NormalNavBarWidth;
         background-color: @DefaultAccent;
+        z-index: 100;
+        box-shadow: 0 4px 8px 0 @DefaultAccent, 0 6px 20px 0 @DefaultAccent;
+
+        @media screen and (max-width: @ResizeThreshold) {
+            width: @SmallNavBarWidth;
+        }
+    }
+    .Help-Dock {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: @NormalHelpBarWidth;
+        background-color: @DefaultGrey;
+        z-index: 100;
+        box-shadow: 0 4px 8px 0 @DefaultGrey, 0 6px 20px 0 @DefaultGrey;
 
         @media screen and (max-width: @ResizeThreshold) {
             width: @SmallNavBarWidth;
@@ -108,9 +126,20 @@
         left: @NormalNavBarWidth;
         right: 0;
         height: 40px;
+        // background-color: @DefaultAccent;
+
+        z-index: 100;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
         @media screen and (max-width: @ResizeThreshold) {
             left: @SmallNavBarWidth;
+        }
+    }
+    > .Context-Dock.Show-Help-Dock {
+        right: @NormalHelpBarWidth;
+
+        @media screen and (max-width: @ResizeThreshold) {
+            right: @SmallNavBarWidth;
         }
     }
 
@@ -124,6 +153,13 @@
 
         @media screen and (max-width: @ResizeThreshold) {
             left: @SmallNavBarWidth;
+        }
+    }
+    > .Content.Show-Help-Dock {
+        right: @NormalHelpBarWidth;
+
+        @media screen and (max-width: @ResizeThreshold) {
+            right: @SmallNavBarWidth;
         }
     }
 }

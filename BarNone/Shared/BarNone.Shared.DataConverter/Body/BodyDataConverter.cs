@@ -37,7 +37,7 @@ namespace BarNone.Shared.DataConverters
             {
                 ID = dto.ID,
                 RecordDate = dto.RecordTimeStamp,
-                UserID = context.UserID
+                UserID = context != null ? context.UserID : 0
             };
         }
 
