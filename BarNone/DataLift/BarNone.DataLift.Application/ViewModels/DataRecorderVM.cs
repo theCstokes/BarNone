@@ -9,9 +9,12 @@ using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.Flex;
 using BarNone.Shared.DomainModel;
 using Microsoft.Kinect;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -379,6 +382,16 @@ namespace BarNone.DataLift.UI.ViewModels
             GlobalFrameTimer.Stop();
             isCurrentlyRecording = false;
             IsRecording = false;
+
+            // temporary code.  DO NOT PUSH TO DEVELOP
+            
+
+            string json = File.ReadAllText("C:/Users/Aamir/Desktop/Chris_Single_Squat_1.json");
+            var tempJsonFromFS = JsonConvert.DeserializeObject<LiftDTO>(json);
+
+            var tempConverter = Converters.NewConvertion();
+            var tempBodyData = tempConverter.Lift.CreateDataModel(tempJsonFromFS);
+
             try
             {
                 CurrentLiftData.NormalizeTimes();
