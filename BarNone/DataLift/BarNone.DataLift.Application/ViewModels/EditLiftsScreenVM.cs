@@ -263,10 +263,16 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_commandPlayVideo == null)
                 {
-                    _commandPlayVideo = new RelayCommand(action => VideoTimer.IsEnabled = true);
+                    _commandPlayVideo = new RelayCommand(action => OnVideoPlayed());
                 }
                 return _commandPlayVideo;
             }
+        }
+
+        private void OnVideoPlayed()
+        {
+            GlobalTimer.Start();
+            VideoTimer.IsEnabled = true;
         }
 
         /// <summary>
@@ -282,10 +288,16 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_commandPauseVideo == null)
                 {
-                    _commandPauseVideo = new RelayCommand(action => VideoTimer.IsEnabled = false);
+                    _commandPauseVideo = new RelayCommand(action => OnVideoPaused());
                 }
                 return _commandPauseVideo;
             }
+        }
+
+        private void OnVideoPaused()
+        {
+            GlobalTimer.Stop();
+            VideoTimer.IsEnabled = false;
         }
 
         /// <summary>
@@ -401,7 +413,20 @@ namespace BarNone.DataLift.UI.ViewModels
             {
 
                 currentMs = (int)GlobalTimer.ElapsedMilliseconds;
-                int nextBodyFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedBodyData.Count;
+
+                int nextBodyFrame = 0;
+
+                for (int i = 0; i < CurrentLifts.CurrentRecordedBodyData.Count; i++)
+                {
+                    var frame = CurrentLifts.CurrentRecordedBodyData[i];
+                    if(frame.TimeOfFrame.TotalMilliseconds > ScrubberCurrentPosition)
+                    {
+                        nextBodyFrame = i - 1;
+                        break;
+                    }
+                }
+
+                //int nextBodyFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedBodyData.Count;
                 //int nextColorFrame = (currentColorDataFrame + 1) % CurrentLifts.CurrentRecordedColorData.Count;
                 //colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[nextColorFrame];
                 bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[nextBodyFrame];
