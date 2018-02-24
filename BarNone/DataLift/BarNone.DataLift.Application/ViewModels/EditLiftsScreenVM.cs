@@ -518,8 +518,18 @@ namespace BarNone.DataLift.UI.ViewModels
 
                //if(SelectedLift != null) SelectedLift.LiftEndTime = value.ToString();
 
-                _scrubberUpperThumb = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
+                if(ScrubberLowerThumb <= value)
+                {
+                    _scrubberUpperThumb = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
+                }
+                else
+                {
+                    ScrubberLowerThumb = value;
+                    _scrubberUpperThumb = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
+                }
+
                 //new PropertyChangedEventArgs("ScrubberUpperDisplayed");
             }
         }
@@ -537,9 +547,17 @@ namespace BarNone.DataLift.UI.ViewModels
                 //Console.WriteLine($"This is the value of the lower thumb {value}");
 
                 //if (SelectedLift != null) SelectedLift.LiftStartTime = value.ToString();
-
-                _scrubberLowerThumb = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
+                if(ScrubberUpperThumb >= value)
+                {
+                    _scrubberLowerThumb = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
+                }
+                else
+                {
+                    ScrubberUpperThumb = value;
+                    _scrubberLowerThumb = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
+                }
             }
         }
 
