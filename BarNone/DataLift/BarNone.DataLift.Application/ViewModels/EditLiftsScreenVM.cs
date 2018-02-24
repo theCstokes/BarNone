@@ -382,7 +382,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 GlobalTimer.Restart();
 
                 //Will only happen on loaded
-                colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[currentColorDataFrame];
+                //colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[currentColorDataFrame];
                 bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[currentBodyDataFrame];
                 
                 drawColor = true;
@@ -402,15 +402,15 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 currentMs = (int)GlobalTimer.ElapsedMilliseconds;
                 int nextBodyFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedBodyData.Count;
-                int nextColorFrame = (currentColorDataFrame + 1) % CurrentLifts.CurrentRecordedColorData.Count;
-                colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[nextColorFrame];
+                //int nextColorFrame = (currentColorDataFrame + 1) % CurrentLifts.CurrentRecordedColorData.Count;
+                //colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[nextColorFrame];
                 bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[nextBodyFrame];
 
-                if (colorFrameToDraw.Time.TotalMilliseconds < currentMs)
-                {
-                    drawColor = true;
-                    currentColorDataFrame = nextColorFrame;
-                }
+                //if (colorFrameToDraw.Time.TotalMilliseconds < currentMs)
+                //{
+                //    drawColor = true;
+                //    currentColorDataFrame = nextColorFrame;
+                //}
                 if (bodyFrameToDraw.TimeOfFrame.TotalMilliseconds < currentMs)
                 {
                     drawBody = true;
@@ -425,22 +425,22 @@ namespace BarNone.DataLift.UI.ViewModels
                 KinectToImage.DrawFrameFrontView(bodyFrameToDraw, _leftImageDrawingGroup, 424, 424);
                 KinectToImage.DrawFrameSideView(bodyFrameToDraw, _rightImageDrawingGroup, 424, 424);
             }
-            if (drawColor)
-            {
-                Console.WriteLine($"Time of color print {GlobalTimer.ElapsedMilliseconds}");
+            //if (drawColor)
+            //{
+            //    Console.WriteLine($"Time of color print {GlobalTimer.ElapsedMilliseconds}");
 
-                using (DrawingContext dc = _middleImageDrawingGroup.Open())
-                {
-                    var currentColorImage = colorFrameToDraw.Image;
-                    ImageBrush colorBrush = new ImageBrush(currentColorImage);
-                    dc.DrawImage(currentColorImage, new System.Windows.Rect(0, 0, 1920, 1080));
-                }
+            //    using (DrawingContext dc = _middleImageDrawingGroup.Open())
+            //    {
+            //        var currentColorImage = colorFrameToDraw.Image;
+            //        ImageBrush colorBrush = new ImageBrush(currentColorImage);
+            //        dc.DrawImage(currentColorImage, new System.Windows.Rect(0, 0, 1920, 1080));
+            //    }
 
-                //Console.WriteLine("Redraw at: {0}", GlobalTimer.ElapsedMilliseconds);
+            //    Console.WriteLine("Redraw at: {0}", GlobalTimer.ElapsedMilliseconds);
 
-            }
+            //}
 
-            
+
             if (currentMs > LoopTime)
             {
                 currentMs = 0;
@@ -454,6 +454,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 //increment timer value
                 ScrubberCurrentPosition += VideoTimerInterval;
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberCurrentPosition"));
+                Console.WriteLine("The value of scrubber should be {0}", ScrubberCurrentPosition);
             }
         }
 
@@ -512,10 +513,13 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             get
             {
-                if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
-                    return 0d;
+                if (CurrentLifts.CurrentRecordedBodyData.Count == 0) return 0d;
 
-                return Math.Max(CurrentLifts.CurrentRecordedColorData.Max(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Max(x => x.TimeOfFrame.TotalMilliseconds));
+                //if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
+                //    return 0d;
+
+                //return Math.Max(CurrentLifts.CurrentRecordedColorData.Max(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Max(x => x.TimeOfFrame.TotalMilliseconds));
+                return CurrentLifts.CurrentRecordedBodyData.Max(x => x.TimeOfFrame.TotalMilliseconds);
             }
         }
 
@@ -523,10 +527,14 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             get
             {
-                if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
-                    return 0d;
+                //if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
+                //    return 0d;
 
-                return Math.Min(CurrentLifts.CurrentRecordedColorData.Min(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Min(x => x.TimeOfFrame.TotalMilliseconds));
+                //return Math.Min(CurrentLifts.CurrentRecordedColorData.Min(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Min(x => x.TimeOfFrame.TotalMilliseconds));
+
+                if (CurrentLifts.CurrentRecordedBodyData.Count == 0) return 0d;
+
+                return CurrentLifts.CurrentRecordedBodyData.Min(x => x.TimeOfFrame.TotalMilliseconds);
             }
         }
 

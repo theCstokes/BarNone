@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -389,7 +390,9 @@ namespace BarNone.DataLift.UI.ViewModels
             var tempJsonFromFS = JsonConvert.DeserializeObject<LiftDTO>(json);
 
             var tempConverter = Converters.NewConvertion();
-            var tempBodyData = tempConverter.Lift.CreateDataModel(tempJsonFromFS);
+            var tempBDF = tempConverter.BodyData.CreateDataModel(tempJsonFromFS.Details.BodyData).BodyDataFrames;
+
+            CurrentLiftData.CurrentRecordedBodyData = new ObservableCollection<BodyDataFrame>(tempBDF);
 
             try
             {

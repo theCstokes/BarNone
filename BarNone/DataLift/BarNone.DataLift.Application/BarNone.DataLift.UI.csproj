@@ -175,8 +175,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CustomComponents\Scrubber.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
     <Page Include="Views\CustomComponents\VideoControlsBar.xaml">
       <Generator>MSBuild:Compile</Generator>
