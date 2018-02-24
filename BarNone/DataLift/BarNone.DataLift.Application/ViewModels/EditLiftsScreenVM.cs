@@ -411,7 +411,13 @@ namespace BarNone.DataLift.UI.ViewModels
             }
             else
             {
-
+                if(Math.Abs(currentMs - GlobalTimer.ElapsedMilliseconds) > 25)
+                {
+                    Console.Out.WriteLine("The current value of CMS is {0} and Timer is {1}", currentMs, GlobalTimer.ElapsedMilliseconds);
+                    GlobalTimer.Restart();
+                    GlobalTimer.ElapsedMilliseconds = currentMs;
+                }
+                
                 currentMs = (int)GlobalTimer.ElapsedMilliseconds;
 
                 int nextBodyFrame = 0;
@@ -445,7 +451,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             if (drawBody)
             {
-                Console.WriteLine($"Time of body print {GlobalTimer.ElapsedMilliseconds}");
+                //Console.WriteLine($"Time of body print {GlobalTimer.ElapsedMilliseconds}");
 
                 KinectToImage.DrawFrameFrontView(bodyFrameToDraw, _leftImageDrawingGroup, 424, 424);
                 KinectToImage.DrawFrameSideView(bodyFrameToDraw, _rightImageDrawingGroup, 424, 424);
@@ -469,6 +475,7 @@ namespace BarNone.DataLift.UI.ViewModels
             if (currentMs > LoopTime)
             {
                 currentMs = 0;
+
                 //increment timer value
                 ScrubberCurrentPosition = 0;
 
@@ -479,7 +486,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 //increment timer value
                 ScrubberCurrentPosition += VideoTimerInterval;
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberCurrentPosition"));
-                Console.WriteLine("The value of scrubber should be {0}", ScrubberCurrentPosition);
             }
         }
 
@@ -491,6 +497,9 @@ namespace BarNone.DataLift.UI.ViewModels
             get => currentMs;
             set
             {
+                //var tempTS = new TimeSpan(0,0,0,0,(int)value);
+                //GlobalTimer.Reset();
+                //GlobalTimer.
                 currentMs = (int)value;
                 OnPropertyChanged(new PropertyChangedEventArgs("CurrentScrubberPosition"));
             }
@@ -565,7 +574,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
-        Stopwatch GlobalTimer = new Stopwatch();
+        CustomTimer GlobalTimer = new CustomTimer();
 
         #region Constructor(s) & Desctructor
         /// <summary>
