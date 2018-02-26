@@ -112,9 +112,12 @@ namespace BarNone.TheRack.Repository.Core
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns></returns>
-        protected TDomainModel Update(TDomainModel model)
+        protected TDomainModel Update(TDomainModel model, List<string> updateFilter)
         {
-            return dbSet.Update(model).Entity;
+            var entity = dbSet.Attach(model);
+            updateFilter.Select(f => entity.Property(f).IsModified = true);
+
+            return entity.Entity;
         }
 
         /// <summary>

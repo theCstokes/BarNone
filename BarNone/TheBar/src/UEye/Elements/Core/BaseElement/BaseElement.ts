@@ -18,6 +18,9 @@ export abstract class BaseElement {
 	private _error: string;
 	/** Represents visible flag property  */
 	private _visible: boolean = true;
+	/** Parent HTML Element */
+	private _parent: HTMLElement;
+
 	/** Represents onShow callback  */
 	protected onShow: DataEvent<BaseView>;
 
@@ -27,6 +30,7 @@ export abstract class BaseElement {
 	*/
 	public constructor(parent: HTMLElement, ...styles: string[]) {
 		this._element = Core.create('div', parent, ...styles);
+		this._parent = parent;
 		this.onShow = new DataEvent<BaseView>();
 	}
 	/** Accessor to get _element property.
@@ -35,6 +39,14 @@ export abstract class BaseElement {
 	public get element(): HTMLElement {
 		return this._element;
 	}
+
+	/**
+	 * Accessor for parent HTMLElement
+	 */
+	public get parent(): HTMLElement {
+		return this._parent;
+	}
+
 	/** Accessor to get _id property.
 	* @returns Returns id property.
 	* */

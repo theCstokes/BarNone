@@ -5,44 +5,58 @@
     top: 0;
     left: 0;
     overflow: hidden;
-    .Content {
+    > .Content {
         // position: absolute;
         height: 100%;
-        width: 100%;
-        border: 1px black outset;
+        width: 96%;
+        border-radius: 6px;
+        border: solid;
+        // border-top-width: 5px;
+        // border-bottom-width: 5px;
+        // border-right-width: 1px;
+        // border-left-width: 1px;
+        border: 1px #bcbcbc solid;
+        background-color: white;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        margin: 0 5px 5px 5px;
+        padding: 10px;
     }
-    .Tab-Button-List {
+    > .Tab-Button-List {
         list-style-type: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
         margin: 0;
         padding: 0;
         overflow: hidden;
-        background-color: #333333;
-        .Tab-Button {
+        // background-color: #333333;
+        > .Tab-Button {
             display: block;
             color: white;
             text-align: center;
             padding: 7px 3px;
             text-decoration: none;
-            
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            opacity: 1;
+            margin-right: 10px;
             -webkit-border-radius: 4;
             -moz-border-radius: 4;
-            border-radius: 4px;
+            border-top-right-radius: 4px;
+            border-top-left-radius: 4px;
             width: 100px;
-
-            background-color: #286090;
-            border-color: #204d74;
+            background-color: #bcbcbc;
+            border-color: #f6f6f6;
         }
-
-        .Tab-Button.Selected {
+        > .Tab-Button.Selected {
             background: @DefaultElementAccent;
+            color: white;
+            //transform: scale(1.1);
         }
-
-        .Tab-Button:hover {
+        > .Tab-Button:hover {
             background: @DefaultElementAccent;
             text-decoration: none;
         }
-        
-        .Tab-Button.disabled {
+        > .Tab-Button.disabled {
             background-color: #B2B4B6;
             color: #333333;
             text-decoration: none;

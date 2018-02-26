@@ -92,11 +92,14 @@ export class Resource<TData> extends BaseResource {
             builder.header("Filter", JSON.stringify(FilterBuilder.getHeader(options.filter)));
         }
 
-        var result = await builder.execute();
-
-        var data: ListResult<TData> = JSON.parse(result);
-
-        return data.entities;
+        try {
+            var result = await builder.execute();
+            var data: ListResult<TData> = JSON.parse(result);
+            return data.entities;
+        } catch (error) {
+            BaseDataManager.fail(error);
+            throw error;
+        }
     }
 
     /**
@@ -110,11 +113,16 @@ export class Resource<TData> extends BaseResource {
             .GET(this._resource, route, this._useOverride)
             .header("Authorization", "Bearer " + BaseDataManager.auth.access_token);
 
-        var result = await builder.execute();
 
-        var data: EntityResult<TData> = JSON.parse(result);
 
-        return data.entity;
+        try {
+            var result = await builder.execute();
+            var data: EntityResult<TData> = JSON.parse(result);
+            return data.entity;
+        } catch (error) {
+            BaseDataManager.fail(error);
+            throw error;
+        }
     }
 
     /**
@@ -125,15 +133,19 @@ export class Resource<TData> extends BaseResource {
     public async update(id: number, source: TData): Promise<TData[]> {
         var route = StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, this._resource, id);
 
-        var result = await RequestBuilder
+        var builder = await RequestBuilder
             .PUT(this._resource, route, { id: id })
             .header("Authorization", "Bearer " + BaseDataManager.auth.access_token)
-            .header("Content-Type", "application/json")
-            .execute(source);
+            .header("Content-Type", "application/json");
 
-        var data: ListResult<TData> = JSON.parse(result);
-
-        return data.entities;
+        try {
+            var result = await builder.execute(source);;
+            var data: ListResult<TData> = JSON.parse(result);
+            return data.entities;
+        } catch (error) {
+            BaseDataManager.fail(error);
+            throw error;
+        }
     }
 }
 
@@ -175,11 +187,14 @@ export class DetailResource<TData> extends BaseResource {
             builder.header("Filter", JSON.stringify(FilterBuilder.getHeader(options.filter)));
         }
 
-        var result = await builder.execute();
-
-        var data: ListResult<TData> = JSON.parse(result);
-
-        return data.entities;
+        try {
+            var result = await builder.execute();
+            var data: ListResult<TData> = JSON.parse(result);
+            return data.entities;
+        } catch (error) {
+            BaseDataManager.fail(error);
+            throw error;
+        }
     }
 
     /**
@@ -204,11 +219,14 @@ export class DetailResource<TData> extends BaseResource {
             builder.header("Filter", JSON.stringify(FilterBuilder.getHeader(options.filter)));
         }
 
-        var result = await builder.execute();
-
-        var data: EntityResult<TData> = JSON.parse(result);
-
-        return data.entity;
+        try {
+            var result = await builder.execute();
+            var data: EntityResult<TData> = JSON.parse(result);
+            return data.entity;
+        } catch (error) {
+            BaseDataManager.fail(error);
+            throw error;
+        }
     }
 
     /**
@@ -219,14 +237,18 @@ export class DetailResource<TData> extends BaseResource {
     public async update(id: number, source: TData): Promise<TData[]> {
         var route = StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, this._resource, id);
 
-        var result = await RequestBuilder
+        var builder = await RequestBuilder
             .PUT(this._resource, route, { id: id })
             .header("Authorization", "Bearer " + BaseDataManager.auth.access_token)
-            .header("Content-Type", "application/json")
-            .execute(source);
+            .header("Content-Type", "application/json");
 
-        var data: ListResult<TData> = JSON.parse(result);
-
-        return data.entities;
+        try {
+            var result = await builder.execute(source);
+            var data: ListResult<TData> = JSON.parse(result);
+            return data.entities;
+        } catch (error) {
+            BaseDataManager.fail(error);
+            throw error;
+        }
     }
 }

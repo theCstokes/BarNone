@@ -13,6 +13,11 @@ export interface IScreenConfig {
      * Add screen to history flag.
      */
     addScreenToHistory: boolean;
+
+    /**
+     * Add screen to top element to make full screen.
+     */
+    fullScreen: boolean;
 }
 
 /**
@@ -24,16 +29,25 @@ export default abstract class Screen<TView extends View> {
      */
     private _view: TView;
     private _config: IScreenConfig;
-    private _screenObj: ContentContainer;
+    protected _screenObj: ContentContainer;
 
     public constructor(viewType: { new(): TView }/*, config?: Partial<IScreenConfig>*/) {
         this._view = new viewType();
-        this._config = <IScreenConfig>{
-            addScreenToHistory: true
-        };
+        this._config = this.configure();
         // Object.assign(this._config, config);
     }
 
+    //#region Public Property(s).
+    public get view(): TView {
+        return this._view;
+    }
+
+    public get config(): IScreenConfig {
+        return this._config;
+    }
+    //#endregion
+
+    //#region Public Member(s).
     public create(parent: HTMLElement): InflaterData {
         var config = {
             instance: ControlTypes.ContentContainer,
@@ -52,14 +66,18 @@ export default abstract class Screen<TView extends View> {
     public destroy(): void {
         this._screenObj.destroy();
     }
+    //#endregion
 
-    public get view(): TView {
-        return this._view;
+    //#region Public Virtual Member(s).
+    public configure(): IScreenConfig {
+        return {
+            addScreenToHistory: true,
+            fullScreen: false
+        }
     }
+    //#endregion
 
-    public get config(): IScreenConfig {
-        return this._config;
-    }
-
-    public abstract onShow(): void;
+    //#region Public Abstract Member(s).
+    public abstract onShow(data?: any): void;
+    //#endregion
 }

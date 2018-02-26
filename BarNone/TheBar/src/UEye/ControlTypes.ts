@@ -2,8 +2,10 @@ import ComponentType from "UEye/Elements/Inflater/ComponentInflater";
 import ContainerType from "UEye/Elements/Inflater/ContainerInflater";
 
 import Button from "UEye/Elements/Components/Button/Button";
+import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 import ContactListItem from "UEye/Elements/Components/ContactListItem/ContactListItem";
 import LiftFolderListItem from "UEye/Elements/Components/LiftFolderListItem/LiftFolderListItem";
+import DataListItem from "UEye/Elements/Components/DataListItem/DataListItem";
 import NavigationListItem from "UEye/Elements/Components/NavigationListItem/NavigationListItem";
 import Input from "UEye/Elements/Components/Input/Input";
 import PasswordInput from "UEye/Elements/Components/PasswordInput/PasswordInput";
@@ -13,6 +15,7 @@ import Breadcrumb from "UEye/Elements/Components/Breadcrumb/Breadcrumb";
 import Video from "UEye/Elements/Components/Video/Video";
 import Range from "UEye/Elements/Components/Range/Range";
 import Graph from "UEye/Elements/Components/Graph/Graph";
+import Info from "UEye/Elements/Components/Info/Info";
 
 import Column from "UEye/Elements/Containers/Column/Column";
 import ColumnLayout from "UEye/Elements/Containers/ColumnLayout/ColumnLayout";
@@ -24,6 +27,7 @@ import PartitionLayout from "UEye/Elements/Containers/PartitionLayout/PartitionL
 import ContentContainer from "UEye/Elements/Containers/ContentContainer/ContentContainer";
 import TabLayout from "UEye/Elements/Containers/TabLayout/TabLayout";
 import Tab from "UEye/Elements/Containers/Tab/Tab";
+import Dialog from "UEye/Elements/Containers/Dialog/Dialog";
 
 export default class ControlTypes {
 
@@ -31,10 +35,14 @@ export default class ControlTypes {
 
 	/**Button Component Type */
 	public static readonly Button = new ComponentType(p => new Button(p));
+	/**Button Component Type */
+	public static readonly IconButton = new ComponentType(p => new IconButton(p));
 	/**Contact List Item Component Type */
 	public static readonly ContactListItem = new ComponentType(p => new ContactListItem(p));
 	/**Lift Folder List Item Component Type */
 	public static readonly LiftFolderListItem = new ComponentType(p => new LiftFolderListItem(p));
+	/**Lift Folder List Item Component Type */
+	public static readonly DataListItem = new ComponentType(p => new DataListItem(p));
 	/**Navigation List Item Component Type */
 	public static readonly NavigationListItem = new ComponentType(p => new NavigationListItem(p));
 	/**Input Component Type */
@@ -53,6 +61,8 @@ export default class ControlTypes {
 	public static readonly Range = new ComponentType(p => new Range(p));
 	/**Graph Component Type */
 	public static readonly Graph = new ComponentType(p => new Graph(p));
+	/**Info Component Type */
+	public static readonly Info = new ComponentType(p => new Info(p));
 	
 
 	//---------------------Containers--------------------
@@ -77,4 +87,6 @@ export default class ControlTypes {
 	public static readonly TabLayout = new ContainerType(p => new TabLayout(p));
 	/**Tab Container Type */
 	public static readonly Tab = new ContainerType(p => new Tab(p));
+	/**Dialog Container Type */
+	public static readonly Dialog = new ContainerType(p => new Dialog(p));
 }

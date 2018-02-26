@@ -140,13 +140,15 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
         /// <param name="id">The identifier.</param>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
-        public override IActionResult Put(int id, TDTO dto)
+        public override IActionResult Put(int id, [FromBody] TDTO dto)
         {
             using (var context = new DomainContext(UserID))
             {
                 using (var repo = _builder(context))
                 {
-                    return EntityResponse.Response(repo.Update(id, dto));
+                    var result = repo.Update(id, dto);
+                    context.SaveChanges();
+                    return EntityResponse.Response(result);
                 }
             }
         } 

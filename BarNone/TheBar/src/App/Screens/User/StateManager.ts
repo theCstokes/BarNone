@@ -22,6 +22,10 @@ export class State implements ISelectionState<User> {
  */
 export class StateManager extends SelectionStateManager<User, State> {
 	public constructor() {
-		super(State, () => DataManager.Users.all());
+		super(State);
+	}
+
+	protected async onLoad(): Promise<User[]> {
+		return await DataManager.Users.all();
 	}
 }

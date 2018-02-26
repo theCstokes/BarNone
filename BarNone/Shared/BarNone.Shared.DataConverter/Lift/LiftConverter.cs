@@ -4,6 +4,7 @@ using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BarNone.Shared.DataConverters
@@ -37,7 +38,7 @@ namespace BarNone.Shared.DataConverters
                 Name = dto.Name,
                 ParentID = dto.ParentID,
                 BodyDataID = dto.BodyDataID,
-                UserID = context.UserID
+                UserID = context != null ? context.UserID : 0 
             };
         }
 
@@ -52,6 +53,7 @@ namespace BarNone.Shared.DataConverters
             data.Parent = converterContext.LiftFolder.CreateDataModel(dto.Parent);
             data.BodyData = converterContext.BodyData.CreateDataModel(dto.BodyData);
             data.Video = converterContext.Video.CreateDataModel(dto.Video);
+            data.Permissions = dto?.Permissions?.Select(p => converterContext.LiftPermission.CreateDataModel(p)).ToList();
         }
 
         /// <summary>
@@ -66,8 +68,9 @@ namespace BarNone.Shared.DataConverters
             {
                 Parent = converterContext.LiftFolder.CreateDTO(data.Parent),
                 BodyData = converterContext.BodyData.CreateDTO(data.BodyData),
-                Video = converterContext.Video.CreateDTO(data.Video)
-            };
+                Video = converterContext.Video.CreateDTO(data.Video),
+                Permissions = data?.Permissions?.Select(p => converterContext.LiftPermission.CreateDTO(p)).ToList()
+        };
         }
 
         /// <summary>

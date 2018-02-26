@@ -46,6 +46,8 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             }
         }
 
+        public ObservableCollection<LiftListVM> LiftInformation = new ObservableCollection<LiftListVM>();
+
         private bool isNormalized = false;
         /// <summary>
         /// Data may only be normalized once currently!

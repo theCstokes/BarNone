@@ -23,5 +23,9 @@ namespace BarNone.TheRack.DataAccess
         private ModelMapAction liftParentBind = CreateModelMapping(builder => builder.Entity<Lift>()
                 .HasOne(r => r.Parent)
                 .WithMany(rc => rc.Lifts));
+
+        private ModelMapAction liftPermissionsBind = CreateModelMapping(builder => builder.Entity<Lift>()
+                .HasMany(l => l.Permissions)
+                .WithOne(p => p.Lift));
     }
 }
