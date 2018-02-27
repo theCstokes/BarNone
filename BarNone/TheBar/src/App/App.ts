@@ -27,22 +27,22 @@ export default class App extends BaseApp {
 
         UEye.push(LoginScreen);
 
-        var ws = new WebSocket("ws://localhost:58428");   
-		ws.onopen = () => {
-				console.log("onopen");
+        // var ws = new WebSocket("ws://localhost:58428");   
+		// ws.onopen = () => {
+		// 		console.log("onopen");
 
-				// ws.send("Hello World!");
-		};    
-		ws.onmessage = function(e) {
-				console.log("echo from server : " + e.data);
-				App.Toast.showMessage(e.data);   
-		};
+		// 		// ws.send("Hello World!");
+		// };    
+		// ws.onmessage = function(e) {
+		// 		console.log("echo from server : " + e.data);
+		// 		App.Toast.showMessage(e.data);   
+		// };
 
-		ws.onclose = function() {   
-				console.log("onclose");
-		};
-		ws.onerror = function() {
-				console.log("onerror");    
-		};
+		// ws.onclose = function() {   
+		// 		console.log("onclose");
+		// };
+		// ws.onerror = function() {
+		// 		console.log("onerror");    
+		// };
     }
 }

@@ -16,7 +16,7 @@ export default class LiftEditView extends EditView {
 	public ageInput: Input;
 	// public editPanel: Panel;
 	public player: Video;
-	public commentList: Messenger;
+	public messenger: Messenger;
 	public analyticsButton: IconButton;
 	public videoLayout: SideBarLayout;
 
@@ -91,7 +91,7 @@ export default class LiftEditView extends EditView {
 						title: "Comments",
 						content: [
 							{
-								id: "commentList",
+								id: "messenger",
 								instance: ControlTypes.Messenger,
 								// style: ControlTypes.DataListItem
 							}

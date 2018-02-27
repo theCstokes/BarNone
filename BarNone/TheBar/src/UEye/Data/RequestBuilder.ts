@@ -179,4 +179,8 @@ export class RequestBuilder {
 	public static PUT(resource: string, route: string, args: { [key: string]: any } = {}): BaseRequestBuilder {
 		return new PutRequestBuilder(resource, "PUT", route);
 	}
+
+	public static POST(resource: string, route: string, args: { [key: string]: any } = {}): BaseRequestBuilder {
+		return new PutRequestBuilder(resource, "POST", route);
+	}
 }

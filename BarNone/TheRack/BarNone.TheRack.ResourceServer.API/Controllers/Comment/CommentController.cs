@@ -8,6 +8,8 @@ using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.Repository;
 using BarNone.Shared.DomainModel;
 using Microsoft.AspNetCore.Authorization;
+using BarNone.TheRack.DataAccess;
+using TheRack.ResourceServer.API.Response;
 
 namespace BarNone.TheRack.ResourceServer.API.Controllers
 {
@@ -21,6 +23,21 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers
         public CommentController() : base((context) => new CommmentRepository(context))
         {
 
+        }
+
+        [HttpGet("Lift/{id}")]
+        public IActionResult Get(int id)
+        {
+            using (var context = new DomainContext(UserID))
+            {
+                using (var repo = new CommmentRepository(context))
+                {
+                    var lift = repo.GetWithDetails(id);
+
+                    return EntityResponse.Response(repo.GetLiftComments(id));
+                }
+            }
+            //return null;
         }
     }
 }

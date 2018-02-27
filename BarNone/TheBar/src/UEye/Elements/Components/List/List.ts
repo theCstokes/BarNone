@@ -64,6 +64,10 @@ export default class UEyeList extends BaseComponent {
         return this._style;
     }
 
+    public get list(): HTMLElement {
+        return this._elementList;
+    }
+
     public set isSelectionList(value: boolean) {
         if (this._isSelectionList !== value) {
             this._isSelectionList = value;

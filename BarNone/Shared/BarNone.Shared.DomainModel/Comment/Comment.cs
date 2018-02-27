@@ -23,5 +23,8 @@ namespace BarNone.Shared.DomainModel
 
         [ForeignKey("LiftID")]
         public Lift Lift { get; set; }
+
+        [ForeignKey("UserID")]
+        public User User { get; set; }
     }
 }

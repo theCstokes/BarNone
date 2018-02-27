@@ -20,6 +20,7 @@ import Info from "UEye/Elements/Components/Info/Info";
 import Toast from "UEye/Elements/Components/Toast/Toast";
 import HTMLContent from "UEye/Elements/Components/HTMLContent/HTMLContent";
 import Messenger from "UEye/Elements/Components/Messenger/Messenger";
+import MessageListItem from "UEye/Elements/Components/MessageListItem/MessageListItem";
 
 import Column from "UEye/Elements/Containers/Column/Column";
 import ColumnLayout from "UEye/Elements/Containers/ColumnLayout/ColumnLayout";
@@ -50,6 +51,8 @@ export default class ControlTypes {
 	public static readonly AnalysisListItem = new ComponentType(p => new AnalysisListItem(p));
 	/**Lift Folder List Item Component Type */
 	public static readonly DataListItem = new ComponentType(p => new DataListItem(p));
+	/**Lift Folder List Item Component Type */
+	public static readonly MessageListItem = new ComponentType(p => new MessageListItem(p));
 	/**Navigation List Item Component Type */
 	public static readonly NavigationListItem = new ComponentType(p => new NavigationListItem(p));
 	/**Input Component Type */

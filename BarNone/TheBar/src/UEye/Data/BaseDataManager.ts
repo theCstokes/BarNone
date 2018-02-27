@@ -148,14 +148,17 @@ export class Auth {
 	public set access_token(value: string) {
 		if (this._access_token !== value) {
 			this._access_token = value;
-			this.token = this._parseJwt(this._access_token);
+			var token = this._parseJwt(this._access_token);
+			this.userID = parseInt(token.UserID);
 		}
 	}
 	public get access_token(): string {
 		return this._access_token;
 	}
 
-	public token: { UserID: number };
+	// public token: { UserID: number };
+
+	public userID: number;
 
 	/** Expiry time. */
 	public expires_in: number;

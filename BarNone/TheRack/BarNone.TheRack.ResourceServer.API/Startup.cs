@@ -135,6 +135,9 @@ namespace BarNone.TheRack.ResourceServer.API
             app.UseAuthentication();
 
             app.UseWebSockets();
+
+            //app.Map("/ws", (_app) => _app.UseMiddleware<NotificationWebSocketMiddleware>());
+
             app.UseMiddleware<NotificationWebSocketMiddleware>();
 
             //app.Use(async (context, next) =>

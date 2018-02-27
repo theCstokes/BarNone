@@ -11,11 +11,13 @@ import App from "App/App";
 import DataEvent from "UEye/Core/DataEvent/DataEvent";
 import Lift from "App/Data/Models/Lift/Lift";
 import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
+import NotificationManager from "UEye/NotificationManager";
 
 export default class LiftScreen extends Screen<LiftView> {
 	// private subScreen: LiftEditScreen;
 	private subScreen: EditScreen<any, any>
 	private _stateManager: StateManager;
+	private _type: LiftType;
 
 	public static ParentChange: DataEvent<LiftListItem>;
 	public static LiftChange: DataEvent<Lift>;
@@ -57,20 +59,29 @@ export default class LiftScreen extends Screen<LiftView> {
 			}
 			// this.view.mainPanel.content=this.
 			if (userData.type === LiftListType.Lift) {
-				this.subScreen = UEye.push(LiftEditScreen) as LiftEditScreen;
+				this.subScreen = UEye.push(LiftEditScreen, {
+					id: userData.id,
+					name: userData.name,
+					type: this._type
+				}) as LiftEditScreen;
 			} else if (userData.type === LiftListType.Folder) {
-				this.subScreen = UEye.push(LiftFolderEditScreen) as LiftFolderEditScreen;
+				this.subScreen = UEye.push(LiftFolderEditScreen, {
+					id: userData.id,
+					name: userData.name,
+					type: this._type
+				}) as LiftFolderEditScreen;
 			}
 
-			this.subScreen.stateManager.ResetState.trigger({
-				id: userData.id,
-				name: userData.name,
-				age: 0
-			});
+			// this.subScreen.stateManager.ResetState.trigger({
+			// 	id: userData.id,
+			// 	name: userData.name,
+			// 	age: 0
+			// });
 		}
 	}
 
 	public onShow(type: LiftType): void {
+		this._type = type;
 		this._stateManager = new StateManager(type);
 		this._stateManager.bind(this._onRender.bind(this));
 

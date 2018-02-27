@@ -1,16 +1,23 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BarNone.TheRack.Core;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
+using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BarNone.TheRack.ResourceServer.API.Notification
 {
+    //class T : WebSocketConnection
+    //{
+
+    //}
     public class NotificationWebSocketMiddleware
     {
         private static ConcurrentDictionary<string, WebSocket> _sockets = new ConcurrentDictionary<string, WebSocket>();
@@ -30,46 +37,102 @@ namespace BarNone.TheRack.ResourceServer.API.Notification
                 return;
             }
 
+            var claim = context.User.Identities.FirstOrDefault(ci =>
+            {
+                var c = ci.FindFirst("User");
+                if (c == null) return false;
+                return (c.Value == "IAmMickey");
+            });
+
+            if (claim == null || !claim.IsAuthenticated)
+            {
+                await _next.Invoke(context);
+                return;
+            }
+
+            var claimsIdentity = context.User.Identity as ClaimsIdentity;
+            var userIDClaim = claimsIdentity.FindFirst("UserID");
+
             CancellationToken ct = context.RequestAborted;
             WebSocket currentSocket = await context.WebSockets.AcceptWebSocketAsync();
-            var socketId = Guid.NewGuid().ToString();
 
-            _sockets.TryAdd(socketId, currentSocket);
-
-            while (true)
+            try
             {
-                if (ct.IsCancellationRequested)
-                {
-                    break;
-                }
-
-                var response = await ReceiveStringAsync(currentSocket, ct);
-                if (string.IsNullOrEmpty(response))
-                {
-                    if (currentSocket.State != WebSocketState.Open)
-                    {
-                        break;
-                    }
-
-                    continue;
-                }
-
-                foreach (var socket in _sockets)
-                {
-                    if (socket.Value.State != WebSocketState.Open)
-                    {
-                        continue;
-                    }
-
-                    await SendStringAsync(socket.Value, response, ct);
-                }
+                await NotificationManager.AcceptSocket(Convert.ToInt32(userIDClaim.Value), new NotificationSocket(currentSocket, ct));
+            } catch(Exception e)
+            {
+                Debug.WriteLine(e);
             }
+
+            //await _next.Invoke(context);
+            //return;
+
+            //return Convert.ToInt32(userIDClaim.Value);
+
+
+            //var socketId = Guid.NewGuid().ToString();
+
+            //_sockets.TryAdd(socketId, currentSocket);
+
+            //NotificationManager.AcceptSocket(new NotificationSocket(currentSocket, ct));
+
+            //while (true)
+            //{
+            //    if (ct.IsCancellationRequested)
+            //    {
+            //        break;
+            //    }
+
+            //    var response = await ReceiveStringAsync(currentSocket, ct);
+            //    if (string.IsNullOrEmpty(response))
+            //    {
+            //        if (currentSocket.State != WebSocketState.Open)
+            //        {
+            //            break;
+            //        }
+
+            //        continue;
+            //    }
+
+            //    foreach (var socket in _sockets)
+            //    {
+            //        if (socket.Value.State != WebSocketState.Open)
+            //        {
+            //            continue;
+            //        }
+
+            //        await SendStringAsync(socket.Value, response, ct);
+            //    }
+            //}
 
             //WebSocket dummy;
             //_sockets.TryRemove(socketId, out dummy);
 
             //await currentSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", ct);
             //currentSocket.Dispose();
+            //}
+
+            await Receive(currentSocket, (result, buffer) =>
+            {
+                if (result.MessageType == WebSocketMessageType.Close)
+                {
+                //await _socketManager.RemoveSocket(id);
+                return;
+                }
+            });
+        }
+
+        private async Task Receive(WebSocket socket, Action<WebSocketReceiveResult, byte[]> handleMessage)
+        {
+            var buffer = new byte[1024 * 4];
+
+            while (socket.State == WebSocketState.Open)
+            {
+                var result = await socket.ReceiveAsync(buffer: new ArraySegment<byte>(buffer),
+                                                        cancellationToken: CancellationToken.None);
+
+                handleMessage(result, buffer);
+            }
         }
 
         public static async Task NotifyAll(string message)
