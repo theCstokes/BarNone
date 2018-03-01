@@ -1,0 +1,136 @@
+@SideBarWidth: 30%;
+@N_SideBarWidth: -30%;
+
+.UEye-Side-Bar-Layout {
+	display: block;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	overflow: hidden;
+	> .Side-Bar {
+		position: absolute;
+		display: none;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		width: @SideBarWidth;
+		background-color: white;
+		box-shadow: 0 4px 8px 0 @DefaultGrey, 0 6px 20px 0 @DefaultGrey;
+	}
+	> .Side-Bar.Show-Side-Bar {
+		display: block;
+		-webkit-animation: UEyeSideBarIn 0.5s;
+		animation: UEyeSideBarIn 0.5s;
+	}
+	>.Side-Bar.Hide-Side-Bar {
+		-webkit-animation: UEyeSideBarOut 0.5s;
+		animation: UEyeSideBarOut 0.5s;
+	}
+	> .Content {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		// background: @BackSpace;
+	}
+	> .Content.Show-Side-Bar {
+		right: @SideBarWidth;
+		-webkit-animation: UEyeSideBarContentIn 0.5s;
+		animation: UEyeSideBarContentIn 0.5s;
+	}
+	> .Content.Hide-Side-Bar {
+		-webkit-animation: UEyeSideBarContentOut 0.5s;
+		animation: UEyeSideBarContentOut 0.5s;
+	}
+}
+
+@-webkit-keyframes UEyeSideBarIn {
+	from {
+		right: @N_SideBarWidth;
+		opacity: 0;
+	}
+	to {
+		right: 0;
+		opacity: 1;
+	}
+}
+
+@keyframes UEyeSideBarIn {
+	from {
+		right: @N_SideBarWidth;
+		opacity: 0;
+	}
+	to {
+		right: 0;
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes UEyeSideBarOut {
+	from {
+		right: 0;
+		opacity: 1;
+	}
+	to {
+		right: @N_SideBarWidth;
+		opacity: 0;
+	}
+}
+
+@keyframes UEyeSideBarOut {
+	from {
+		right: 0;
+		opacity: 1;
+	}
+	to {
+		right: @N_SideBarWidth;
+		opacity: 0;
+	}
+}
+
+@-webkit-keyframes UEyeSideBarContentIn {
+	from {
+		right: 0;
+		opacity: 0;
+	}
+	to {
+		right: @SideBarWidth;
+		opacity: 1;
+	}
+}
+
+@keyframes UEyeSideBarContentIn {
+	from {
+		right: 0;
+		opacity: 0;
+	}
+	to {
+		right: @SideBarWidth;
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes UEyeSideBarContentOut {
+	from {
+		right: @SideBarWidth;
+		opacity: 1;
+	}
+	to {
+		right: 0;
+		opacity: 0;
+	}
+}
+
+@keyframes UEyeSideBarContentOut {
+	from {
+		right: @SideBarWidth;
+		opacity: 1;
+	}
+	to {
+		right: 0;
+		opacity: 0;
+	}
+}

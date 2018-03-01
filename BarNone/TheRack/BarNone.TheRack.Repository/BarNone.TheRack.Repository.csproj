@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DataConverter\BarNone.Shared.DataConverter.csproj" />
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj" />
+    <ProjectReference Include="..\BarNone.TheRack.Core\BarNone.TheRack.Core.csproj" />
     <ProjectReference Include="..\BarNone.TheRack.DataAccess\BarNone.TheRack.DataAccess.csproj" />
   </ItemGroup>
 

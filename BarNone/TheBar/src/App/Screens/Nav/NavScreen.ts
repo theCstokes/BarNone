@@ -7,6 +7,10 @@ import App from "App/App";
 import { ContextStateManager, ContextState } from "App/Screens/Nav/ContextStateManager";
 import LoginScreen from "App/Screens/Login/LoginScreen";
 import DataManager from "App/Data/DataManager";
+import ControlTypes from "UEye/ControlTypes";
+import Inflater from "UEye/Elements/Inflater/Inflater";
+import { IHelp } from "App/Help/HelpCore";
+import StringUtils from "UEye/Core/StringUtils";
 
 /**
  *  Represents NavScreen class .
@@ -17,10 +21,10 @@ export default class NavScreen extends Screen<NavView> {
 	private _subScreen: Screen<any>
 	private _subScreenID: number;
 
- /** Constructor intialized Screen Component and binds corresponding View and StateManager 
-     * */
+	/** Constructor intialized Screen Component and binds corresponding View and StateManager 
+			* */
 	public constructor() {
-		
+
 		super(NavView);
 		this._stateManager = new StateManager();
 		this._stateManager.bind(this._onRender.bind(this));
@@ -28,10 +32,13 @@ export default class NavScreen extends Screen<NavView> {
 		this._contextStateManager = new ContextStateManager(this._stateManager);
 		this._contextStateManager.bind(this._onContextRender.bind(this));
 		// super(NavView, StateManager, true);
-		UEye.onBack.register(() => this._backAction());		
+		UEye.onBack.register(() => this._backAction());
 	}
 
 	private _onContextRender(current: ContextState, original: ContextState): void {
+		this.view.pageFrame.toggleHelpBar(current.showHelp);
+		this.view.helpButton.icon = (current.showHelp ? "fa-times" : "fa-info");
+
 		this.view.navBreadcrumbs.items = current.crumbList.map(crumb => {
 			return {
 				id: crumb.id,
@@ -40,8 +47,9 @@ export default class NavScreen extends Screen<NavView> {
 			}
 		});
 	}
-	
+
 	private _onRender(current: State, original: State): void {
+
 		this.view.navList.items = current.navElementList.map(item => {
 			return {
 				selected: (item.id === current.currentScreenId),
@@ -72,6 +80,9 @@ export default class NavScreen extends Screen<NavView> {
 			this._subScreenID = navElement.id;
 			UEye.popTo(this);
 			this._subScreen = UEye.push(navElement.screen, navElement.initData);
+			// if (this._subScreen.help !== undefined) {
+				this._renderHelp(this._subScreen.help);
+			// }
 		}
 	}
 
@@ -105,14 +116,51 @@ export default class NavScreen extends Screen<NavView> {
 	// 			await UEye.push(NextScreen.default);
 	// 		}
 	// 	});
-	/** Method pops navigation on selecting back
-     * */
+
+	/** 
+	 * Method pops navigation on selecting back
+   */
 	private _backAction() {
 		UEye.popTo(this);
 		// this.stateManager.navigateBack.trigger();
 	}
-		/** Method defines UI properties when shown
-     * */
+
+	private _renderHelp(help?: IHelp) {
+		var contentString = "";
+
+		if (help !== undefined) {
+			contentString = help.content.reduce((html, element) => {
+				html += StringUtils.format("<h4>{0}</h4>", element.name);
+				if (element.image !== undefined)
+					html += StringUtils.format("<img src=\"{0}\" style=\"width:100%\">", element.image);
+				html += StringUtils.format("<p>{0}</p>", element.content);
+				return html;
+			}, "");
+		}
+
+		this.view.pageFrame.helpDock = [
+			{
+				instance: ControlTypes.Panel,
+				caption: "Help Information",
+				content: [
+					{
+						instance: ControlTypes.HTMLContent,
+						content: contentString
+					}
+				]
+			}
+		];
+
+		var subComponentParent = this.view.pageFrame.getComponentContainerElement("helpDock");
+		if (subComponentParent !== null) {
+			var subComponents = Inflater.execute(subComponentParent,
+				this.view.pageFrame.helpDock, this.view);
+		}
+	}
+
+	/** 
+	 * Method defines UI properties when shown
+   */
 	public onShow() {
 		App.breadcrumbs = this.view.navBreadcrumbs;
 		App.Navigation = this._contextStateManager;
@@ -122,12 +170,15 @@ export default class NavScreen extends Screen<NavView> {
 			UEye.popAll();
 			UEye.push(LoginScreen);
 		}
-		this.view.helpButton.onClick=() =>{
-			 this.view.pageFrame.toggleHelpBar(true);
+
+		this.view.helpButton.onClick = () => {
+			//  this.view.pageFrame.toggleHelpBar(true);
+			this._contextStateManager.ToggleShowHelp.trigger();
 		}
-		this.view.exitHelpButton.onClick=() =>{
-			this.view.pageFrame.toggleHelpBar(false);
-	   }
+		// this.view.exitHelpButton.onClick=() =>{
+		// 	this.view.pageFrame.toggleHelpBar(false);
+		//  }
+
 		this.view.navList.onSelect = (data: IListItem) => {
 			UEye.popTo(this);
 

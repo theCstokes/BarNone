@@ -22,6 +22,7 @@ export default class LiftView extends View {
 							{
 								instance: ControlTypes.List,
 								id: "liftList",
+								isSelectionList: true,
 								style: ControlTypes.LiftFolderListItem
 							},
 							{

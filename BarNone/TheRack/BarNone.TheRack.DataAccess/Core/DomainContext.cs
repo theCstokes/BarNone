@@ -1,4 +1,5 @@
 ﻿using BarNone.Shared.Core;
+using BarNone.TheRack.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace BarNone.TheRack.DataAccess
         public DomainContext(int UserID = 0)
         {
             this.UserID = UserID;
+            notificationProviders = new List<Action>();
         }
 
         /// <summary>
@@ -69,5 +71,26 @@ namespace BarNone.TheRack.DataAccess
         /// The user identifier.
         /// </value>
         public int UserID { get; set; }
+
+        public override int SaveChanges()
+        {
+            var result = base.SaveChanges();
+
+            notificationProviders.ForEach(a => a());
+
+            return result;
+        }
+
+        private List<Action> notificationProviders;
+
+        public void NotifyOnSave<TDTO>(NotificationProvider<TDTO> manager, TDTO entity)
+        {
+            notificationProviders.Add(() => manager.Run(UserID, entity));
+        }
+
+        //public void SaveAndNotifiy()
+        //{
+        //    SaveChanges();
+        //}
     }
 }

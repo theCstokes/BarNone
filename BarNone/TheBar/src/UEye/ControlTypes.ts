@@ -5,6 +5,7 @@ import Button from "UEye/Elements/Components/Button/Button";
 import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 import ContactListItem from "UEye/Elements/Components/ContactListItem/ContactListItem";
 import LiftFolderListItem from "UEye/Elements/Components/LiftFolderListItem/LiftFolderListItem";
+import AnalysisListItem from "UEye/Elements/Components/AnalysisListItem/AnalysisListItem";
 import DataListItem from "UEye/Elements/Components/DataListItem/DataListItem";
 import NavigationListItem from "UEye/Elements/Components/NavigationListItem/NavigationListItem";
 import Input from "UEye/Elements/Components/Input/Input";
@@ -16,6 +17,10 @@ import Video from "UEye/Elements/Components/Video/Video";
 import Range from "UEye/Elements/Components/Range/Range";
 import Graph from "UEye/Elements/Components/Graph/Graph";
 import Info from "UEye/Elements/Components/Info/Info";
+import Toast from "UEye/Elements/Components/Toast/Toast";
+import HTMLContent from "UEye/Elements/Components/HTMLContent/HTMLContent";
+import Messenger from "UEye/Elements/Components/Messenger/Messenger";
+import MessageListItem from "UEye/Elements/Components/MessageListItem/MessageListItem";
 
 import Column from "UEye/Elements/Containers/Column/Column";
 import ColumnLayout from "UEye/Elements/Containers/ColumnLayout/ColumnLayout";
@@ -28,6 +33,7 @@ import ContentContainer from "UEye/Elements/Containers/ContentContainer/ContentC
 import TabLayout from "UEye/Elements/Containers/TabLayout/TabLayout";
 import Tab from "UEye/Elements/Containers/Tab/Tab";
 import Dialog from "UEye/Elements/Containers/Dialog/Dialog";
+import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout";
 
 export default class ControlTypes {
 
@@ -42,7 +48,11 @@ export default class ControlTypes {
 	/**Lift Folder List Item Component Type */
 	public static readonly LiftFolderListItem = new ComponentType(p => new LiftFolderListItem(p));
 	/**Lift Folder List Item Component Type */
+	public static readonly AnalysisListItem = new ComponentType(p => new AnalysisListItem(p));
+	/**Lift Folder List Item Component Type */
 	public static readonly DataListItem = new ComponentType(p => new DataListItem(p));
+	/**Lift Folder List Item Component Type */
+	public static readonly MessageListItem = new ComponentType(p => new MessageListItem(p));
 	/**Navigation List Item Component Type */
 	public static readonly NavigationListItem = new ComponentType(p => new NavigationListItem(p));
 	/**Input Component Type */
@@ -63,7 +73,12 @@ export default class ControlTypes {
 	public static readonly Graph = new ComponentType(p => new Graph(p));
 	/**Info Component Type */
 	public static readonly Info = new ComponentType(p => new Info(p));
-	
+	/**Toast Component Type */
+	public static readonly Toast = new ComponentType(p => new Toast(p));
+	/**Toast Component Type */
+	public static readonly HTMLContent = new ComponentType(p => new HTMLContent(p));
+	/**Messenger Component Type */
+	public static readonly Messenger = new ComponentType(p => new Messenger(p));
 
 	//---------------------Containers--------------------
 
@@ -89,4 +104,6 @@ export default class ControlTypes {
 	public static readonly Tab = new ContainerType(p => new Tab(p));
 	/**Dialog Container Type */
 	public static readonly Dialog = new ContainerType(p => new Dialog(p));
+	/**Dialog Container Type */
+	public static readonly SideBarLayout = new ContainerType(p => new SideBarLayout(p));
 }

@@ -1,6 +1,7 @@
 import Core from "UEye/Elements/Core/Core";
 import { BaseView } from "UEye/Elements/Core/BaseView";
 import DataEvent from "UEye/Core/DataEvent/DataEvent";
+import StringUtils from "UEye/Core/StringUtils";
 
 /**Parent Class to all components including BaseComponent.BaseElement provides the basic HTML functionality*/
 export abstract class BaseElement {
@@ -140,14 +141,18 @@ export abstract class BaseElement {
 
 	/**Abstract event listener */
 	public onModifiedChange(): void {
-		throw ("No onModifiedChange implemented for component.")
+		throw (StringUtils.format("No onModifiedChange implemented for component: {0}", this.getName()))
 	}
 	/**Abstract event listener */
 	public onReadonlyChange(): void {
-		throw ("No onModifiedChange implemented for component.")
+		throw (StringUtils.format("No onReadonlyChange implemented for component: {0}", this.getName()))
 	}
 	/**Abstract event listener */
 	public onErrorChange(): void {
-		throw ("No onModifiedChange implemented for component.")
+		throw (StringUtils.format("No onErrorChange implemented for component: {0}", this.getName()))
 	}
+
+	private getName(): string { 
+		return this.constructor.name;
+ };
 }

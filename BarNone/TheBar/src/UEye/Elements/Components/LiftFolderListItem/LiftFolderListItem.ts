@@ -19,12 +19,12 @@ export default class LiftFolderListItem extends BaseListItem {
 
         var content = Core.create("div", this.element, "Content");
 
-        this._icon = "fa-folder-o";
+        this._icon = "fa-folder";
         this._typeIcon = Core.create("div", content, "Type-Icon fa", this._icon);
 
         this._nameElement = Core.create("div", content, "Name");
         this._nameElement.onclick = this._onOpenActionClickHandler.bind(this);
-        this._openActionElement = Core.create("div", this.element, "Open-Action fa fa-arrow-circle-right");
+        // this._openActionElement = Core.create("div", this.element, "Open-Action fa fa-arrow-circle-right");
         // this._openActionElement.onclick = this._onOpenActionClickHandler.bind(this);
     }
 
@@ -61,6 +61,10 @@ export default class LiftFolderListItem extends BaseListItem {
    
     public onEnabledChange(): void {
         throw new Error("Method not implemented.");
+    }
+
+    public canSelect(): boolean {
+        return true;
     }
 
     private _onOpenActionClickHandler() {

@@ -6,37 +6,43 @@ import Breadcrumb from "UEye/Elements/Components/Breadcrumb/Breadcrumb";
 import { ContextStateManager } from "App/Screens/Nav/ContextStateManager";
 import DataManager from "App/Data/DataManager";
 import RefreshTokenScreen from "App/Screens/RefreshToken/RefreshTokenScreen";
+import Toast from "UEye/Elements/Components/Toast/Toast";
+import { BaseApp } from "UEye/BaseApp";
 // import HomeScreen from "App/Screens/HomeScreen";
 
-export default class App {
+export default class App extends BaseApp {
     public static Navigation: ContextStateManager;
     public static breadcrumbs: Breadcrumb;
 
-    public static start(): void {
+    public constructor() {
+        super("app");
+    }
 
-
-        var ws = new WebSocket("ws://localhost:58428/ws");   
-        ws.onopen = () => {
-            console.log("onopen");
-
-            ws.send("Hello World!");
-        };    
-        ws.onmessage = function(e) {
-            console.log("echo from server : " + e.data);   
-        };
-
-        ws.onclose = function() {   
-            console.log("onclose");
-        };
-        ws.onerror = function() {
-            console.log("onerror");    
-        };
+    protected onStartup(): void {
 
         DataManager.onAuthExpire.register(() => {
+			console.log("open");
             UEye.push(RefreshTokenScreen);
         });
 
-        // UEye.push(NavScreen);
         UEye.push(LoginScreen);
+
+        // var ws = new WebSocket("ws://localhost:58428");   
+		// ws.onopen = () => {
+		// 		console.log("onopen");
+
+		// 		// ws.send("Hello World!");
+		// };    
+		// ws.onmessage = function(e) {
+		// 		console.log("echo from server : " + e.data);
+		// 		App.Toast.showMessage(e.data);   
+		// };
+
+		// ws.onclose = function() {   
+		// 		console.log("onclose");
+		// };
+		// ws.onerror = function() {
+		// 		console.log("onerror");    
+		// };
     }
 }
