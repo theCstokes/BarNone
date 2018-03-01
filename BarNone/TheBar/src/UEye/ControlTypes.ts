@@ -17,14 +17,10 @@ import Video from "UEye/Elements/Components/Video/Video";
 import Range from "UEye/Elements/Components/Range/Range";
 import Graph from "UEye/Elements/Components/Graph/Graph";
 import Info from "UEye/Elements/Components/Info/Info";
-<<<<<<< HEAD
-import SearchBar from "UEye/Elements/Components/SearchBar/SearchBar";
-=======
 import Toast from "UEye/Elements/Components/Toast/Toast";
 import HTMLContent from "UEye/Elements/Components/HTMLContent/HTMLContent";
 import Messenger from "UEye/Elements/Components/Messenger/Messenger";
 import MessageListItem from "UEye/Elements/Components/MessageListItem/MessageListItem";
->>>>>>> develop
 
 import Column from "UEye/Elements/Containers/Column/Column";
 import ColumnLayout from "UEye/Elements/Containers/ColumnLayout/ColumnLayout";
@@ -77,18 +73,12 @@ export default class ControlTypes {
 	public static readonly Graph = new ComponentType(p => new Graph(p));
 	/**Info Component Type */
 	public static readonly Info = new ComponentType(p => new Info(p));
-<<<<<<< HEAD
-/**Search Bar Component Type */
-	public static readonly SearchBar = new ComponentType(p => new SearchBar(p));
-	
-=======
 	/**Toast Component Type */
 	public static readonly Toast = new ComponentType(p => new Toast(p));
 	/**Toast Component Type */
 	public static readonly HTMLContent = new ComponentType(p => new HTMLContent(p));
 	/**Messenger Component Type */
 	public static readonly Messenger = new ComponentType(p => new Messenger(p));
->>>>>>> develop
 
 	//---------------------Containers--------------------
 
