@@ -3,19 +3,23 @@ import Core from "UEye/Elements/Core/Core";
 import { OnChangeCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
+import SearchTag from "./SearchTag";
+import ControlTypes from "UEye/ControlTypes";
 
 class SearchConfig implements IListItem {
     public id: number | string;
-
     public title: string;
 }
 
 export default class SearchBar extends BaseComponent {
-
+    /**Represents the list of searchable items that be selected. Appears as a list under the input bar*/
     private _searchList: HTMLElement;
+      /**Represents the list of items that are selected */
     private _selectedList: HTMLElement;
-    private _onOpenActionCallback: OnClickCallback;
+    private _onCloseCallback: OnClickCallback;
+     /**Represents the search input element*/
     private _searchInput: HTMLInputElement;
+    /** Represents the list of indivual list items in search list*/
     private _listItems: HTMLElement[];
     private _items: SearchConfig[];
     private _selectedItems: HTMLElement[];
@@ -47,7 +51,6 @@ export default class SearchBar extends BaseComponent {
         this._listItems = [];
         this._selectedItems = [];
         this._items.forEach( element => {
-            console.log("MNLKDKF");
             var listElement = Core.create("li", this._searchList, "Search-List-Element");
             listElement.textContent=element.title;
             listElement.style.display="none";
@@ -62,7 +65,6 @@ export default class SearchBar extends BaseComponent {
     }
     private onInputHandler(): void {
         var filter=  this._searchInput.value.toUpperCase();
-      
         var i;
         for (i = 0; i < this._listItems.length; i++) {
               if (filter !="" && this._listItems[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
@@ -83,8 +85,9 @@ export default class SearchBar extends BaseComponent {
         for (i=0;i<this._listItems.length;i++){
             if(this._listItems[i] === e.target){
                 var selectedElement = Core.create("li", this._selectedList, "Selected-List-Element");
-                var close = Core.create("div", selectedElement, "Close fa fa-times");
-                close.onclick=this.onClickClose.bind(this);
+                // var selectedElement = ControlTypes.SearchTag.create(this._selectedList,) as SearchTag;
+                var cancel = Core.create("div", selectedElement, "fa", "Icon", "fa-times");
+                cancel.onclick=this.onClickClose.bind(this);
                 selectedElement.textContent=this._listItems[i].innerText;
                 this._selectedItems.push(selectedElement);
                 this._listItems[i].style.display="none";
