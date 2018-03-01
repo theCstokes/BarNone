@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BarNone.TheRack.ResourceServer.API.Controllers.Lift
+namespace BarNone.TheRack.ResourceServer.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize(Policy = "User")]
@@ -25,7 +25,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Lift
                 {
                     var lift = repo.GetWithDetails(id);
 
-                    requestDTO.Requests
+                    //requestDTO.Requests
                 }
             }
         }

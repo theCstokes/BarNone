@@ -48,7 +48,7 @@ namespace BarNone.TheRack.Repository
         /// The detail entity resolver.
         /// </value>
         protected override DetailResolverDelegate<Comment> DetailEntityResolver => (folders) => folders
-                .Include(f => l.Lift)
+                .Include(f => f.Lift)
                 .Include(f => f.User);
                 //.Include(l => l.SubFolders).ThenInclude(f => f.Lifts)
                 //.Include(l => l.Lifts);
