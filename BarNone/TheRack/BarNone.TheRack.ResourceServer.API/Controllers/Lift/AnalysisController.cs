@@ -1,4 +1,8 @@
-﻿using BarNone.Shared.DataTransfer.LiftData;
+﻿using BarNone.Shared.Analysis;
+using BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration;
+using BarNone.Shared.Analysis.LiftAnalysisPipeline.Core;
+using BarNone.Shared.DataTransfer.LiftData;
+using BarNone.Shared.DomainModel;
 using BarNone.TheRack.DataAccess;
 using BarNone.TheRack.Repository;
 using BarNone.TheRack.ResourceServer.API.Controllers.Core;
@@ -9,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TheRack.ResourceServer.API.Response;
 
 namespace BarNone.TheRack.ResourceServer.API.Controllers
 {
@@ -16,8 +21,8 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers
     [Authorize(Policy = "User")]
     public class AnalysisController : BaseController
     {
-        [HttpGet("Lift/{id}")]
-        public void GetAnalysis(int id, AnalysisRequestDTO requestDTO)
+        [HttpPost("Lift/{id}")]
+        public IActionResult GetAnalysis(int id, [FromBody] AnalysisRequest requestDTO)
         {
             using (var context = new DomainContext(UserID))
             {
@@ -25,72 +30,21 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers
                 {
                     var lift = repo.GetWithDetails(id);
 
-                    //requestDTO.Requests
+                    // Create Pipeline.
+                    var pipeline = requestDTO.Requests.Aggregate(new LiftAnalysisPipeline(), (result, request) =>
+                    {
+                        if (request.Type == ELiftAnalysisType.Acceleration)
+                        {
+                            result.Register(new LAP_Acceleration(lift, request));
+                        }
+
+                        return result;
+                    });
+
+                    // Execute.
+                    return EntityResponse.Entity(pipeline.Execute());
                 }
             }
-        }
-    }
-
-    public class AnalysisRequestDTO
-    {
-        public List<AnalysisDTO> Requests { get; set; }
-    }
-
-    public class AnalysisDTO
-    {
-        public JointTypeDTO Target { get; set; }
-
-        public JointTypeDTO Source { get; set; }
-
-        [JsonConverter(typeof(EAnalysisTypeDTO))]
-        public EAnalysisTypeDTO Type { get; set; }
-    }
-
-    public enum EAnalysisTypeDTO
-    {
-        Acceleration = 1,
-        Angle = 2
-    }
-
-    public class LiftAnalysisPipeline
-    {
-
-    }
-
-    public interface ILiftAnalysisPipe
-    {
-        bool ValidateRequest(AnalysisDTO analysis);
-        void Execute();
-    }
-
-    public class LAP_Acceleration : ILiftAnalysisPipe
-    {
-        public void Execute()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ValidateRequest(AnalysisDTO analysis)
-        {
-            if (analysis.Type != EAnalysisTypeDTO.Acceleration) return false;
-            if (analysis.Target == null) return false;
-            return true;
-        }
-    }
-
-    public class LAP_Angle : ILiftAnalysisPipe
-    {
-        public void Execute()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ValidateRequest(AnalysisDTO analysis)
-        {
-            if (analysis.Type != EAnalysisTypeDTO.Angle) return false;
-            if (analysis.Target == null) return false;
-            if (analysis.Source == null) return false;
-            return true;
         }
     }
 }
