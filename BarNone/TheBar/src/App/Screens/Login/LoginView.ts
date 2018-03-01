@@ -83,7 +83,7 @@ export default class LoginView extends View {
 									{
 										instance: ControlTypes.Button,
 										id: "loginButton",
-										icon: "fa-sign-in",
+										icon: "fa-sign-in-alt",
 										text: "Login"
 									}
 								]

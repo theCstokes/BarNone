@@ -26,6 +26,8 @@ export interface ILoadOptions<T> {
      * Search filter.
      */
     filter?: Filter<T>;
+
+    params?: { [key: string]: string|number }
 }
 
 /**
@@ -41,6 +43,8 @@ export interface ILoadDetailOptions<T> {
      * Include details in results flag.
      */
     includeDetails?: boolean;
+
+    params?: { [key: string]: string|number }
 }
 
 /**
@@ -82,7 +86,8 @@ export class Resource<TData> extends BaseResource {
         var options: ILoadOptions<TData> = {};
         if (pOptions !== undefined) options = pOptions;
 
-        var route = StringUtils.format("{0}{1}", BaseDataManager.resourceAddress, this._resource);
+        var resource = StringUtils.replace(this._resource, options.params);
+        var route = StringUtils.format("{0}{1}", BaseDataManager.resourceAddress, resource);
 
         var builder = RequestBuilder
             .GET(this._resource, route, this._useOverride)
@@ -173,7 +178,8 @@ export class DetailResource<TData> extends BaseResource {
         var options: ILoadDetailOptions<TData> = {};
         if (pOptions !== undefined) options = pOptions;
 
-        var route = StringUtils.format("{0}{1}", BaseDataManager.resourceAddress, this._resource);
+        var resource = StringUtils.replace(this._resource, options.params);
+        var route = StringUtils.format("{0}{1}", BaseDataManager.resourceAddress, resource);
 
         if (options.includeDetails) {
             route = StringUtils.format("{0}/{1}", route, "Details");
@@ -205,7 +211,8 @@ export class DetailResource<TData> extends BaseResource {
         var options: ILoadDetailOptions<TData> = {};
         if (pOptions !== undefined) options = pOptions;
 
-        var route = StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, this._resource, id);
+        var resource = StringUtils.replace(this._resource, options.params);
+        var route = StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, resource, id);
 
         if (options.includeDetails) {
             route = StringUtils.format("{0}/{1}", route, "Details");
@@ -239,6 +246,24 @@ export class DetailResource<TData> extends BaseResource {
 
         var builder = await RequestBuilder
             .PUT(this._resource, route, { id: id })
+            .header("Authorization", "Bearer " + BaseDataManager.auth.access_token)
+            .header("Content-Type", "application/json");
+
+        try {
+            var result = await builder.execute(source);
+            var data: ListResult<TData> = JSON.parse(result);
+            return data.entities;
+        } catch (error) {
+            BaseDataManager.fail(error);
+            throw error;
+        }
+    }
+
+    public async create(source: Partial<TData>): Promise<TData[]> {
+        var route = StringUtils.format("{0}{1}", BaseDataManager.resourceAddress, this._resource);
+
+        var builder = await RequestBuilder
+            .POST(this._resource, route)
             .header("Authorization", "Bearer " + BaseDataManager.auth.access_token)
             .header("Content-Type", "application/json");
 

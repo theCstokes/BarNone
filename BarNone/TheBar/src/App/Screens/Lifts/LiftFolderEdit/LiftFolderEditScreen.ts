@@ -23,7 +23,7 @@ export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView,
 					// selected: (item.id === current.selectionId),
 					id: item.id,
 					name: item.name,
-					icon: "fa-folder-o",
+					icon: "fa-folder",
 					onOpen: () => {
 						// alert("open");
 						LiftScreen.ParentChange.trigger({

@@ -13,6 +13,8 @@ class CrumbElement implements IListItem {
 
 export class ContextState {
     public crumbList: CrumbElement[] = [];
+
+    public showHelp: boolean = false;
 }
 
 export class ContextStateManager extends ChildStateManager<ContextState, State> {
@@ -46,6 +48,15 @@ export class ContextStateManager extends ChildStateManager<ContextState, State> 
                     }
                     return !(targetIdx !== undefined && idx > targetIdx);
                 });
+
+            return nextState;
+        });
+
+    public readonly ToggleShowHelp = StateBind
+        .onCallable<ContextState>(this, (state) => {
+            var nextState = Utils.clone(state);
+
+            nextState.current.showHelp = (!state.current.showHelp);
 
             return nextState;
         });

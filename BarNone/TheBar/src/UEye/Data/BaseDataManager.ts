@@ -51,7 +51,7 @@ export abstract class BaseDataManager {
 		if (error === 401) {
 			this._onAuthExpire.trigger();
 		}
-		
+
 		return await true;
 	}
 
@@ -82,7 +82,7 @@ export abstract class BaseDataManager {
 		var result = new Promise<boolean>((resolve, reject) => {
 			http.onreadystatechange = function () {
 				if (http.readyState == 4 && http.status == 200) {
-					BaseDataManager._auth = JSON.parse(http.responseText);
+					BaseDataManager._auth = new Auth(http.responseText);
 					resolve(true);
 				} else if (http.readyState == 4) {
 					resolve(false);
@@ -134,18 +134,40 @@ export abstract class BaseDataManager {
  * Auth object.
  */
 export class Auth {
-	/**
-	 * Auth token
-	 */
-	public access_token: string;
+	public constructor(data?: string) {
+		if (data !== undefined) {
+			var obj = JSON.parse(data);
+			this.access_token = obj.access_token;
+			this.expires_in = obj.expires_in;
+			this.token_type = obj.token_type;
+		}
+	}
+	/** Auth token */
+	private _access_token: string;
 
-	/**
-	 * Expiry time.
-	 */
+	public set access_token(value: string) {
+		if (this._access_token !== value) {
+			this._access_token = value;
+			var token = this._parseJwt(this._access_token);
+			this.userID = parseInt(token.UserID);
+		}
+	}
+	public get access_token(): string {
+		return this._access_token;
+	}
+
+	// public token: { UserID: number };
+
+	public userID: number;
+
+	/** Expiry time. */
 	public expires_in: number;
-
-	/**
-	 * Token type
-	 */
+	/** Token type */
 	public token_type: string;
+
+	private _parseJwt(token: string) {
+		var base64Url = token.split('.')[1];
+		var base64 = base64Url.replace('-', '+').replace('_', '/');
+		return JSON.parse(window.atob(base64));
+	}
 }

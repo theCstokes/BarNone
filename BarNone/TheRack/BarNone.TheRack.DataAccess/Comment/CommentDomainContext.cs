@@ -21,5 +21,11 @@ namespace BarNone.TheRack.DataAccess
         /// </summary>
         private ModelMapAction commentChildBind = CreateModelMapping(builder => builder.Entity<Comment>()
                 .HasOne(c => c.Lift));
+
+        /// <summary>
+        /// The comment user bind
+        /// </summary>
+        private ModelMapAction commentUserBind = CreateModelMapping(builder => builder.Entity<Comment>()
+                .HasOne(c => c.User));
     }
 }

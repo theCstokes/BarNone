@@ -15,6 +15,11 @@ export type StateAsyncAction<TState, TData> = (state: StateTracker<TState>, data
  */
 export type StateCallable<TState> = (state: StateTracker<TState>) => StateTracker<TState>;
 
+/**
+ * State async callable function.
+ */
+export type StateAsyncCallable<TState> = (state: StateTracker<TState>) => Promise<StateTracker<TState>>;
+
 
 // export class StateBindConfig {
 //     public resetState: boolean;
@@ -56,6 +61,17 @@ export default class StateBind {
         action: StateCallable<TState>): StateCallableBind<TState> {
         return new StateCallableBind<TState>(stateManager, action);
     }
+
+    /**
+     * Create async callable state bind
+     * @param stateManager - state manager to bind with
+     * @param action - async state action
+     */
+    public static onAsyncCallable<TState>(
+        stateManager: BaseStateManager<TState>, 
+        action: StateAsyncCallable<TState>): StateAsyncCallableBind<TState> {
+        return new StateAsyncCallableBind<TState>(stateManager, action);
+    }
 }
 
 /**
@@ -78,6 +94,30 @@ export class StateCallableBind<TState> {
     public trigger(): void {
         // var reset = this._config && this._config.resetState;
         var next_state = this._action(this._stateManager.getState());
+        this._stateManager.updateState(next_state);
+    }
+}
+
+/**
+ * State Callable Bind.
+ */
+export class StateAsyncCallableBind<TState> {
+    /**
+     * Create state callable bind
+     * @param _stateManager - state manager
+     * @param _action - action
+     */
+    public constructor(
+        private _stateManager: BaseStateManager<TState>, 
+        private _action: StateAsyncCallable<TState>) {
+    }
+
+    /**
+     * Trigger action.
+     */
+    public async trigger(): Promise<void> {
+        // var reset = this._config && this._config.resetState;
+        var next_state = await this._action(this._stateManager.getState());
         this._stateManager.updateState(next_state);
     }
 }

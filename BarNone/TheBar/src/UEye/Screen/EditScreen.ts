@@ -18,9 +18,17 @@ export default abstract class EditScreen<
      * @param ViewType - view builder
      * @param StateManagerType - state manager builder
      */
-    public constructor(ViewType: { new(): TView }, StateManagerType: { new(): TStateManager }) {
+    public constructor(ViewType: { new(): TView },
+        StateManagerType: { new(): TStateManager } | null = null) {
         super(ViewType);
-        this._stateManager = new StateManagerType();
+        if (StateManagerType !== null) {
+            this._stateManager = new StateManagerType();
+            this._stateManager.bind(this._onBaseRender.bind(this));
+        }
+    }
+
+    public init(stateManager: TStateManager) {
+        this._stateManager = stateManager;
         this._stateManager.bind(this._onBaseRender.bind(this));
     }
 
@@ -53,7 +61,7 @@ export default abstract class EditScreen<
     /**
      * Screen on show.
      */
-    public onShow(): void {
+    public onShow(data?: any): void {
         console.log("test");
         this.view.cancelButton.onClick = () => {
 

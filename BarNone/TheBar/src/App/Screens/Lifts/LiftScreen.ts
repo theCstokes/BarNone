@@ -10,17 +10,20 @@ import LiftEditScreen from "App/Screens/Lifts/LiftEdit/LiftEditScreen";
 import App from "App/App";
 import DataEvent from "UEye/Core/DataEvent/DataEvent";
 import Lift from "App/Data/Models/Lift/Lift";
+import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
+import NotificationManager from "UEye/NotificationManager";
 
 export default class LiftScreen extends Screen<LiftView> {
 	// private subScreen: LiftEditScreen;
 	private subScreen: EditScreen<any, any>
 	private _stateManager: StateManager;
+	private _type: LiftType;
 
 	public static ParentChange: DataEvent<LiftListItem>;
 	public static LiftChange: DataEvent<Lift>;
 	
 	public constructor() {
-		super(LiftView);
+		super(LiftView, LiftFolderHelp);
 
 		LiftScreen.ParentChange = new DataEvent();
 		LiftScreen.ParentChange.on(this._onFolderOpenHandler.bind(this));
@@ -35,7 +38,7 @@ export default class LiftScreen extends Screen<LiftView> {
 				selected: (item.id === current.selectionId),
 				id: item.id,
 				name: item.name,
-				icon: (item.type === LiftListType.Folder) ? "fa-folder-o" : "fa-universal-access",
+				icon: (item.type === LiftListType.Folder) ? "fa-folder" : "fa-universal-access",
 				onOpen: () => {
 					console.log(item);
 					if (item.type === LiftListType.Folder) {
@@ -56,20 +59,29 @@ export default class LiftScreen extends Screen<LiftView> {
 			}
 			// this.view.mainPanel.content=this.
 			if (userData.type === LiftListType.Lift) {
-				this.subScreen = UEye.push(LiftEditScreen) as LiftEditScreen;
+				this.subScreen = UEye.push(LiftEditScreen, {
+					id: userData.id,
+					name: userData.name,
+					type: this._type
+				}) as LiftEditScreen;
 			} else if (userData.type === LiftListType.Folder) {
-				this.subScreen = UEye.push(LiftFolderEditScreen) as LiftFolderEditScreen;
+				this.subScreen = UEye.push(LiftFolderEditScreen, {
+					id: userData.id,
+					name: userData.name,
+					type: this._type
+				}) as LiftFolderEditScreen;
 			}
 
-			this.subScreen.stateManager.ResetState.trigger({
-				id: userData.id,
-				name: userData.name,
-				age: 0
-			});
+			// this.subScreen.stateManager.ResetState.trigger({
+			// 	id: userData.id,
+			// 	name: userData.name,
+			// 	age: 0
+			// });
 		}
 	}
 
 	public onShow(type: LiftType): void {
+		this._type = type;
 		this._stateManager = new StateManager(type);
 		this._stateManager.bind(this._onRender.bind(this));
 

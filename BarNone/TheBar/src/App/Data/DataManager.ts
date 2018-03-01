@@ -13,10 +13,13 @@ export default class DataManager extends BaseDataManager {
 	public static readonly LiftFolders: DetailResource<LiftFolder> = new DetailResource<LiftFolder>("LiftFolder");
 
 	public static readonly Lifts: DetailResource<Lift> = new DetailResource<Lift>("Lift");
-	
+
 	public static readonly SharedLifts: DetailResource<Lift> = new DetailResource<Lift>("SharedLift");
 
 	public static readonly Comments: DetailResource<Comment> = new DetailResource<Comment>("Comment");
+
+	public static readonly LiftComments: DetailResource<Comment>
+		= new DetailResource<Comment>("Comment/Lift/{liftID}");
 
 	public static readonly Joints: Resource<Joint> = new Resource<Joint>("Joints");
 }

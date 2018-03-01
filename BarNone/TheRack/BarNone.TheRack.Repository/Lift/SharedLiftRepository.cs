@@ -68,12 +68,14 @@ namespace BarNone.TheRack.Repository
         /// <value>
         /// The entity resolver.
         /// </value>
-        protected override EntityResolverDelegate<Lift> EntityResolver => (lifts) =>
-        {
-            return context.LiftPermissions
-                .Where(p => p.UserID == context.UserID)
-                .Select(p => lifts.Where(l => l.ID == p.LiftID).FirstOrDefault());
-        };
+        protected override EntityResolverDelegate<Lift> EntityResolver => (lifts) => lifts
+                .Where(l => context.LiftPermissions.Any(p => p.UserID == context.UserID && p.LiftID == l.ID));
+        //{
+        //    lif
+        //    //return context.LiftPermissions
+        //    //    .Where(p => p.UserID == context.UserID)
+        //    //    .Select(p => lifts.Where(l => l.ID == p.LiftID).FirstOrDefault());
+        //};
 
         /// <summary>
         /// Creates the specified lift.

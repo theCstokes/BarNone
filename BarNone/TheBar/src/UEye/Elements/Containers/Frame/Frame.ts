@@ -53,6 +53,8 @@ export default class Frame extends BaseContainer {
         this._statusImageButtonElement = Core.create("div", statusImageHoverElement, "Status-Image-Button");
         this._statusImageButtonElement.textContent = "Test";
 
+        this.linkComponentContainer("addOns", this.element);
+
         this._navDock = Core.create("div", this.element, "Nav-Dock");
         this.linkComponentContainer("navDock", this._navDock);
 
@@ -61,7 +63,7 @@ export default class Frame extends BaseContainer {
 
         this._helpDock = Core.create("div", this.element, "Help-Dock");
         this.linkComponentContainer("helpDock", this._helpDock);
-        this._helpDock.style.visibility = "hidden";
+        // this._helpDock.style.visibility = "hidden";
     }
 
 
@@ -132,6 +134,7 @@ export default class Frame extends BaseContainer {
     public get navDock(): any[] {
         return this.getComponentContainer("navDock");
     }
+    
     public set helpDock(value: any[]) {
         this.setComponentContainer("helpDock", value);
     }
@@ -148,13 +151,14 @@ export default class Frame extends BaseContainer {
      */
     public toggleHelpBar(value: boolean) {
         if (value) {
-            this._helpDock.style.visibility = "visible";
-            Core.addClass(this._content, "Show-Help-Dock");
-            Core.addClass(this._contextDock, "Show-Help-Dock");
+            Core.replaceClass(this._helpDock, "Hidden-Dock", "Visible");
+            Core.replaceClass(this._content, "Hidden-Help-Dock", "Show-Help-Dock");
+            Core.replaceClass(this._contextDock, "Hidden-Help-Dock", "Show-Help-Dock");
         } else {
-            this._helpDock.style.visibility = "hidden";
-            Core.removeClass(this._content, "Show-Help-Dock");
-            Core.removeClass(this._contextDock, "Show-Help-Dock");
+            Core.replaceClass(this._helpDock, "Visible", "Hidden-Dock");
+            Core.replaceClass(this._content, "Show-Help-Dock", "Hidden-Help-Dock");
+            Core.replaceClass(this._contextDock, "Show-Help-Dock", "Hidden-Help-Dock");
+            
         }
     }
     /** 
@@ -172,5 +176,19 @@ export default class Frame extends BaseContainer {
         return this.getScreenContainer("content");
     }
 
+    /** 
+     * Method sets the addOns of the Frame.
+     * @param value Array of addOns of type any to be viewed as screen. 
+     */
+    public set addOns(value: any[]) {
+        this.setScreenContainer("addOns", value);
+    }
+    /** 
+     * Accersor gets the addOns of Frame.
+	 * @returns  Array of addOns viewed as ScreenContainer.
+     */
+    public get addOns(): any[] {
+        return this.getScreenContainer("addOns");
+    }
 
 }
