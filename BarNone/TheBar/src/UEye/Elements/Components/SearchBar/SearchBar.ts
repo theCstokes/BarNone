@@ -1,9 +1,10 @@
 import { BaseComponent } from "UEye/Elements/Core/BaseComponent/BaseComponent";
 import Core from "UEye/Elements/Core/Core";
+import SearchTag from "UEye/Elements/Components/SearchTag/SearchTag"
 import { OnChangeCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
-import SearchTag from "./SearchTag";
+
 import ControlTypes from "UEye/ControlTypes";
 
 class SearchConfig implements IListItem {
@@ -13,28 +14,35 @@ class SearchConfig implements IListItem {
 
 export default class SearchBar extends BaseComponent {
     /**Represents the list of searchable items that be selected. Appears as a list under the input bar*/
-    private _searchList: HTMLElement;
+    private e_content: HTMLElement;
+
+    private e_searchDropdown: HTMLElement;
       /**Represents the list of items that are selected */
-    private _selectedList: HTMLElement;
-    private _onCloseCallback: OnClickCallback;
+    private e_tagList: HTMLElement;
      /**Represents the search input element*/
-    private _searchInput: HTMLInputElement;
+    private e_inputElement: HTMLInputElement;
     /** Represents the list of indivual list items in search list*/
-    private _listItems: HTMLElement[];
+    private e_searchItems: HTMLElement[];
+
+
     private _items: SearchConfig[];
-    private _selectedItems: HTMLElement[];
+    private _tags: SearchTag[];
+    private _hint:string;
+    private _text:string;
+    private _onCloseCallback: OnClickCallback;
     private _onChangeCallback: OnChangeCallback;
     private _onClickCallback: OnClickCallback;
     
     public constructor(parent: HTMLElement) {
         super(parent, "UEye-Search-Bar");
-        this._selectedList = Core.create("ul", this.element, "Selected-List");
-        this._searchInput= Core.create("input", this.element, "Search-Bar-Input") as HTMLInputElement;
-        this._searchList = Core.create("ul", this.element, "Search-Bar-List");
+        this.e_content= Core.create("div", this.element, "Search-Bar-Content");
+        this.e_searchDropdown= Core.create("ul", this.element, "Search-Bar-Dropdown");
+        this.e_tagList= Core.create("ul", this.e_content, "Search-Bar-Tags");
+        this.e_inputElement= Core.create("input", this.e_content, "Search-Bar-Input") as HTMLInputElement;
        
-        this._searchInput.placeholder="Search...";
+        this.e_inputElement.placeholder="Search...";
     
-        this._searchInput.oninput = this.onInputHandler.bind(this);
+        this.e_inputElement.oninput = this.onInputHandler.bind(this);
     }
     
     public set items(value: SearchConfig[]) {
@@ -48,14 +56,14 @@ export default class SearchBar extends BaseComponent {
     }
 
     private refreshItems() {
-        this._listItems = [];
-        this._selectedItems = [];
+        this.e_searchItems = [];
+        this._tags = [];
         this._items.forEach( element => {
-            var listElement = Core.create("li", this._searchList, "Search-List-Element");
+            var listElement = Core.create("li", this.e_searchDropdown, "Search-Dropdown-Element");
             listElement.textContent=element.title;
             listElement.style.display="none";
             listElement.onclick = this.onClickHandler.bind(this);
-            this._listItems.push(listElement);
+            this.e_searchItems.push(listElement);
         });
     }
 
@@ -64,51 +72,54 @@ export default class SearchBar extends BaseComponent {
         throw new Error("Method not implemented.");
     }
     private onInputHandler(): void {
-        var filter=  this._searchInput.value.toUpperCase();
+        var filter=  this.e_inputElement.value.toUpperCase();
         var i;
-        for (i = 0; i < this._listItems.length; i++) {
-              if (filter !="" && this._listItems[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-                this._listItems[i].style.display = "";
+        for (i = 0; i < this.e_searchItems.length; i++) {
+              if (filter !="" && this.e_searchItems[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                this.e_searchItems[i].style.display = "";
                 
               } else {
-                this._listItems[i].style.display = "none";
+                this.e_searchItems[i].style.display = "none";
               }
             } 
 
         if (this._onChangeCallback !== undefined) {
-            this._onChangeCallback(this._searchInput.value);
+            this._onChangeCallback(this.e_inputElement.value);
         }
         
     }
     private onClickHandler(e: Event): void {
+        console.log("ITEM SELECTED");
         var i;
-        for (i=0;i<this._listItems.length;i++){
-            if(this._listItems[i] === e.target){
-                var selectedElement = Core.create("li", this._selectedList, "Selected-List-Element");
-                // var selectedElement = ControlTypes.SearchTag.create(this._selectedList,) as SearchTag;
-                var cancel = Core.create("div", selectedElement, "fa", "Icon", "fa-times");
-                cancel.onclick=this.onClickClose.bind(this);
-                selectedElement.textContent=this._listItems[i].innerText;
-                this._selectedItems.push(selectedElement);
-                this._listItems[i].style.display="none";
-                var parentNode = this._listItems[i].parentNode;
+        for (i=0;i<this.e_searchItems.length;i++){
+            if(this.e_searchItems[i] === e.target){
+
+                var selectedElement = Core.create("li", this.e_searchDropdown, "Search-Tag-Element");
+                var tagElement=  new SearchTag(this.e_tagList);
+                tagElement.text=this.e_searchItems[i].innerText;
+                tagElement.selected=true;
+                this._tags.push(tagElement);
+                this.e_searchItems[i].style.display="none";
+                var parentNode = this.e_searchItems[i].parentNode;
+                console.log("Parent Node",parentNode);
                 if (parentNode !== null) {
-                    parentNode.removeChild(this._listItems[i]);
+                    parentNode.removeChild(this.e_searchItems[i]);
                 }
-                this._listItems.splice(i,1);
-                console.log("Selected",this._selectedItems);
-        }
+                this.e_searchItems.splice(i,1);
+                console.log("Selected",this.e_searchItems);
+        
       
     }
        
     }
-    private onClickClose(e: Event): void{
-        var i;
-        for (i=0;i<this._selectedItems.length;i++){
-            if(e.target===this._selectedItems[i]){
+    // private onClickClose(e: Event): void{
+    //     var i;
+    //     for (i=0;i<this._selectedItems.length;i++){
+    //         if(e.target===this._selectedItems[i]){
 
-            }
-        }
+    //         }
+    //     }
+    // }
+
     }
-
 }

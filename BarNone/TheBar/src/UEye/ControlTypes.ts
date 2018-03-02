@@ -21,6 +21,9 @@ import Toast from "UEye/Elements/Components/Toast/Toast";
 import HTMLContent from "UEye/Elements/Components/HTMLContent/HTMLContent";
 import Messenger from "UEye/Elements/Components/Messenger/Messenger";
 import MessageListItem from "UEye/Elements/Components/MessageListItem/MessageListItem";
+import Checkbox from "UEye/Elements/Components/Checkbox/Checkbox";
+import SearchTag from "UEye/Elements/Components/SearchTag/SearchTag";
+import SearchBar from "UEye/Elements/Components/SearchBar/SearchBar";
 
 import Column from "UEye/Elements/Containers/Column/Column";
 import ColumnLayout from "UEye/Elements/Containers/ColumnLayout/ColumnLayout";
@@ -79,7 +82,12 @@ export default class ControlTypes {
 	public static readonly HTMLContent = new ComponentType(p => new HTMLContent(p));
 	/**Messenger Component Type */
 	public static readonly Messenger = new ComponentType(p => new Messenger(p));
-
+	/**Checkbox Component Type */
+	public static readonly Checkbox = new ComponentType(p => new Checkbox(p));
+	/**SearchTag Component Type */
+	public static readonly SearchTag = new ComponentType(p => new SearchTag(p));
+	/**SearchBar Component Type */
+	public static readonly SearchBar = new ComponentType(p => new SearchBar(p));
 	//---------------------Containers--------------------
 
 	/**Column Container Type */
