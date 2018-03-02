@@ -6,9 +6,11 @@ using BarNone.Shared.DomainModel;
 using BarNone.TheRack.DataAccess;
 using BarNone.TheRack.Repository;
 using BarNone.TheRack.ResourceServer.API.Controllers.Core;
+using BarNone.TheRack.ResourceServer.API.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +33,12 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers
                     var lift = repo.GetWithDetails(id);
 
                     // Create Pipeline.
-                    var pipeline = requestDTO.Requests.Aggregate(new LiftAnalysisPipeline(), (result, request) =>
+                    var pipeline = requestDTO.Requests.Aggregate(new LiftAnalysisPipeline(), (result, obj) =>
                     {
+                        var request = GetObject<RequestEntity>(obj);
                         if (request.Type == ELiftAnalysisType.Acceleration)
                         {
-                            result.Register(new LAP_Acceleration(lift, request));
+                            result.Register(new LAP_Acceleration(lift, GetObject<AR_Acceleration>(obj)));
                         }
 
                         return result;
@@ -45,6 +48,15 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers
                     return EntityResponse.Entity(pipeline.Execute());
                 }
             }
+        }
+
+        private TSource GetObject<TSource>(object obj)
+            where TSource : class
+        {
+            return ((JObject)obj).ToObject(typeof(TSource), JsonSerializer.Create(new JsonSerializerSettings
+            {
+                ContractResolver = new JsonPropertiesResolver()
+            })) as TSource;
         }
     }
 }

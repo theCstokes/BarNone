@@ -7,15 +7,24 @@ using System.Text;
 
 namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration
 {
+    struct TrackingPosition
+    {
+        public float X;
+
+        public float Y;
+
+        public float Z;
+    }
+
     public class LAP_Acceleration : ILiftAnalysisPipe
     {
         #region Private Field(s).
         private Lift _lift;
-        private RequestEntity _request;
+        private AR_Acceleration _request;
         #endregion
 
         #region Public Constructor(s).
-        public LAP_Acceleration(Lift lift, RequestEntity request)
+        public LAP_Acceleration(Lift lift, AR_Acceleration request)
         {
             _lift = lift;
             _request = request;
@@ -37,6 +46,7 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration
         public bool Validate()
         {
             if (_request.Type != ELiftAnalysisType.Acceleration) return false;
+            if (_request.JointType == default(EJointType)) return false;
             return true;
         }
         #endregion
@@ -48,17 +58,17 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration
 
             var r = _lift.BodyData.BodyDataFrames.Aggregate((last, frame) =>
             {
-                var lastCenter = GetBarCenterPosition(last);
-                var currentCenter = GetBarCenterPosition(frame);
+                var lastPosition = GetTrackingPosition(last);
+                var currentPosition = GetTrackingPosition(frame);
 
                 var timeDelta = (frame.TimeOfFrame.TotalMilliseconds - last.TimeOfFrame.TotalMilliseconds) * 1000;
-                if (timeDelta == 0) timeDelta = 1;  // Cannot divide by 0
+                if (timeDelta == 0) timeDelta = 1;  // Cannot divide by 0.
 
                 // This is already in meters.
                 var distance = (
-                    Math.Sqrt(Math.Pow(currentCenter.X, 2) + Math.Pow(currentCenter.Y, 2) + Math.Pow(currentCenter.Z, 2))
+                    Math.Sqrt(Math.Pow(currentPosition.X, 2) + Math.Pow(currentPosition.Y, 2) + Math.Pow(currentPosition.Z, 2))
                     -
-                    Math.Sqrt(Math.Pow(lastCenter.X, 2) + Math.Pow(lastCenter.Y, 2) + Math.Pow(lastCenter.Z, 2))
+                    Math.Sqrt(Math.Pow(lastPosition.X, 2) + Math.Pow(lastPosition.Y, 2) + Math.Pow(lastPosition.Z, 2))
                     );
 
                 accelerationList.Add((distance / timeDelta) / timeDelta);
@@ -69,16 +79,29 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration
             return accelerationList;
         }
 
-        private BarCenterPosition GetBarCenterPosition(BodyDataFrame frame)
+        private TrackingPosition GetTrackingPosition(BodyDataFrame frame)
         {
-            var leftHand = frame.Joints.Find(j => j.JointType == EJointType.HandLeft);
-            var rightHand = frame.Joints.Find(j => j.JointType == EJointType.HandRight);
-
-            return new BarCenterPosition
+            if (_request.JointType == EJointType.BarCenter)
             {
-                X = (leftHand.X + rightHand.X) / 2,
-                Y = (leftHand.Y + rightHand.Y) / 2,
-                Z = (leftHand.Z + rightHand.Z) / 2,
+                var leftHand = frame.Joints.Find(j => j.JointType == EJointType.HandLeft);
+                var rightHand = frame.Joints.Find(j => j.JointType == EJointType.HandRight);
+
+                return new TrackingPosition
+                {
+                    X = (leftHand.X + rightHand.X) / 2,
+                    Y = (leftHand.Y + rightHand.Y) / 2,
+                    Z = (leftHand.Z + rightHand.Z) / 2,
+                };
+
+            }
+
+            var joint = frame.Joints.Find(j => j.JointType == _request.JointType);
+
+            return new TrackingPosition
+            {
+                X = (joint.X),
+                Y = (joint.Y),
+                Z = (joint.Z),
             };
         }
         #endregion
