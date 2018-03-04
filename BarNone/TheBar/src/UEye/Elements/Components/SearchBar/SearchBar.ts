@@ -119,7 +119,7 @@ export default class SearchBar extends BaseComponent {
       
         this.e_searchItems.forEach( element => {
             if(element.searchItem === e.target){
-                element.searchTag.element.style.display="";
+                Core.addClass(element.searchItem, "Hidden");
                 element.searchTag.selected=true;
                 Core.removeClass(element.searchTag.element, "Hidden");
             }
