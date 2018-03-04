@@ -33,6 +33,9 @@ export default class SearchTag extends BaseComponent {
     public get text(): string {
         return this._text;
     }
+    public get closeButton(): any{
+        return this.closeButton;
+    }
     public set selected(value: boolean) {
         this._selected = value;
     }
@@ -47,7 +50,9 @@ export default class SearchTag extends BaseComponent {
     }
 
      private onClickHandler(): void {
-       console.log("click");
+        if (this._onClickCallback !== undefined) {
+			this._onClickCallback();
+		}
     }
 
     public get onClick(): OnClickCallback {
