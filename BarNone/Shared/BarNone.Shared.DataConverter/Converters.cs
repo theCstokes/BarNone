@@ -102,6 +102,8 @@ namespace BarNone.Shared.DataConverters
         /// The video.
         /// </value>
         public VideoConverter Video { get; private set; }
+
+        public NotificationConverter Notification { get; private set; }
         #endregion
 
         #region Protected BaseConverter Implementation.        
@@ -123,6 +125,7 @@ namespace BarNone.Shared.DataConverters
             JointType =                 Register<JointType,     JointTypeDTO, JointTypeConverter>(new JointTypeConverter(this, context));
             JointTrackingStateType =    Register<JointTrackingStateType, JointTrackingStateTypeDTO, JointTrackingStateTypeConverter>(new JointTrackingStateTypeConverter(this, context));
             Video =                     Register<VideoRecord,   VideoDTO, VideoConverter>(new VideoConverter(this, context));
+            Notification =              Register<Notification,  NotificationDTO, NotificationConverter>(new NotificationConverter(this, context));
             //Joint = Register<User, UserDTO, UserConverter>(new UserConverter(this));
         }
         #endregion

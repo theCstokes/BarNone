@@ -38,7 +38,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers
                         var request = GetObject<RequestEntity>(obj);
                         if (request.Type == ELiftAnalysisType.Acceleration)
                         {
-                            result.Register(new LAP_Acceleration(lift, GetObject<AR_Acceleration>(obj)));
+                            result.Register(new LAP_Acceleration(GetObject<AR_Acceleration>(obj), lift));
                         }
 
                         return result;

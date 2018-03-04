@@ -34,8 +34,8 @@ export default class LiftEditView extends EditView {
 						actions: [
 							{
 								id: "analyticsButton",
-								text: "Logout",
-								icon: "fa-chart-pie"
+								text: "Settings",
+								icon: "fa-cog"
 							}
 						],
 						title: "Video",

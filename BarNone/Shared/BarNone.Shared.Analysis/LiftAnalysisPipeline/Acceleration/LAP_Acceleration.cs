@@ -16,7 +16,7 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration
         public float Z;
     }
 
-    public class LAP_Acceleration : ILiftAnalysisPipe
+    public class LAP_Acceleration : BaseLiftAnalysisPipe<AR_Acceleration>
     {
         #region Private Field(s).
         private Lift _lift;
@@ -24,15 +24,14 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration
         #endregion
 
         #region Public Constructor(s).
-        public LAP_Acceleration(Lift lift, AR_Acceleration request)
+        public LAP_Acceleration(AR_Acceleration request, Lift lift) : base(request)
         {
             _lift = lift;
-            _request = request;
         } 
         #endregion
 
         #region ILiftAnalysisPipe Implementation.
-        public ResultEntity Execute()
+        public override ResultEntity Execute()
         {
             var acclerationList = GetAcclerationList();
 
@@ -43,7 +42,7 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration
             };
         }
 
-        public bool Validate()
+        public override bool Validate()
         {
             if (_request.Type != ELiftAnalysisType.Acceleration) return false;
             if (_request.JointType == default(EJointType)) return false;

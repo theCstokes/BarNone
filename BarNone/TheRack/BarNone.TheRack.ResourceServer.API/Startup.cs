@@ -18,7 +18,7 @@ using System.Web;
 using BarNone.TheRack.ResourceServer.API.Response;
 using System.Net.WebSockets;
 using System.Threading;
-using BarNone.TheRack.ResourceServer.API.Notification;
+using BarNone.TheRack.ResourceServer.API;
 
 namespace BarNone.TheRack.ResourceServer.API
 {
