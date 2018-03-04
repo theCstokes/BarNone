@@ -1,5 +1,4 @@
 ﻿using BarNone.Shared.DomainModel;
-using BarNone.Shared.DomainModel.Notification;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

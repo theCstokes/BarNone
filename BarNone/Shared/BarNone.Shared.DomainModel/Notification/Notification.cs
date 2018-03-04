@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BarNone.Shared.DomainModel
 {
-    [Table("NotificationStatusType", Schema = "public")]
+    [Table("Notification", Schema = "public")]
     public class Notification : IDomainModel<Notification>, IOwnedDomainModel
     {
         public int ID { get; set; }
