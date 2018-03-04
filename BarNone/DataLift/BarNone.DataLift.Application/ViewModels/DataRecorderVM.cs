@@ -1,4 +1,7 @@
-﻿using BarNone.DataLift.APIRequest;
+﻿using Accord.Video.FFMPEG;
+using AForge.Video;
+using AForge.Video.DirectShow;
+using BarNone.DataLift.APIRequest;
 using BarNone.DataLift.DataConverters.KinectToDM;
 using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Drawing;
@@ -12,11 +15,17 @@ using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -44,6 +53,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private WriteableBitmap colorBitmap = null;
 
+        private WebCamHandler _webCamHandler;
         #endregion
 
         #region UI Components
@@ -95,7 +105,9 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Gets the bitmap to display the color image
         /// </summary>
-        public ImageSource ImageSourceColor { get => colorBitmap; }
+        public ImageSource ImageSourceColor { get => cries; }
+
+        private BitmapSource cries;
 
         #endregion
 
@@ -243,7 +255,7 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
-        #region Draw Color
+        #region TO REMOVE Draw Color
         /// <summary>
         /// Handles the color frame data arriving from the sensor
         /// </summary>
@@ -343,6 +355,8 @@ namespace BarNone.DataLift.UI.ViewModels
             isCurrentlyRecording = true;
 
             GlobalFrameTimer.Restart();
+
+            _webCamHandler.StartRecording("Test.avi");
         }
 
         /// <summary>
@@ -378,6 +392,17 @@ namespace BarNone.DataLift.UI.ViewModels
             GlobalFrameTimer.Stop();
             isCurrentlyRecording = false;
             IsRecording = false;
+
+            //TODO add Spinner here
+            _webCamHandler.StopRecording();
+            
+            //videoSource.SignalToStop();
+            //videoSource.WaitForStop();
+            //videoSource.Stop();
+
+            //waitFor.Wait();
+            //writer.Close();
+
             try
             {
                 CurrentLiftData.NormalizeTimes();
@@ -420,7 +445,7 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         #endregion
-
+        
         #region Constructor(s) and Destructor
         ~DataRecorderVM()
         {
@@ -435,6 +460,8 @@ namespace BarNone.DataLift.UI.ViewModels
                 //kinectSensor?.Close();
                 kinectSensor = null;
             }
+
+            _webCamHandler.Dispose();
         }
 
         /// <summary>
@@ -442,16 +469,16 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         public DataRecorderVM()
         {
-            //Task.Run(() => SetUser());
-
             // one sensor is currently supported
             kinectSensor = KinectSensor.GetDefault();
 
             // get the coordinate mapper
             coordinateMapper = kinectSensor.CoordinateMapper;
+            
+            //Reader = kinectSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color |
+            //                                     FrameSourceTypes.Body);
+            Reader = kinectSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Body);
 
-            Reader = kinectSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color |
-                                                 FrameSourceTypes.Body);
             Reader.MultiSourceFrameArrived += Reader_MultiSourceFrameArrived;
 
             FrameDescription frameDescription = kinectSensor.DepthFrameSource.FrameDescription;
@@ -477,14 +504,108 @@ namespace BarNone.DataLift.UI.ViewModels
 
             // Create an image source that we can use in our image control
             imageSourceSide = new DrawingImage(SideProfileDrawingGroup);
+
+            //InitializeVideoRecorder();
+            _webCamHandler = new WebCamHandler();
+            _webCamHandler.StartCapturing();
         }
+
+
+        //DispatcherOperation waitFor;
+        //VideoFileWriter writer;
+        //VideoCaptureDevice videoSource;
+        //object VideoLock = new object();
+
+        //private void InitializeVideoRecorder()
+        //{
+        //    FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+
+        //    if (videoDevices.Count == 0)
+        //    {
+        //        throw new Exception();
+        //    }
+
+        //    videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
+
+        //    var maxWidth = videoSource.VideoCapabilities.Max(c => c.FrameSize.Width);
+        //    videoSource.VideoResolution = videoSource.VideoCapabilities.First(c => c.FrameSize.Width == maxWidth);
+
+        //    writer = new VideoFileWriter();
+
+        //    int framesPerSecond = 15;
+        //    int bitRate = ((videoSource.VideoResolution.FrameSize.Width *
+        //        videoSource.VideoResolution.FrameSize.Height) * framesPerSecond);
+
+        //    // create new video file
+        //    writer.Open("test.avi",
+        //        1920,
+        //        1080,
+        //        framesPerSecond,
+        //        VideoCodec.H263P, // This looks the be the best all around that works.
+        //        bitRate);
+
+        //    var i = 0;
+        //    var s = Stopwatch.StartNew();
+
+
+        //    videoSource.NewFrame += (object sender, NewFrameEventArgs eventArgs) =>
+        //    {
+        //        i++;
+        //        s.Reset();
+
+
+        //        var frame = eventArgs.Frame;
+
+        //        waitFor = Application.Current.Dispatcher.BeginInvoke((Action)delegate
+        //        {
+
+        //            try
+        //            {
+        //                BitmapImage bi;
+        //                using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
+        //                {
+        //                    bi = new BitmapImage();
+        //                    bi.BeginInit();
+        //                    var ms = new System.IO.MemoryStream();
+        //                    bitmap.Save(ms, ImageFormat.Bmp);
+        //                    bi.StreamSource = ms;
+        //                    bi.CacheOption = BitmapCacheOption.OnLoad;
+        //                    bi.EndInit();
+        //                }
+        //                bi.Freeze();
+        //                Application.Current.Dispatcher.Invoke((Action)delegate
+        //                {
+        //                    cries = bi;
+        //                    if (isCurrentlyRecording)
+        //                        writer.WriteVideoFrame(frame, new Rectangle(0, 0, 1920, 1080));
+        //                });
+
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                //catch your error here
+        //            }
+        //        });
+
+
+
+        //        //Bitmap clone = eventArgs.Frame.Clone(
+        //        //    new Rectangle(0, 0, eventArgs.Frame.Width, eventArgs.Frame.Height), 
+        //        //    PixelFormat.Format24bppRgb);
+
+        //        Console.WriteLine(s.ElapsedMilliseconds);
+        //        waitFor.Wait();
+        //    };
+
+        //    videoSource.Start();
+        //}
+
 
         #endregion
 
         private Stopwatch GlobalFrameTimer = new Stopwatch();
         long lastRecievedBodyFrameMs = 0;
         long lastRecievedColorFrameMs = 0;
-
 
         /// <summary>
         /// Event fired when the kinect sends any data frame type, depth and color are monitored
@@ -496,15 +617,15 @@ namespace BarNone.DataLift.UI.ViewModels
             // Get a reference to the multi-frame
             var reference = e.FrameReference.AcquireFrame();
 
-            // Open color frame
-            using (var frame = reference.ColorFrameReference.AcquireFrame())
-            {
-                if (frame != null)
-                {
-                    lastRecievedColorFrameMs = GlobalFrameTimer.ElapsedMilliseconds;
-                    Reader_ColorFrameArrived(frame);
-                }
-            }
+            //// Open color frame
+            //using (var frame = reference.ColorFrameReference.AcquireFrame())
+            //{
+            //    if (frame != null)
+            //    {
+            //        lastRecievedColorFrameMs = GlobalFrameTimer.ElapsedMilliseconds;
+            //        Reader_ColorFrameArrived(frame);
+            //    }
+            //}
 
             // Open depth frame
             using (var frame = reference.BodyFrameReference.AcquireFrame())
