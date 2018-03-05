@@ -1,0 +1,181 @@
+import Core from "UEye/Elements/Core/Core";
+import { BaseComponent } from "UEye/Elements/Core/BaseComponent/BaseComponent";
+import { OnChangeCallback } from "UEye/Elements/Core/EventCallbackTypes";
+import List from "UEye/Elements/Components/List/List";
+import ControlTypes from "UEye/ControlTypes";
+/**
+ *  Represents interactive element Input. This component is editable and takes text (strings) input.
+ */
+export default class DropDownInput extends BaseComponent {
+    /**Represents HTMLElement as content of the input*/
+    private _content: HTMLElement;
+    /**Represents HTMLElement as placeholder that describes what input user needs to fill*/
+    private _hint: HTMLElement;
+    /**Represents HTMLInputElement of the input */
+    protected _input: HTMLInputElement;
+    /**Represents actions to clear or save input */
+    private _action: HTMLElement;
+    /**Represents placeholder as text*/
+    private _hintText: string;
+    /**Represents placeholder as text*/
+    private _text: string;
+    /**  Represents event listner that is called when even occurs.*/
+    private _onChangeCallback: OnChangeCallback;
+
+    private e_inputArea: HTMLElement;
+    private e_dropDown: HTMLElement;
+    private c_list: List;
+    private _items: any[];
+
+    private _open: boolean;
+
+    /** 
+     * Constructor initializes and defines the Video component as an HTMLElement tag named UEye-Input. 
+     * @param parent - Represents properties of the current element as an HTMLElement.
+     * @returns Returns a Input type.
+     */
+    public constructor(parent: HTMLElement) {
+        super(parent);
+        Core.addClass(this.element, "UEye-Drop-Down-Input");
+
+        this.e_inputArea = Core.create("div", this.element, "Input-Area");
+        this.e_dropDown = Core.create("div", this.element, "Holder");
+
+        this._content = Core.create("div", this.e_inputArea, "Content");
+        this._action = Core.create("div", this.e_inputArea, "Action fa fa-caret-left");
+
+        this.c_list = new List(this.e_dropDown);
+        this.c_list.style = ControlTypes.DataListItem;
+
+        this._hint = Core.create("div", this._content, "Hint");
+        this._input = Core.create("input", this._content, "Input") as HTMLInputElement;
+
+        this._input.oninput = this.onInputHandler.bind(this);
+        this._input.onfocus = this.onFocusHandler.bind(this);
+        this._input.onblur = this.onBlurHandler.bind(this);
+        this.element.onclick = this._onOpenHandler.bind(this);
+    }
+    /** Method for setting property _hint.
+     * @param value Parameter represents string value of text to be used as placeholder.
+     * */
+    public set hint(value: string) {
+        this._hintText = value;
+        this._input.placeholder = this._hintText;
+        this._hint.textContent = this._hintText;
+        this.updateHint();
+    }
+    /** Accessor to get placeholder text of _hint property.
+     * @returns Returns string text.
+     * */
+    public get hint(): string {
+        return this._hintText;
+    }
+
+    /** 
+     * Accessor to get text of _text property.
+     * @returns Returns string text.
+     */
+    public get text(): string {
+        return this._text;
+    }
+
+    public set items(value: any[]) {
+        if (this._items !== value) {
+            this._items = value;
+            this.c_list.items = value;
+        }
+    }
+    public get items(): any[] {
+        return this._items;
+    }
+
+    /** Accessor to get callback property.
+   * @returns Returns the property responsible for callback on click operation
+   * */
+    public get onChange(): OnChangeCallback {
+        return this._onChangeCallback;
+    }
+    /** Method for setting property _onClickCallback
+   * @param value Method parameter represnts onClickCallback property
+   * */
+    public set onChange(value: OnChangeCallback) {
+        this._onChangeCallback = value;
+    }
+    /** Method that invokes event listener of when the contents of Input instance is changed. Responsive element that visually indicates to user change in text. 
+    * @returns Nothing (return in the definition of the property)
+    * */
+    public onModifiedChange(): void {
+        if (this.modified) {
+            Core.addClass(this.element, "Modified");
+        } else {
+            Core.removeClass(this.element, "Modified");
+        }
+    }
+    /** 
+		 * Method that invokes event listener of when the contents of Input instance is readonly. Responsive element that visually indicates text is readonly. 
+		 * @returns Nothing (return in the definition of the property)
+		 */
+    public onReadonlyChange(): void {
+        if (this.readonly) {
+            Core.addClass(this.element, "Readonly");
+            this._input.readOnly = true;
+        } else {
+            Core.removeClass(this.element, "Readonly");
+            this._input.readOnly = false;
+        }
+    }
+    /** Method not used*/
+    public onEnabledChange(): void {
+        throw new Error("Method not implemented.");
+    }
+
+
+    /** 
+		 * Method updates placeholder if null
+		 */
+    private updateHint() {
+        if (!Utils.isNullOrWhitespace(this._text)) {
+            Core.addClass(this._hint, "Has-And-Text");
+        } else {
+            Core.removeClass(this._hint, "Has-And-Text");
+        }
+    }
+    /** 
+		 * Method that invoked event listener of when the contents of Inputs are handled on callback. 
+		 * @returns Nothing (return in the definition of the property)
+		 */
+    private onInputHandler(): void {
+        this._text = this._input.value;
+        if (this._onChangeCallback !== undefined) {
+            this._onChangeCallback(this._text);
+        }
+        this.updateHint();
+    }
+    /** 
+		 * Method that invoked event listener of when to implement Focus. 
+		 * @returns Nothing (return in the definition of the property)
+		 */
+    private onFocusHandler(): void {
+				Core.addClass(this.e_inputArea, "Focused");
+				Core.addClass(this.e_dropDown, "Focused");
+    }
+    /** Method that invoked event listener of when to implement Blur. 
+        * @returns Nothing (return in the definition of the property)
+        * */
+    private onBlurHandler(): void {
+				Core.removeClass(this.e_inputArea, "Focused");
+				Core.removeClass(this.e_dropDown, "Focused");
+				Core.removeClass(this.e_dropDown, "Show");
+    }
+
+    private _onOpenHandler(): void {
+        this._open = !this._open;
+        if (this._open) {
+            Core.replaceClass(this._action, "fa-caret-left", "fa-caret-down");
+            Core.addClass(this.e_dropDown, "Show");
+        } else {
+            Core.replaceClass(this._action, "fa-caret-down", "fa-caret-left");
+            Core.removeClass(this.e_dropDown, "Show");
+        }
+    }
+}

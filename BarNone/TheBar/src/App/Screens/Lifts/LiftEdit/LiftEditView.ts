@@ -28,6 +28,17 @@ export default class LiftEditView extends EditView {
 				hint: "Name"
 			},
 			{
+				id: "typeDropDown",
+				instance: ControlTypes.DropDownInput,
+				hint: "Type",
+				items: [
+					{
+						id: 1,
+						name: "Test"
+					}
+				]
+			},
+			{
 				instance: ControlTypes.TabLayout,
 				tabs: [
 					{
