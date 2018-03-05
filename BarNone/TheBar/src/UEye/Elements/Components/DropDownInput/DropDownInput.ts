@@ -1,6 +1,6 @@
 import Core from "UEye/Elements/Core/Core";
 import { BaseComponent } from "UEye/Elements/Core/BaseComponent/BaseComponent";
-import { OnChangeCallback } from "UEye/Elements/Core/EventCallbackTypes";
+import { OnChangeCallback, IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import List from "UEye/Elements/Components/List/List";
 import ControlTypes from "UEye/ControlTypes";
 /**
@@ -45,7 +45,9 @@ export default class DropDownInput extends BaseComponent {
         this._action = Core.create("div", this.e_inputArea, "Action fa fa-caret-left");
 
         this.c_list = new List(this.e_dropDown);
-        this.c_list.style = ControlTypes.DataListItem;
+        this.c_list.style = ControlTypes.DropDownListItem;
+        this.c_list.isSelectionList = true;
+        this.c_list.onSelect = this._onSelectHandler.bind(this);
 
         this._hint = Core.create("div", this._content, "Hint");
         this._input = Core.create("input", this._content, "Input") as HTMLInputElement;
@@ -177,5 +179,12 @@ export default class DropDownInput extends BaseComponent {
             Core.replaceClass(this._action, "fa-caret-down", "fa-caret-left");
             Core.removeClass(this.e_dropDown, "Show");
         }
+    }
+
+    private _onSelectHandler(data: IListItem) {
+        var item = this.items.find(x => x.id === data.id);
+        if (item === null) return;
+
+        this._input.value = item.name;
     }
 }

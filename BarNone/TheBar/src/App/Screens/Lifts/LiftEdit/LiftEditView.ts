@@ -35,6 +35,10 @@ export default class LiftEditView extends EditView {
 					{
 						id: 1,
 						name: "Test"
+					},
+					{
+						id: 2,
+						name: "New Test"
 					}
 				]
 			},
