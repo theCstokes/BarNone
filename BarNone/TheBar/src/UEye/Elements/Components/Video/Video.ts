@@ -47,6 +47,7 @@ export default class Video extends BaseComponent {
     private _secondsCurrent: number;
     private _minutesDuration: number;
     private _secondsDuration: number;
+    private _stopFrame:boolean;
 
 
     /** Constructor intializes and defines the Video component as an HTMLElement tag named UEye-Video as well as the context needed for drawing skeletal data 
@@ -85,21 +86,22 @@ export default class Video extends BaseComponent {
         this._minutesDuration = 0;
         this._secondsDuration = 0;
         this._currentIndex = 0;
-        this._video.autoplay = false;
+        this._video.autoplay = true;
 
         this._slider.onclick = (e) => {
-
             this._bar.style.width = this._thumb.style.marginLeft = e.offsetX + "px";
             var percent = (e.offsetX / this._slider.offsetWidth);
-            var currentTime = percent * this._video.duration;
-            this._minutesCurrent = Math.floor(currentTime / 60);
-            this._secondsCurrent = Math.floor(currentTime - this._minutesCurrent * 60);
-            this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
-
-            // this._video.seekable.111
-
-            //  this._video.currentTime = (this._video.duration * percent);
-
+            if(Utils.isNullOrWhitespace(this._src)){
+                var currentIndex=percent * this._totalNumber;
+                console.log("Seek", currentIndex);
+            }
+            else{
+                var currentTime = percent * this._video.duration;
+                this._minutesCurrent = Math.floor(currentTime / 60);
+                this._secondsCurrent = Math.floor(currentTime - this._minutesCurrent * 60);
+                this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
+                this._video.currentTime = (this._video.duration * percent);
+            }
         };
 
         var c = this._canvas.getContext('2d');
@@ -108,17 +110,17 @@ export default class Video extends BaseComponent {
         }
 
         this._canvas.onmouseover = (e) => {
-            var rect = this._canvas.getBoundingClientRect();
-            var x = e.clientX - rect.left;
-            var y = e.clientY - rect.top;
+            // var rect = this._canvas.getBoundingClientRect();
+            // var x = e.clientX - rect.left;
+            // var y = e.clientY - rect.top;
 
-            this._context.beginPath();
-            this._context.arc(x, y, 4, 0, 2 * Math.PI);
-            this._context.strokeStyle = "yellow";
-            this._context.stroke();
-            this._context.fillStyle = 'yellow';
-            this._context.fill();
-            this._context.closePath();
+            // this._context.beginPath();
+            // this._context.arc(x, y, 4, 0, 2 * Math.PI);
+            // this._context.strokeStyle = "yellow";
+            // this._context.stroke();
+            // this._context.fillStyle = 'yellow';
+            // this._context.fill();
+            // this._context.closePath();
         };
 
         this._video.addEventListener('play', () => {
@@ -126,18 +128,23 @@ export default class Video extends BaseComponent {
         }, false);
 
         this._video.addEventListener('timeupdate', () => {
-            var percent = (this._video.currentTime / this._video.duration);
-            this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
-
-            this._minutesCurrent = Math.floor(this._video.currentTime / 60);
-            this._secondsCurrent = Math.floor(this._video.currentTime - this._minutesCurrent * 60);
-            this._minutesDuration = Math.floor(this._video.duration / 60);
-            this._secondsDuration = Math.floor(this._video.duration - this._minutesDuration * 60);
-            if (isNaN(this._minutesDuration) || isNaN(this._secondsDuration)) {
-                this._minutesDuration = this._secondsDuration = 0;
+            if(Utils.isNullOrWhitespace(this._src)){
+                
             }
-
-            this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
+            else{
+                var percent = (this._video.currentTime / this._video.duration);
+                this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
+    
+                this._minutesCurrent = Math.floor(this._video.currentTime / 60);
+                this._secondsCurrent = Math.floor(this._video.currentTime - this._minutesCurrent * 60);
+                this._minutesDuration = Math.floor(this._video.duration / 60);
+                this._secondsDuration = Math.floor(this._video.duration - this._minutesDuration * 60);
+                if (isNaN(this._minutesDuration) || isNaN(this._secondsDuration)) {
+                    this._minutesDuration = this._secondsDuration = 0;
+                }
+                this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
+            }
+           
 
 
         }, false);
@@ -147,6 +154,7 @@ export default class Video extends BaseComponent {
         }, false);
         this._video.addEventListener("ended", () => {
             Core.replaceClass(this._actionButton, "fa-pause", "fa-play");
+            
         })
     }
     /** Method for setting property _frameData
@@ -172,12 +180,13 @@ export default class Video extends BaseComponent {
 
     private drawBodyDataOnly(w: number, h: number, frameIndex: number) {
         // var frameIndex = Math.round((this._frameDataList.length - 1) * percent);
+        console.log('iteration', frameIndex);
         var frameData = this._createFrame(this._frameDataList[frameIndex], w, h);
         var bit = createImageBitmap(frameData);
         // this._context.scale(0.5,0.5);
         this._context.putImageData(frameData, 0, 0);
         //  this._context.scale(2,2);
-        console.log("JEJEJEJEJ");
+     
         var percentTwo = ((frameIndex) / this._totalNumber);
 
         this._minutesCurrent = Math.floor(this._video.currentTime / 60);
@@ -185,7 +194,17 @@ export default class Video extends BaseComponent {
         this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
         this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percentTwo + "px");
         this._currentIndex = frameIndex + 1;
-        setTimeout(this.drawBodyDataOnly.bind(this), 20, w, h, frameIndex + 1);
+
+        if(this._stopFrame==false && this._currentIndex<=this._totalNumber ){
+            
+            setTimeout(this.drawBodyDataOnly.bind(this), 20, w, h, this._currentIndex);
+        }else if( this._currentIndex>this._totalNumber ){
+            this._stopFrame=true;
+            this._currentIndex=0;
+            Core.replaceClass(this._actionButton, "fa-pause", "fa-play");
+            this._video.pause();
+        }   
+        // setTimeout(this.drawBodyDataOnly.bind(this), 20, w, h, this._currentIndex);
     }
 
     /** Method to draw joint and connective bone data on canvas alongside the embedded video
@@ -195,7 +214,8 @@ export default class Video extends BaseComponent {
     private draw(w: number, h: number) {
 
         if (Utils.isNullOrWhitespace(this._src) && this._frameDataList != undefined) {
-            this._totalNumber = this._frameDataList.length;
+            this._totalNumber = this._frameDataList.length-1;
+            console.log("Total", this._totalNumber);
             this.drawBodyDataOnly(w, h, this._currentIndex);
 
 
@@ -204,28 +224,11 @@ export default class Video extends BaseComponent {
             if (this._video.paused || this._video.ended) {
                 return;
             }
-            // {
-            //     this._video.pause();
-            //     this._video.currentTime = 3;
-            //     this._video.play();
-            //     return;
-            // }
+           
 
             var percent = (this._video.currentTime / this._video.duration);
 
             this._context.drawImage(this._video, 0, 0, w, h);
-
-            // if (this._frameDataList !== undefined) {
-            //     var frameIndex = Math.round((this._frameDataList.length - 1) * percent);
-            //     var frameData = this._createFrame(this._frameDataList[frameIndex], w, h);
-            //     var bit = createImageBitmap(frameData);
-            //     // this._context.scale(0.5,0.5);
-            //     this._context.putImageData(frameData, 0, 0);
-            //     //  this._context.scale(2,2);
-
-            // }
-
-
 
             this._minutesCurrent = Math.floor(this._video.currentTime / 60);
             this._secondsCurrent = Math.floor(this._video.currentTime - this._minutesCurrent * 60);
@@ -256,7 +259,7 @@ export default class Video extends BaseComponent {
             this._source.type = "video/mp4";
 
             this._source.src = this._src;
-            Core.replaceClass(this._actionButton, "fa-pause", "fa-play");
+            Core.replaceClass(this._actionButton, "fa-play", "fa-pause");
             this._video.load();
             this._video.currentTime = 0;
 
@@ -270,10 +273,9 @@ export default class Video extends BaseComponent {
     /** Method responsible for toggling on action of playing the video
      * @returns Nothing
      * */
-    public play(): void {
-        this._video.play();
-    }
-
+    // public play(): void {
+    //     this._video.play();
+    // }
     // public get onChange(): OnChangeCallback {
     //     return this._onChangeCallback;
     // }
@@ -335,17 +337,24 @@ export default class Video extends BaseComponent {
         });
 
         return context.getImageData(0, 0, w, h);
-        // }
+    
     }
     /**Method handles toggling between pause and play actions */
     private _onActionHandel() {
         if (this._video.paused || this._video.ended) {
             // Pause put in play more.
+            if(Utils.isNullOrWhitespace(this._src)){
+                this._stopFrame=false;
+            }
             this._video.play();
+            
             Core.replaceClass(this._actionButton, "fa-play", "fa-pause");
         } else {
             // Play put in pause more.
-            this._video.pause();
+            if(Utils.isNullOrWhitespace(this._src)){
+                this._stopFrame=true;
+            }
+                this._video.pause();
             Core.replaceClass(this._actionButton, "fa-pause", "fa-play");
         }
     }

@@ -127,10 +127,10 @@ export default class SearchBar extends BaseComponent {
       
     }
     private onFocusHandler(): void {
-        Core.addClass(this.element, "Focused");
+        Core.addClass(this.e_content, "Focused");
     }
     private onBlurHandler(): void {
-        Core.removeClass(this.element, "Focused");
+        Core.removeClass(this.e_content, "Focused");
     }
 
     }

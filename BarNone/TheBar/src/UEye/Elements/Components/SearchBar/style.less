@@ -23,7 +23,6 @@
             align-items: center;
             /* padding: 0; */
             padding-left: 2px;
-
             height: 100%;
             margin-right: 2px
         }
@@ -33,9 +32,12 @@
             max-width: 100%;
             border:none;    
         }
-        >.Search-Bar-Input:focused{
+        >.Search-Bar-Input:focus{
             outline:none;
         }
+    }
+    >.Search-Bar-Content.Focused{
+        border-bottom-color: @DefaultElementAccent; 
     }
     >.Search-Bar-Dropdown{
                 width: 100%;
