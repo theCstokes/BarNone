@@ -36,8 +36,8 @@ namespace BarNone.DataLift.UI.ViewModels
 
 
 
-        private static BlockingCollection<Bitmap> _renderQueue = new BlockingCollection<Bitmap>();
-        private static BlockingCollection<Bitmap> _writeQueue = new BlockingCollection<Bitmap>();
+        private static BlockingCollection<Bitmap> _renderQueue;// = new BlockingCollection<Bitmap>();
+        private static BlockingCollection<Bitmap> _writeQueue;// = new BlockingCollection<Bitmap>();
 
         //Task<int> consumer;
         //static BufferBlock<Bitmap> buffer;
@@ -62,6 +62,9 @@ namespace BarNone.DataLift.UI.ViewModels
 
         public void Start()
         {
+            _renderQueue = new BlockingCollection<Bitmap>();
+            _writeQueue = new BlockingCollection<Bitmap>();
+
             webCamCollection = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             webCam = new VideoCaptureDevice(webCamCollection[0].MonikerString);
             webCam.NewFrame += FrameHandler;
@@ -138,7 +141,7 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 sw.Restart();
                 _writeQueue.Add(eventArgs.Frame.Clone() as Bitmap);
-                _renderQueue.Add(eventArgs.Frame.Clone() as Bitmap);
+                //_renderQueue.Add(eventArgs.Frame.Clone() as Bitmap);
                 Console.WriteLine($"TOT TIME: {sw.ElapsedMilliseconds}");
             }
             catch (Exception ex)
