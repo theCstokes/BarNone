@@ -356,7 +356,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             GlobalFrameTimer.Restart();
 
-            _webCamHandler.StartRecording("Test.avi");
+            _webCamHandler.Start();
         }
 
         /// <summary>
@@ -394,8 +394,8 @@ namespace BarNone.DataLift.UI.ViewModels
             IsRecording = false;
 
             //TODO add Spinner here
-            await _webCamHandler.StopRecording();
-            
+            _webCamHandler.Stop();
+
             //videoSource.SignalToStop();
             //videoSource.WaitForStop();
             //videoSource.Stop();
@@ -460,7 +460,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 kinectSensor = null;
             }
 
-            _webCamHandler.Dispose();
+            //_webCamHandler.Dispose();
         }
 
         /// <summary>
@@ -506,7 +506,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             //InitializeVideoRecorder();
             _webCamHandler = new WebCamHandler();
-            _webCamHandler.StartCapturing();
+            //_webCamHandler.Start();
         }
 
 
