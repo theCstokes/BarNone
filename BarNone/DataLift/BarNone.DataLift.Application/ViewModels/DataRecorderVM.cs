@@ -394,7 +394,7 @@ namespace BarNone.DataLift.UI.ViewModels
             IsRecording = false;
 
             //TODO add Spinner here
-            _webCamHandler.StopRecording();
+            await _webCamHandler.StopRecording();
             
             //videoSource.SignalToStop();
             //videoSource.WaitForStop();
@@ -424,7 +424,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 {
                     BodyData = new BodyDataDTO()
                 }
-
             };
 
             var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(KinectDepthFrameConverter.KinectBodyDataToDmBodyData(CurrentLiftData.CurrentRecordedBodyData));

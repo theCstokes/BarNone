@@ -4,7 +4,6 @@ using AForge.Video.DirectShow;
 using System;
 using System.Collections.Concurrent;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
@@ -25,13 +24,11 @@ namespace BarNone.DataLift.UI.ViewModels
         /// Queue to handle outputting recieved webcam frames
         /// </summary>
         private static BlockingCollection<Bitmap> _writeQueue;
-
-
+        
         //Tasks
-        Task _readConsumeTask;
+        Task _renderConsumeTask;
         Task _writeConsumeTask;
-
-
+        
         public WebCamHandler()
         {
             //Setup the webcam objects
@@ -61,7 +58,7 @@ namespace BarNone.DataLift.UI.ViewModels
         {
 
             _renderQueue = new BlockingCollection<Bitmap>();
-            _readConsumeTask = Task.Run(() => RenderConsumeLoop());
+            _renderConsumeTask = Task.Run(() => RenderConsumeLoop());
             _webCam.Start();
         }
 
@@ -83,10 +80,10 @@ namespace BarNone.DataLift.UI.ViewModels
 
         }
 
-        public async void Stop()
+        public async Task Stop()
         {
             if (_webCam.IsRunning)
-                StopRecording();
+                await StopRecording();
 
             //Stop the webcam
             _webCam.SignalToStop();
@@ -95,7 +92,7 @@ namespace BarNone.DataLift.UI.ViewModels
             _renderQueue.CompleteAdding();
 
             //Wait for the writes to complete
-            await _readConsumeTask;
+            await _renderConsumeTask;
 
             //Close the writer
             _videoWriter.Close();
@@ -104,7 +101,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
         }
 
-        public async void StopRecording()
+        public async Task StopRecording()
         {
             _writeQueue.CompleteAdding();
 
