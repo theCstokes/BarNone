@@ -38,15 +38,17 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
-        #region Color Drawing Details
-        /// <summary>
-        /// Bitmap to display the color video
-        /// </summary>
-        private WriteableBitmap colorBitmap = null;
-        
-        #endregion
-
         #region UI Components
+        /// <summary>
+        /// Width of display (depth space)
+        /// </summary>
+        private int displayWidth;
+
+        /// <summary>
+        /// Height of display (depth space)
+        /// </summary>
+        private int displayHeight;
+
         /// <summary>
         /// Drawing group for body rendering front profile output
         /// </summary>
@@ -68,14 +70,9 @@ namespace BarNone.DataLift.UI.ViewModels
         private DrawingImage imageSourceSide;
 
         /// <summary>
-        /// Width of display (depth space)
+        /// Bitmap to display the color video
         /// </summary>
-        private int displayWidth;
-
-        /// <summary>
-        /// Height of display (depth space)
-        /// </summary>
-        private int displayHeight;
+        private WriteableBitmap colorBitmap = null;
 
         /// <summary>
         /// Array for the bodies
@@ -144,6 +141,8 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private bool isCurrentlyRecording = false;
 
+        FfmpegController _ffmpegController;
+
         #endregion
 
         #region User Control events
@@ -162,7 +161,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
-        #region Frame Arrival
+        #region Body Frame Arrival
         /// <summary>
         /// Handles the body frame data arriving from the sensor
         /// </summary>
@@ -243,7 +242,7 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
-        #region Draw Color
+        #region Color Frame Arrival
         /// <summary>
         /// Handles the color frame data arriving from the sensor
         /// </summary>
@@ -338,6 +337,8 @@ namespace BarNone.DataLift.UI.ViewModels
             isCurrentlyRecording = true;
 
             GlobalFrameTimer.Restart();
+
+            _ffmpegController.StartFfmpegRecord("TestFFMPEG.avi");
         }
 
         /// <summary>
@@ -373,7 +374,9 @@ namespace BarNone.DataLift.UI.ViewModels
             GlobalFrameTimer.Stop();
             isCurrentlyRecording = false;
             IsRecording = false;
-            
+
+            _ffmpegController.StopFfmpegRecord();
+
             try
             {
                 CurrentLiftData.NormalizeTimes();
@@ -473,7 +476,9 @@ namespace BarNone.DataLift.UI.ViewModels
 
             // Create an image source that we can use in our image control
             imageSourceSide = new DrawingImage(SideProfileDrawingGroup);
-            
+
+            _ffmpegController = new FfmpegController();
+
         }
         
         #endregion

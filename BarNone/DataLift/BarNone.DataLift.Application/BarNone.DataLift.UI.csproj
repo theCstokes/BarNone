@@ -127,6 +127,7 @@
     <Compile Include="Navigation\UserControlManager.cs" />
     <Compile Include="Validation\TimeInputRule.cs" />
     <Compile Include="ViewModels\Common\CurrentLiftDataVM.cs" />
+    <Compile Include="ViewModels\FfmpegController.cs" />
     <Compile Include="ViewModels\SaveLiftVM.cs" />
     <Compile Include="ViewModels\ControlHolderVM.cs" />
     <Compile Include="ViewModels\EditLiftsScreenVM.cs" />
@@ -275,7 +276,11 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="res\ffmpeg.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BarNone.DataLift.DataConverters\BarNone.DataLift.DataConverters.csproj">
       <Project>{c8aac2c2-b0e1-4814-b15e-f2db1f4c897f}</Project>
