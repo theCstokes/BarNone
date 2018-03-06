@@ -6,6 +6,9 @@ import Button from "UEye/Elements/Components/Button/Button";
 import Frame from "UEye/Elements/Containers/Frame/Frame";
 import Toast from "UEye/Elements/Components/Toast/Toast";
 import IconButton from "UEye/Elements/Components/IconButton/IconButton";
+import HTMLContent from "UEye/Elements/Components/HTMLContent/HTMLContent";
+import ContentContainer from "UEye/Elements/Containers/ContentContainer/ContentContainer";
+import Panel from "UEye/Elements/Containers/Panel/Panel";
 
 /**
  *  Represents View for NavigationScreen .
@@ -22,9 +25,17 @@ export default class NavView extends View {
 
 	public logoutButton: IconButton;
 	public helpButton: IconButton;
+	public notificationButton: IconButton;
 	// public exitHelpButton: Button;
 	public pageFrame: Frame;
 	public toast: Toast;
+
+	// Side Bar.
+	public infoCenter: Panel;
+	public notificationCenter: ContentContainer;
+	public helpCenter: ContentContainer;
+	public helpContent: HTMLContent;
+	public notificationList: List;
 
 	/**
  * Acessor gets content layout of Lifts Edit Screen 
@@ -75,6 +86,12 @@ export default class NavView extends View {
 									content: [
 										{
 											instance: ControlTypes.IconButton,
+											id: "notificationButton",
+											text: "Notification",
+											icon: "fa-bell"
+										},
+										{
+											instance: ControlTypes.IconButton,
 											id: "helpButton",
 											text: "Help",
 											icon: "fa-info"
@@ -110,13 +127,41 @@ export default class NavView extends View {
 					instance: ControlTypes.List,
 					id: "navList",
 					style: ControlTypes.NavigationListItem
-				}
-				// helpDock:
-				// {
-				// 	instance: ControlTypes.IconButton,
-				// 	id: "exitHelpButton",
-				// 	icon: "fa-times",
-				// }
+				},
+				helpDock: [
+					{
+						id: "infoCenter",
+						instance: ControlTypes.Panel,
+						// caption: "Help Information",
+						content: [
+							{
+								id: "notificationCenter",
+								instance: ControlTypes.ContentContainer,
+								fill: true,
+								content: [
+									{
+										id: "notificationList",
+										instance: ControlTypes.List,
+										style: ControlTypes.DataListItem
+									}
+								]
+							},
+							{
+								id: "helpCenter",
+								instance: ControlTypes.ContentContainer,
+								fill: true,
+								content: [
+									{
+										id: "helpContent",
+										instance: ControlTypes.HTMLContent,
+										
+										// content: contentString
+									}
+								]
+							}
+						]
+					}
+				]
 			}
 		];
 	}

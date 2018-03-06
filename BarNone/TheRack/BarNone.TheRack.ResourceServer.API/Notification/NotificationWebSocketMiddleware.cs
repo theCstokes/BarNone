@@ -12,12 +12,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BarNone.TheRack.ResourceServer.API.Notification
+namespace BarNone.TheRack.ResourceServer.API
 {
-    //class T : WebSocketConnection
-    //{
-
-    //}
     public class NotificationWebSocketMiddleware
     {
         private static ConcurrentDictionary<string, WebSocket> _sockets = new ConcurrentDictionary<string, WebSocket>();

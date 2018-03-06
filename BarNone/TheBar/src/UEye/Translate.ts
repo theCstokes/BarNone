@@ -9,6 +9,10 @@
 // }
 
 export var Translate = {
+	Information: {
+		Help: "Help Center",
+		Notification: "Notification Center"
+	},
 	AnalysisListItem: {
 		Name: "Name",
 		Value: "Value"

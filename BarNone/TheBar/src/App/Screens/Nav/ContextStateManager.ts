@@ -15,6 +15,8 @@ export class ContextState {
     public crumbList: CrumbElement[] = [];
 
     public showHelp: boolean = false;
+    
+    public showNotifications: boolean = false;
 }
 
 export class ContextStateManager extends ChildStateManager<ContextState, State> {
@@ -56,7 +58,18 @@ export class ContextStateManager extends ChildStateManager<ContextState, State> 
         .onCallable<ContextState>(this, (state) => {
             var nextState = Utils.clone(state);
 
+            nextState.current.showNotifications = false;
             nextState.current.showHelp = (!state.current.showHelp);
+
+            return nextState;
+        });
+
+    public readonly ToggleShowNotifications = StateBind
+        .onCallable<ContextState>(this, (state)  => {
+            var nextState = Utils.clone(state);
+            
+            nextState.current.showHelp = false;
+            nextState.current.showNotifications = !state.current.showNotifications;
 
             return nextState;
         });

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,17 +9,17 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Core
 {
     public class AnalysisRequest
     {
-        public AnalysisRequest()
-        {
-            Requests = new List<RequestEntity>();
-        }
+        //public AnalysisRequest()
+        //{
+        //    Requests = new List<RequestEntity>();
+        //}
 
-        public List<RequestEntity> Requests { get; set; }
+        public List<object> Requests { get; set; }
     }
 
-    public class RequestEntity
+
+    public class RequestEntity : IAnalysisRequest
     {
-        [JsonConverter(typeof(StringEnumConverter))]
         public ELiftAnalysisType Type { get; set; }
     }
 }
