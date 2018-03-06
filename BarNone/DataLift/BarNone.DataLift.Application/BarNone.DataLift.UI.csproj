@@ -135,7 +135,6 @@
     <Compile Include="ViewModels\DataRecorderVM.cs" />
     <Compile Include="ViewModels\LoginScreenVM.cs" />
     <Compile Include="ViewModels\RegisterScreenVM.cs" />
-    <Compile Include="ViewModels\WebCamHandler.cs" />
     <Compile Include="Views\ControlHolderScreen.xaml.cs">
       <DependentUpon>ControlHolderScreen.xaml</DependentUpon>
     </Compile>
