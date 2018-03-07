@@ -27,6 +27,7 @@ export default class LiftEditView extends EditView {
 				instance: ControlTypes.Input,
 				hint: "Name"
 			},
+
 			{
 				id: "typeDropDown",
 				instance: ControlTypes.DropDownInput,
@@ -77,6 +78,11 @@ export default class LiftEditView extends EditView {
 										],
 										content: [
 											{
+												instance: ControlTypes.Checkbox,
+												id: "checkOne",
+												text: "Skeletal View"
+											},
+											{
 												instance: ControlTypes.List,
 												id: "liftList",
 												style: ControlTypes.AnalysisListItem,
@@ -93,7 +99,7 @@ export default class LiftEditView extends EditView {
 														name: "Knee Angle",
 														value: "30 deg",
 														onAction: () => alert(22)
-													}
+													},
 												]
 											}
 										]
@@ -114,6 +120,7 @@ export default class LiftEditView extends EditView {
 					}
 				]
 			}
-		]
+				
+		 ]
 	}
 }

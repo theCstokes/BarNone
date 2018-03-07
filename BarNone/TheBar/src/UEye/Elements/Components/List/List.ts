@@ -127,7 +127,6 @@ export default class UEyeList extends BaseComponent {
                 this._selected = instance;
                 this.onSelectCallback();
             };
-
             // TODO - add events to component.
             this._listElements.push(listElement);
         });
