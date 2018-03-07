@@ -386,7 +386,7 @@ namespace BarNone.DataLift.UI.ViewModels
             // temporary code.  DO NOT PUSH TO DEVELOP
             
 
-            string json = File.ReadAllText("C:/Users/Aamir/Desktop/Chris_Single_Squat_1.json");
+            string json = File.ReadAllText(@"C:\Users\Aamir\Documents\McMaster\Year_4\Capstone\barnone\BarNone\DataLift\BarNone.DataLift.Application\bin\Debug\Chris_Single_Squat_1.json");
             var tempJsonFromFS = JsonConvert.DeserializeObject<LiftDTO>(json);
 
             var tempConverter = Converters.NewConvertion();
