@@ -2,6 +2,7 @@
 using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DataConverters;
+using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.Flex;
 using BarNone.Shared.DomainModel;
 using Newtonsoft.Json;
@@ -86,5 +87,15 @@ namespace BarNone.DataLift.UI.ViewModels
             Console.WriteLine("Send Lift functionality to be implemented.");
         }
         #endregion
+
+        async internal override void Loaded()
+        {
+            //List<UserDTO> allUserDTO = await DataManager.Users.GetAll();
+
+            //allUserDTO.Select(x => )
+
+            //Converters.NewConvertion().User.CreateDataModel(allUserDTO);
+
+        }
     }
 }
