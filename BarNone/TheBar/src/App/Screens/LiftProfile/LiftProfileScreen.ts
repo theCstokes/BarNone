@@ -1,11 +1,11 @@
 import Screen from "UEye/Screen/Screen"
-import ProfileView from "App/Screens/LiftProfile/ProfileView"
+import LiftProfileView from "App/Screens/LiftProfile/LiftProfileView"
 import UEye from "UEye/UEye";
 
-export default class ProfileScreen extends Screen<ProfileView> {
+export default class LiftProfileScreen extends Screen<LiftProfileView> {
 
     public constructor(){
-        super(ProfileView);
+        super(LiftProfileView);
     }
     public onShow(data?: any): void {
         throw new Error("Method not implemented.");

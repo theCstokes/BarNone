@@ -7,7 +7,7 @@ import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import { ContextState } from "App/Screens/Nav/ContextStateManager";
 import ParentStateManager from "UEye/StateManager/ParentStateManager";
 import LiftScreen from "App/Screens/Lifts/LiftScreen";
-import ProfileScreen from "App/Screens/LiftProfile/ProfileScreen";
+import LiftProfileScreen from "App/Screens/LiftProfile/LiftProfileScreen";
 import DataManager from "App/Data/DataManager";
 
 /**
@@ -78,7 +78,7 @@ export class State {
 			id: 3,
 			name:"Lift Profile",
 			icon: "fa-user",
-			screen: ProfileScreen
+			screen: LiftProfileScreen
 		}	
 	]
 }
