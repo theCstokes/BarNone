@@ -382,13 +382,12 @@ namespace BarNone.DataLift.UI.ViewModels
                 GlobalTimer.Restart();
 
                 //Will only happen on loaded
-                colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[currentColorDataFrame];
+                //colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[currentColorDataFrame];
                 bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[currentBodyDataFrame];
                 
                 drawColor = true;
                 drawBody = true;
-                var ianTheCaptainLater = CurrentLifts.CurrentRecordedColorData.Select(x => x.Time)
-                    .Concat(CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame));
+                var ianTheCaptainLater = CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame);
                 LoopTime = (int)(ianTheCaptainLater.Max(x => x.TotalMilliseconds) + 1/30d * 1000);
 
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberMaxValue"));
@@ -402,15 +401,15 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 currentMs = (int)GlobalTimer.ElapsedMilliseconds;
                 int nextBodyFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedBodyData.Count;
-                int nextColorFrame = (currentColorDataFrame + 1) % CurrentLifts.CurrentRecordedColorData.Count;
-                colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[nextColorFrame];
+                //int nextColorFrame = (currentColorDataFrame + 1) % CurrentLifts.CurrentRecordedColorData.Count;
+                //colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[nextColorFrame];
                 bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[nextBodyFrame];
 
-                if (colorFrameToDraw.Time.TotalMilliseconds < currentMs)
-                {
-                    drawColor = true;
-                    currentColorDataFrame = nextColorFrame;
-                }
+                //if (colorFrameToDraw.Time.TotalMilliseconds < currentMs)
+                //{
+                //    drawColor = true;
+                //    currentColorDataFrame = nextColorFrame;
+                //}
                 if (bodyFrameToDraw.TimeOfFrame.TotalMilliseconds < currentMs)
                 {
                     drawBody = true;
@@ -431,9 +430,9 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 using (DrawingContext dc = _middleImageDrawingGroup.Open())
                 {
-                    var currentColorImage = colorFrameToDraw.Image;
-                    ImageBrush colorBrush = new ImageBrush(currentColorImage);
-                    dc.DrawImage(currentColorImage, new System.Windows.Rect(0, 0, 1920, 1080));
+                    //var currentColorImage = colorFrameToDraw.Image;
+                    //ImageBrush colorBrush = new ImageBrush(currentColorImage);
+                    //dc.DrawImage(currentColorImage, new System.Windows.Rect(0, 0, 1920, 1080));
                 }
 
                 //Console.WriteLine("Redraw at: {0}", GlobalTimer.ElapsedMilliseconds);
@@ -508,27 +507,27 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
-        public double ScrubberMaxValue
-        {
-            get
-            {
-                if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
-                    return 0d;
+        //public double ScrubberMaxValue
+        //{
+        //    get
+        //    {
+        //        if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
+        //            return 0d;
 
-                return Math.Max(CurrentLifts.CurrentRecordedColorData.Max(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Max(x => x.TimeOfFrame.TotalMilliseconds));
-            }
-        }
+        //        return Math.Max(CurrentLifts.CurrentRecordedColorData.Max(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Max(x => x.TimeOfFrame.TotalMilliseconds));
+        //    }
+        //}
 
-        public double ScrubberMinValue
-        {
-            get
-            {
-                if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
-                    return 0d;
+        //public double ScrubberMinValue
+        //{
+        //    get
+        //    {
+        //        if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
+        //            return 0d;
 
-                return Math.Min(CurrentLifts.CurrentRecordedColorData.Min(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Min(x => x.TimeOfFrame.TotalMilliseconds));
-            }
-        }
+        //        return Math.Min(CurrentLifts.CurrentRecordedColorData.Min(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Min(x => x.TimeOfFrame.TotalMilliseconds));
+        //    }
+        //}
 
         #endregion
 

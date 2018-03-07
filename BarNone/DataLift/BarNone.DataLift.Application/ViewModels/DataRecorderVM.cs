@@ -191,7 +191,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 var body = GetPrimaryBody(Bodies);
                 //Convert the frame to a more usable form
                 var dataFrame = frame.KinectBdfToDmBdf(body);
-                dataFrame.TimeOfFrame = TimeSpan.FromMilliseconds(lastRecievedBodyFrameMs);
+                dataFrame.TimeOfFrame = frame.RelativeTime;
 
                 if (isCurrentlyRecording)
                     CurrentLiftData.CurrentRecordedBodyData.Add(dataFrame);
@@ -333,12 +333,11 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             //TODO move this to the VM
             CurrentLiftData.CurrentRecordedBodyData.Clear();
-            CurrentLiftData.CurrentRecordedColorData.Clear();
-            isCurrentlyRecording = true;
 
+            _ffmpegController.StartFfmpegRecord("TestFFMPEG.avi", () => isCurrentlyRecording = true);
+            
             GlobalFrameTimer.Restart();
 
-            _ffmpegController.StartFfmpegRecord("TestFFMPEG.avi");
         }
 
         /// <summary>
@@ -376,6 +375,7 @@ namespace BarNone.DataLift.UI.ViewModels
             IsRecording = false;
 
             _ffmpegController.StopFfmpegRecord();
+            CurrentLiftData.FirstColorDataFrame = _ffmpegController.FirstFrameTime;
 
             try
             {
