@@ -27,103 +27,85 @@ export default class LiftEditView extends EditView {
 				instance: ControlTypes.Input,
 				hint: "Name"
 			},
+
 			{
-				id: "searchTag",
-				instance: ControlTypes.SearchTag,
-				text: "Name"
-			},
-			{
-				instance: ControlTypes.SearchBar,
-					id:"searchBar",
-					items: [
-						{
-							id:5,
-							title: "HELL"
-						},
-						{
-							id:7,
-							title: "BELL"
-						}
-					]
-		// 	},
-		// 	{
-		// 		instance: ControlTypes.TabLayout,
-		// 		tabs: [
-		// 			{
-		// 				actions: [
-		// 					{
-		// 						id: "analyticsButton",
-		// 						text: "Logout",
-		// 						icon: "fa-chart-pie"
-		// 					}
-		// 				],
-		// 				title: "Video",
-		// 				content: [
-		// 					{
-		// 						instance: ControlTypes.SideBarLayout,
-		// 						id: "videoLayout",
-		// 						content: [
-		// 							{
-		// 								id: "player",
-		// 								instance: ControlTypes.Video
-		// 							}
-		// 						],
-		// 						sideBar: [
-		// 							{
-		// 								instance: ControlTypes.Panel,
-		// 								caption: "Analytics",
-		// 								actions: [
-		// 									{
-		// 										id: "editButton",
-		// 										text: "Edit",
-		// 										icon: "fa-pencil-alt"
-		// 									}
-		// 								],
-		// 								content: [
-		// 									{
-		// 										instance: ControlTypes.Checkbox,
-		// 										id: "checkOne",
-		// 										text: "Skeletal View"
-		// 									},
-		// 									{
-		// 										instance: ControlTypes.List,
-		// 										id: "liftList",
-		// 										style: ControlTypes.AnalysisListItem,
-		// 										items: [
-		// 											{
-		// 												id: 1,
-		// 												name: "Acceleration",
-		// 												value: "55m/s",
-		// 												icon: "fa-plus",
-		// 												onAction: () => alert(11)
-		// 											},
-		// 											{
-		// 												id: 2,
-		// 												name: "Knee Angle",
-		// 												value: "30 deg",
-		// 												onAction: () => alert(22)
-		// 											},
-		// 										]
-		// 									}
-		// 								]
-		// 							}
-		// 						]
-		// 					}
-		// 				]
-		// 			},
-		// 			{
-		// 				title: "Comments",
-		// 				content: [
-		// 					{
-		// 						id: "messenger",
-		// 						instance: ControlTypes.Messenger,
-		// 						// style: ControlTypes.DataListItem
-		// 					}
-		// 				]
-		// 			}
-		// 		]
-		// 	}
-				}
+				instance: ControlTypes.TabLayout,
+				tabs: [
+					{
+						actions: [
+							{
+								id: "analyticsButton",
+								text: "Logout",
+								icon: "fa-chart-pie"
+							}
+						],
+						title: "Video",
+						content: [
+							{
+								instance: ControlTypes.SideBarLayout,
+								id: "videoLayout",
+								content: [
+									{
+										id: "player",
+										instance: ControlTypes.Video
+									}
+								],
+								sideBar: [
+									{
+										instance: ControlTypes.Panel,
+										caption: "Analytics",
+										actions: [
+											{
+												id: "editButton",
+												text: "Edit",
+												icon: "fa-pencil-alt"
+											}
+										],
+										content: [
+											{
+												instance: ControlTypes.Checkbox,
+												id: "checkOne",
+												text: "Skeletal View"
+											},
+											{
+												instance: ControlTypes.List,
+												id: "liftList",
+												style: ControlTypes.AnalysisListItem,
+												items: [
+													{
+														id: 1,
+														name: "Acceleration",
+														value: "55m/s",
+														icon: "fa-plus",
+														onAction: () => alert(11)
+													},
+													{
+														id: 2,
+														name: "Knee Angle",
+														value: "30 deg",
+														onAction: () => alert(22)
+													},
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						title: "Comments",
+						content: [
+							{
+								id: "messenger",
+								instance: ControlTypes.Messenger,
+								// style: ControlTypes.DataListItem
+							}
+						]
+					}
+				]
+			}
+				
 		 ]
 	}
 }

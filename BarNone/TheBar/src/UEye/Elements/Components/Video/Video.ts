@@ -97,6 +97,7 @@ export default class Video extends BaseComponent {
             }
             else{
                 var currentTime = percent * this._video.duration;
+                
                 this._minutesCurrent = Math.floor(currentTime / 60);
                 this._secondsCurrent = Math.floor(currentTime - this._minutesCurrent * 60);
                 this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
