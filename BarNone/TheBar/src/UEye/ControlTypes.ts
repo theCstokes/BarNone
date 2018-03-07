@@ -37,6 +37,8 @@ import TabLayout from "UEye/Elements/Containers/TabLayout/TabLayout";
 import Tab from "UEye/Elements/Containers/Tab/Tab";
 import Dialog from "UEye/Elements/Containers/Dialog/Dialog";
 import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout";
+import DropDownInput from "UEye/Elements/Components/DropdownInput/DropdownInput";
+import DropDownListItem from "UEye/Elements/Components/DropDownListItem/DropDownListItem";
 
 export default class ControlTypes {
 
@@ -54,12 +56,16 @@ export default class ControlTypes {
 	public static readonly AnalysisListItem = new ComponentType(p => new AnalysisListItem(p));
 	/**Lift Folder List Item Component Type */
 	public static readonly DataListItem = new ComponentType(p => new DataListItem(p));
+	/**Drop Down List Item Component Type */
+	public static readonly DropDownListItem = new ComponentType(p => new DropDownListItem(p));
 	/**Lift Folder List Item Component Type */
 	public static readonly MessageListItem = new ComponentType(p => new MessageListItem(p));
 	/**Navigation List Item Component Type */
 	public static readonly NavigationListItem = new ComponentType(p => new NavigationListItem(p));
 	/**Input Component Type */
 	public static readonly Input = new ComponentType(p => new Input(p));
+	/**DropDownInput Component Type */
+	public static readonly DropDownInput = new ComponentType(p => new DropDownInput(p));
 	/**Password Input Component Type */
 	public static readonly PasswordInput = new ComponentType(p => new PasswordInput(p));
 	/**Label Component Type */

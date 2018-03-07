@@ -23,7 +23,7 @@ namespace BarNone.TheRack.ResourceServer.API.Response
 
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
-            var property = base.CreateProperty(member, memberSerialization); ;
+            var property = base.CreateProperty(member, memberSerialization);
 
             if (Attribute.IsDefined(member, typeof(JsonIgnoreDeserializeAttribute)))
             {

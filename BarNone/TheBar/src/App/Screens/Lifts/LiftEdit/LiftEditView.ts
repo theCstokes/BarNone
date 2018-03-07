@@ -29,14 +29,29 @@ export default class LiftEditView extends EditView {
 			},
 
 			{
+				id: "typeDropDown",
+				instance: ControlTypes.DropDownInput,
+				hint: "Type",
+				items: [
+					{
+						id: 1,
+						name: "Test"
+					},
+					{
+						id: 2,
+						name: "New Test"
+					}
+				]
+			},
+			{
 				instance: ControlTypes.TabLayout,
 				tabs: [
 					{
 						actions: [
 							{
 								id: "analyticsButton",
-								text: "Logout",
-								icon: "fa-chart-pie"
+								text: "Settings",
+								icon: "fa-cog"
 							}
 						],
 						title: "Video",

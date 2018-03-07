@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BarNone.TheRack.FlexEngine\BarNone.TheRack.FlexEngine.csproj" />
+    <ProjectReference Include="..\..\Shared\BarNone.Shared.Analysis\BarNone.Shared.Analysis.csproj" />
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj" />
     <ProjectReference Include="..\BarNone.TheRack.Core\BarNone.TheRack.Core.csproj" />
     <ProjectReference Include="..\BarNone.TheRack.Repository\BarNone.TheRack.Repository.csproj" />

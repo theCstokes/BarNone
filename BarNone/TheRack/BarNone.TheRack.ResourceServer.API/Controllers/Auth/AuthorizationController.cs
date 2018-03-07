@@ -16,7 +16,6 @@ using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.Repository;
 using BarNone.TheRack.DataAccess;
 using BarNone.Shared.DataConverters;
-using BarNone.TheRack.ResourceServer.API.Notification;
 
 namespace TheRack.ResourceServer.API.Controllers
 {

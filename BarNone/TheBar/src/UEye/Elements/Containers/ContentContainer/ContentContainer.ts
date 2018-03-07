@@ -5,6 +5,7 @@ import Core from "UEye/Elements/Core/Core";
  * This container is used to custom style group of elements.
  */
 export default class ContentContainer extends BaseContainer {
+	private _fill: boolean = false;
 
 	/**
 	 * Constructor initializes and defines the ContentContainer 
@@ -23,6 +24,19 @@ export default class ContentContainer extends BaseContainer {
 		} else {
 			Core.removeClass(this.element, "Blur");
 		}
+	}
+
+	public set fill(value: boolean) {
+		if (value !== this._fill) {
+			if (value) {
+				Core.addClass(this.element, "Fill");
+			} else {
+				Core.removeClass(this.element, "Fill");
+			}
+		}
+	}
+	public get fill(): boolean {
+		return this._fill;
 	}
 
 	/**

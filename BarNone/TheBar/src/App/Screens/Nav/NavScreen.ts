@@ -11,6 +11,7 @@ import ControlTypes from "UEye/ControlTypes";
 import Inflater from "UEye/Elements/Inflater/Inflater";
 import { IHelp } from "App/Help/HelpCore";
 import StringUtils from "UEye/Core/StringUtils";
+import { Translate } from "UEye/Translate";
 
 /**
  *  Represents NavScreen class .
@@ -36,8 +37,16 @@ export default class NavScreen extends Screen<NavView> {
 	}
 
 	private _onContextRender(current: ContextState, original: ContextState): void {
-		this.view.pageFrame.toggleHelpBar(current.showHelp);
+		this.view.pageFrame.toggleHelpBar((current.showHelp || current.showNotifications));
 		this.view.helpButton.icon = (current.showHelp ? "fa-times" : "fa-info");
+		this.view.notificationButton.icon = (current.showNotifications ? "fa-times" : "fa-bell");
+
+		if (current.showHelp) {
+			this._renderHelp(this._subScreen.help);
+		}
+		if (current.showNotifications) {
+			this._renderNotifications();
+		}
 
 		this.view.navBreadcrumbs.items = current.crumbList.map(crumb => {
 			return {
@@ -81,7 +90,6 @@ export default class NavScreen extends Screen<NavView> {
 			UEye.popTo(this);
 			this._subScreen = UEye.push(navElement.screen, navElement.initData);
 			// if (this._subScreen.help !== undefined) {
-				this._renderHelp(this._subScreen.help);
 			// }
 		}
 	}
@@ -125,36 +133,28 @@ export default class NavScreen extends Screen<NavView> {
 		// this.stateManager.navigateBack.trigger();
 	}
 
+	private _renderNotifications() {
+		this.view.infoCenter.caption = Translate.Information.Notification;
+		this.view.helpCenter.visible = false;
+		this.view.notificationCenter.visible = true;
+
+		// Render notifications.
+		this.view.notificationList.items = [];
+	}
+
 	private _renderHelp(help?: IHelp) {
-		var contentString = "";
+		this.view.infoCenter.caption = Translate.Information.Help;
+		this.view.helpCenter.visible = true;
+		this.view.notificationCenter.visible = false;
 
 		if (help !== undefined) {
-			contentString = help.content.reduce((html, element) => {
+			this.view.helpContent.content = help.content.reduce((html, element) => {
 				html += StringUtils.format("<h4>{0}</h4>", element.name);
 				if (element.image !== undefined)
 					html += StringUtils.format("<img src=\"{0}\" style=\"width:100%\">", element.image);
 				html += StringUtils.format("<p>{0}</p>", element.content);
 				return html;
 			}, "");
-		}
-
-		this.view.pageFrame.helpDock = [
-			{
-				instance: ControlTypes.Panel,
-				caption: "Help Information",
-				content: [
-					{
-						instance: ControlTypes.HTMLContent,
-						content: contentString
-					}
-				]
-			}
-		];
-
-		var subComponentParent = this.view.pageFrame.getComponentContainerElement("helpDock");
-		if (subComponentParent !== null) {
-			var subComponents = Inflater.execute(subComponentParent,
-				this.view.pageFrame.helpDock, this.view);
 		}
 	}
 
@@ -171,10 +171,15 @@ export default class NavScreen extends Screen<NavView> {
 			UEye.push(LoginScreen);
 		}
 
+		this.view.notificationButton.onClick = () => {
+			this._contextStateManager.ToggleShowNotifications.trigger();
+		};
+
 		this.view.helpButton.onClick = () => {
 			//  this.view.pageFrame.toggleHelpBar(true);
 			this._contextStateManager.ToggleShowHelp.trigger();
-		}
+		};
+
 		// this.view.exitHelpButton.onClick=() =>{
 		// 	this.view.pageFrame.toggleHelpBar(false);
 		//  }
