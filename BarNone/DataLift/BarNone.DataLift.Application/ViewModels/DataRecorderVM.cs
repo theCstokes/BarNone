@@ -385,14 +385,13 @@ namespace BarNone.DataLift.UI.ViewModels
 
             // temporary code.  DO NOT PUSH TO DEVELOP
             
+            //string json = File.ReadAllText(@"C:\Users\Aamir\Documents\McMaster\Year_4\Capstone\barnone\BarNone\DataLift\BarNone.DataLift.Application\bin\Debug\Chris_Single_Squat_1.json");
+            //var tempJsonFromFS = JsonConvert.DeserializeObject<LiftDTO>(json);
 
-            string json = File.ReadAllText(@"C:\Users\Aamir\Documents\McMaster\Year_4\Capstone\barnone\BarNone\DataLift\BarNone.DataLift.Application\bin\Debug\Chris_Single_Squat_1.json");
-            var tempJsonFromFS = JsonConvert.DeserializeObject<LiftDTO>(json);
+            //var tempConverter = Converters.NewConvertion();
+            //var tempBDF = tempConverter.BodyData.CreateDataModel(tempJsonFromFS.Details.BodyData).BodyDataFrames;
 
-            var tempConverter = Converters.NewConvertion();
-            var tempBDF = tempConverter.BodyData.CreateDataModel(tempJsonFromFS.Details.BodyData).BodyDataFrames;
-
-            CurrentLiftData.CurrentRecordedBodyData = new ObservableCollection<BodyDataFrame>(tempBDF);
+            //CurrentLiftData.CurrentRecordedBodyData = new ObservableCollection<BodyDataFrame>(tempBDF);
 
             try
             {
