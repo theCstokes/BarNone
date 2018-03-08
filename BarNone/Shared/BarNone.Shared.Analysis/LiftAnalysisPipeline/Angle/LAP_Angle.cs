@@ -26,15 +26,14 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Angle
             return new ResultEntity
             {
                 Type = ELiftAnalysisType.Angle,
-                Value = thetas;
+                Value = thetas
             };
         }
+
 
         public override bool Validate()
         {
             if (Request.Type == ELiftAnalysisType.Angle) return false;
-            if (Request.Target == default(EJointType)) return false;
-            if (Request.Source == default(EJointType)) return false;
             return true;
         }
 
@@ -44,16 +43,17 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Angle
         /// <returns></returns>
         private List<double> buildResponseList()
         {
-            List<double> thetas;
-            JointTimeSeries a = _jtsList[Request.JointA];
-            JointTimeSeries b = _jtsList[Request.JointB];
-            JointTimeSeries c = _jtsList[Request.JointC];
+            List<double> thetas = new List<double>();
+            JointTimeSeries a = _jtsList[(int) Request.JointA];
+            JointTimeSeries b = _jtsList[(int) Request.JointB];
+            JointTimeSeries c = _jtsList[(int) Request.JointC];
 
             for (int i = 0; i < a.X.Length; i++)
             {
-                double t = computeAngle(a: new[] { a.X[i], a.Y[i], a.Z[i] }, b: new[] { b.X[i], b.Y[i], b.Z[i] }, c: new[] { c.X[i], c.Y[i], c.Z[i] })
+                double t = computeAngle(a: new[] { a.X[i], a.Y[i], a.Z[i] }, b: new[] { b.X[i], b.Y[i], b.Z[i] }, c: new[] { c.X[i], c.Y[i], c.Z[i] });
                 thetas.Add(t);
             }
+            return thetas;
         }
 
 
@@ -64,20 +64,20 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Angle
         /// <param name="b">Point B as an array [x,y,z]</param>
         /// <param name="c">Point C as an array [x,y,z]</param>
         /// <returns>theta_B</returns>
-        private static double computeAngle(double[] a, double[] b, double[] c)
+        private static float computeAngle(float[] a, float[] b, float[] c)
         {
-            double[] ba_v = { a[0] - b[0], a[1] - b[1], a[2] - b[2] };
-            double[] bc_v = { c[0] - b[0], c[1] - b[1], c[2] - b[2] };
-
-            double ba = Math.Sqrt(ba_v[0] * ba_v[0] + ba_v[1] * ba_v[1] + ba_v[2] * ba_v[2]);
-            double bc = Math.Sqrt(bc_v[0] * bc_v[0] + bc_v[1] * bc_v[1] + bc_v[2] * bc_v[2]);
-
-            double ba_dot_bc = ba_v[0] * bc_v[0] + ba_v[1] * bc_v[1] + ba_v[2] * bc_v[2];
-
-            double theta = Math.Acos(ba_dot_bc / ba / bc);
+            float[] ba_v = { a[0] - b[0], a[1] - b[1], a[2] - b[2] };
+            float[] bc_v = { c[0] - b[0], c[1] - b[1], c[2] - b[2] };
+            
+            float ba = (float) Math.Sqrt(ba_v[0] * ba_v[0] + ba_v[1] * ba_v[1] + ba_v[2] * ba_v[2]);
+            float bc = (float) Math.Sqrt(bc_v[0] * bc_v[0] + bc_v[1] * bc_v[1] + bc_v[2] * bc_v[2]);
+            
+            float ba_dot_bc = ba_v[0] * bc_v[0] + ba_v[1] * bc_v[1] + ba_v[2] * bc_v[2];
+            
+            float theta = (float) Math.Acos(ba_dot_bc / ba / bc);
             return theta;
         }
 
-    }
 
+    }
 }
