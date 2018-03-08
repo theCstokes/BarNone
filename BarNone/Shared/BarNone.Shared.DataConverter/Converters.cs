@@ -1,7 +1,6 @@
 ﻿using BarNone.Shared.Core;
 using BarNone.Shared.DataConverter;
 using BarNone.Shared.DataConverter.Core;
-using BarNone.Shared.DataConverter.Lift;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.LiftData;
 using BarNone.Shared.DomainModel;
@@ -38,6 +37,30 @@ namespace BarNone.Shared.DataConverters
         /// The lift.
         /// </value>
         public LiftPermissionConverter LiftPermission { get; private set; }
+
+        /// <summary>
+        /// Lift Type Converter.
+        /// </summary>
+        /// <value>
+        /// The lift type.
+        /// </value>
+        public LiftTypeConverter LiftType { get; private set; }
+
+        /// <summary>
+        /// Lift Analysis Profile Converter.
+        /// </summary>
+        /// <value>
+        /// The lift analysis profile.
+        /// </value>
+        public LiftAnalysisProfileConverter LiftAnalysisProfile { get; private set; }
+
+        /// <summary>
+        /// Lift Analysis Profile Converter.
+        /// </summary>
+        /// <value>
+        /// The lift analysis profile.
+        /// </value>
+        public AccelerationAnalysisProfileConverter AccelerationAnalysisProfile { get; private set; }
 
         /// <summary>
         /// Lift Converter.
@@ -117,6 +140,9 @@ namespace BarNone.Shared.DataConverters
             User =                      Register<User,          UserDTO, UserConverter>(new UserConverter(this, context));
             Comment =                   Register<Comment,       CommentDTO, CommentConverter>(new CommentConverter(this, context));
             LiftPermission =            Register<LiftPermission, LiftPermissionDTO, LiftPermissionConverter>(new LiftPermissionConverter(this, context));
+            LiftType =                  Register<LiftType, LiftTypeDTO, LiftTypeConverter>(new LiftTypeConverter(this, context));
+            LiftAnalysisProfile =       Register<LiftAnalysisProfile, LiftAnalysisProfileDTO, LiftAnalysisProfileConverter>(new LiftAnalysisProfileConverter(this, context));
+            AccelerationAnalysisProfile = Register<AccelerationAnalysisProfile, AccelerationAnalysisProfileDTO, AccelerationAnalysisProfileConverter>(new AccelerationAnalysisProfileConverter(this, context));
             Lift =                      Register<Lift,          LiftDTO, LiftConverter>(new LiftConverter(this, context));
             LiftFolder =                Register<LiftFolder,    LiftFolderDTO, LiftFolderConverter>(new LiftFolderConverter(this, context));
             BodyData =                  Register<BodyData,      BodyDataDTO, BodyDataConverter>(new BodyDataConverter(this, context));
