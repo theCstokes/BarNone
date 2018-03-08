@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BarNone.Shared.DataConverter.Lift
+namespace BarNone.Shared.DataConverter
 {
     /// <summary>
     /// Video converter.

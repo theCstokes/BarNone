@@ -70,7 +70,7 @@ namespace BarNone.Shared.DataConverters
                 BodyData = converterContext.BodyData.CreateDTO(data.BodyData),
                 Video = converterContext.Video.CreateDTO(data.Video),
                 Permissions = data?.Permissions?.Select(p => converterContext.LiftPermission.CreateDTO(p)).ToList()
-        };
+            };
         }
 
         /// <summary>
