@@ -1,6 +1,6 @@
 import Core from "UEye/Elements/Core/Core";
 import { BaseComponent } from "UEye/Elements/Core/BaseComponent/BaseComponent";
-import { OnChangeCallback, IListItem } from "UEye/Elements/Core/EventCallbackTypes";
+import { IListItem, OnSelectCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import List from "UEye/Elements/Components/List/List";
 import ControlTypes from "UEye/ControlTypes";
 /**
@@ -20,7 +20,7 @@ export default class DropDownInput extends BaseComponent {
     /**Represents placeholder as text*/
     private _text: string;
     /**  Represents event listner that is called when even occurs.*/
-    private _onChangeCallback: OnChangeCallback;
+    private _onSelectCallback: OnSelectCallback;
 
     private e_inputArea: HTMLElement;
     private e_dropDown: HTMLElement;
@@ -40,6 +40,10 @@ export default class DropDownInput extends BaseComponent {
 
         this.e_inputArea = Core.create("div", this.element, "Input-Area");
         this.e_dropDown = Core.create("div", this.element, "Holder");
+        this.e_dropDown.onclick = (e) => {
+            console.log("EEEEE");
+            e.stopPropagation();
+        }
 
         this._content = Core.create("div", this.e_inputArea, "Content");
         this._action = Core.create("div", this.e_inputArea, "Action fa fa-caret-left");
@@ -51,10 +55,10 @@ export default class DropDownInput extends BaseComponent {
 
         this._hint = Core.create("div", this._content, "Hint");
         this._input = Core.create("input", this._content, "Input") as HTMLInputElement;
+        this._input.readOnly = true;
 
-        this._input.oninput = this.onInputHandler.bind(this);
-        this._input.onfocus = this.onFocusHandler.bind(this);
-        this._input.onblur = this.onBlurHandler.bind(this);
+        this.element.onfocus = this.onFocusHandler.bind(this);
+        this.element.onblur = this.onBlurHandler.bind(this);
         this.element.onclick = this._onOpenHandler.bind(this);
     }
     /** Method for setting property _hint.
@@ -62,9 +66,7 @@ export default class DropDownInput extends BaseComponent {
      * */
     public set hint(value: string) {
         this._hintText = value;
-        this._input.placeholder = this._hintText;
-        this._hint.textContent = this._hintText;
-        this.updateHint();
+        this._renderState();
     }
     /** Accessor to get placeholder text of _hint property.
      * @returns Returns string text.
@@ -94,14 +96,14 @@ export default class DropDownInput extends BaseComponent {
     /** Accessor to get callback property.
    * @returns Returns the property responsible for callback on click operation
    * */
-    public get onChange(): OnChangeCallback {
-        return this._onChangeCallback;
+    public get onSelect(): OnSelectCallback {
+        return this._onSelectCallback;
     }
     /** Method for setting property _onClickCallback
    * @param value Method parameter represnts onClickCallback property
    * */
-    public set onChange(value: OnChangeCallback) {
-        this._onChangeCallback = value;
+    public set onSelect(value: OnSelectCallback) {
+        this._onSelectHandler = value;
     }
     /** Method that invokes event listener of when the contents of Input instance is changed. Responsive element that visually indicates to user change in text. 
     * @returns Nothing (return in the definition of the property)
@@ -131,47 +133,46 @@ export default class DropDownInput extends BaseComponent {
         throw new Error("Method not implemented.");
     }
 
-
-    /** 
-		 * Method updates placeholder if null
-		 */
-    private updateHint() {
-        if (!Utils.isNullOrWhitespace(this._text)) {
-            Core.addClass(this._hint, "Has-And-Text");
-        } else {
-            Core.removeClass(this._hint, "Has-And-Text");
-        }
-    }
-    /** 
-		 * Method that invoked event listener of when the contents of Inputs are handled on callback. 
-		 * @returns Nothing (return in the definition of the property)
-		 */
-    private onInputHandler(): void {
-        this._text = this._input.value;
-        if (this._onChangeCallback !== undefined) {
-            this._onChangeCallback(this._text);
-        }
-        this.updateHint();
-    }
     /** 
 		 * Method that invoked event listener of when to implement Focus. 
 		 * @returns Nothing (return in the definition of the property)
 		 */
     private onFocusHandler(): void {
-				Core.addClass(this.e_inputArea, "Focused");
-				Core.addClass(this.e_dropDown, "Focused");
+        Core.addClass(this.e_inputArea, "Focused");
+        Core.addClass(this.e_dropDown, "Focused");
+        // this._open = true;
+        // this._renderState();
     }
     /** Method that invoked event listener of when to implement Blur. 
         * @returns Nothing (return in the definition of the property)
         * */
     private onBlurHandler(): void {
-				Core.removeClass(this.e_inputArea, "Focused");
-				Core.removeClass(this.e_dropDown, "Focused");
-				Core.removeClass(this.e_dropDown, "Show");
+        Core.removeClass(this.e_inputArea, "Focused");
+        Core.removeClass(this.e_dropDown, "Focused");
+        this._open = false;
+        this._renderState();
     }
 
     private _onOpenHandler(): void {
         this._open = !this._open;
+        this._renderState();
+    }
+
+    private _onSelectHandler(data: IListItem) {
+        var item = this.items.find(x => x.id === data.id);
+        if (item === null) return;
+
+        this._open = false;
+        this._input.value = item.name;
+        this._renderState();
+
+        this._onSelectCallback(data);
+    }
+
+    private _renderState() {
+        this._input.placeholder = this._hintText;
+        this._hint.textContent = this._hintText;
+
         if (this._open) {
             Core.replaceClass(this._action, "fa-caret-left", "fa-caret-down");
             Core.addClass(this.e_dropDown, "Show");
@@ -179,12 +180,11 @@ export default class DropDownInput extends BaseComponent {
             Core.replaceClass(this._action, "fa-caret-down", "fa-caret-left");
             Core.removeClass(this.e_dropDown, "Show");
         }
-    }
 
-    private _onSelectHandler(data: IListItem) {
-        var item = this.items.find(x => x.id === data.id);
-        if (item === null) return;
-
-        this._input.value = item.name;
+        if (!Utils.isNullOrWhitespace(this._text)) {
+            Core.addClass(this._hint, "Has-And-Text");
+        } else {
+            Core.removeClass(this._hint, "Has-And-Text");
+        }
     }
 }
