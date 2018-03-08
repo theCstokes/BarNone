@@ -11,9 +11,12 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Angle
     public class AR_Angle : RequestEntity
     {
         [JsonConverter(typeof(StringEnumConverter))]
-        public EJointType Source { get; set; }
+        public EJointType JointA { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public EJointType Target { get; set; }
+        public EJointType JointB { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public EJointType JointC { get; set; }
     }
 }
