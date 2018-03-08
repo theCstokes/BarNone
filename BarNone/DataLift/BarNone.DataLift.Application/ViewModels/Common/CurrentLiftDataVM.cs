@@ -30,7 +30,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             }
         }
 
-        private DateTime? _firstColorDataFrame;
+        private DateTime? _firstColorDataFrame = null;
         public DateTime? FirstColorDataFrame
         {
             get => _firstColorDataFrame;
@@ -38,6 +38,17 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             {
                 _firstColorDataFrame = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("FirstColorDataFrame"));
+            }
+        }
+
+        private TimeSpan? _latencyBetweenFirstColorFrameAndFirstBodyFrame = null;
+        public TimeSpan? LatencyBetweenFirstColorFrameAndFirstBodyFrame
+        {
+            get => _latencyBetweenFirstColorFrameAndFirstBodyFrame;
+            set
+            {
+                _latencyBetweenFirstColorFrameAndFirstBodyFrame = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("LatencyBetweenFirstColorFrameAndFirstBodyFrame"));
             }
         }
 
