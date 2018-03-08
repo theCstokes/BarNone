@@ -1,7 +1,11 @@
 import { View } from "UEye/View/View";
 import ControlTypes from "UEye/ControlTypes";
+import Panel from "UEye/Elements/Containers/Panel/Panel";
+import List from "UEye/Elements/Components/List/List";
 
-export default class ProfileView extends View {
+export default class LiftProfileView extends View {
+	public typeList: List;
+	public mainPanel: Panel;
     public get content(): any[] {
 		return [
 			{
@@ -14,15 +18,9 @@ export default class ProfileView extends View {
 						content: [
 							{
 								instance: ControlTypes.List,
-								id: "typesList",
+								id: "typeList",
 								isSelectionList: true,
 								style: ControlTypes.LiftFolderListItem
-							},
-							{
-								instance: ControlTypes.Info,
-								id: "liftListInfo",
-								title: "No Lifts Available",
-								message: "Upload lift from Data Lift."
 							}
 						]
 					}

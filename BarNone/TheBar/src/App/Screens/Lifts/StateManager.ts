@@ -20,6 +20,7 @@ export class StateManager extends SelectionStateManager<LiftListItem, State> {
 		super(State);
 		this._type = type;
 	}
+ 
 
 	public ParentChange = StateBind.onAsyncAction<State, {
 		parentID: number | null;
