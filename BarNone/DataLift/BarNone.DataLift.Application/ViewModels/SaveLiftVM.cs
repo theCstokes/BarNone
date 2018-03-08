@@ -65,6 +65,45 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
+        #region DisplayableShareUserProperties
+
+        private string _searchString = "";
+
+        public string SearchString
+        {
+            get
+            {
+                return _searchString;
+            }
+            set
+            {
+                _searchString = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("SearchString"));
+                OnPropertyChanged(new PropertyChangedEventArgs("DisplayedUsers"));
+
+            }
+        }
+
+        public ObservableCollection<SharableUser> DisplayedUsers
+        {
+            get
+            {
+                if(SearchString == "")
+                {
+                    return Users;
+                }
+                else {
+                    return new ObservableCollection<SharableUser>
+                        (Users.Where(u => u.UserName.ToLower().Contains(SearchString.ToLower())).ToList());
+                }
+            }
+            set
+            {
+                OnPropertyChanged(new PropertyChangedEventArgs("DisplayedUsers"));
+            }
+        }
+        #endregion
+
         #region Custom User Implementation
         public class SharableUser
         {
