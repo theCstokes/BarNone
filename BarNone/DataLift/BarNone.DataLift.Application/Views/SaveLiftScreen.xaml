@@ -21,7 +21,36 @@
     </UserControl.DataContext>
     <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Center" Padding="20">
-            <Button Content="Send Lifts." Command="{Binding SendLifts}" Margin="10" Width="300" FontSize="16" />
+            <!--<Button Content="Send Lifts." Command="{Binding SendLifts}" Margin="10" Width="300" FontSize="16" />-->
+
+            <ItemsControl ItemsSource="{Binding Users}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border x:Name="Border" Padding="8" BorderThickness="0 0 0 1" BorderBrush="{DynamicResource MaterialDesignDivider}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="5*"/>
+                                </Grid.ColumnDefinitions>
+                                <!--TODO Add IsChecked-->
+                                <ToggleButton VerticalAlignment="Center" Grid.Column="0"
+                                                  Style="{StaticResource MaterialDesignActionLightToggleButton}"
+                                                  Content="{Binding Code}" />
+                                <StackPanel Margin="8 0 0 0" Grid.Column="1">
+                                    <TextBlock FontWeight="Bold" Text="{Binding UserName}" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <!--<DataTemplate.Triggers>
+                        TODO add binding
+                        <DataTrigger Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>-->
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>       
         </materialDesign:Card>
     </Viewbox>
 </UserControl>
