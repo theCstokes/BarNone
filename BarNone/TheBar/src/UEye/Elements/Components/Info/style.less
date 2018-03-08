@@ -1,0 +1,36 @@
+.UEye-Info {
+	display: flex;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+	> .Content {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		border: 5px solid @DefaultElementAccent;
+		border-radius: 850px;
+		// padding: 80px 10px 80px 10px;
+		// width: 200px;
+		font-size: 20px;
+		opacity: 0.5;
+		text-align: center;
+		> .Title {
+			top: 0;
+			font-size: 20px;
+			opacity: 0.5;
+			text-align: center;
+		}
+		> .Message {
+			bottom: 0;
+			font-size: 11px;
+			opacity: 0.5;
+			text-align: center;
+		}
+	}
+}

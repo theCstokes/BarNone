@@ -44,7 +44,7 @@ namespace BarNone.TheRack.Repository
         /// <returns></returns>
         public User Login(string userName, string password)
         {
-            var result = entites.Where(c => c.UserName == userName);
+            var result = Entites.Where(c => c.UserName == userName);
             if (!result.Any()) return null;
 
             var user = result.FirstOrDefault();

@@ -1,6 +1,7 @@
 import Core from "UEye/Elements/Core/Core";
 import { BaseView } from "UEye/Elements/Core/BaseView";
 import DataEvent from "UEye/Core/DataEvent/DataEvent";
+import StringUtils from "UEye/Core/StringUtils";
 
 /**Parent Class to all components including BaseComponent.BaseElement provides the basic HTML functionality*/
 export abstract class BaseElement {
@@ -18,6 +19,9 @@ export abstract class BaseElement {
 	private _error: string;
 	/** Represents visible flag property  */
 	private _visible: boolean = true;
+	/** Parent HTML Element */
+	private _parent: HTMLElement;
+
 	/** Represents onShow callback  */
 	protected onShow: DataEvent<BaseView>;
 
@@ -27,6 +31,7 @@ export abstract class BaseElement {
 	*/
 	public constructor(parent: HTMLElement, ...styles: string[]) {
 		this._element = Core.create('div', parent, ...styles);
+		this._parent = parent;
 		this.onShow = new DataEvent<BaseView>();
 	}
 	/** Accessor to get _element property.
@@ -35,6 +40,14 @@ export abstract class BaseElement {
 	public get element(): HTMLElement {
 		return this._element;
 	}
+
+	/**
+	 * Accessor for parent HTMLElement
+	 */
+	public get parent(): HTMLElement {
+		return this._parent;
+	}
+
 	/** Accessor to get _id property.
 	* @returns Returns id property.
 	* */
@@ -128,14 +141,18 @@ export abstract class BaseElement {
 
 	/**Abstract event listener */
 	public onModifiedChange(): void {
-		throw ("No onModifiedChange implemented for component.")
+		throw (StringUtils.format("No onModifiedChange implemented for component: {0}", this.getName()))
 	}
 	/**Abstract event listener */
 	public onReadonlyChange(): void {
-		throw ("No onModifiedChange implemented for component.")
+		throw (StringUtils.format("No onReadonlyChange implemented for component: {0}", this.getName()))
 	}
 	/**Abstract event listener */
 	public onErrorChange(): void {
-		throw ("No onModifiedChange implemented for component.")
+		throw (StringUtils.format("No onErrorChange implemented for component: {0}", this.getName()))
 	}
+
+	private getName(): string { 
+		return this.constructor.name;
+ };
 }

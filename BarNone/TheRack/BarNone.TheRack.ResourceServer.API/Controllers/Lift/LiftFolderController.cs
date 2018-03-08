@@ -14,7 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TheRack.ResourceServer.API.Response;
 
-namespace BarNone.TheRack.ResourceServer.API.Controllers.Lift
+namespace BarNone.TheRack.ResourceServer.API.Controllers
 {
     /// <summary>
     /// LiftFolder endpoint controller.

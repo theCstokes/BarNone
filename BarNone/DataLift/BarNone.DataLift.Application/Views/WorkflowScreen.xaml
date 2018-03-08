@@ -45,7 +45,7 @@
                             <DataTrigger  Binding="{Binding Path=StepTwoStyle, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Value="2">
                                 <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}" />
                                 <Setter Property= "BorderBrush"  Value="{DynamicResource PrimaryHueMidBrush}" />
-                                <Setter Property="Opacity" Value="0.5" />
+                                <Setter Property="Opacity" Value="1" />
                                 <Setter Property="IsEnabled" Value="True" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -61,7 +61,7 @@
                             <DataTrigger  Binding="{Binding Path=StepThreeStyle, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Value="2">
                                 <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}" />
                                 <Setter Property= "BorderBrush"  Value="{DynamicResource PrimaryHueMidBrush}" />
-                                <Setter Property="Opacity" Value="0.5" />
+                                <Setter Property="Opacity" Value="1" />
                                 <Setter Property="IsEnabled" Value="True" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Path=StepThreeStyle, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" Value="3">

@@ -1,4 +1,5 @@
 ﻿using BarNone.Shared.DomainModel.Core;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -86,5 +87,7 @@ namespace BarNone.Shared.DomainModel
         /// </value>
         [ForeignKey("VideoID")]
         public VideoRecord Video { get; set; }
+
+        public List<LiftPermission> Permissions { get; set; }
     }
 }

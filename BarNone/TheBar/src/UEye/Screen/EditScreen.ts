@@ -1,11 +1,13 @@
 import { EditView } from "UEye/View/EditView";
-import Screen from "UEye/Screen/Screen";
+import Screen, { IScreenConfig } from "UEye/Screen/Screen";
 import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 
 /**
  * Edit base screen.
  */
-export default abstract class EditScreen<TView extends EditView, TStateManager extends BaseStateManager<any>> extends Screen<TView> {
+export default abstract class EditScreen<
+    TView extends EditView,
+    TStateManager extends BaseStateManager<any>> extends Screen<TView> {
     /**
      * Edit screen state manager.
      */
@@ -16,13 +18,18 @@ export default abstract class EditScreen<TView extends EditView, TStateManager e
      * @param ViewType - view builder
      * @param StateManagerType - state manager builder
      */
-    public constructor(ViewType: { new(): TView }, StateManagerType: { new(): TStateManager }) {
+    public constructor(ViewType: { new(): TView },
+        StateManagerType: { new(): TStateManager } | null = null) {
         super(ViewType);
-        this._stateManager = new StateManagerType();
-        this._stateManager.bind(this._onBaseRender.bind(this));
+        if (StateManagerType !== null) {
+            this._stateManager = new StateManagerType();
+            this._stateManager.bind(this._onBaseRender.bind(this));
+        }
+    }
 
-        // Default config.
-        this.config.addScreenToHistory = false;
+    public init(stateManager: TStateManager) {
+        this._stateManager = stateManager;
+        this._stateManager.bind(this._onBaseRender.bind(this));
     }
 
     /**
@@ -39,15 +46,22 @@ export default abstract class EditScreen<TView extends EditView, TStateManager e
      */
     private _onBaseRender(current: any, original: any) {
         var isModified = (JSON.stringify(original) !== JSON.stringify(current));
-        
+
         this.view.cancelButton.enabled = isModified;
         this.view.saveButton.enabled = isModified;
+    }
+
+    public configure(): IScreenConfig {
+        return {
+            addScreenToHistory: false,
+            fullScreen: false
+        }
     }
 
     /**
      * Screen on show.
      */
-    public onShow(): void {
+    public onShow(data?: any): void {
         console.log("test");
         this.view.cancelButton.onClick = () => {
 

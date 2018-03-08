@@ -180,10 +180,18 @@ export class SkeletonBuilder {
 				if (spineBase === undefined) return result;
 
 				result.push(new SkeletonLine({
-					x1: (startJoint.x - spineBase.x) * -153.34 + 256,
-					y1: startJoint.y * -153.34 + 212,
-					x2: (endJoint.x - spineBase.x) * -153.34 + 256,
-					y2: endJoint.y * -153.34 + 212
+					// x1: (startJoint.x /*- spineBase.x*/) * -103.34 + 206,
+					// y1: startJoint.y * -103.34 + 52,
+					// x2: (endJoint.x /*- spineBase.x*/) * -103.34 + 206,
+					// y2: endJoint.y * -103.34 + 52
+					x1: (startJoint.x /*- spineBase.x*/) * -75.34 + 185,
+					y1: startJoint.y * -75.34 + 82,
+					x2: (endJoint.x /*- spineBase.x*/) * -75.34 + 185,
+					y2: endJoint.y * -75.34 + 82
+					// x1: (startJoint.x - spineBase.x) * -153.34 + 256,
+					// y1: startJoint.y * -153.34 + 212,
+					// x2: (endJoint.x - spineBase.x) * -153.34 + 256,
+					// y2: endJoint.y * -153.34 + 212
 				}));
 
 				return result;

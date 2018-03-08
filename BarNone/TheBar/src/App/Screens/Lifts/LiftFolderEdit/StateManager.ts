@@ -18,8 +18,8 @@ export class StateManager extends BaseStateManager<State> {
 	public readonly ResetState = StateBind
 		.onAsyncAction<State, {
 			id: number,
-			name: string,
-			age: number
+			name: string
+			// age: number
 		}>(this, async (state, data) => {
 			var nextState = state.empty();
 
@@ -29,7 +29,7 @@ export class StateManager extends BaseStateManager<State> {
 
 			nextState.current.id = data.id;
 			nextState.current.name = data.name;
-			nextState.current.age = data.age;
+			// nextState.current.age = data.age;
 
 			return nextState.initialize();
 		});

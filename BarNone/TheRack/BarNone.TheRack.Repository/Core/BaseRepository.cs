@@ -55,6 +55,12 @@ namespace BarNone.TheRack.Repository.Core
         protected abstract EntityResolverDelegate<TDomainModel> EntityResolver { get; }
         #endregion
 
+        #region Protected Virtual Member(s).
+        protected virtual void OnCreate(TDomainModel entity) { }
+        protected virtual void OnUpdate(TDomainModel entity) { }
+        protected virtual void OnRemove(TDomainModel entity) { } 
+        #endregion
+
         #region Private Field(s).        
         /// <summary>
         /// The database entity set.
@@ -70,7 +76,8 @@ namespace BarNone.TheRack.Repository.Core
         {
             context = new DomainContext();
             dbSet = SetResolver(context);
-            entites = EntityResolver(dbSet);
+            AllEntites = dbSet;
+            Entites = EntityResolver(dbSet);
         }
 
         /// <summary>
@@ -81,7 +88,8 @@ namespace BarNone.TheRack.Repository.Core
         {
             this.context = context;
             dbSet = SetResolver(context);
-            entites = EntityResolver(dbSet);
+            AllEntites = dbSet;
+            Entites = EntityResolver(dbSet);
         }
         #endregion
 
@@ -92,7 +100,8 @@ namespace BarNone.TheRack.Repository.Core
         /// <value>
         /// The entites.
         /// </value>
-        public IQueryable<TDomainModel> entites { get; }
+        public IQueryable<TDomainModel> Entites { get; }
+        public IQueryable<TDomainModel> AllEntites { get; }
         #endregion
 
         #region Protected Member(s).        
@@ -104,7 +113,9 @@ namespace BarNone.TheRack.Repository.Core
         protected TDomainModel Create(TDomainModel model)
         {
 
-            return dbSet.Add(model).Entity;
+            var result = dbSet.Add(model);
+            OnCreate(result.Entity);
+            return result.Entity;
         }
 
         /// <summary>
@@ -112,9 +123,14 @@ namespace BarNone.TheRack.Repository.Core
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns></returns>
-        protected TDomainModel Update(TDomainModel model)
+        protected TDomainModel Update(TDomainModel model, List<string> updateFilter)
         {
-            return dbSet.Update(model).Entity;
+            var entity = dbSet.Attach(model);
+            updateFilter.Select(f => entity.Property(f).IsModified = true);
+
+            OnUpdate(entity.Entity);
+
+            return entity.Entity;
         }
 
         /// <summary>
@@ -124,7 +140,9 @@ namespace BarNone.TheRack.Repository.Core
         /// <returns></returns>
         protected TDomainModel Remove(TDomainModel model)
         {
-            return dbSet.Remove(model).Entity;
+            var result = dbSet.Remove(model);
+            OnRemove(result.Entity);
+            return result.Entity;
         }
         #endregion
 

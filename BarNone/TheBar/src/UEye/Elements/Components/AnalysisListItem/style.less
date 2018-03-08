@@ -1,0 +1,53 @@
+.Analysis-List-Item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    padding: 10px;
+    >.Content {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        text-align: center;
+        >.Type-Icon {
+            margin-right: 5px;
+        }
+        > .Name-Holder {
+            > .Name {
+                text-decoration: none;
+                font-weight: bold;
+            }
+            > .Name-Caption {
+                text-decoration: none;
+            }
+        }
+        > .Value-Holder {
+            > .Value {
+                text-decoration: none;
+                font-weight: bold;
+            }
+            > .Value-Caption {
+                text-decoration: none;
+            }
+        }
+    }
+    > .Action {
+        background: @DefaultElementAccent;
+        padding: 2px 3px 2px 3px;
+        color: white;
+        border-radius: 2px;
+        margin-left: 5%;
+    }
+    > .Action:hover {
+        background-color: #286090;
+        border-color: #204d74;
+        text-decoration: none;
+    }
+    > .Action.disabled {
+        background-color: #B2B4B6;
+        color: #333333;
+        text-decoration: none;
+    }
+}

@@ -24,6 +24,22 @@ namespace BarNone.Shared.DataConverters
         public UserConverter User { get; private set; }
 
         /// <summary>
+        /// Comment Converter.
+        /// </summary>
+        /// <value>
+        /// The comment converter.
+        /// </value>
+        public CommentConverter Comment { get; private set; }
+
+        /// <summary>
+        /// Lift Converter.
+        /// </summary>
+        /// <value>
+        /// The lift.
+        /// </value>
+        public LiftPermissionConverter LiftPermission { get; private set; }
+
+        /// <summary>
         /// Lift Converter.
         /// </summary>
         /// <value>
@@ -86,6 +102,8 @@ namespace BarNone.Shared.DataConverters
         /// The video.
         /// </value>
         public VideoConverter Video { get; private set; }
+
+        public NotificationConverter Notification { get; private set; }
         #endregion
 
         #region Protected BaseConverter Implementation.        
@@ -97,6 +115,8 @@ namespace BarNone.Shared.DataConverters
         {
             /// TODO - pls no.
             User =                      Register<User,          UserDTO, UserConverter>(new UserConverter(this, context));
+            Comment =                   Register<Comment,       CommentDTO, CommentConverter>(new CommentConverter(this, context));
+            LiftPermission =            Register<LiftPermission, LiftPermissionDTO, LiftPermissionConverter>(new LiftPermissionConverter(this, context));
             Lift =                      Register<Lift,          LiftDTO, LiftConverter>(new LiftConverter(this, context));
             LiftFolder =                Register<LiftFolder,    LiftFolderDTO, LiftFolderConverter>(new LiftFolderConverter(this, context));
             BodyData =                  Register<BodyData,      BodyDataDTO, BodyDataConverter>(new BodyDataConverter(this, context));
@@ -105,6 +125,7 @@ namespace BarNone.Shared.DataConverters
             JointType =                 Register<JointType,     JointTypeDTO, JointTypeConverter>(new JointTypeConverter(this, context));
             JointTrackingStateType =    Register<JointTrackingStateType, JointTrackingStateTypeDTO, JointTrackingStateTypeConverter>(new JointTrackingStateTypeConverter(this, context));
             Video =                     Register<VideoRecord,   VideoDTO, VideoConverter>(new VideoConverter(this, context));
+            Notification =              Register<Notification,  NotificationDTO, NotificationConverter>(new NotificationConverter(this, context));
             //Joint = Register<User, UserDTO, UserConverter>(new UserConverter(this));
         }
         #endregion

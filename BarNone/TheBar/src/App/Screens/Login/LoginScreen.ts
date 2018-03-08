@@ -22,14 +22,14 @@ import { BaseDataManager } from "UEye/Data/BaseDataManager";
  */
 export default class LoginScreen extends Screen<LoginView> {
 
- /** Constructor intialized Screen Component and binds corresponding View 
-     * */
+	/** Constructor intialized Screen Component and binds corresponding View 
+			* */
 	public constructor() {
 		super(LoginView);
 		// this._stateManager = new StateManager(this);
 	}
-		/** Method defines UI properties when shown
-     * */
+	/** Method defines UI properties when shown
+	 * */
 	public onShow(): void {
 		// TODO - remove hard code login.
 		this.view.usernameInput.text = "admin";
@@ -58,6 +58,7 @@ export default class LoginScreen extends Screen<LoginView> {
 
 			if (await DataManager.authorize(this.view.usernameInput.text, this.view.passwordInput.text)) {
 				this.view.statusLabel.text = "Success!";
+
 				UEye.pop();
 				await UEye.push(NavScreen);
 				// await UEye.push(UserScreen);

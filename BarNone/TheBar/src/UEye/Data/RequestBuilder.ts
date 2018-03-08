@@ -80,14 +80,14 @@ export class BaseRequestBuilder {
 						resolve(xhr.responseText);
 					} else {
 						console.warn(xhr.statusText);
-						reject();
+						reject(xhr.status);
 					}
 				}
 			};
 
 			xhr.onerror = () => {
 				console.warn(xhr.statusText);
-				reject();
+				reject(xhr.status);
 			};
 
 			xhr.send(JSON.stringify(data));
@@ -178,5 +178,9 @@ export class RequestBuilder {
 	 */
 	public static PUT(resource: string, route: string, args: { [key: string]: any } = {}): BaseRequestBuilder {
 		return new PutRequestBuilder(resource, "PUT", route);
+	}
+
+	public static POST(resource: string, route: string, args: { [key: string]: any } = {}): BaseRequestBuilder {
+		return new PutRequestBuilder(resource, "POST", route);
 	}
 }

@@ -14,6 +14,8 @@ using System.Diagnostics;
 using BarNone.TheRack.ResourceServer.API;
 using BarNone.Shared.DataTransfer;
 using BarNone.TheRack.Repository;
+using BarNone.TheRack.DataAccess;
+using BarNone.Shared.DataConverters;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
@@ -67,6 +69,8 @@ namespace TheRack.ResourceServer.API.Controllers
                 }, _serializerSettings));
             }
 
+            await NotificationWebSocketMiddleware.NotifyAll($"{applicationUser.Name} has logged in.");
+
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, applicationUser.UserName),
@@ -109,10 +113,18 @@ namespace TheRack.ResourceServer.API.Controllers
         {
             applicationUser.Name = applicationUser.UserName;
 
-            var repo = new UserRepository();
+            ClaimsIdentity identity = null;
 
-            var user = repo.Create(applicationUser);
-            var identity = await GetClaimsIdentity(applicationUser);
+            using (var dc = new DomainContext())
+            {
+                var repo = new UserRepository(dc);
+                var user = repo.Create(applicationUser);
+                dc.SaveChanges();
+
+                Converters.NewConvertion(dc).User.CreateDTO(user);
+                identity = await GetClaimsIdentity(applicationUser);
+            }
+
             if (identity == null)
             {
                 _logger.LogInformation($"Invalid username ({applicationUser.UserName}) or password ({applicationUser.Password})");

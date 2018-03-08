@@ -57,11 +57,11 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Field representation for the <see cref="LiftName"/> bindable property
         /// </summary>
-        private string _liftStartTime;
+        private double _liftStartTime;
         /// <summary>
         /// The time the lift has started.
         /// </summary>
-        public string LiftStartTime
+        public double LiftStartTime
         {
             get { return _liftStartTime; }
 
@@ -77,11 +77,11 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Field representation for the <see cref="LiftEndTime"/> bindable property
         /// </summary>
-        private string _liftEndTime;
+        private double _liftEndTime;
         /// <summary>
         /// The time the lift has ended.
         /// </summary>
-        public string LiftEndTime
+        public double LiftEndTime
         {
             get { return _liftEndTime; }
 

@@ -7,6 +7,8 @@ import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import { ContextState } from "App/Screens/Nav/ContextStateManager";
 import ParentStateManager from "UEye/StateManager/ParentStateManager";
 import LiftScreen from "App/Screens/Lifts/LiftScreen";
+import LiftProfileScreen from "App/Screens/LiftProfile/LiftProfileScreen";
+import DataManager from "App/Data/DataManager";
 
 /**
  *  Represents Definition for Navigation Element 
@@ -16,26 +18,21 @@ class NavElement {
 	public name: string;
 	public icon: string;
 	public screen: { new(): Screen<any> };
+	public initData?: any;
 }
 
 /**
  *  Represents State for Nav Screen.
  */
 export class State {
-	/**
- *  Represents Current screen id
- */
+	/** Represents Current screen id */
 	public currentScreenId: number;
-	/**
- *  Represents array storing navigation history
- */
+	/** Represents array storing navigation history */
 	public navHistory: number[] = [];
 
 	public context: ContextState = new ContextState();
 
-	/**
- *  Represents lists seen as part Navigation List
- */
+	/** Represents lists seen as part Navigation List */
 	public navElementList: NavElement[] = [
 		// {
 		// 	id: 1,
@@ -58,16 +55,31 @@ export class State {
 		// },
 		{
 			id: 5,
-			name: "Lifts",
+			name: "My Lifts",
 			icon: "fa-universal-access",
-			screen: LiftScreen
+			screen: LiftScreen,
+			initData: "Lift"
 		},
+		{
+			id: 6,
+			name: "Shared Lifts",
+			icon: "fa-share-alt",
+			screen: LiftScreen,
+			initData: "Shared"
+		},
+		
 		{
 			id: 2,
 			name: "Settings",
 			icon: "fa-cog",
 			screen: SettingsScreen
-		}
+		},
+		{	
+			id: 3,
+			name:"Lift Profile",
+			icon: "fa-user",
+			screen: LiftProfileScreen
+		}	
 	]
 }
 

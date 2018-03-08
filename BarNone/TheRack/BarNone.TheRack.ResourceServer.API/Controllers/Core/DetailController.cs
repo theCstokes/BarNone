@@ -20,10 +20,10 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
         public abstract IActionResult GetWithDetailsByID(int id);
 
         [HttpPost]
-        public abstract IActionResult Post(TDTO dto);
+        public abstract IActionResult Post([FromBody] TDTO dto);
 
         [HttpPut("{id}")]
-        public abstract IActionResult Put(int id, TDTO dto);
+        public abstract IActionResult Put(int id, [FromBody] TDTO dto);
 
         [HttpDelete("{id}")]
         public abstract IActionResult Delete(int id);
