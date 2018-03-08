@@ -22,9 +22,27 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Angle
 
         public override ResultEntity Execute()
         {
+            //This is a little ugly, might clean it up later. We should discuss the default behaviour, currently returns Z.
+            List<float> result;
+            if (Request.Dimension == EDimension.X)
+            {
+                result = new List<float>(_jtsList[(int)Request.Joint].X);
+            }
+            else if (Request.Dimension == EDimension.Y)
+            {
+                result = new List<float>(_jtsList[(int)Request.Joint].Y);
+
+            }
+            else
+            {
+                result = new List<float>(_jtsList[(int)Request.Joint].Z);
+
+            }
+
             return new ResultEntity
             {
-                Type = ELiftAnalysisType.Position
+                Type = ELiftAnalysisType.Position,
+                Value = result
             };
         }
 
