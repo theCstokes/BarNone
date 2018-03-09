@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace BarNone.DataLift.UI.ViewModels
@@ -65,6 +66,59 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
+        #region Lift ListView Properties
+
+        private CurrentLiftDataVM _currentLifts = CurrentLiftDataVMSingleton.GetInstance();
+        /// <summary>
+        /// Shared viewmodel reference which holds currently recorded data consistently between VM's
+        /// </summary>
+        public CurrentLiftDataVM CurrentLifts
+        {
+            get => _currentLifts;
+            set
+            {
+                _currentLifts = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentLifts"));
+            }
+        }
+
+        public ObservableCollection<LiftListVM> LiftIntervals
+        {
+            get
+            {
+                return CurrentLifts.LiftInformation;
+            }
+            set
+            {
+                if (CurrentLifts.LiftInformation == value) return;
+
+                CurrentLifts.LiftInformation = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("LiftIntervals"));
+            }
+        }
+
+
+        /// <summary>
+        /// Field representation for the <see cref="SelectedLift"/> bindable property
+        /// </summary>
+        private LiftListVM _selectedLift;
+        /// <summary>
+        /// The lift that is selected in the lift.  Used to bind to video player to display the selected lift.
+        /// </summary>
+        public LiftListVM SelectedLift
+        {
+            get { return _selectedLift; }
+
+            set
+            {
+                if (_selectedLift == value) return;
+
+                _selectedLift = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("SelectedLift"));
+            }
+        }
+        #endregion
+
         #region DisplayableShareUserProperties
 
         private string _searchString = "";
@@ -88,13 +142,39 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             get
             {
-                if(SearchString == "")
+                if (SearchString == "")
                 {
-                    return Users;
+                    return new ObservableCollection<SharableUser>(Users.OrderBy(u => u.Code).ToList());
                 }
                 else {
-                    return new ObservableCollection<SharableUser>
-                        (Users.Where(u => u.UserName.ToLower().Contains(SearchString.ToLower())).ToList());
+                    //return new ObservableCollection<SharableUser>
+                    //    (Users.Where(u => u.UserName.ToLower().Contains(SearchString.ToLower())).ToList());
+
+                    ObservableCollection<SharableUser> toBeDisplayed = new ObservableCollection<SharableUser>();
+                    //ObservableCollection<SharableUser> selectedUsers = new ObservableCollection<SharableUser>();
+
+                    foreach (SharableUser user in Users)
+                    {
+                        if (user.UserName.ToLower().Contains(SearchString.ToLower()) ||
+                            user.Name.ToLower().Contains(SearchString.ToLower()) || user.IsSeletcted) {
+
+                            //if(user.IsSeletcted)
+                            //{
+                            //    selectedUsers.Add(user);
+                            //}
+                            //else
+                            //{
+                                toBeDisplayed.Add(user);
+                            //}
+                            
+                        }
+                    }
+
+                    //return new ObservableCollection<SharableUser>(selectedUsers.OrderByDescending(u => u.IsSeletcted).ToList()
+                    //    .Concat(toBeDisplayed.OrderBy(u => u.Code).ToList()));
+
+                    return new ObservableCollection<SharableUser>(toBeDisplayed.OrderBy(u => u.Code).ToList());
+
                 }
             }
             set
@@ -135,6 +215,8 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 IsSeletcted = false;
             }
+
+
         }
         #endregion
 
