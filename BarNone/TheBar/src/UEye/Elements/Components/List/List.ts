@@ -145,6 +145,18 @@ export default class UEyeList extends BaseComponent {
     public get selected(): any {
         return this._selected;
     }
+    public set selected(value: any) {
+        if (this._items === undefined) return;
+        this._items = this._items.map(item => {
+            if (item === value) {
+                item.selected = true;
+            } else {
+                item.selected = false;
+            }
+            return item;
+        });
+        this.refreshItems();
+    }
      /** Accessor to get callback property.
      * @returns Returns the property responsible for callback on click operation
      * */

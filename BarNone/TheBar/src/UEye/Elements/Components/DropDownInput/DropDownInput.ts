@@ -57,6 +57,12 @@ export default class DropDownInput extends BaseComponent {
         this._input = Core.create("input", this._content, "Input") as HTMLInputElement;
         this._input.readOnly = true;
 
+        // this.element.tabIndex = 0;
+        document.addEventListener("click", (e) => {
+            if (!this.element.contains(e.target as Node)) {
+                this.onBlurHandler();
+            }
+        }, false);
         this.element.onfocus = this.onFocusHandler.bind(this);
         this.element.onblur = this.onBlurHandler.bind(this);
         this.element.onclick = this._onOpenHandler.bind(this);
@@ -91,6 +97,13 @@ export default class DropDownInput extends BaseComponent {
     }
     public get items(): any[] {
         return this._items;
+    }
+
+    public get selected(): any {
+        return this.c_list.selected;
+    }
+    public set selected(value: any) {
+        this.c_list.selected = value;
     }
 
     /** Accessor to get callback property.
@@ -166,7 +179,9 @@ export default class DropDownInput extends BaseComponent {
         this._input.value = item.name;
         this._renderState();
 
-        this._onSelectCallback(data);
+        if (this._onSelectCallback !== undefined) {
+            this._onSelectCallback(data);
+        }
     }
 
     private _renderState() {

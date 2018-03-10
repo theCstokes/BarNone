@@ -18,12 +18,12 @@ export class StateTracker<TState> {
 	 * Current state.
 	 */
 	public current: TState;
-	
+
 	/**
 	 * Original state.
 	 */
 	public original: TState;
-	
+
 	/**
 	 * Create new StateTracker
 	 * @param TStateType - state construction object.
@@ -61,11 +61,11 @@ export abstract class BaseStateManager<TState> {
 	 * render callbacks.
 	 */
 	private _renderCallbackList: RenderCallback<TState>[];
-	
+
 	/**
 	 * state tracker object.
 	 */
-    protected _stateTracker: StateTracker<TState>;
+	protected _stateTracker: StateTracker<TState>;
 
 	/**
 	 * Create new Base state manager
@@ -74,7 +74,7 @@ export abstract class BaseStateManager<TState> {
 	public constructor(TStateType: { new(): TState }) {
 		this._renderCallbackList = [];
 		this._stateTracker = new StateTracker(TStateType);
-    }
+	}
 
 	/**
 	 * adds render callback to state manager
@@ -82,12 +82,12 @@ export abstract class BaseStateManager<TState> {
 	 */
 	public bind(renderCallback: RenderCallback<TState>) {
 		this._renderCallbackList.push(renderCallback);
-    }
-	
+	}
+
 	/**
 	 * Gets state tracker object.
 	 */
-    public getState(): StateTracker<TState> {
+	public getState(): StateTracker<TState> {
 		return Utils.clone(this._stateTracker);
 	}
 
@@ -112,11 +112,13 @@ export abstract class BaseStateManager<TState> {
 	public updateState(state: StateTracker<TState>) {
 		if (this._stateTracker !== state) {
 			this._stateTracker = Utils.clone(state);
-			
+
 			this._renderCallbackList.forEach(rc => rc(
-                this.getCurrentState(),
-                this.getOriginalState()
+				this.getCurrentState(),
+				this.getOriginalState()
 			));
 		}
 	}
+
+	// public abstract init(): void;
 }

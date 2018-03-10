@@ -6,14 +6,9 @@ import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import StringUtils from "UEye/Core/StringUtils";
 import NotificationManager from "UEye/NotificationManager";
 import DataManager from "App/Data/DataManager";
-import { LiftType } from "App/Screens/Lifts/StateManager";
+import { ELiftType } from "App/Screens/Lifts/StateManager";
 import NotificationRequestDTO from "App/Data/Models/NotificationRequestDTO";
 import Comment from "App/Data/Models/Comment/Comment";
-
-// import EditScreen from "Application/Core/EditScreen";
-// import ScreenBind from "UEye/Screen/ScreenBind";
-// import LiftEditView from "Application/Screens/Lifts/Edit/LiftEditView";
-// import { StateManager, State } from "Application/Screens/Lifts/Edit/StateManager";
 
 export default class LiftEditScreen extends EditScreen<LiftEditView, StateManager> {
 	public constructor() {
@@ -28,6 +23,10 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		// this.view.player.src = StringUtils.format("https://www.rmp-streaming.com/media/bbb-360p.mp4",
 		// 	current.lift.id,
 		// 	BaseDataManager.auth.access_token);
+
+		this.view.typeDropDown.selected = current.liftType;
+		this.view.parentDropDown.selected = this.stateManager
+			.s_FolderList.find(f => f.id === current.lift.parentID);
 
 		this.view.player.frameData = SkeletonBuilder.build(current.lift.details.bodyData);
 
@@ -45,10 +44,13 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		this.view.editPanel.modified = isModified;
 	}
 
-	public async onShow(data: { id: number, name: string, type: LiftType }): Promise<void> {
+	public async onShow(data: { id: number, name: string, type: ELiftType }): Promise<void> {
 		this.init(new StateManager(data.type));
 		this.stateManager.bind(this._onRender.bind(this));
 		await this.stateManager.ResetState.trigger({ id: data.id, name: data.name });
+
+		this.view.typeDropDown.items = this.stateManager.s_LiftTypeList;
+		this.view.parentDropDown.items = this.stateManager.s_FolderList;
 
 		NotificationManager.addListener<Comment>(new NotificationRequestDTO<Comment>({
 			type: "Comment",

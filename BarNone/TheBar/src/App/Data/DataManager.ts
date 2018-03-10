@@ -5,6 +5,7 @@ import Lift from "App/Data/Models/Lift/Lift";
 import { Resource, DetailResource } from "UEye/Data/Resource";
 import Joint from "App/Data/Models/Joint/Joint";
 import Comment from "App/Data/Models/Comment/Comment";
+import LiftType from "App/Data/Models/Lift/LiftType";
 
 export default class DataManager extends BaseDataManager {
 
@@ -13,6 +14,8 @@ export default class DataManager extends BaseDataManager {
 	public static readonly LiftFolders: DetailResource<LiftFolder> = new DetailResource<LiftFolder>("LiftFolder");
 
 	public static readonly Lifts: DetailResource<Lift> = new DetailResource<Lift>("Lift");
+
+	public static readonly LiftTypes: Resource<LiftType> = new Resource<LiftType>("LiftType");
 
 	public static readonly SharedLifts: DetailResource<Lift> = new DetailResource<Lift>("SharedLift");
 

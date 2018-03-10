@@ -5,7 +5,7 @@ import StringUtils from "UEye/Core/StringUtils";
 import LiftFolderEditView from "App/Screens/Lifts/LiftFolderEdit/LiftFolderEditView";
 import LiftScreen from "App/Screens/Lifts/LiftScreen";
 import { LiftListType } from "App/Screens/Lifts/Models";
-import { LiftType } from "App/Screens/Lifts/StateManager";
+import { ELiftType } from "App/Screens/Lifts/StateManager";
 
 export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView, StateManager> {
 	public constructor() {
@@ -55,7 +55,7 @@ export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView,
 		this.view.editPanel.modified = isModified;
 	}
 
-	public async onShow(data: { id: number, name: string, type: LiftType }): Promise<void> {
+	public async onShow(data: { id: number, name: string, type: ELiftType }): Promise<void> {
 		this.view.nameInput.onChange = (data) => {
 			this.stateManager.NameChange.trigger(data);
 		};

@@ -12,11 +12,11 @@ export class State implements ISelectionState<LiftListItem> {
 	public parentID: number | null;
 }
 
-export enum LiftType { Lift = "Lift", Shared = "Shared" }
+export enum ELiftType { Lift = "Lift", Shared = "Shared" }
 
 export class StateManager extends SelectionStateManager<LiftListItem, State> {
-	private _type: LiftType;
-	public constructor(type: LiftType) {
+	private _type: ELiftType;
+	public constructor(type: ELiftType) {
 		super(State);
 		this._type = type;
 	}
@@ -42,7 +42,7 @@ export class StateManager extends SelectionStateManager<LiftListItem, State> {
 	});
 
 	protected async onLoad(parentID: number | null = null): Promise<LiftListItem[]> {
-		if (this._type === LiftType.Lift) {
+		if (this._type === ELiftType.Lift) {
 			let results = await Promise.all([
 				DataManager.LiftFolders.all({
 					filter: {
@@ -76,7 +76,7 @@ export class StateManager extends SelectionStateManager<LiftListItem, State> {
 					parentID: l.parentID
 				}
 			}));
-		} else if (this._type === LiftType.Shared) {
+		} else if (this._type === ELiftType.Shared) {
 			let results = await Promise.all([
 				DataManager.SharedLifts.all()
 			]);

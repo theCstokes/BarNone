@@ -8,12 +8,14 @@ import List from "UEye/Elements/Components/List/List";
 import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout";
 import Messenger from "UEye/Elements/Components/Messenger/Messenger";
+import DropDownInput from "UEye/Elements/Components/DropDownInput/DropDownInput";
 
 export default class LiftEditView extends EditView {
 	protected caption: string = "Lift Edit";
 
 	public nameInput: Input;
-	public ageInput: Input;
+	public typeDropDown: DropDownInput;
+	public parentDropDown: DropDownInput;
 	// public editPanel: Panel;
 	public player: Video;
 	public messenger: Messenger;
@@ -27,21 +29,15 @@ export default class LiftEditView extends EditView {
 				instance: ControlTypes.Input,
 				hint: "Name"
 			},
-
 			{
 				id: "typeDropDown",
 				instance: ControlTypes.DropDownInput,
-				hint: "Type",
-				items: [
-					{
-						id: 1,
-						name: "Test"
-					},
-					{
-						id: 2,
-						name: "New Test"
-					}
-				]
+				hint: "Lift Type"
+			},
+			{
+				id: "parentDropDown",
+				instance: ControlTypes.DropDownInput,
+				hint: "Parent Folder"
 			},
 			{
 				instance: ControlTypes.TabLayout,
