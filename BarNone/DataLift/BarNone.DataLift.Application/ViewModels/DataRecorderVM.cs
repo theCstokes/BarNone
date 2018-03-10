@@ -9,9 +9,12 @@ using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.Flex;
 using BarNone.Shared.DomainModel;
 using Microsoft.Kinect;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -20,8 +23,21 @@ using System.Windows.Media.Imaging;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
+
     public class DataRecorderVM : ViewModelBase
     {
+        #region Types
+        /// <summary>
+        /// Handles recording FSM
+        /// </summary>
+        private enum RecordingState
+        {
+            NOT_RECORDING = 0,
+            WAITING_FOR_FIRST_COLOR_FRAME = 1,
+            WAITING_FOR_FIRST_BODY_FRAME = 2,
+            RECORDING = 3
+        }
+        #endregion
 
         #region Bound Properties
         /// <summary>
@@ -38,15 +54,17 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
-        #region Color Drawing Details
-        /// <summary>
-        /// Bitmap to display the color video
-        /// </summary>
-        private WriteableBitmap colorBitmap = null;
-
-        #endregion
-
         #region UI Components
+        /// <summary>
+        /// Width of display (depth space)
+        /// </summary>
+        private int displayWidth;
+
+        /// <summary>
+        /// Height of display (depth space)
+        /// </summary>
+        private int displayHeight;
+
         /// <summary>
         /// Drawing group for body rendering front profile output
         /// </summary>
@@ -68,14 +86,9 @@ namespace BarNone.DataLift.UI.ViewModels
         private DrawingImage imageSourceSide;
 
         /// <summary>
-        /// Width of display (depth space)
+        /// Bitmap to display the color video
         /// </summary>
-        private int displayWidth;
-
-        /// <summary>
-        /// Height of display (depth space)
-        /// </summary>
-        private int displayHeight;
+        private WriteableBitmap colorBitmap = null;
 
         /// <summary>
         /// Array for the bodies
@@ -142,7 +155,9 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Is the user in the middle of a lift that is recorded.
         /// </summary>
-        private bool isCurrentlyRecording = false;
+        private RecordingState CurrentRecordingState = RecordingState.NOT_RECORDING;
+
+        FfmpegController _ffmpegController;
 
         #endregion
 
@@ -150,19 +165,19 @@ namespace BarNone.DataLift.UI.ViewModels
         internal override void Loaded()
         {
             IsRecording = false;
-            isCurrentlyRecording = false;
+            CurrentRecordingState = RecordingState.NOT_RECORDING;
             CurrentLiftData.CurrentRecordedBodyData.Clear();
         }
 
         internal override void Closed()
         {
             IsRecording = false;
-            isCurrentlyRecording = false;
+            CurrentRecordingState = RecordingState.NOT_RECORDING;
         }
 
         #endregion
 
-        #region Frame Arrival
+        #region Body Frame Arrival
         /// <summary>
         /// Handles the body frame data arriving from the sensor
         /// </summary>
@@ -192,11 +207,17 @@ namespace BarNone.DataLift.UI.ViewModels
                 var body = GetPrimaryBody(Bodies);
                 //Convert the frame to a more usable form
                 var dataFrame = frame.KinectBdfToDmBdf(body);
-                dataFrame.TimeOfFrame = TimeSpan.FromMilliseconds(lastRecievedBodyFrameMs);
+                dataFrame.TimeOfFrame = frame.RelativeTime;
 
-                if (isCurrentlyRecording)
+                if (CurrentRecordingState >= RecordingState.WAITING_FOR_FIRST_BODY_FRAME)
+                {
+                    if(CurrentRecordingState == RecordingState.WAITING_FOR_FIRST_BODY_FRAME)
+                    {
+                        ColorDataToBodyDataLatency.Stop();
+                        CurrentRecordingState = RecordingState.RECORDING;
+                    }
                     CurrentLiftData.CurrentRecordedBodyData.Add(dataFrame);
-
+                }
                 //Update The Side And Front Views
                 KinectToImage.DrawFrameSideView(dataFrame, SideProfileDrawingGroup, displayHeight, displayWidth);
                 KinectToImage.DrawFrameFrontView(dataFrame, FrontProfileDrawingGroup, displayHeight, displayWidth);
@@ -243,7 +264,7 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
-        #region Draw Color
+        #region Color Frame Arrival
         /// <summary>
         /// Handles the color frame data arriving from the sensor
         /// </summary>
@@ -271,11 +292,6 @@ namespace BarNone.DataLift.UI.ViewModels
                     }
 
                     colorBitmap.Unlock();
-                    if (isCurrentlyRecording)
-                    {
-                        var toSave = new WriteableBitmap(colorBitmap);
-                        CurrentLiftData.CurrentRecordedColorData.Add(new Models.ColorImageFrame(toSave, TimeSpan.FromMilliseconds(lastRecievedColorFrameMs)));
-                    }
                 }
             }
         }
@@ -326,7 +342,7 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_StartRecording == null)
                 {
-                    _StartRecording = new RelayCommand(action => StartNewRecording(), pred => !isCurrentlyRecording);
+                    _StartRecording = new RelayCommand(action => StartNewRecording(), pred => CurrentRecordingState == RecordingState.NOT_RECORDING);
                 }
                 return _StartRecording;
             }
@@ -339,10 +355,14 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             //TODO move this to the VM
             CurrentLiftData.CurrentRecordedBodyData.Clear();
-            CurrentLiftData.CurrentRecordedColorData.Clear();
-            isCurrentlyRecording = true;
+            CurrentRecordingState = RecordingState.WAITING_FOR_FIRST_COLOR_FRAME;
 
-            GlobalFrameTimer.Restart();
+            _ffmpegController.StartFfmpegRecord("TestFFMPEG.avi", () =>
+            {
+                CurrentRecordingState = RecordingState.WAITING_FOR_FIRST_BODY_FRAME;
+                ColorDataToBodyDataLatency.Restart();
+            });
+
         }
 
         /// <summary>
@@ -363,7 +383,7 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_EndRecording == null)
                 {
-                    _EndRecording = new RelayCommand(async action => await EndCurrentRecording(), pred => isCurrentlyRecording);
+                    _EndRecording = new RelayCommand(async action => await EndCurrentRecording(), pred => CurrentRecordingState != RecordingState.NOT_RECORDING);
                 }
                 return _EndRecording;
             }
@@ -375,9 +395,23 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <returns></returns>
         private async Task EndCurrentRecording()
         {
-            GlobalFrameTimer.Stop();
-            isCurrentlyRecording = false;
+            CurrentRecordingState = RecordingState.NOT_RECORDING;
             IsRecording = false;
+
+            _ffmpegController.StopFfmpegRecord();
+            CurrentLiftData.FirstColorDataFrame = _ffmpegController.FirstFrameTime;
+
+
+            // Test Code
+            //string json = File.ReadAllText(@"Chris_Single_Squat_1.json");
+            //LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
+            //CurrentLiftData.CurrentRecordedBodyData = 
+            //    new ObservableCollection<BodyDataFrame>(Converters
+            //    .NewConvertion()
+            //    .Lift.CreateDataModel(liftDTO)
+            //    .BodyData
+            //    .BodyDataFrames);
+
             try
             {
                 CurrentLiftData.NormalizeTimes();
@@ -399,7 +433,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 {
                     BodyData = new BodyDataDTO()
                 }
-
             };
 
             var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(KinectDepthFrameConverter.KinectBodyDataToDmBodyData(CurrentLiftData.CurrentRecordedBodyData));
@@ -435,6 +468,8 @@ namespace BarNone.DataLift.UI.ViewModels
                 //kinectSensor?.Close();
                 kinectSensor = null;
             }
+
+            //_webCamHandler.Dispose();
         }
 
         /// <summary>
@@ -442,8 +477,6 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         public DataRecorderVM()
         {
-            //Task.Run(() => SetUser());
-
             // one sensor is currently supported
             kinectSensor = KinectSensor.GetDefault();
 
@@ -452,6 +485,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             Reader = kinectSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color |
                                                  FrameSourceTypes.Body);
+
             Reader.MultiSourceFrameArrived += Reader_MultiSourceFrameArrived;
 
             FrameDescription frameDescription = kinectSensor.DepthFrameSource.FrameDescription;
@@ -461,7 +495,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             FrameDescription colorFrameDescription = kinectSensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
             // create the bitmap to display
-            colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
+            colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 72.0, 72.0, PixelFormats.Bgr32, null);
 
             // open the sensor
             kinectSensor.Open();
@@ -477,14 +511,17 @@ namespace BarNone.DataLift.UI.ViewModels
 
             // Create an image source that we can use in our image control
             imageSourceSide = new DrawingImage(SideProfileDrawingGroup);
+
+            _ffmpegController = new FfmpegController();
+
         }
 
         #endregion
 
-        private Stopwatch GlobalFrameTimer = new Stopwatch();
-        long lastRecievedBodyFrameMs = 0;
-        long lastRecievedColorFrameMs = 0;
-
+        /// <summary>
+        /// Used to determine the latency between the first color and body frames
+        /// </summary>
+        private Stopwatch ColorDataToBodyDataLatency = new Stopwatch();
 
         /// <summary>
         /// Event fired when the kinect sends any data frame type, depth and color are monitored
@@ -501,7 +538,6 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (frame != null)
                 {
-                    lastRecievedColorFrameMs = GlobalFrameTimer.ElapsedMilliseconds;
                     Reader_ColorFrameArrived(frame);
                 }
             }
@@ -511,7 +547,6 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (frame != null)
                 {
-                    lastRecievedBodyFrameMs = GlobalFrameTimer.ElapsedMilliseconds;
                     Reader_FrameArrived(frame);
                 }
             }

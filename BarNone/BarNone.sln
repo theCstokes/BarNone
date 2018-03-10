@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{77D27D1C-4BFF-4CBC-8102-2B311548C1FE}"
 EndProject
@@ -49,9 +49,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.DataLift.DataConver
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.Shared.DomainModel", "Shared\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj", "{B985F9C5-9463-4574-9EB6-684F9C4A3C92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.Shared.Analysis", "Shared\BarNone.Shared.Analysis\BarNone.Shared.Analysis.csproj", "{3878439B-265E-48B9-A405-4966B220AB7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.Shared.Analysis", "Shared\BarNone.Shared.Analysis\BarNone.Shared.Analysis.csproj", "{3878439B-265E-48B9-A405-4966B220AB7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.Shared.AnalysisTests", "BarNone.Shared.AnalysisTests\BarNone.Shared.AnalysisTests.csproj", "{542145FC-2FAC-449E-BDFC-43C9810B6B0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.Shared.AnalysisTests", "BarNone.Shared.AnalysisTests\BarNone.Shared.AnalysisTests.csproj", "{542145FC-2FAC-449E-BDFC-43C9810B6B0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
