@@ -45,7 +45,7 @@
                                       SelectedItem="{Binding LiftType}"  VerticalAlignment="Bottom" />
                             <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" 
                                     CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.DeleteSelectedRecording}">
-                                <materialDesign:PackIcon Kind="Delete" Height="24" Width="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+                                <materialDesign:PackIcon Foreground="{StaticResource PrimaryHueMidBrush}" Kind="Delete" Height="24" Width="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
                             </Button>
                         </Grid>
                     </DataTemplate>

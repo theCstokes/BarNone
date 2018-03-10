@@ -119,6 +119,44 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
+        #region Lift ListView Commands
+        /// <summary>
+        /// Field representation for the <see cref="DeleteSelectedRecording"/> bindable property
+        /// </summary>
+        private RelayCommand _deleteSelectedRecording;
+        /// <summary>
+        /// Command that calls the function to delete lifts from the ListView.
+        /// </summary>
+        public ICommand DeleteSelectedRecording
+        {
+            get
+            {
+                if (_deleteSelectedRecording == null)
+                {
+                    _deleteSelectedRecording = new RelayCommand(action => DeleteSelectedRecordingCommand(action));
+                }
+                return _deleteSelectedRecording;
+            }
+        }
+
+        /// <summary>
+        /// Delete function for the ListView.  Removed the selected lift from the ObservableCollection.
+        /// </summary>
+        /// <param name="action">The object in the ObservableCollection that called Delete.</param>
+        private void DeleteSelectedRecordingCommand(object action)
+        {
+            // Cast action to a LiftListVM.
+            LiftListVM selected = (LiftListVM)action;
+
+            // If action is null then return
+            if (action == null) return;
+
+            // Remove the correct lift and redo count for all the remaining lifts in ListView.
+            LiftIntervals.RemoveAt(selected.Count);
+            for (int i = 0; i < LiftIntervals.Count; i++) LiftIntervals[i].Count = i;
+        }
+        #endregion
+
         #region DisplayableShareUserProperties
 
         private string _searchString = "";
