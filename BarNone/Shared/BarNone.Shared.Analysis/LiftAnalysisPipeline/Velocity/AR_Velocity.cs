@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Position
+namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Velocity
 {
-    public class AR_Position : RequestEntity
+    public class AR_Velocity : RequestEntity
     {
         [JsonConverter(typeof(StringEnumConverter))]
         public EJointType Joint { get; set; }

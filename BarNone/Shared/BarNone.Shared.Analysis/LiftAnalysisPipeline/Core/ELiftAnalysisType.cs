@@ -6,8 +6,9 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Core
 {
     public enum ELiftAnalysisType
     {
-        Acceleration = 1,
-        Position = 2,
-        Angle = 3
+        Position = 1,
+        Velocity = 2,
+        Acceleration = 3,
+        Angle = 4
     }
 }
