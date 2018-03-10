@@ -9,9 +9,12 @@ using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.Flex;
 using BarNone.Shared.DomainModel;
 using Microsoft.Kinect;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -397,6 +400,17 @@ namespace BarNone.DataLift.UI.ViewModels
 
             _ffmpegController.StopFfmpegRecord();
             CurrentLiftData.FirstColorDataFrame = _ffmpegController.FirstFrameTime;
+
+
+            // Test Code
+            //string json = File.ReadAllText(@"Chris_Single_Squat_1.json");
+            //LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
+            //CurrentLiftData.CurrentRecordedBodyData = 
+            //    new ObservableCollection<BodyDataFrame>(Converters
+            //    .NewConvertion()
+            //    .Lift.CreateDataModel(liftDTO)
+            //    .BodyData
+            //    .BodyDataFrames);
 
             try
             {

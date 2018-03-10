@@ -4,6 +4,7 @@ using BarNone.DataLift.UI.Models;
 using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DomainModel;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -109,10 +110,21 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             // TODO.  Send raw data to jon then have him send us a list of stuff back.
 
+            var ianTheCaptainLater = new List<TimeSpan>
+                {
+                    new TimeSpan(0)
+                };
+
+            try
+            {
+                ianTheCaptainLater = CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame).ToList();
+            }
+            catch { }
+
             CurrentLifts.LiftInformation.Add(new LiftListVM
             {
                 LiftStartTime = 0,
-                LiftEndTime = 0,
+                LiftEndTime = (int)(ianTheCaptainLater.Max(x => x.TotalMilliseconds) + 1 / 30d * 1000),
                 LiftName = String.Format($"Temp_name_{CurrentLifts.LiftInformation.Count()}"),
                 LiftType = "Squat"
             });
@@ -395,7 +407,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 //Will only happen on loaded
                 //colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[currentColorDataFrame];
-                bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[currentBodyDataFrame];
+                 bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[currentBodyDataFrame];
                 
                 drawColor = true;
                 drawBody = true;
@@ -448,12 +460,12 @@ namespace BarNone.DataLift.UI.ViewModels
                 KinectToImage.DrawFrameSideView(bodyFrameToDraw, _rightImageDrawingGroup, 424, 424);
             }
             
-            if (currentMs > LoopTime)
+            if ((currentMs > LoopTime) || (currentMs > ScrubberUpperThumb))
             {
-                currentMs = 0;
+                currentMs = (int)ScrubberLowerThumb;
 
                 //increment timer value
-                ScrubberCurrentPosition = 0;
+                ScrubberCurrentPosition = ScrubberLowerThumb;
 
             }
             else
