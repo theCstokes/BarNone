@@ -6,16 +6,17 @@ import Video from "UEye/Elements/Components/Video/Video";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import List from "UEye/Elements/Components/List/List";
 import IconButton from "UEye/Elements/Components/IconButton/IconButton";
-import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout";
 import Messenger from "UEye/Elements/Components/Messenger/Messenger";
+import LiftProfileDialogScreen from "../LiftProfileDialog/LiftProfileDialogScreen";
+import UEye from "UEye/UEye";
 
 export default class LiftEditView extends EditView {
 	protected caption: string = "Lift Edit";
 
 	public nameInput: Input;
 	public messenger: Messenger;
-	public analyticsButton: IconButton;
-	public videoLayout: SideBarLayout;
+	public addButton: IconButton;
+	public profileList: List;
 
 	public get content(): any[] {
 		return [
@@ -41,23 +42,28 @@ export default class LiftEditView extends EditView {
 				]
 			},
 			{
+				id: "tab",
 				instance: ControlTypes.TabLayout,
 				tabs: [
 					{
 						actions: [
 							{
 								id: "addButton",
-								text: "Settings",
-								icon: "fa-plus"
+								text: "New",
+								icon: "fa-plus",
+								onClick: () => {
+									// alert(123);
+									UEye.push(LiftProfileDialogScreen);
+								}
 							}
 						],
-						title: "Analysis Profiles",
+						title: "Profiles",
 						content: [
 							{
 								instance: ControlTypes.List,
                                 id: "profileList",
                                 isSelectionList: true,
-								style: ControlTypes.LiftFolderListItem
+								style: ControlTypes.DataListItem
 								
 							}
 						]

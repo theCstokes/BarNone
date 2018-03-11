@@ -8,6 +8,7 @@ import EditScreen from "UEye/Screen/EditScreen";
 import LiftProfileEditScreen from "App/Screens/LiftProfile/LiftProfileEdit/LiftProfileEditScreen"
 import App from "App/App";
 import LiftAnalysisProfile from "App/Data/Models/LiftAnalysisProfile/LiftAnalysisProfile";
+import { LiftTypeItem } from "./Models";
 
 export default class LiftProfileScreen extends Screen<LiftProfileView> {
     private subScreen: EditScreen<any, any>;
@@ -26,7 +27,7 @@ export default class LiftProfileScreen extends Screen<LiftProfileView> {
 		this._stateManager.bind(this._onRender.bind(this));
 
 		this.view.typeList.onSelect = (data: IListItem) => {
-			this._stateManager.SelectionChange.trigger({ id: data.id });
+			this._stateManager.SelectionChange.trigger({ id: data.id});
 		};
 
 		//this.subScreen = UEye.push(LiftEditScreen) as LiftEditScreen;
@@ -41,7 +42,11 @@ export default class LiftProfileScreen extends Screen<LiftProfileView> {
 				selected: (item.id === current.selectionId),
 				id: item.id,
 				name: item.name,
-				icon: "fa-universal-acesss"
+                icon: "fa-universal-access",
+                onOpen: () => {
+                    this._onTypeSelectedHandler(item);
+                }
+                
 			}
         });
         var userData = current.selectionList.find(item => {
@@ -56,6 +61,19 @@ export default class LiftProfileScreen extends Screen<LiftProfileView> {
                 name: userData.name,
             }) as LiftProfileEditScreen;
         }
+}
+
+private _onTypeSelectedHandler(item: LiftTypeItem) {
+    App.Navigation.AddSubBreadcrumb.trigger({
+        id: Utils.guid(),
+        value: item.name,
+        onClick: (crumb) => {
+            // this._stateManager.ParentChange.trigger({ parentID: item.id });
+            App.Navigation.PopSubBreadcrumbTo.trigger(crumb);
+        }
+    });
+
+    // this._stateManager.ParentChange.trigger({ parentID: item.id });
 }
 
 

@@ -31,6 +31,7 @@ export class State implements ISelectionState<LiftTypeItem> {
 		}	
     ]
     ;
+    public name: string;
 	public selectionId: number;
 	public parentID: number | null;
 }
@@ -60,10 +61,7 @@ public readonly SelectionChange = StateBind
     }>(this, (state, data) => {
         var nextState = Utils.clone(state);
         nextState.current.selectionId = data.id;
-
-       
-
-      
+    
             // nextState.current.context.crumbList = [{
             //     id: Utils.guid(),
             //     value: selection.name,

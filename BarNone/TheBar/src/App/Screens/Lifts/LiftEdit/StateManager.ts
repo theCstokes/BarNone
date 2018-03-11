@@ -29,7 +29,7 @@ export class StateManager extends BaseStateManager<State> {
 
 			if (this._type === LiftType.Lift) {
 				nextState.current.lift = await DataManager.Lifts.single(data.id, { includeDetails: true });
-				
+				console.log("Lift type: ", nextState.current.lift);
 			} else if (this._type === LiftType.Shared) {
 				nextState.current.lift = await DataManager.SharedLifts.single(data.id, { includeDetails: true });
 			}

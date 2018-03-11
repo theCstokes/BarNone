@@ -1,16 +1,15 @@
 import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 import StateBind from "UEye/StateManager/StateBind";
 import DataManager from "App/Data/DataManager";
-import Lift from "App/Data/Models/Lift/Lift";
-import Comment from "App/Data/Models/Comment/Comment";
-import { LiftType } from "App/Screens/Lifts/StateManager";
+import LiftAnalysisProfile from "App/Data/Models/LiftAnalysisProfile/LiftAnalysisProfile"
+
+
 
 export class State {
 	public id: number;
 	public name: string = "";
 	public age: number;
-	public lift: Lift;
-	public comments: Comment[];
+	public liftProfile: LiftAnalysisProfile;
 }
 
 export class StateManager extends BaseStateManager<State> {
@@ -26,15 +25,9 @@ export class StateManager extends BaseStateManager<State> {
 		}>(this, async (state, data) => {
 			var nextState = state.empty();
 
-		
-			
-			var comments = await DataManager.LiftComments.all({
-				params: {
-					liftID: data.id
-				}
-			});
-
-			nextState.current.comments = comments;
+			//var liftProfile = await DataManager.LiftAnalysisProfile(data.id, { includeDetails: true });
+			//console.log(liftProfile);
+			//nextState.current.liftProfile = liftProfile;
 
 			nextState.current.id = data.id;
 			nextState.current.name = data.name;
@@ -50,18 +43,6 @@ export class StateManager extends BaseStateManager<State> {
 			return nextState;
 		});
 
-	public readonly RefreshComments = StateBind
-		.onAsyncCallable<State>(this, async (state) => {
-			var nextState = Utils.clone(state);
-
-			nextState.current.comments = await DataManager.LiftComments.all({
-				params: {
-					liftID: nextState.current.lift.id
-				}
-			});
-
-			return nextState;
-		});
 
 	// public constructor(screen: AppScreen) {
 	// 	super(screen, new State());
