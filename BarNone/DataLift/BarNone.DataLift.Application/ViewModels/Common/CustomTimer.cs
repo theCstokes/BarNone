@@ -47,9 +47,9 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             internalTimer.Restart();
         }
 
-        //public long ElapsedMilliseconds()
-        //{
-        //    return internalTimer.ElapsedMilliseconds;
-        //}
+        public TimeSpan GetTimeSpanPosition()
+        {
+            return new TimeSpan(internalTimer.ElapsedTicks);
+        }
     }
 }

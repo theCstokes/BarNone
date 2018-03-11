@@ -359,7 +359,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 CurrentRecordingState = RecordingState.WAITING_FOR_FIRST_BODY_FRAME;
                 ColorDataToBodyDataLatency.Restart();
             });
-
         }
 
         /// <summary>
@@ -406,6 +405,7 @@ namespace BarNone.DataLift.UI.ViewModels
             catch (ArgumentException)
             {
                 //Argument exception if the data cannot be normalized for processing
+                //TODO do not enable moving to edit and print an error in red
             }
             return;
             //TODO CLEAN!

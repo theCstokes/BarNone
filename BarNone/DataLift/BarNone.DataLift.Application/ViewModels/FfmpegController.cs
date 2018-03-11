@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BarNone.DataLift.UI.ViewModels.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,8 +13,10 @@ namespace BarNone.DataLift.UI.ViewModels
         private Process _recordProcess;
         private List<string> _createdFiles = new List<string>();
         private Action _firstFrameRecievedAction;
+        private CurrentLiftDataVM _currentLiftDataVM = CurrentLiftDataVMSingleton.GetInstance();
 
-        public DateTime? FirstFrameTime { get; private set; }
+        public DateTime? FirstFrameTime { get; private set; } = null;
+        
         #endregion
 
         #region Regular Expressions
@@ -44,11 +47,12 @@ namespace BarNone.DataLift.UI.ViewModels
             ProcessStartInfo psi = new ProcessStartInfo
             {
                 FileName = $"{Directory.GetCurrentDirectory()}/res/ffmpeg.exe",
-                //Arguments = $"-loglevel verbose -f dshow -video_size 1920x1080 -framerate 30 -vcodec mjpeg -i video=\"C922 Pro Stream Webcam\" {fname}", //Prefered Webcam
-                Arguments = $"-loglevel verbose -f dshow -video_size 1920x1080 -framerate 15 -vcodec mjpeg -i video=\"Microsoft LifeCam Rear\" {fname}",
+                Arguments = $"-loglevel info -f dshow -video_size 1920x1080 -framerate 30 -rtbufsize 500000k -vcodec mjpeg -i video=\"C922 Pro Stream Webcam\" {fname}", //Prefered Webcam
+                //Arguments = $"-loglevel verbose -f dshow -video_size 1920x1080 -framerate 15 -vcodec mjpeg -i video=\"Microsoft LifeCam Rear\" {fname}",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
-                RedirectStandardError = true
+                RedirectStandardError = true,
+                RedirectStandardInput = true
             };
 
             _recordProcess = new Process
@@ -67,21 +71,36 @@ namespace BarNone.DataLift.UI.ViewModels
 
             _createdFiles.Add(fname);
         }
-
         private void FfmpegRecivedDShowLine(object sender, DataReceivedEventArgs e)
         {
-            if (e.Data == null || FirstFrameTime != null)
-                return;
+            
             Console.WriteLine(e.Data);
+            //if (e.Data == null || FirstFrameTime != null)
+            //    return;
+            //Console.WriteLine(e.Data);
             if (FrameTimeStampRegex.IsMatch(e.Data))
             {
-                FirstFrameTime = DateTime.Now.AddMilliseconds(-Environment.TickCount + Convert.ToInt64(FrameTimeStampRegex.Match(e.Data).Groups[1].Value) / 10000);
-                _recordProcess.OutputDataReceived -= FfmpegRecivedDShowLine;
-                _recordProcess.ErrorDataReceived -= FfmpegRecivedDShowLine;
+                if (FirstFrameTime == null)
+                {
+                    FirstFrameTime = DateTime.Now.AddMilliseconds(-Environment.TickCount + Convert.ToInt64(FrameTimeStampRegex.Match(e.Data).Groups[1].Value) / 10000);
+                    prev = FirstFrameTime.Value;
+
+                }
+                else
+                { 
+                    var t = (DateTime.Now.AddMilliseconds(-Environment.TickCount + Convert.ToInt64(FrameTimeStampRegex.Match(e.Data).Groups[1].Value) / 10000) - prev).TotalMilliseconds;
+                    videoLength += t;
+                    Console.WriteLine(t);
+                    prev = DateTime.Now.AddMilliseconds(-Environment.TickCount + Convert.ToInt64(FrameTimeStampRegex.Match(e.Data).Groups[1].Value) / 10000);
+
+                }
+                //_recordProcess.OutputDataReceived -= FfmpegRecivedDShowLine;
+                //_recordProcess.ErrorDataReceived -= FfmpegRecivedDShowLine;
                 _firstFrameRecievedAction.Invoke();
             }
         }
-
+        DateTime prev;
+        double videoLength = 0;
         /// <summary>
         /// Forces the FFMPEG Recording to Close
         /// </summary>
@@ -89,11 +108,17 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             if (_recordProcess.HasExited)
                 throw new Exception("The FFMPEG instance has exited implying a runtime or execution time error occured, review before continuing!");
-
             _recordProcess.Kill();
+            _recordProcess.StandardInput.Write("q\n");
+            _recordProcess.WaitForExit();
             _recordProcess = null;
         }
-        
+
+        private void FfprobeGetDuration()
+        {
+
+        }
+
         #endregion
 
         #region IDisposable Support
