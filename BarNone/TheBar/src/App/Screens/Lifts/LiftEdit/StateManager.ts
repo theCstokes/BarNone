@@ -6,17 +6,22 @@ import Comment from "App/Data/Models/Comment/Comment";
 import { ELiftType } from "App/Screens/Lifts/StateManager";
 import LiftType from "App/Data/Models/Lift/LiftType";
 import LiftFolder from "App/Data/Models/LiftFolder/LiftFolder";
+import BodyData from "App/Data/Models/BodyData/BodyData";
 
 export class State {
 	public id: number;
-	public name: string = "";
-	public age: number;
-	public lift: Lift;
-	public comments: Comment[];
+	public name: string;
 	public liftType: LiftType;
+	public comments: Comment[];
+	public parentID: number;
+	public bodyData: BodyData;
 }
 
 export class StateManager extends BaseStateManager<State> {
+	public async initialize(): Promise<void> {
+		this.s_LiftTypeList = await DataManager.LiftTypes.all();
+		this.s_FolderList = await DataManager.LiftFolders.all();
+	}
 
 	//#region Public Static State Property(s).
 	public s_LiftTypeList: LiftType[];
@@ -34,6 +39,12 @@ export class StateManager extends BaseStateManager<State> {
 	}
 	//#endregion
 
+	public readonly Create = StateBind
+		.onAsyncCallable<State>(this, async (state) => {
+			await this.initialize();
+			return state;
+		});
+
 	//#region State Action(s).
 	public readonly ResetState = StateBind
 		.onAsyncAction<State, {
@@ -41,17 +52,18 @@ export class StateManager extends BaseStateManager<State> {
 			name: string
 		}>(this, async (state, data) => {
 			// Setup static data.
-			this.s_LiftTypeList = await DataManager.LiftTypes.all();
-			this.s_FolderList = await DataManager.LiftFolders.all();
-
 			var nextState = state.empty();
 
+			var lift = null;
 			if (this._type === ELiftType.Lift) {
-				nextState.current.lift = await DataManager.Lifts.single(data.id, { includeDetails: true });
-
+				lift = await DataManager.Lifts.single(data.id, { includeDetails: true });
 			} else if (this._type === ELiftType.Shared) {
-				nextState.current.lift = await DataManager.SharedLifts.single(data.id, { includeDetails: true });
+				lift = await DataManager.SharedLifts.single(data.id, { includeDetails: true });
 			}
+			nextState.current.name = lift!.name;
+			nextState.current.liftType = lift!.details.liftType;
+			nextState.current.parentID = lift!.parentID;
+			nextState.current.bodyData = lift!.details.bodyData;
 
 			var comments = await DataManager.LiftComments.all({
 				params: {
@@ -81,7 +93,7 @@ export class StateManager extends BaseStateManager<State> {
 
 			nextState.current.comments = await DataManager.LiftComments.all({
 				params: {
-					liftID: nextState.current.lift.id
+					liftID: nextState.current.id
 				}
 			});
 

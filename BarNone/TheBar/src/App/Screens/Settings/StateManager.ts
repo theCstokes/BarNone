@@ -42,6 +42,8 @@ export class StateManager extends BaseStateManager<State> {
 		super(State);
 	}
 
+	public async initialize(): Promise<void> { 	}
+
 	// public constructor() {
 	// 	super();
 	// }

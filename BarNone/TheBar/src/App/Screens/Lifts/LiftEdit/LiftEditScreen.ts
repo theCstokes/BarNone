@@ -26,9 +26,9 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 
 		this.view.typeDropDown.selected = current.liftType;
 		this.view.parentDropDown.selected = this.stateManager
-			.s_FolderList.find(f => f.id === current.lift.parentID);
+			.s_FolderList.find(f => f.id === current.parentID);
 
-		this.view.player.frameData = SkeletonBuilder.build(current.lift.details.bodyData);
+		this.view.player.frameData = SkeletonBuilder.build(current.bodyData);
 
 		this.view.messenger.messages = current.comments.map(comment => {
 			return {
@@ -47,7 +47,7 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 	public async onShow(data: { id: number, name: string, type: ELiftType }): Promise<void> {
 		this.init(new StateManager(data.type));
 		this.stateManager.bind(this._onRender.bind(this));
-		await this.stateManager.ResetState.trigger({ id: data.id, name: data.name });
+		await this.stateManager.Create.trigger();
 
 		this.view.typeDropDown.items = this.stateManager.s_LiftTypeList;
 		this.view.parentDropDown.items = this.stateManager.s_FolderList;
@@ -57,7 +57,7 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 			filter: {
 				property: (comment) => comment.liftID,
 				comparisons: "eq",
-				value: this.stateManager.getCurrentState().lift.id
+				value: this.stateManager.getCurrentState().id
 			}
 		}), async () => {
 			await this.stateManager.RefreshComments.trigger();
@@ -65,7 +65,7 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 
 		this.view.messenger.onSend = (msg: string) => {
 			DataManager.Comments.create({
-				liftID: this.stateManager.getCurrentState().lift.id,
+				liftID: this.stateManager.getCurrentState().id,
 				text: msg,
 				timeSent: "2018-02-04"
 			});
@@ -76,6 +76,8 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		this.view.nameInput.onChange = (data) => {
 			this.stateManager.NameChange.trigger(data);
 		};
+
+		await this.stateManager.ResetState.trigger({ id: data.id, name: data.name });
 
 		// this.view.player.play();
 	}

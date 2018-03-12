@@ -3,6 +3,8 @@ import { BaseComponent } from "UEye/Elements/Core/BaseComponent/BaseComponent";
 import { IListItem, OnSelectCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import List from "UEye/Elements/Components/List/List";
 import ControlTypes from "UEye/ControlTypes";
+import StringUtils from "UEye/Core/StringUtils";
+
 /**
  *  Represents interactive element Input. This component is editable and takes text (strings) input.
  */
@@ -104,6 +106,13 @@ export default class DropDownInput extends BaseComponent {
     }
     public set selected(value: any) {
         this.c_list.selected = value;
+        if (this.c_list.selected === undefined) {
+            this._text = "";
+        } else {
+            this._text = this.c_list.selected.name;
+        }
+        this._input.value = this._text;
+        this._renderState();
     }
 
     /** Accessor to get callback property.
@@ -176,7 +185,8 @@ export default class DropDownInput extends BaseComponent {
         if (item === null) return;
 
         this._open = false;
-        this._input.value = item.name;
+        this._text = item.name;
+        this._input.value = this._text;
         this._renderState();
 
         if (this._onSelectCallback !== undefined) {
@@ -190,10 +200,13 @@ export default class DropDownInput extends BaseComponent {
 
         if (this._open) {
             Core.replaceClass(this._action, "fa-caret-left", "fa-caret-down");
-            Core.addClass(this.e_dropDown, "Show");
+            Core.addClass(this.element, "Show-Drop-Down");
+            this.e_dropDown.style.top = StringUtils.format(
+                "{0}px", (this.element.offsetTop + this.element.offsetHeight + 5)
+            );
         } else {
             Core.replaceClass(this._action, "fa-caret-down", "fa-caret-left");
-            Core.removeClass(this.e_dropDown, "Show");
+            Core.removeClass(this.element, "Show-Drop-Down");
         }
 
         if (!Utils.isNullOrWhitespace(this._text)) {

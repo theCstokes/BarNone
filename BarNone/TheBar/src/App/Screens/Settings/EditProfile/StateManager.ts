@@ -52,8 +52,7 @@ export class StateManager extends BaseStateManager<State> {
 	// 	return this._nameChange.expose();
 	// }
 
-	public init(): void {
-		// this.resetState.trigger();
+	public async initialize(): Promise<void> {
 	}
 
 	public async onSave(): Promise<void> {

@@ -21,6 +21,8 @@ export class StateManager extends SelectionStateManager<LiftListItem, State> {
 		this._type = type;
 	}
 
+	public async initialize(): Promise<void> { 	}
+
 	public ParentChange = StateBind.onAsyncAction<State, {
 		parentID: number | null;
 		selectionId?: number

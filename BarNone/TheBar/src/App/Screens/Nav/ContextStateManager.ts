@@ -26,6 +26,8 @@ export class ContextStateManager extends ChildStateManager<ContextState, State> 
             (state: State, data: ContextState) => state.context = data);
     }
 
+    public async initialize(): Promise<void> { 	}
+
     public readonly AddSubBreadcrumb = StateBind
         .onAction<ContextState, CrumbElement>(this, (state, data) => {
             var nextState = Utils.clone(state);

@@ -74,7 +74,10 @@ export abstract class BaseStateManager<TState> {
 	public constructor(TStateType: { new(): TState }) {
 		this._renderCallbackList = [];
 		this._stateTracker = new StateTracker(TStateType);
+		this.initialize();
 	}
+
+	public abstract async initialize(): Promise<void>;
 
 	/**
 	 * adds render callback to state manager
@@ -110,7 +113,7 @@ export abstract class BaseStateManager<TState> {
 	 * @param state - tacker object
 	 */
 	public updateState(state: StateTracker<TState>) {
-		if (this._stateTracker !== state) {
+		if (JSON.stringify(state) !== JSON.stringify(this._stateTracker)) {
 			this._stateTracker = Utils.clone(state);
 
 			this._renderCallbackList.forEach(rc => rc(
