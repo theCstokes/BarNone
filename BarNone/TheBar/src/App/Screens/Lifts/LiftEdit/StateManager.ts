@@ -15,10 +15,12 @@ export class State {
 	public comments: Comment[];
 	public parentID: number;
 	public bodyData: BodyData;
+	public type: ELiftType;
 }
 
 export class StateManager extends BaseStateManager<State> {
-	public async initialize(): Promise<void> {
+
+	public async onInitialize(): Promise<void> {
 		this.s_LiftTypeList = await DataManager.LiftTypes.all();
 		this.s_FolderList = await DataManager.LiftFolders.all();
 	}
@@ -28,36 +30,28 @@ export class StateManager extends BaseStateManager<State> {
 	public s_FolderList: LiftFolder[];
 	//#endregion
 
-	//#region Private Field(s).
-	private _type: ELiftType;
-	//#endregion
-
 	//#region Public Constructor(s).
-	public constructor(type: ELiftType) {
+	public constructor() {
 		super(State);
-		this._type = type;
 	}
 	//#endregion
-
-	public readonly Create = StateBind
-		.onAsyncCallable<State>(this, async (state) => {
-			await this.initialize();
-			return state;
-		});
 
 	//#region State Action(s).
 	public readonly ResetState = StateBind
 		.onAsyncAction<State, {
 			id: number,
-			name: string
+			name: string,
+			type: ELiftType
 		}>(this, async (state, data) => {
 			// Setup static data.
 			var nextState = state.empty();
 
+			nextState.current.type = data.type;
+
 			var lift = null;
-			if (this._type === ELiftType.Lift) {
+			if (data.type === ELiftType.Lift) {
 				lift = await DataManager.Lifts.single(data.id, { includeDetails: true });
-			} else if (this._type === ELiftType.Shared) {
+			} else if (data.type === ELiftType.Shared) {
 				lift = await DataManager.SharedLifts.single(data.id, { includeDetails: true });
 			}
 			nextState.current.name = lift!.name;
@@ -99,6 +93,16 @@ export class StateManager extends BaseStateManager<State> {
 
 			return nextState;
 		});
+
+	public readonly ParentChange = StateBind
+		.onAction<State, {
+			parentID: number
+		}>(this, (state, data) => {
+			var nextState = Utils.clone(state);
+			nextState.current.parentID = data.parentID;
+			return nextState;
+		});
+
 	//#endregion
 
 	// public constructor(screen: AppScreen) {

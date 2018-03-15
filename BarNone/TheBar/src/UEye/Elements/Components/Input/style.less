@@ -32,23 +32,33 @@
     color: @ModifiedElementAccent;
 }
 
+.UEye-Input.Modified > .Content > .Hint {
+    color: @ModifiedElementAccent;
+}
+
 .UEye-Input.Readonly {
     border-bottom-color: @ReadonlyElementAccent;
 }
 
-.UEye-Input.Modified > .Content > .Input {
+.UEye-Input.Readonly > .Content > .Input {
     color: @ReadonlyElementAccent;
 }
 
+.UEye-Input.Readonly > .Content > .Hint {
+    color: @ReadonlyElementAccent;
+}
 
 .UEye-Input.Error {
     border-bottom-color: @ErrorElementAccent;
 }
 
-.UEye-Input.Modified > .Content > .Input {
+.UEye-Input.Error > .Content > .Input {
     color: @ErrorElementAccent;
 }
 
+.UEye-Input.Error > .Content > .Hint {
+    color: @ErrorElementAccent;
+}
 
 .UEye-Input > .Content {
     display: flex;

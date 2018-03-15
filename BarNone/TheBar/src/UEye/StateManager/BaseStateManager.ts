@@ -51,6 +51,16 @@ export class StateTracker<TState> {
 		nextState.original = Utils.clone(this.current);
 		return nextState;
 	}
+
+	/**
+	 * Creates new state where current state is reset from original.
+	 * @returns - new state from current.
+	 */
+	public reset(): StateTracker<TState> {
+		var nextState = Utils.clone(this);
+		nextState.current = Utils.clone(this.original);
+		return nextState;
+	}
 }
 
 /**
@@ -74,10 +84,19 @@ export abstract class BaseStateManager<TState> {
 	public constructor(TStateType: { new(): TState }) {
 		this._renderCallbackList = [];
 		this._stateTracker = new StateTracker(TStateType);
-		this.initialize();
 	}
 
-	public abstract async initialize(): Promise<void>;
+	public async initialize(): Promise<void> {
+		await this.onInitialize();
+	}
+
+	public readonly Reset = StateBind
+		.onCallable<TState>(this, (state) => {
+			return state.reset();
+		})
+
+	protected async onInitialize(): Promise<void> { }
+	// protected async onReset(): Promise<void> {}
 
 	/**
 	 * adds render callback to state manager

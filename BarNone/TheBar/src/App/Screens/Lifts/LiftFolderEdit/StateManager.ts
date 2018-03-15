@@ -15,7 +15,7 @@ export class StateManager extends BaseStateManager<State> {
 		super(State);
 	}
 
-	public async initialize(): Promise<void> { 	}
+	public async onInitialize(): Promise<void> { 	}
 	
 	public readonly ResetState = StateBind
 		.onAsyncAction<State, {

@@ -113,8 +113,20 @@
 	border-color: @DefaultElementAccent;
 }
 
-.UEye-Drop-Down-Input.Modified {
+// .UEye-Drop-Down-Input.Modified {
+// 	border-bottom-color: @ModifiedElementAccent;
+// }
+
+.UEye-Drop-Down-Input.Modified > .Input-Area {
 	border-bottom-color: @ModifiedElementAccent;
+}
+
+.UEye-Drop-Down-Input.Modified > .Input-Area > .Content > .Input {
+	color: @ModifiedElementAccent;
+}
+
+.UEye-Drop-Down-Input.Modified > .Input-Area > .Content > .Hint {
+	color: @ModifiedElementAccent;
 }
 
 .UEye-Drop-Down-Input.Readonly {

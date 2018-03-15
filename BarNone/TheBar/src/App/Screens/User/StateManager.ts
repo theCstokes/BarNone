@@ -25,7 +25,7 @@ export class StateManager extends SelectionStateManager<User, State> {
 		super(State);
 	}
 
-	public async initialize(): Promise<void> { 	}
+	public async onInitialize(): Promise<void> { 	}
 
 	protected async onLoad(): Promise<User[]> {
 		return await DataManager.Users.all();

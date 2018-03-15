@@ -125,7 +125,7 @@ export default class DropDownInput extends BaseComponent {
    * @param value Method parameter represnts onClickCallback property
    * */
     public set onSelect(value: OnSelectCallback) {
-        this._onSelectHandler = value;
+        this._onSelectCallback = value;
     }
     /** Method that invokes event listener of when the contents of Input instance is changed. Responsive element that visually indicates to user change in text. 
     * @returns Nothing (return in the definition of the property)
@@ -202,8 +202,9 @@ export default class DropDownInput extends BaseComponent {
             Core.replaceClass(this._action, "fa-caret-left", "fa-caret-down");
             Core.addClass(this.element, "Show-Drop-Down");
             this.e_dropDown.style.top = StringUtils.format(
-                "{0}px", (this.element.offsetTop + this.element.offsetHeight + 5)
-            );
+                "{0}px", (this.element.offsetTop + this.element.offsetHeight + 5));
+            this.e_dropDown.style.width = StringUtils.format(
+                "{0}px", this.element.offsetWidth - 15);
         } else {
             Core.replaceClass(this._action, "fa-caret-down", "fa-caret-left");
             Core.removeClass(this.element, "Show-Drop-Down");

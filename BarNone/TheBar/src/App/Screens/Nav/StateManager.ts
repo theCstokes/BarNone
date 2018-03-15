@@ -88,7 +88,7 @@ export class StateManager extends ParentStateManager<State> {
 		super(State);
 	}
 
-	public async initialize(): Promise<void> { 	}
+	public async onInitialize(): Promise<void> { 	}
 
 	// public constructor() {
 	// 	super();
