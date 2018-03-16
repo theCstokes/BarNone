@@ -6,17 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Angle
+namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Velocity
 {
-    public class AR_Angle : RequestEntity
+    public class AR_Velocity : RequestEntity
     {
         [JsonConverter(typeof(StringEnumConverter))]
-        public EJointType JointA { get; set; }
+        public EJointType Joint { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public EJointType JointB { get; set; }
-
-        [JsonConverter(typeof(StringEnumConverter))]
-        public EJointType JointC { get; set; }
+        public EDimension Dimension { get; set; }
     }
 }
