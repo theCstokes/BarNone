@@ -4,6 +4,7 @@ import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 import ScreenPipeLine from "UEye/Screen/ScreenPipeLineStage";
 import UEye from "UEye/UEye";
 import CancelDialogScreen from "UEye/Screen/CancelDialog/CancelDialogScreen";
+import { IHelp } from "App/Help/HelpCore";
 
 /**
  * Edit base screen.
@@ -22,13 +23,13 @@ export default abstract class EditScreen<
      * @param ViewType - view builder
      * @param StateManagerType - state manager builder
      */
-    public constructor(ViewType: { new(): TView },
-        StateManagerType: { new(): TStateManager } | null = null) {
-        super(ViewType);
-        if (StateManagerType !== null) {
-            this._stateManager = new StateManagerType();
-            this._stateManager.bind(this._basePipeLine.onRenderInvokable.bind(this));
-        }
+    public constructor(ViewType: { new(): TView }, HelpType?: { new(): IHelp }) {
+        // StateManagerType: { new(): TStateManager } | null = null) {
+        super(ViewType, HelpType);
+        // if (StateManagerType !== null) {
+        //     this._stateManager = new StateManagerType();
+        //     this._stateManager.bind(this._basePipeLine.onRenderInvokable.bind(this));
+        // }
     }
 
     public init(stateManager: TStateManager) {

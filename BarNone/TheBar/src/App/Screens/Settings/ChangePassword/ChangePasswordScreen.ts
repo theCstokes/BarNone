@@ -1,6 +1,7 @@
 import ChangePasswordView from "App/Screens/Settings/ChangePassword/ChangePasswordView";
 import EditScreen from "UEye/Screen/EditScreen";
 import { StateManager, State } from "App/Screens/Settings/ChangePassword/StateManager";
+import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
 
 // import EditScreen from "Application/Core/EditScreen";
 // import ScreenBind from "UEye/Screen/ScreenBind";
@@ -9,8 +10,7 @@ import { StateManager, State } from "App/Screens/Settings/ChangePassword/StateMa
 
 export default class ChangePasswordScreen extends EditScreen<ChangePasswordView, StateManager> {
 	public constructor() {
-		super(ChangePasswordView, StateManager);
-		this.stateManager.bind(this._onRender.bind(this));
+		super(ChangePasswordView);
 	}
 
 	private _onRender(current: State, original: State) {
@@ -21,7 +21,11 @@ export default class ChangePasswordScreen extends EditScreen<ChangePasswordView,
 		this.view.editPanel.modified = isModified;
 	}
 	
-	public onShow(): void {
+	public async onShow(): Promise<void> {
+		super.onShow();
+		this.init(await StateManagerFactory.create(StateManager));
+		this.stateManager.bind(this._onRender.bind(this));
+
 		this.view.currentPassword.onChange = (data) => {
 			this.stateManager.CurrentPassword.trigger(data);
 		};

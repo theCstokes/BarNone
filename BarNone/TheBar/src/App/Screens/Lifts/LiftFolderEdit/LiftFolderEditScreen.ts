@@ -6,11 +6,12 @@ import LiftFolderEditView from "App/Screens/Lifts/LiftFolderEdit/LiftFolderEditV
 import LiftScreen from "App/Screens/Lifts/LiftScreen";
 import { LiftListType } from "App/Screens/Lifts/Models";
 import { ELiftType } from "App/Screens/Lifts/StateManager";
+import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
+import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
 
 export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView, StateManager> {
 	public constructor() {
-		super(LiftFolderEditView, StateManager);
-		this.stateManager.bind(this._onRender.bind(this));
+		super(LiftFolderEditView, LiftFolderHelp);
 	}
 
 	private _onRender(current: State, original: State) {
@@ -57,6 +58,9 @@ export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView,
 
 	public async onShow(data: { id: number, name: string, type: ELiftType }): Promise<void> {
 		super.onShow(data);	
+		this.init(await StateManagerFactory.create(StateManager));
+		this.stateManager.bind(this._onRender.bind(this));
+
 		this.view.nameInput.onChange = (data) => {
 			this.stateManager.NameChange.trigger(data);
 		};

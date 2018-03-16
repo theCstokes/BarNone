@@ -11,10 +11,11 @@ import NotificationRequestDTO from "App/Data/Models/NotificationRequestDTO";
 import Comment from "App/Data/Models/Comment/Comment";
 import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
 import ScreenPipeLine from "UEye/Screen/ScreenPipeLineStage";
+import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
 
 export default class LiftEditScreen extends EditScreen<LiftEditView, StateManager> {
 	public constructor() {
-		super(LiftEditView);
+		super(LiftEditView, LiftFolderHelp);
 	}
 
 	private _pipeLine = ScreenPipeLine.create()
