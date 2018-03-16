@@ -56,7 +56,7 @@ export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView,
 	}
 
 	public async onShow(data: { id: number, name: string, type: ELiftType }): Promise<void> {
-		super.onShow(data);
+		super.onShow(data);	
 		this.view.nameInput.onChange = (data) => {
 			this.stateManager.NameChange.trigger(data);
 		};
