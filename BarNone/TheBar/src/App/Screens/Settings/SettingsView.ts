@@ -17,6 +17,7 @@ export default class SettingsView extends View {
 							{
 								instance: ControlTypes.List,
 								id: "settingsList",
+								isSelectionList: true,
 								style: ControlTypes.LiftFolderListItem
 								// items: [
 								// 	{

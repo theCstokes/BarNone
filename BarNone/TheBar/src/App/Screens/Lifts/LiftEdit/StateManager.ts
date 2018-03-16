@@ -3,37 +3,62 @@ import StateBind from "UEye/StateManager/StateBind";
 import DataManager from "App/Data/DataManager";
 import Lift from "App/Data/Models/Lift/Lift";
 import Comment from "App/Data/Models/Comment/Comment";
-import { LiftType } from "App/Screens/Lifts/StateManager";
+import { ELiftType } from "App/Screens/Lifts/StateManager";
+import LiftType from "App/Data/Models/Lift/LiftType";
+import LiftFolder from "App/Data/Models/LiftFolder/LiftFolder";
+import BodyData from "App/Data/Models/BodyData/BodyData";
 
 export class State {
 	public id: number;
-	public name: string = "";
-	public age: number;
-	public lift: Lift;
+	public name: string;
+	public liftType: LiftType;
 	public comments: Comment[];
+	public parentID: number;
+	public bodyData: BodyData;
+	public type: ELiftType;
 }
 
 export class StateManager extends BaseStateManager<State> {
-	private _type: LiftType;
-	public constructor(type: LiftType) {
-		super(State);
-		this._type = type;
+
+	public async onInitialize(): Promise<void> {
+		this.s_LiftTypeList = await DataManager.LiftTypes.all();
+		this.s_FolderList = await DataManager.LiftFolders.all();
 	}
 
+	//#region Public Static State Property(s).
+	public s_LiftTypeList: LiftType[];
+	public s_FolderList: LiftFolder[];
+	//#endregion
+
+	//#region Public Constructor(s).
+	public constructor() {
+		super(State);
+	}
+	//#endregion
+
+	//#region State Action(s).
 	public readonly ResetState = StateBind
 		.onAsyncAction<State, {
 			id: number,
-			name: string
+			name: string,
+			type: ELiftType
 		}>(this, async (state, data) => {
+			// Setup static data.
 			var nextState = state.empty();
 
-			if (this._type === LiftType.Lift) {
-				nextState.current.lift = await DataManager.Lifts.single(data.id, { includeDetails: true });
-				console.log("Lift type: ", nextState.current.lift);
-			} else if (this._type === LiftType.Shared) {
-				nextState.current.lift = await DataManager.SharedLifts.single(data.id, { includeDetails: true });
+			nextState.current.type = data.type;
+
+			var lift = null;
+			if (data.type === ELiftType.Lift) {
+				lift = await DataManager.Lifts.single(data.id, { includeDetails: true });
+			} else if (data.type === ELiftType.Shared) {
+				lift = await DataManager.SharedLifts.single(data.id, { includeDetails: true });
 			}
-			
+			nextState.current.name = lift!.name;
+			nextState.current.liftType = lift!.details.liftType;
+			nextState.current.parentID = lift!.parentID;
+			nextState.current.bodyData = lift!.details.bodyData;
+
 			var comments = await DataManager.LiftComments.all({
 				params: {
 					liftID: data.id
@@ -62,12 +87,23 @@ export class StateManager extends BaseStateManager<State> {
 
 			nextState.current.comments = await DataManager.LiftComments.all({
 				params: {
-					liftID: nextState.current.lift.id
+					liftID: nextState.current.id
 				}
 			});
 
 			return nextState;
 		});
+
+	public readonly ParentChange = StateBind
+		.onAction<State, {
+			parentID: number
+		}>(this, (state, data) => {
+			var nextState = Utils.clone(state);
+			nextState.current.parentID = data.parentID;
+			return nextState;
+		});
+
+	//#endregion
 
 	// public constructor(screen: AppScreen) {
 	// 	super(screen, new State());
@@ -81,10 +117,10 @@ export class StateManager extends BaseStateManager<State> {
 	// 	return this._nameChange.expose();
 	// }
 
-	public init(): void {
-		// var data = await DataManager.Lifts.single()
-		// this.ResetState.trigger();
-	}
+	// public init(): void {
+	// 	// var data = await DataManager.Lifts.single()
+	// 	this.ResetState.trigger();
+	// }
 
 	public async onSave(): Promise<void> {
 		var currentState = this.getCurrentState();

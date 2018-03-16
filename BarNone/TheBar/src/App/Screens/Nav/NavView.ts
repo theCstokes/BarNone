@@ -143,6 +143,12 @@ export default class NavView extends View {
 										id: "notificationList",
 										instance: ControlTypes.List,
 										style: ControlTypes.DataListItem
+									},
+									{
+										instance: ControlTypes.Info,
+										id: "notificationListInfo",
+										title: "No Notifications",
+										message: "You have no unread notifications."
 									}
 								]
 							},

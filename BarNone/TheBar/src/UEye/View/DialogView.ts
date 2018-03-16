@@ -7,15 +7,15 @@ import Button from "UEye/Elements/Components/Button/Button";
  * Base edit view.
  */
 export abstract class DialogView extends View {
-    /**
-     * Cancel changes button.
-     */
-    public cancelButton: Button;
+    // /**
+    //  * Cancel changes button.
+    //  */
+    // public cancelButton: Button;
 
-    /**
-     * Save changes button.
-     */
-    public saveButton: Button;
+    // /**
+    //  * Save changes button.
+    //  */
+    // public saveButton: Button;
 
     /**
      * View base config

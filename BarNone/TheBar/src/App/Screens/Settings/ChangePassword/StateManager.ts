@@ -18,6 +18,8 @@ export class StateManager extends BaseStateManager<State> {
 	public constructor() {
 		super(State);
 	}
+
+	public async onInitialize(): Promise<void> { 	}
 	
 	// public readonly ResetState = StateBind
 	// 	.onAction<State, {

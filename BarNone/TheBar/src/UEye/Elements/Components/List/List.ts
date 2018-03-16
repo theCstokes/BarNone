@@ -2,7 +2,7 @@ import { BaseComponent } from "UEye/Elements/Core/BaseComponent/BaseComponent";
 import Core from "UEye/Elements/Core/Core";
 import { BaseListItem } from "UEye/Elements/Core/BaseListItem/BaseListItem";
 import ComponentType from "UEye/Elements/Inflater/ComponentInflater";
-import { OnSelectCallback } from "UEye/Elements/Core/EventCallbackTypes";
+import { OnSelectCallback, IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import { BaseView } from "UEye/Elements/Core/BaseView";
 
 /**
@@ -17,7 +17,7 @@ export default class UEyeList extends BaseComponent {
     private _isSelectionList: boolean;
 
     /**  Represents an array of additional data that is mapped to corresponding _listElement items  */
-    private _items: any[]
+    private _items: IListItem[]
     /**  Represents an array of the child elements contained in parent list (li tag).   */
     private _listElements: HTMLElement[];
     /**  Represents the style of list elements (eg. List item with icon and text is defined as NavListItem,used for navigation) */
@@ -40,7 +40,7 @@ export default class UEyeList extends BaseComponent {
      * @param value Method parameter represents list of data corresponding to _listElements
      * */
 
-    public set items(value: any[]) {
+    public set items(value: IListItem[]) {
         this.destroyItems();
         this._items = value;
         this.refreshItems();
@@ -48,7 +48,7 @@ export default class UEyeList extends BaseComponent {
        /** Accessor to get _items.
      * @returns Returns a list of data related to contents of the list component.
      * */
-    public get items(): any[] {
+    public get items(): IListItem[] {
         return this._items;
     }
     /** Method sets the _style property.
@@ -105,7 +105,7 @@ export default class UEyeList extends BaseComponent {
         this._items.forEach(async element => {
             var listElement = Core.create("li", this._elementList, "Element");
             // var pipeline = new InflaterPipeline();
-            var instance: BaseListItem = this._style.create(listElement, element, this._view) as BaseListItem;
+            var instance: BaseListItem = this._style.create(listElement, element as any, this._view) as BaseListItem;
 
             instance.isSelectionList = this.isSelectionList;
 
@@ -142,8 +142,20 @@ export default class UEyeList extends BaseComponent {
        /** Accessor to get _selected.
      * @returns Returns the selected list element in List component.
      * */
-    public get selected(): any {
+    public get selected(): IListItem {
         return this._selected;
+    }
+    public set selected(value: IListItem) {
+        if (this._items === undefined) return;
+        // Call the items setter with the new data to cause refresh.
+        this.items = this._items.map(item => {
+            if (value !== undefined && item.id === value.id) {
+                item.selected = true;
+            } else {
+                item.selected = false;
+            }
+            return item;
+        });
     }
      /** Accessor to get callback property.
      * @returns Returns the property responsible for callback on click operation

@@ -89,5 +89,10 @@ namespace BarNone.Shared.DomainModel
         public VideoRecord Video { get; set; }
 
         public List<LiftPermission> Permissions { get; set; }
+
+        public int? LiftTypeID { get; set; }
+
+        [ForeignKey("LiftTypeID")]
+        public LiftType LiftType { get; set; }
     }
 }

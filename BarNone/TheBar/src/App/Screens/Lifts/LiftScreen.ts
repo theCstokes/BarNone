@@ -2,7 +2,7 @@ import Screen from "UEye/Screen/Screen"
 import LiftView from "App/Screens/Lifts/LiftView";
 import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import UEye from "UEye/UEye";
-import { StateManager, State, LiftType } from "App/Screens/Lifts/StateManager";
+import { StateManager, State, ELiftType } from "App/Screens/Lifts/StateManager";
 import EditScreen from "UEye/Screen/EditScreen";
 import { LiftListType, LiftListItem } from "App/Screens/Lifts/Models";
 import LiftFolderEditScreen from "App/Screens/Lifts/LiftFolderEdit/LiftFolderEditScreen";
@@ -17,7 +17,7 @@ export default class LiftScreen extends Screen<LiftView> {
 	// private subScreen: LiftEditScreen;
 	private subScreen: EditScreen<any, any>
 	private _stateManager: StateManager;
-	private _type: LiftType;
+	private _type: ELiftType;
 
 	public static ParentChange: DataEvent<LiftListItem>;
 	public static LiftChange: DataEvent<Lift>;
@@ -80,7 +80,7 @@ export default class LiftScreen extends Screen<LiftView> {
 		}
 	}
 
-	public onShow(type: LiftType): void {
+	public onShow(type: ELiftType): void {
 		this._type = type;
 		this._stateManager = new StateManager(type);
 		this._stateManager.bind(this._onRender.bind(this));
