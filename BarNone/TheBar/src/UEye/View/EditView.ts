@@ -42,13 +42,15 @@ export abstract class EditView extends View {
                                 id: "cancelButton",
                                 instance: ControlTypes.Button,
                                 icon: "fa-times",
-                                text: "Cancel"
+                                text: "Cancel",
+                                enabled: false
                             },
                             {
                                 id: "saveButton",
                                 instance: ControlTypes.Button,
                                 icon: "fa-floppy-o",
-                                text: "Save"
+                                text: "Save",
+                                enabled: false
                             }
                         ]
                     }

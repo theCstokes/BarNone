@@ -6,18 +6,12 @@ import Panel from "UEye/Elements/Containers/Panel/Panel";
 export default class ChangePasswordView extends EditView {
 	protected caption: string = "Change Password";
 
-	public currentPassword: Input;
 	public newPassword: Input;
 	public retypePassword: Input;
 	// public editPanel: Panel;
 
 	public get content(): any[] {
 		return [
-			{
-				id: "currentPassword",
-				instance: ControlTypes.PasswordInput,
-				hint: "Current Password"
-			},
 			{
 				id: "newPassword",
 				instance: ControlTypes.PasswordInput,

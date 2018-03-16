@@ -8,13 +8,16 @@ import List from "UEye/Elements/Components/List/List";
 import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout";
 import Messenger from "UEye/Elements/Components/Messenger/Messenger";
+import DropDownInput from "UEye/Elements/Components/DropDownInput/DropDownInput";
+import { LiftPermissionTab, ILiftPermissionView } from "App/Screens/Lifts/Shared/LiftPermissionView";
 
-export default class LiftEditView extends EditView {
+export default class LiftEditView extends EditView implements ILiftPermissionView {
 	protected caption: string = "Lift Edit";
 
 	public nameInput: Input;
-	public ageInput: Input;
-	// public editPanel: Panel;
+	public typeDropDown: DropDownInput;
+	public parentDropDown: DropDownInput;
+	public userShareList: List;
 	public player: Video;
 	public messenger: Messenger;
 	public analyticsButton: IconButton;
@@ -27,19 +30,18 @@ export default class LiftEditView extends EditView {
 				instance: ControlTypes.Input,
 				hint: "Name"
 			},
-
 			{
-				id: "typeDropDown",
-				instance: ControlTypes.DropDownInput,
-				hint: "Type",
-				items: [
+				instance: ControlTypes.OrderLayout,
+				content: [
 					{
-						id: 1,
-						name: "Test"
+						id: "typeDropDown",
+						instance: ControlTypes.DropDownInput,
+						hint: "Lift Type"
 					},
 					{
-						id: 2,
-						name: "New Test"
+						id: "parentDropDown",
+						instance: ControlTypes.DropDownInput,
+						hint: "Parent Folder"
 					}
 				]
 			},
@@ -117,7 +119,8 @@ export default class LiftEditView extends EditView {
 								// style: ControlTypes.DataListItem
 							}
 						]
-					}
+					},
+					LiftPermissionTab.content
 				]
 			}
 				

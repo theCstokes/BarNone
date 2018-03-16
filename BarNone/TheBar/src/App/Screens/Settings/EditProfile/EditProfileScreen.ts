@@ -1,6 +1,7 @@
 import EditProfileView from "App/Screens/Settings/EditProfile/EditProfileView";
 import EditScreen from "UEye/Screen/EditScreen";
 import { StateManager, State } from "App/Screens/Settings/EditProfile/StateManager";
+import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
 
 // import EditScreen from "Application/Core/EditScreen";
 // import ScreenBind from "UEye/Screen/ScreenBind";
@@ -9,8 +10,7 @@ import { StateManager, State } from "App/Screens/Settings/EditProfile/StateManag
 
 export default class SettingsEditScreen extends EditScreen<EditProfileView, StateManager> {
 	public constructor() {
-		super(EditProfileView, StateManager);
-		this.stateManager.bind(this._onRender.bind(this));
+		super(EditProfileView);
 	}
 
 	private _onRender(current: State, original: State) {
@@ -21,7 +21,11 @@ export default class SettingsEditScreen extends EditScreen<EditProfileView, Stat
 		this.view.editPanel.modified = isModified;
 	}
 	
-	public onShow(): void {
+	public async onShow(): Promise<void> {
+		super.onShow();
+		this.init(await StateManagerFactory.create(StateManager));
+		this.stateManager.bind(this._onRender.bind(this));
+
 		this.view.nameInput.onChange = (data) => {
 			this.stateManager.NameChange.trigger(data);
 		};

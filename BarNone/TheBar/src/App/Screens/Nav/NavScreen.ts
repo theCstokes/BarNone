@@ -42,7 +42,12 @@ export default class NavScreen extends Screen<NavView> {
 		this.view.notificationButton.icon = (current.showNotifications ? "fa-times" : "fa-bell");
 
 		if (current.showHelp) {
-			this._renderHelp(this._subScreen.help);
+			var helpScreen = Utils.clone(UEye.screens).reverse().find(item => {
+				return (item.help !== undefined)
+			});
+			if (helpScreen !== undefined) {
+				this._renderHelp(helpScreen.help);
+			}
 		}
 		if (current.showNotifications) {
 			this._renderNotifications();

@@ -67,18 +67,17 @@ export class State {
 			screen: LiftScreen,
 			initData: "Shared"
 		},
-		
-		{
-			id: 2,
-			name: "Settings",
-			icon: "fa-cog",
-			screen: SettingsScreen
-		},
 		{	
 			id: 3,
 			name:"Lift Profile",
 			icon: "fa-user",
 			screen: LiftProfileScreen
+		},
+		{
+			id: 2,
+			name: "Settings",
+			icon: "fa-cog",
+			screen: SettingsScreen
 		}	
 	]
 }
@@ -87,6 +86,8 @@ export class StateManager extends ParentStateManager<State> {
 	public constructor() {
 		super(State);
 	}
+
+	public async onInitialize(): Promise<void> { 	}
 
 	// public constructor() {
 	// 	super();

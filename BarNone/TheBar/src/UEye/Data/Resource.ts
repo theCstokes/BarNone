@@ -99,8 +99,7 @@ export class Resource<TData> extends BaseResource {
 
         try {
             var result = await builder.execute();
-            var data: ListResult<TData> = JSON.parse(result);
-            return data.entities;
+            return (result as ListResult<TData>).entities;
         } catch (error) {
             BaseDataManager.fail(error);
             throw error;
@@ -122,8 +121,7 @@ export class Resource<TData> extends BaseResource {
 
         try {
             var result = await builder.execute();
-            var data: EntityResult<TData> = JSON.parse(result);
-            return data.entity;
+            return (result as EntityResult<TData>).entity;
         } catch (error) {
             BaseDataManager.fail(error);
             throw error;
@@ -145,8 +143,7 @@ export class Resource<TData> extends BaseResource {
 
         try {
             var result = await builder.execute(source);;
-            var data: ListResult<TData> = JSON.parse(result);
-            return data.entities;
+            return (result as ListResult<TData>).entities;
         } catch (error) {
             BaseDataManager.fail(error);
             throw error;
@@ -195,8 +192,7 @@ export class DetailResource<TData> extends BaseResource {
 
         try {
             var result = await builder.execute();
-            var data: ListResult<TData> = JSON.parse(result);
-            return data.entities;
+            return (result as ListResult<TData>).entities;
         } catch (error) {
             BaseDataManager.fail(error);
             throw error;
@@ -228,8 +224,7 @@ export class DetailResource<TData> extends BaseResource {
 
         try {
             var result = await builder.execute();
-            var data: EntityResult<TData> = JSON.parse(result);
-            return data.entity;
+            return (result as EntityResult<TData>).entity;
         } catch (error) {
             BaseDataManager.fail(error);
             throw error;
@@ -251,8 +246,7 @@ export class DetailResource<TData> extends BaseResource {
 
         try {
             var result = await builder.execute(source);
-            var data: ListResult<TData> = JSON.parse(result);
-            return data.entities;
+            return (result as ListResult<TData>).entities;
         } catch (error) {
             BaseDataManager.fail(error);
             throw error;
@@ -269,8 +263,7 @@ export class DetailResource<TData> extends BaseResource {
 
         try {
             var result = await builder.execute(source);
-            var data: ListResult<TData> = JSON.parse(result);
-            return data.entities;
+            return (result as ListResult<TData>).entities;
         } catch (error) {
             BaseDataManager.fail(error);
             throw error;

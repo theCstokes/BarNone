@@ -18,12 +18,12 @@ export class StateTracker<TState> {
 	 * Current state.
 	 */
 	public current: TState;
-	
+
 	/**
 	 * Original state.
 	 */
 	public original: TState;
-	
+
 	/**
 	 * Create new StateTracker
 	 * @param TStateType - state construction object.
@@ -51,6 +51,16 @@ export class StateTracker<TState> {
 		nextState.original = Utils.clone(this.current);
 		return nextState;
 	}
+
+	/**
+	 * Creates new state where current state is reset from original.
+	 * @returns - new state from current.
+	 */
+	public reset(): StateTracker<TState> {
+		var nextState = Utils.clone(this);
+		nextState.current = Utils.clone(this.original);
+		return nextState;
+	}
 }
 
 /**
@@ -61,11 +71,11 @@ export abstract class BaseStateManager<TState> {
 	 * render callbacks.
 	 */
 	private _renderCallbackList: RenderCallback<TState>[];
-	
+
 	/**
 	 * state tracker object.
 	 */
-    protected _stateTracker: StateTracker<TState>;
+	protected _stateTracker: StateTracker<TState>;
 
 	/**
 	 * Create new Base state manager
@@ -74,7 +84,19 @@ export abstract class BaseStateManager<TState> {
 	public constructor(TStateType: { new(): TState }) {
 		this._renderCallbackList = [];
 		this._stateTracker = new StateTracker(TStateType);
-    }
+	}
+
+	public async initialize(): Promise<void> {
+		await this.onInitialize();
+	}
+
+	public readonly Reset = StateBind
+		.onCallable<TState>(this, (state) => {
+			return state.reset();
+		})
+
+	protected async onInitialize(): Promise<void> { }
+	// protected async onReset(): Promise<void> {}
 
 	/**
 	 * adds render callback to state manager
@@ -82,12 +104,12 @@ export abstract class BaseStateManager<TState> {
 	 */
 	public bind(renderCallback: RenderCallback<TState>) {
 		this._renderCallbackList.push(renderCallback);
-    }
-	
+	}
+
 	/**
 	 * Gets state tracker object.
 	 */
-    public getState(): StateTracker<TState> {
+	public getState(): StateTracker<TState> {
 		return Utils.clone(this._stateTracker);
 	}
 
@@ -110,13 +132,15 @@ export abstract class BaseStateManager<TState> {
 	 * @param state - tacker object
 	 */
 	public updateState(state: StateTracker<TState>) {
-		if (this._stateTracker !== state) {
+		if (JSON.stringify(state) !== JSON.stringify(this._stateTracker)) {
 			this._stateTracker = Utils.clone(state);
-			
+
 			this._renderCallbackList.forEach(rc => rc(
-                this.getCurrentState(),
-                this.getOriginalState()
+				this.getCurrentState(),
+				this.getOriginalState()
 			));
 		}
 	}
+
+	// public abstract init(): void;
 }

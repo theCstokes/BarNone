@@ -212,4 +212,8 @@ export default class UEye {
 		}
 		return undefined;
 	}
+
+	public static get screens(): Screen<any>[] {
+		return UEye._screenList;
+	}
 }

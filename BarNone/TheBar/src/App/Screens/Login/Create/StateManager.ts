@@ -12,9 +12,7 @@ export class StateManager extends BaseStateManager<State> {
 		super(State);
 	}
 	
-	// public constructor(screen: AppScreen) {
-	// 	super(screen, new State());
-	// }
+	public async onInitialize(): Promise<void> { 	}
 
 	public readonly ResetState = StateBind
 		.onCallable<State>(this, (state) => {
