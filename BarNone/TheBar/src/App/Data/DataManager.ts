@@ -6,12 +6,14 @@ import { Resource, DetailResource } from "UEye/Data/Resource";
 import Joint from "App/Data/Models/Joint/Joint";
 import Comment from "App/Data/Models/Comment/Comment";
 import LiftType from "App/Data/Models/Lift/LiftType";
+import SettingsElement from "App/Data/Models/Settings/SettingsElement";
 
 export default class DataManager extends BaseDataManager {
 
 	public static readonly Users: Resource<User> = new Resource<User>("User");
 
-	public static readonly LiftFolders: DetailResource<LiftFolder> = new DetailResource<LiftFolder>("LiftFolder");
+	public static readonly LiftFolders: DetailResource<LiftFolder> 
+		= new DetailResource<LiftFolder>("LiftFolder");
 
 	public static readonly Lifts: DetailResource<Lift> = new DetailResource<Lift>("Lift");
 
@@ -25,4 +27,7 @@ export default class DataManager extends BaseDataManager {
 		= new DetailResource<Comment>("Comment/Lift/{liftID}");
 
 	public static readonly Joints: Resource<Joint> = new Resource<Joint>("Joints");
+
+	public static readonly Settings: Resource<SettingsElement> 
+		= new Resource<SettingsElement>("Settings", true);
 }

@@ -1,6 +1,6 @@
-import { ISelectionState, SelectionStateManager } from "App/Core/StateManager/SelectionStateManager";
 import User from "App/Data/Models/User/User";
 import DataManager from "App/Data/DataManager";
+import { SelectionStateManager, ISelectionState } from "UEye/StateManager/SelectionStateManager";
 
 /**
  * State object for user screen.
@@ -27,7 +27,7 @@ export class StateManager extends SelectionStateManager<User, State> {
 
 	public async onInitialize(): Promise<void> { 	}
 
-	protected async onLoad(): Promise<User[]> {
+	protected async listProvider(): Promise<User[]> {
 		return await DataManager.Users.all();
 	}
 }

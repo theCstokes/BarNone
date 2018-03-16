@@ -24,7 +24,7 @@ export default class SettingsScreen extends Screen<SettingsView> {
 	}
 
 	private _onRender(current: State, original: State): void {
-		this.view.settingsList.items = current.SettingsElementList.map(item => {
+		this.view.settingsList.items = current.selectionList.map(item => {
 			return {
 				selected: (item.id === current.selectionId),
 				id: item.id,
@@ -32,7 +32,7 @@ export default class SettingsScreen extends Screen<SettingsView> {
 				icon: item.icon
 			}
 		});
-		var settingsElement = current.SettingsElementList.find(item => {
+		var settingsElement = current.selectionList.find(item => {
 			return (item.id === current.selectionId);
 		});
 		if (settingsElement !== undefined) {

@@ -90,7 +90,7 @@ export default class LiftScreen extends Screen<LiftView> {
 		};
 
 		// this.subScreen = UEye.push(LiftEditScreen) as LiftEditScreen;
-		this._stateManager.init();
+		this._stateManager.ResetState.trigger();
 	}
 
 	private _onFolderOpenHandler(item: LiftListItem) {
