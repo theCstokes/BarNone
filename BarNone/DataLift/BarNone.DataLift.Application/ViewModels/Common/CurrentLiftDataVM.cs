@@ -52,6 +52,8 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             }
         }
 
+        public long ColorDataOffset;
+
         private TimeSpan? _latencyBetweenFirstColorFrameAndFirstBodyFrame = null;
         public TimeSpan? LatencyBetweenFirstColorFrameAndFirstBodyFrame
         {
@@ -76,12 +78,13 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                 return;
             if (CurrentRecordedBodyData.Count > 0)
             {
-                DateTime normalizatioTime = FirstColorDataFrame.Value;
-
+                //DateTime normalizatioTime = FirstColorDataFrame.Value;
+                var first = CurrentRecordedBodyData[0].TimeOfFrame;
                 //var m = DateTime.Now.AddMilliseconds(-Environment.TickCount + bodyCandidate.Ticks / 10000);
                 // is the difference m - FirstColorDataFrame.Value;
                 //TimeSpan candidate = (colorCandidate < bodyCandidate) ? colorCandidate : bodyCandidate;
-                CurrentRecordedBodyData.ToList().ForEach(x => x.TimeOfFrame = x.WindowsTimeOfFrame - normalizatioTime);
+                CurrentRecordedBodyData.ToList()
+                    .ForEach(x => x.TimeOfFrame = x.TimeOfFrame.Add(new TimeSpan(ColorDataOffset*10000)) - first);
             }
             else
             {

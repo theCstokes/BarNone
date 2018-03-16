@@ -205,13 +205,13 @@ namespace BarNone.DataLift.UI.ViewModels
                 //Convert the frame to a more usable form
                 var dataFrame = frame.KinectBdfToDmBdf(body);
                 dataFrame.TimeOfFrame = frame.RelativeTime;
-                dataFrame.WindowsTimeOfFrame = DateTime.UtcNow;
 
                 if (CurrentRecordingState >= RecordingState.WAITING_FOR_FIRST_BODY_FRAME)
                 {
                     if(CurrentRecordingState == RecordingState.WAITING_FOR_FIRST_BODY_FRAME)
                     {
                         ColorDataToBodyDataLatency.Stop();
+                        CurrentLiftData.ColorDataOffset = _ffmpegController.durationInMs;
                         CurrentRecordingState = RecordingState.RECORDING;
                     }
                     CurrentLiftData.CurrentRecordedBodyData.Add(dataFrame);
@@ -398,7 +398,6 @@ namespace BarNone.DataLift.UI.ViewModels
             IsRecording = false;
 
             _ffmpegController.StopFfmpegRecord();
-            CurrentLiftData.FirstColorDataFrame = _ffmpegController.FirstFrameTime;
 
             try
             {

@@ -15,7 +15,7 @@ namespace BarNone.DataLift.UI.ViewModels
         private Action _firstFrameRecievedAction;
         private CurrentLiftDataVM _currentLiftDataVM = CurrentLiftDataVMSingleton.GetInstance();
 
-        public DateTime? FirstFrameTime { get; private set; } = null;
+        //public DateTime? FirstFrameTime { get; private set; } = null;
         
         #endregion
 
@@ -38,7 +38,7 @@ namespace BarNone.DataLift.UI.ViewModels
             if (File.Exists(fname))
                 File.Delete(fname);
 
-            FirstFrameTime = null;
+            //FirstFrameTime = null;
 
             _firstFrameRecievedAction = firstFrameAction;
 
@@ -47,7 +47,7 @@ namespace BarNone.DataLift.UI.ViewModels
             ProcessStartInfo psi = new ProcessStartInfo
             {
                 FileName = $"{Directory.GetCurrentDirectory()}/res/ffmpeg.exe",
-                Arguments = $"-loglevel info -f dshow -video_size 1920x1080 -framerate 30 -rtbufsize 500000k -vcodec mjpeg -i video=\"C922 Pro Stream Webcam\" {fname}", //Prefered Webcam
+                Arguments = $"-loglevel verbose -f dshow -video_size 1920x1080 -framerate 30 -rtbufsize 500000k -vcodec mjpeg -i video=\"C922 Pro Stream Webcam\" {fname}", //Prefered Webcam
                 //Arguments = $"-loglevel verbose -f dshow -video_size 1920x1080 -framerate 15 -vcodec mjpeg -i video=\"Microsoft LifeCam Rear\" {fname}",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -72,33 +72,42 @@ namespace BarNone.DataLift.UI.ViewModels
             _createdFiles.Add(fname);
         }
 
-        TimeSpan? VideoDuration = null;
-
-        Regex VideoWriterFrameArrivalRegex = new Regex(@"^frame=([0 - 9]+).*time=([0 - 9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]+).*", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+        //Will be unused
+        public long durationInMs = 0;
+        long prevTicks;
+        //Regex VideoWriterFrameArrivalRegex = new Regex(@"^frame=([0 - 9]+).*time=([0 - 9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]+).*", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+        Regex VideoWriterFrameArrivalRegex = new Regex(@"^.*timestamp\s*([0-9]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
         //TODO add resets etc this is not handled
         private bool isFirstFrame = true;
+        
 
         private void FfmpegRecivedDShowLine(object sender, DataReceivedEventArgs e)
         {
-            
             if (e.Data == null)
                 return;
             if(VideoWriterFrameArrivalRegex.IsMatch(e.Data))
             {
-                VideoDuration = TimeSpan.ParseExact(VideoWriterFrameArrivalRegex.Match(e.Data).Groups[2].Value, "c", System.Globalization.CultureInfo.InvariantCulture);
+
+                var ticks = long.Parse(VideoWriterFrameArrivalRegex.Match(e.Data).Groups[1].Value);
+                //VideoDuration = TimeSpan.ParseExact(VideoWriterFrameArrivalRegex.Match(e.Data).Groups[2].Value, "c", System.Globalization.CultureInfo.InvariantCulture);
 
                 if (isFirstFrame)
                 {
+                    prevTicks = ticks;
+                    durationInMs += 33; // Use regex to get FPS if slightly off!
                     isFirstFrame = false;
                     _firstFrameRecievedAction.Invoke();
-                    FirstFrameTime = new DateTime(VideoDuration.Value.Ticks);
+                    //FirstFrameTime = new DateTime(VideoDuration.Value.Ticks);
+                }
+                else
+                {
+                    durationInMs += (ticks - prevTicks) / 10000;
+                    prevTicks = ticks;
                 }
             }
         }
-
-        DateTime prev;
-        double videoLength = 0;
+        
         /// <summary>
         /// Forces the FFMPEG Recording to Close
         /// </summary>
@@ -108,15 +117,20 @@ namespace BarNone.DataLift.UI.ViewModels
                 throw new Exception("The FFMPEG instance has exited implying a runtime or execution time error occured, review before continuing!");
 
             var recordUntil = _currentLiftDataVM.DataLength();
-            while (VideoDuration.Value.TotalMilliseconds < recordUntil)
+            while (durationInMs < recordUntil)
             {
                 //Arbitrarily record 4 frames
                 System.Threading.Thread.Sleep(120);
             }
+
+            System.Threading.Thread.Sleep(60000);
+
+            _recordProcess.ErrorDataReceived -= FfmpegRecivedDShowLine;
+            _recordProcess.OutputDataReceived -= FfmpegRecivedDShowLine;
             _recordProcess.Kill();
-            _recordProcess.StandardInput.Write("q\n");
+            //_recordProcess.StandardInput.Write("q\n");
             _recordProcess.WaitForExit();
-            Console.WriteLine($"{recordUntil} && ${VideoDuration.Value.TotalMilliseconds }");
+            Console.WriteLine($"{recordUntil} && ${durationInMs}");
             _recordProcess = null;
         }
 

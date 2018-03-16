@@ -465,6 +465,8 @@ namespace BarNone.DataLift.UI.ViewModels
                     }
                 }
 
+                if (nextBodyFrame < 0)
+                    return;
                 bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[nextBodyFrame];
 
                 if (bodyFrameToDraw.TimeOfFrame.TotalMilliseconds < currentMs)
