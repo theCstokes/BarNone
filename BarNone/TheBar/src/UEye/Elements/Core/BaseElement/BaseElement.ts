@@ -34,6 +34,7 @@ export abstract class BaseElement {
 		this._parent = parent;
 		this.onShow = new DataEvent<BaseView>();
 	}
+	
 	/** Accessor to get _element property.
 	* @returns Returns element property.
 	* */

@@ -20,7 +20,8 @@ export default class DataManager extends BaseDataManager {
 
 	public static readonly Lifts: DetailResource<Lift> = new DetailResource<Lift>("Lift");
 
-	public static readonly LiftAnalysisProfile:DetailResource<LiftAnalysisProfile> = new DetailResource("LiftAnalysisProfile");
+	public static readonly LiftAnalysisProfile:DetailResource<LiftAnalysisProfile> 
+		= new DetailResource("LiftAnalysisProfile");
 
 	public static readonly LiftTypes: Resource<LiftType> = new Resource<LiftType>("LiftType");
 

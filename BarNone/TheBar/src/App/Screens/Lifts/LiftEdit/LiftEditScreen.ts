@@ -6,12 +6,12 @@ import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import StringUtils from "UEye/Core/StringUtils";
 import NotificationManager from "UEye/NotificationManager";
 import DataManager from "App/Data/DataManager";
-import { ELiftType } from "App/Screens/Lifts/StateManager";
 import NotificationRequestDTO from "App/Data/Models/NotificationRequestDTO";
 import Comment from "App/Data/Models/Comment/Comment";
 import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
 import ScreenPipeLine from "UEye/Screen/ScreenPipeLineStage";
 import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
+import { ELiftType } from "App/Screens/Lifts/StateManagers/BaseLiftStateManager";
 
 export default class LiftEditScreen extends EditScreen<LiftEditView, StateManager> {
 	public constructor() {

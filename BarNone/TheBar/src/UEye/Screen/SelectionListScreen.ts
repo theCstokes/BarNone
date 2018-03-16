@@ -68,12 +68,8 @@ export abstract class SelectionListScreen<
 		} else {
 			var dialog = UEye.push(CancelDialogScreen) as CancelDialogScreen;
 
-			dialog.onNo = () => {
-				UEye.pop();
-			}
-			dialog.onYes = async () => {
+			dialog.onAccept = async () => {
 				this.stateManager.SelectionChange.trigger({ id: data.id });
-				// UEye.pop();
 			}
 		}
 	}

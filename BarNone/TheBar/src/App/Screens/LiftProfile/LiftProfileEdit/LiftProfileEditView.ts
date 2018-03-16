@@ -9,6 +9,7 @@ import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 import Messenger from "UEye/Elements/Components/Messenger/Messenger";
 import LiftProfileDialogScreen from "../LiftProfileDialog/LiftProfileDialogScreen";
 import UEye from "UEye/UEye";
+import { BaseElement } from "UEye/Elements/Core/BaseElement/BaseElement";
 
 export default class LiftEditView extends EditView {
 	protected caption: string = "Lift Edit";
@@ -23,24 +24,24 @@ export default class LiftEditView extends EditView {
 			{
 				id: "nameInput",
 				instance: ControlTypes.Input,
-				hint: "Name"
+				hint: "Name",
+				readonly: true
 			},
-
-			{
-				id: "typeDropDown",
-				instance: ControlTypes.DropDownInput,
-				hint: "Type",
-				items: [
-					{
-						id: 1,
-						name: "Test"
-					},
-					{
-						id: 2,
-						name: "New Test"
-					}
-				]
-			},
+			// {
+			// 	id: "typeDropDown",
+			// 	instance: ControlTypes.DropDownInput,
+			// 	hint: "Type",
+			// 	items: [
+			// 		{
+			// 			id: 1,
+			// 			name: "Test"
+			// 		},
+			// 		{
+			// 			id: 2,
+			// 			name: "New Test"
+			// 		}
+			// 	]
+			// },
 			{
 				id: "tab",
 				instance: ControlTypes.TabLayout,
