@@ -8,8 +8,6 @@ import DataManager from "App/Data/DataManager";
 // import DataManager from "Application/Data/DataManager";
 
 export class State {
-	public id: number;
-	public currentPassword: string = "";
 	public newPassword: string = "";
 	public retypePassword: string = "";
 }
@@ -19,31 +17,16 @@ export class StateManager extends BaseStateManager<State> {
 		super(State);
 	}
 
-	public async onInitialize(): Promise<void> { 	}
-	
-	// public readonly ResetState = StateBind
-	// 	.onAction<State, {
-	// 		id: number,
-	// 		name: string,
-	// 		age: number
-	// 	}>(this, (state, data) => {
-	// 		var nextState = state.empty();
-	// 		nextState.current.id = data.id;
-	// 		nextState.current.name = data.name;
-	// 		nextState.current.age = data.age;
+	public async onInitialize(): Promise<void> { }
 
-	// 		return nextState.initialize();
-	// 	});
+	public readonly CreateState = StateBind
+		.onCallable<State>(this, (state) => {
+			var nextState = state.empty();
 
-	public readonly CurrentPassword = StateBind
-		.onAction<State, string>(this, (state, data) => {
-			var nextState = Utils.clone(state);
-			nextState.current.currentPassword = data as string;
-
-			return nextState;
+			return nextState.initialize();
 		});
 
-		public readonly NewPassword = StateBind
+	public readonly NewPassword = StateBind
 		.onAction<State, string>(this, (state, data) => {
 			var nextState = Utils.clone(state);
 			nextState.current.newPassword = data as string;
@@ -51,7 +34,7 @@ export class StateManager extends BaseStateManager<State> {
 			return nextState;
 		});
 
-		public readonly RetypePassword = StateBind
+	public readonly RetypePassword = StateBind
 		.onAction<State, string>(this, (state, data) => {
 			var nextState = Utils.clone(state);
 			nextState.current.retypePassword = data as string;
@@ -77,16 +60,16 @@ export class StateManager extends BaseStateManager<State> {
 
 	public async onSave(): Promise<void> {
 		var currentState = this.getCurrentState();
-		
-		if(currentState.newPassword==currentState.retypePassword){
+
+		if (currentState.newPassword == currentState.retypePassword) {
 			console.log(currentState.newPassword);
 		}
 
-		await DataManager.Users.update(currentState.id, {
-			id: currentState.id,
-			name: "",
-			userName: "",
-			password: ""
-		});
+		// await DataManager.Users.update(currentState.id, {
+		// 	id: currentState.id,
+		// 	name: "",
+		// 	userName: "",
+		// 	password: ""
+		// });
 	}
 }

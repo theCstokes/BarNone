@@ -67,18 +67,17 @@ export class State {
 			screen: LiftScreen,
 			initData: "Shared"
 		},
-		
-		{
-			id: 2,
-			name: "Settings",
-			icon: "fa-cog",
-			screen: SettingsScreen
-		},
 		{	
 			id: 3,
 			name:"Lift Profile",
 			icon: "fa-user",
 			screen: LiftProfileScreen
+		},
+		{
+			id: 2,
+			name: "Settings",
+			icon: "fa-cog",
+			screen: SettingsScreen
 		}	
 	]
 }

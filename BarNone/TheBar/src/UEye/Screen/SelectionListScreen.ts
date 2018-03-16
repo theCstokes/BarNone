@@ -42,21 +42,6 @@ export abstract class SelectionListScreen<
 
 				var sub = this.onRenderEditScreen(userData);
 				if (sub !== undefined) this.subScreen = sub;
-
-				// this.view.mainPanel.content=this.
-				// if (userData.type === LiftListType.Lift) {
-				// 	this.subScreen = UEye.push(LiftEditScreen, {
-				// 		id: userData.id,
-				// 		name: userData.name,
-				// 		type: this._type
-				// 	}) as LiftEditScreen;
-				// } else if (userData.type === LiftListType.Folder) {
-				// 	this.subScreen = UEye.push(LiftFolderEditScreen, {
-				// 		id: userData.id,
-				// 		name: userData.name,
-				// 		type: this._type
-				// 	}) as LiftFolderEditScreen;
-				// }
 			}
 		});
 

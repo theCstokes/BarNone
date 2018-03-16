@@ -1,101 +1,38 @@
-// import BasicScreen from "Application/Core/BasicScreen";
-// import UEye from "UEye/UEye";
-// import LiftView from "Application/Screens/Lifts/LiftView";
-// import LiftEditScreen from "Application/Screens/Lifts/Edit/LiftEditScreen";
-// import { StateManager, State } from "Application/Screens/Lifts/StateManager";
-// import ScreenBind from "UEye/Screen/ScreenBind";
-
 import Screen from "UEye/Screen/Screen"
 import SettingsView from "App/Screens/Settings/SettingsView";
-// import SettingsEditScreen from "App/Screens/Settings/Edit/SettingsEditScreen";
 import { StateManager, State } from "App/Screens/Settings/StateManager";
 import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import UEye from "UEye/UEye";
+import SettingsElement from "App/Data/Models/Settings/SettingsElement";
+import { SelectionListScreen } from "UEye/Screen/SelectionListScreen";
+import EditScreen from "UEye/Screen/EditScreen";
+import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
+import { LiftStateManager } from "App/Screens/Lifts/StateManagers/LiftStateManager";
 
-export default class SettingsScreen extends Screen<SettingsView> {
-	// private subScreen: SettingsSubScreen;
-	private _stateManager: StateManager;
-	
+export default class SettingsScreen
+	extends SelectionListScreen<SettingsView, StateManager, SettingsElement, State> {
+
 	public constructor() {
 		super(SettingsView);
-
-		this._stateManager = new StateManager();
-		this._stateManager.bind(this._onRender.bind(this));
 	}
 
-	private _onRender(current: State, original: State): void {
-		this.view.settingsList.items = current.selectionList.map(item => {
-			return {
-				selected: (item.id === current.selectionId),
-				id: item.id,
-				name: item.name,
-				icon: item.icon
-			}
-		});
-		var settingsElement = current.selectionList.find(item => {
-			return (item.id === current.selectionId);
-		});
-		if (settingsElement !== undefined) {
-			//this.view.navBreadcrumbs.push({ value: navElement.name });
-			// var NextScreen = Loader.sync(navElement.screenPath);
-			UEye.push(settingsElement.screen);
-		}
+	public onRenderEditScreen(data: SettingsElement): EditScreen<any, any> | undefined {
+		return UEye.push(data.screen) as EditScreen<any, any>;
+	}
 	
+	public listTransform(item: SettingsElement): IListItem {
+		return {
+			selected: (item.id === this.stateManager.getCurrentState().selectionId),
+			id: item.id,
+			name: item.name,
+			icon: item.icon
+		}
 	}
 
-	public onShow(): void {
-		this.view.settingsList.onSelect = (data: IListItem) => {
-			UEye.popTo(this);
-			this._stateManager.SelectionChange.trigger({ id: data.id });
+	public async onShow(): Promise<void> {
+		super.onShow();
+		this.init(await StateManagerFactory.create(StateManager));
 
-		};
-
-		
-		this._stateManager.ResetState.trigger();
-		//this._stateManager.init();
+		this.stateManager.ResetState.trigger();
 	}
-
-	// public userListBind = ScreenBind
-	// 	.create<State>(this, "userList")
-	// 	.onSelect(async data => {
-	// 		// console.log(data);
-	// 		// UEye.popTo(this);
-	// 		this.stateManager.selectionChange.trigger({
-	// 			id: data.id
-	// 		});
-	// 	})
-	// 	.onRender(async(original, current) => {
-	// 		this.view.userList.items = current.selectionList.map(item => {
-	// 			return {
-	// 				selected: (item.id === current.selectionId),
-	// 				id: item.id,
-	// 				name: item.name
-	// 			}
-	// 		});
-
-	// 		var userData = current.selectionList.find(item => {
-	// 			return (item.id === current.selectionId);
-	// 		});
-	// 		this.subScreen.stateManager.resetState.trigger(userData);
-	// 		// await UEye.push(UserEditScreen, userData);
-	// 	});
-
-	// public async onShow() {
-	// 	this.subScreen = await UEye.push(LiftEditScreen) as LiftEditScreen;
-	// 	this.stateManager.init();
-
-	// 	this.subScreen.stateManager.saveEvent.on(() => {
-	// 		this.stateManager.init();
-	// 	});
-
-	// 	this.subScreen.cancelEvent.on(() => {
-	// 		var current = this.stateManager.getCurrentState();
-	// 		var userData = current.selectionList.find(item => {
-	// 			return (item.id === current.selectionId);
-	// 		});
-	// 		this.subScreen.stateManager.resetState.trigger(userData);
-	// 	});
-		
-	// 	// UEye.push(UserEditScreen);
-	// }
 }
