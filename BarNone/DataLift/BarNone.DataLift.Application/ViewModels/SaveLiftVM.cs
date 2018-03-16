@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -26,42 +27,20 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region TEMP DATA FOR TESTING
-        private ObservableCollection<SharableUser> _users = new ObservableCollection<SharableUser> {
-            new SharableUser()
-            {
-                Name = "Chris Stokes",
-                UserName = "TheAryan"
-            },
-            new SharableUser()
-            {
-                Name = "Aamir Mansoor",
-                UserName = "Csharp70"
-            },
-            new SharableUser()
-            {
-                Name = "Jon Brown",
-                UserName = "NotActuallyBrown"
-            },
-            new SharableUser()
-            {
-                Name = "Riley McGee",
-                UserName = "Fuggles"
-            },
-            new SharableUser(){
-                Name = "Vishesh Gulatee",
-                UserName = "ActuallyBrown"
-            }
-        };
+
         public ObservableCollection<SharableUser> Users
         {
             get
             {
-                return _users;
-            }
-            set
-            {
-                _users = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Users"));
+                if(SelectedLift?.SharedUsers == null)
+                {
+                    return new ObservableCollection<SharableUser>();
+                }
+                else
+                {
+                    return SelectedLift.SharedUsers;
+                }
+                
             }
         }
         #endregion
@@ -115,6 +94,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 _selectedLift = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("SelectedLift"));
+                OnPropertyChanged(new PropertyChangedEventArgs("DisplayedUsers"));
             }
         }
         #endregion
@@ -182,9 +162,17 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (SearchString == "")
                 {
-                    return new ObservableCollection<SharableUser>(Users.OrderBy(u => u.Code).ToList());
+                    if (Users == null)
+                    {
+                        return new ObservableCollection<SharableUser>();
+                    }
+                    else
+                    {
+                        return new ObservableCollection<SharableUser>(Users.OrderBy(u => u.Code).ToList());
+                    }
                 }
-                else {
+                else
+                {
                     //return new ObservableCollection<SharableUser>
                     //    (Users.Where(u => u.UserName.ToLower().Contains(SearchString.ToLower())).ToList());
 
@@ -194,7 +182,8 @@ namespace BarNone.DataLift.UI.ViewModels
                     foreach (SharableUser user in Users)
                     {
                         if (user.UserName.ToLower().Contains(SearchString.ToLower()) ||
-                            user.Name.ToLower().Contains(SearchString.ToLower()) || user.IsSeletcted) {
+                            user.Name.ToLower().Contains(SearchString.ToLower()) || user.IsSeletcted)
+                        {
 
                             //if(user.IsSeletcted)
                             //{
@@ -202,9 +191,9 @@ namespace BarNone.DataLift.UI.ViewModels
                             //}
                             //else
                             //{
-                                toBeDisplayed.Add(user);
+                            toBeDisplayed.Add(user);
                             //}
-                            
+
                         }
                     }
 
@@ -223,39 +212,12 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region Custom User Implementation
-        public class SharableUser
-        {
-            public string Name
-            {
-                get; set;
-            }
-            public string UserName
-            {
-                get; set;
-            }
-
-            public string Code
-            {
-                get
-                {
-                    return UserName[0].ToString();
-                }
-
-                private set { }
-            }
-
-            public bool IsSeletcted
-            {
-                get; set;
-            }
-
-            public SharableUser()
-            {
-                IsSeletcted = false;
-            }
+        //public class SharableUser
+        //{
+            
 
 
-        }
+        //}
         #endregion
 
         #region UserSharePropeties
@@ -339,16 +301,6 @@ namespace BarNone.DataLift.UI.ViewModels
 
             Console.WriteLine("Send Lift functionality to be implemented.");
         }
-        #endregion
-
-        #region Loaded and Closed
-
-        // To be uncommented when I actually have the DB.
-        //async internal override void Loaded()
-        //{
-        //    List<UserDTO> allUserDTOs = await DataManager.Users.GetAll();
-        //    List<User> allUserDM = allUserDTOs.Select(x => Converters.NewConvertion().User.CreateDataModel(x)).ToList();
-        //}
         #endregion
     }
 }

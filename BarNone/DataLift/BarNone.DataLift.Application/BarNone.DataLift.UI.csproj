@@ -127,6 +127,7 @@
     <Compile Include="Navigation\UserControlManager.cs" />
     <Compile Include="Validation\TimeInputRule.cs" />
     <Compile Include="ViewModels\Common\CurrentLiftDataVM.cs" />
+    <Compile Include="ViewModels\Common\SharableUser.cs" />
     <Compile Include="ViewModels\FfmpegController.cs" />
     <Compile Include="ViewModels\Common\CustomTimer.cs" />
     <Compile Include="ViewModels\SaveLiftVM.cs" />
