@@ -19,8 +19,8 @@ export interface IListElement {
 
 export abstract class SelectionStateManager<
 	TData extends IListElement,
-	TState extends ISelectionState<TData>>
-	extends BaseStateManager<TState> {
+	TState extends ISelectionState<TData>
+> extends BaseStateManager<TState> {
 
 	// private _provider: SelectionListProvider<TData>;
 	private _TStateType: { new(): TState };
