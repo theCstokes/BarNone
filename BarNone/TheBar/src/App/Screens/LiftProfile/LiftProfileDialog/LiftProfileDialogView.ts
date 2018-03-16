@@ -9,9 +9,11 @@ export default class LiftProfileDialogView extends DialogView {
     public get content(): any[] {
 		return [
             {
+               
                 instance:ControlTypes.DropDownInput,
                 id: "jointType",
                 hint: "Joint Type"
+            
             },
             {
                 instance:ControlTypes.DropDownInput,
