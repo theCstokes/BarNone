@@ -21,6 +21,7 @@ export class StateManager extends SelectionStateManager<LiftListItem, State> {
 		super(State);
 		this._type = type;
 	}
+ 
 
 	public async onInitialize(): Promise<void> { 	}
 
