@@ -10,7 +10,8 @@ import CancelDialogScreen from "UEye/Screen/CancelDialog/CancelDialogScreen";
  */
 export default abstract class EditScreen<
     TView extends EditView,
-    TStateManager extends BaseStateManager<any>> extends Screen<TView> {
+    TStateManager extends BaseStateManager<any>
+> extends Screen<TView> {
     /**
      * Edit screen state manager.
      */

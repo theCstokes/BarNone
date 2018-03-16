@@ -12,18 +12,25 @@ import DataEvent from "UEye/Core/DataEvent/DataEvent";
 import Lift from "App/Data/Models/Lift/Lift";
 import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
 import NotificationManager from "UEye/NotificationManager";
+import { SelectionListScreen } from "UEye/Screen/SelectionListScreen";
+import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
+import { BaseLiftStateManager } from "App/Screens/Lifts/StateManagers/BaseLiftStateManager";
+import { LiftStateManager } from "App/Screens/Lifts/StateManagers/LiftStateManager";
+import { SharedLiftStateManager } from "App/Screens/Lifts/StateManagers/SharedLiftStateManager";
 
-export default class LiftScreen extends Screen<LiftView> {
+export default class LiftScreen
+	extends SelectionListScreen<LiftView, BaseLiftStateManager, LiftListItem, State> {
+
 	// private subScreen: LiftEditScreen;
-	private subScreen: EditScreen<any, any>
-	private _stateManager: StateManager;
+	// private subScreen: EditScreen<any, any>
+	// private _stateManager: StateManager;
 	private _type: ELiftType;
 
 	public static ParentChange: DataEvent<LiftListItem>;
 	public static LiftChange: DataEvent<Lift>;
-	
+
 	public constructor() {
-		super(LiftView, LiftFolderHelp);
+		super(LiftView);
 
 		LiftScreen.ParentChange = new DataEvent();
 		LiftScreen.ParentChange.on(this._onFolderOpenHandler.bind(this));
@@ -32,65 +39,103 @@ export default class LiftScreen extends Screen<LiftView> {
 		LiftScreen.LiftChange.on(this._onListOpenHandler.bind(this));
 	}
 
-	private _onRender(current: State, original: State): void {
-		this.view.liftList.items = current.selectionList.map(item => {
-			return {
-				selected: (item.id === current.selectionId),
-				id: item.id,
-				name: item.name,
-				icon: (item.type === LiftListType.Folder) ? "fa-folder" : "fa-universal-access",
-				onOpen: () => {
-					console.log(item);
-					if (item.type === LiftListType.Folder) {
-						this._onFolderOpenHandler(item);
-					}
+	public onRenderEditScreen(data: LiftListItem): EditScreen<any, any> | undefined {
+		if (data.type === LiftListType.Lift) {
+			return UEye.push(LiftEditScreen, {
+				id: data.id,
+				name: data.name,
+				type: this._type
+			}) as LiftEditScreen;
+		} else if (data.type === LiftListType.Folder) {
+			return UEye.push(LiftFolderEditScreen, {
+				id: data.id,
+				name: data.name,
+				type: this._type
+			}) as LiftFolderEditScreen;
+		}
+		return undefined;
+	}
+	public listTransform(item: LiftListItem): IListItem {
+		return {
+			selected: (item.id === this.stateManager.getCurrentState().selectionId),
+			id: item.id,
+			name: item.name,
+			icon: (item.type === LiftListType.Folder) ? "fa-folder" : "fa-universal-access",
+			onOpen: () => {
+				console.log(item);
+				if (item.type === LiftListType.Folder) {
+					this._onFolderOpenHandler(item);
 				}
 			}
-		});
-		this.view.liftListInfo.visible = (current.selectionList.length < 0);
-
-		var userData = current.selectionList.find(item => {
-			return (item.id === current.selectionId);
-		});
-
-		if (userData !== undefined) {
-			if (this.subScreen !== undefined) {
-				UEye.popTo(this);
-			}
-			// this.view.mainPanel.content=this.
-			if (userData.type === LiftListType.Lift) {
-				this.subScreen = UEye.push(LiftEditScreen, {
-					id: userData.id,
-					name: userData.name,
-					type: this._type
-				}) as LiftEditScreen;
-			} else if (userData.type === LiftListType.Folder) {
-				this.subScreen = UEye.push(LiftFolderEditScreen, {
-					id: userData.id,
-					name: userData.name,
-					type: this._type
-				}) as LiftFolderEditScreen;
-			}
-
-			// this.subScreen.stateManager.ResetState.trigger({
-			// 	id: userData.id,
-			// 	name: userData.name,
-			// 	age: 0
-			// });
 		}
 	}
 
-	public onShow(type: ELiftType): void {
+	// private _onRender(current: State, original: State): void {
+	// 	this.view.liftList.items = current.selectionList.map(item => {
+	// 		return {
+	// 			selected: (item.id === current.selectionId),
+	// 			id: item.id,
+	// 			name: item.name,
+	// 			icon: (item.type === LiftListType.Folder) ? "fa-folder" : "fa-universal-access",
+	// 			onOpen: () => {
+	// 				console.log(item);
+	// 				if (item.type === LiftListType.Folder) {
+	// 					this._onFolderOpenHandler(item);
+	// 				}
+	// 			}
+	// 		}
+	// 	});
+	// 	this.view.liftListInfo.visible = (current.selectionList.length < 0);
+
+	// 	var userData = current.selectionList.find(item => {
+	// 		return (item.id === current.selectionId);
+	// 	});
+
+	// 	if (userData !== undefined) {
+	// 		if (this.subScreen !== undefined) {
+	// 			UEye.popTo(this);
+	// 		}
+	// 		// this.view.mainPanel.content=this.
+	// 		if (userData.type === LiftListType.Lift) {
+	// 			this.subScreen = UEye.push(LiftEditScreen, {
+	// 				id: userData.id,
+	// 				name: userData.name,
+	// 				type: this._type
+	// 			}) as LiftEditScreen;
+	// 		} else if (userData.type === LiftListType.Folder) {
+	// 			this.subScreen = UEye.push(LiftFolderEditScreen, {
+	// 				id: userData.id,
+	// 				name: userData.name,
+	// 				type: this._type
+	// 			}) as LiftFolderEditScreen;
+	// 		}
+
+	// 		// this.subScreen.stateManager.ResetState.trigger({
+	// 		// 	id: userData.id,
+	// 		// 	name: userData.name,
+	// 		// 	age: 0
+	// 		// });
+	// 	}
+	// }
+
+	public async onShow(type: ELiftType): Promise<void> {
+		super.onShow();
 		this._type = type;
-		this._stateManager = new StateManager(type);
-		this._stateManager.bind(this._onRender.bind(this));
+		if (type === ELiftType.Lift) {
+			this.init(await StateManagerFactory.create(LiftStateManager));
+		} else if (type === ELiftType.Shared) {
+			this.init(await StateManagerFactory.create(SharedLiftStateManager));	
+		}
+		
+		// this._stateManager = new StateManager(type);
+		// this._stateManager.bind(this._onRender.bind(this));
 
-		this.view.liftList.onSelect = (data: IListItem) => {
-			this._stateManager.SelectionChange.trigger({ id: data.id });
-		};
+		// this.view.liftList.onSelect = (data: IListItem) => {
+		// 	this._stateManager.SelectionChange.trigger({ id: data.id });
+		// };
 
-		// this.subScreen = UEye.push(LiftEditScreen) as LiftEditScreen;
-		this._stateManager.ResetState.trigger();
+		// // this.subScreen = UEye.push(LiftEditScreen) as LiftEditScreen;
+		this.stateManager.ResetState.trigger();
 	}
 
 	private _onFolderOpenHandler(item: LiftListItem) {
@@ -98,12 +143,12 @@ export default class LiftScreen extends Screen<LiftView> {
 			id: Utils.guid(),
 			value: item.name,
 			onClick: (crumb) => {
-				this._stateManager.ParentChange.trigger({ parentID: item.id });
+				this.stateManager.ParentChange.trigger({ parentID: item.id });
 				App.Navigation.PopSubBreadcrumbTo.trigger(crumb);
 			}
 		});
 
-		this._stateManager.ParentChange.trigger({ parentID: item.id });
+		this.stateManager.ParentChange.trigger({ parentID: item.id });
 	}
 
 	private _onListOpenHandler(item: Lift) {
@@ -112,13 +157,13 @@ export default class LiftScreen extends Screen<LiftView> {
 				id: Utils.guid(),
 				value: item.details.parent.name,
 				onClick: (crumb) => {
-					this._stateManager.ParentChange.trigger({ parentID: item.id });
+					this.stateManager.ParentChange.trigger({ parentID: item.id });
 					App.Navigation.PopSubBreadcrumbTo.trigger(crumb);
 				}
 			});
 		}
 
-		this._stateManager.ParentChange.trigger({ 
+		this.stateManager.ParentChange.trigger({
 			parentID: item.parentID,
 			selectionId: item.id
 		});
@@ -164,7 +209,7 @@ export default class LiftScreen extends Screen<LiftView> {
 	// 		});
 	// 		this.subScreen.stateManager.resetState.trigger(userData);
 	// 	});
-		
+
 	// 	// UEye.push(UserEditScreen);
 	// }
 }
