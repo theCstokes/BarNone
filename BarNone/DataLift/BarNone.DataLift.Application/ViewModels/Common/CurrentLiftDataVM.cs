@@ -76,11 +76,12 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                 return;
             if (CurrentRecordedBodyData.Count > 0)
             {
-                TimeSpan bodyCandidate = CurrentRecordedBodyData[0].TimeOfFrame;
+                DateTime normalizatioTime = FirstColorDataFrame.Value;
+
                 //var m = DateTime.Now.AddMilliseconds(-Environment.TickCount + bodyCandidate.Ticks / 10000);
                 // is the difference m - FirstColorDataFrame.Value;
                 //TimeSpan candidate = (colorCandidate < bodyCandidate) ? colorCandidate : bodyCandidate;
-                CurrentRecordedBodyData.ToList().ForEach(x => x.TimeOfFrame = x.TimeOfFrame.Subtract(bodyCandidate));
+                CurrentRecordedBodyData.ToList().ForEach(x => x.TimeOfFrame = x.WindowsTimeOfFrame - normalizatioTime);
             }
             else
             {

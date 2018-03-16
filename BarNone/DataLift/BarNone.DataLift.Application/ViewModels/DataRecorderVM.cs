@@ -205,6 +205,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 //Convert the frame to a more usable form
                 var dataFrame = frame.KinectBdfToDmBdf(body);
                 dataFrame.TimeOfFrame = frame.RelativeTime;
+                dataFrame.WindowsTimeOfFrame = DateTime.UtcNow;
 
                 if (CurrentRecordingState >= RecordingState.WAITING_FOR_FIRST_BODY_FRAME)
                 {
@@ -214,6 +215,8 @@ namespace BarNone.DataLift.UI.ViewModels
                         CurrentRecordingState = RecordingState.RECORDING;
                     }
                     CurrentLiftData.CurrentRecordedBodyData.Add(dataFrame);
+                    //Console.WriteLine($"{dataFrame.TimeOfFrame.Milliseconds} versus {new TimeSpan(Environment.TickCount).Milliseconds} versus {DateTime.Now} versus {DateTime.UtcNow}");
+
                 }
                 //Update The Side And Front Views
                 KinectToImage.DrawFrameSideView(dataFrame, SideProfileDrawingGroup, displayHeight, displayWidth);
@@ -454,8 +457,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 //kinectSensor?.Close();
                 kinectSensor = null;
             }
-
-            //_webCamHandler.Dispose();
         }
 
         /// <summary>
@@ -465,7 +466,6 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             // one sensor is currently supported
             kinectSensor = KinectSensor.GetDefault();
-
             // get the coordinate mapper
             coordinateMapper = kinectSensor.CoordinateMapper;
 
@@ -485,7 +485,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             // open the sensor
             kinectSensor.Open();
-
+            
             // Create the drawing group we'll use for drawing
             FrontProfileDrawingGroup = new DrawingGroup();
 

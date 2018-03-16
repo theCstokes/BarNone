@@ -71,34 +71,32 @@ namespace BarNone.DataLift.UI.ViewModels
 
             _createdFiles.Add(fname);
         }
+
+        TimeSpan? VideoDuration = null;
+
+        Regex VideoWriterFrameArrivalRegex = new Regex(@"^frame=([0 - 9]+).*time=([0 - 9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]+).*", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+
+        //TODO add resets etc this is not handled
+        private bool isFirstFrame = true;
+
         private void FfmpegRecivedDShowLine(object sender, DataReceivedEventArgs e)
         {
             
-            Console.WriteLine(e.Data);
-            //if (e.Data == null || FirstFrameTime != null)
-            //    return;
-            //Console.WriteLine(e.Data);
-            if (FrameTimeStampRegex.IsMatch(e.Data))
+            if (e.Data == null)
+                return;
+            if(VideoWriterFrameArrivalRegex.IsMatch(e.Data))
             {
-                if (FirstFrameTime == null)
+                VideoDuration = TimeSpan.ParseExact(VideoWriterFrameArrivalRegex.Match(e.Data).Groups[2].Value, "c", System.Globalization.CultureInfo.InvariantCulture);
+
+                if (isFirstFrame)
                 {
-                    FirstFrameTime = DateTime.Now.AddMilliseconds(-Environment.TickCount + Convert.ToInt64(FrameTimeStampRegex.Match(e.Data).Groups[1].Value) / 10000);
-                    prev = FirstFrameTime.Value;
-
+                    isFirstFrame = false;
+                    _firstFrameRecievedAction.Invoke();
+                    FirstFrameTime = new DateTime(VideoDuration.Value.Ticks);
                 }
-                else
-                { 
-                    var t = (DateTime.Now.AddMilliseconds(-Environment.TickCount + Convert.ToInt64(FrameTimeStampRegex.Match(e.Data).Groups[1].Value) / 10000) - prev).TotalMilliseconds;
-                    videoLength += t;
-                    Console.WriteLine(t);
-                    prev = DateTime.Now.AddMilliseconds(-Environment.TickCount + Convert.ToInt64(FrameTimeStampRegex.Match(e.Data).Groups[1].Value) / 10000);
-
-                }
-                //_recordProcess.OutputDataReceived -= FfmpegRecivedDShowLine;
-                //_recordProcess.ErrorDataReceived -= FfmpegRecivedDShowLine;
-                _firstFrameRecievedAction.Invoke();
             }
         }
+
         DateTime prev;
         double videoLength = 0;
         /// <summary>
@@ -108,9 +106,17 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             if (_recordProcess.HasExited)
                 throw new Exception("The FFMPEG instance has exited implying a runtime or execution time error occured, review before continuing!");
+
+            var recordUntil = _currentLiftDataVM.DataLength();
+            while (VideoDuration.Value.TotalMilliseconds < recordUntil)
+            {
+                //Arbitrarily record 4 frames
+                System.Threading.Thread.Sleep(120);
+            }
             _recordProcess.Kill();
             _recordProcess.StandardInput.Write("q\n");
             _recordProcess.WaitForExit();
+            Console.WriteLine($"{recordUntil} && ${VideoDuration.Value.TotalMilliseconds }");
             _recordProcess = null;
         }
 
