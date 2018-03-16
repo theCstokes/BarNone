@@ -44,7 +44,7 @@ export default class LiftProfileScreen extends Screen<LiftProfileView> {
 				name: item.name,
                 icon: "fa-universal-access",
                 onOpen: () => {
-                    this._onTypeSelectedHandler(item);
+                    // this._onTypeSelectedHandler(item);
                 }
                 
 			}
@@ -63,18 +63,18 @@ export default class LiftProfileScreen extends Screen<LiftProfileView> {
         }
 }
 
-private _onTypeSelectedHandler(item: LiftTypeItem) {
-    App.Navigation.AddSubBreadcrumb.trigger({
-        id: Utils.guid(),
-        value: item.name,
-        onClick: (crumb) => {
-            // this._stateManager.ParentChange.trigger({ parentID: item.id });
-            App.Navigation.PopSubBreadcrumbTo.trigger(crumb);
-        }
-    });
+// private _onTypeSelectedHandler(item: LiftTypeItem) {
+//     App.Navigation.AddSubBreadcrumb.trigger({
+//         id: Utils.guid(),
+//         value: item.name,
+//         onClick: (crumb) => {
+//             // this._stateManager.ParentChange.trigger({ parentID: item.id });
+//             App.Navigation.PopSubBreadcrumbTo.trigger(crumb);
+//         }
+//     });
 
     // this._stateManager.ParentChange.trigger({ parentID: item.id });
-}
+//}
 
 
 }
