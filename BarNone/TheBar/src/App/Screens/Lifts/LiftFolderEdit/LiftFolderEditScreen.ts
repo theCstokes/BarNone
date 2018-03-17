@@ -5,9 +5,9 @@ import StringUtils from "UEye/Core/StringUtils";
 import LiftFolderEditView from "App/Screens/Lifts/LiftFolderEdit/LiftFolderEditView";
 import LiftScreen from "App/Screens/Lifts/LiftScreen";
 import { LiftListType } from "App/Screens/Lifts/Models";
-import { ELiftType } from "App/Screens/Lifts/StateManager";
 import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
 import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
+import { ELiftType } from "App/Screens/Lifts/StateManagers/BaseLiftStateManager";
 
 export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView, StateManager> {
 	public constructor() {

@@ -64,11 +64,8 @@ export default abstract class EditScreen<
             await this.stateManager.Reset.trigger();
         } else {
             var dialog = UEye.push(CancelDialogScreen) as CancelDialogScreen;
-
-            dialog.onNo = () => {
-                UEye.pop();
-            }   
-            dialog.onYes = async () => {
+ 
+            dialog.onAccept = async () => {
                 await this.stateManager.Reset.trigger();
                 UEye.pop();
             }

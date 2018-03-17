@@ -7,6 +7,7 @@ using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataConverters;
 using BarNone.Shared.Analysis;
 using System.Collections.Generic;
+using BarNone.Shared.Analysis.LiftAnalysisPipeline.Velocity;
 
 namespace BarNone.Shared.AnalysisTests
 {
@@ -54,6 +55,32 @@ namespace BarNone.Shared.AnalysisTests
 
             Console.WriteLine(mi.FindBottomOfSquat());
 
+        }
+
+        [TestMethod]
+        public void UtilsChrisThreeSquats1()
+        {
+            string json = File.ReadAllText(@"\Users\jon\developer\barnone\analysis\lifts\Chris_Three_Squats_1.json");
+            LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
+            Lift lift = Converters.NewConvertion().Lift.CreateDataModel(liftDTO);
+
+            Console.WriteLine(string.Join<float>(",", Utils.ConvertBodyDataToTimeSeriesSet(lift.BodyData)[0].X));
+        }
+
+        [TestMethod]
+        public void ChrisThreeSquats1Velocity()
+        {
+            string json = File.ReadAllText(@"\Users\jon\developer\barnone\analysis\lifts\Chris_Three_Squats_1.json");
+            LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
+            Lift lift = Converters.NewConvertion().Lift.CreateDataModel(liftDTO);
+
+            var request = new AR_Velocity();
+            request.Joint = EJointType.SpineBase;
+            request.Dimension = EDimension.Y;
+            request.Type = Analysis.LiftAnalysisPipeline.Core.ELiftAnalysisType.Velocity;
+            var pipe = new LAP_Velocity(request, lift);
+            var r = pipe.Execute();
+            Assert.IsNotNull(r);
         }
     }
 }

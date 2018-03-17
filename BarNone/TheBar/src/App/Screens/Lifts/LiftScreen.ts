@@ -2,7 +2,6 @@ import Screen from "UEye/Screen/Screen"
 import LiftView from "App/Screens/Lifts/LiftView";
 import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import UEye from "UEye/UEye";
-import { StateManager, State, ELiftType } from "App/Screens/Lifts/StateManager";
 import EditScreen from "UEye/Screen/EditScreen";
 import { LiftListType, LiftListItem } from "App/Screens/Lifts/Models";
 import LiftFolderEditScreen from "App/Screens/Lifts/LiftFolderEdit/LiftFolderEditScreen";
@@ -14,7 +13,7 @@ import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
 import NotificationManager from "UEye/NotificationManager";
 import { SelectionListScreen } from "UEye/Screen/SelectionListScreen";
 import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
-import { BaseLiftStateManager } from "App/Screens/Lifts/StateManagers/BaseLiftStateManager";
+import { BaseLiftStateManager, ELiftType, State } from "App/Screens/Lifts/StateManagers/BaseLiftStateManager";
 import { LiftStateManager } from "App/Screens/Lifts/StateManagers/LiftStateManager";
 import { SharedLiftStateManager } from "App/Screens/Lifts/StateManagers/SharedLiftStateManager";
 

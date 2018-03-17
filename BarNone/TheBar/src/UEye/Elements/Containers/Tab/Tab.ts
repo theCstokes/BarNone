@@ -16,7 +16,7 @@ export default class Tab extends BaseContainer {
         this._contentElement = Core.create("div", this.element, "Content");
         this.linkComponentContainer("content", this._contentElement);
 
-        this.onShow.on(v => console.log("Show tab"));
+        this.onBindView.on(v => console.log("Show tab"));
     }
 
     public set title(value: string) {

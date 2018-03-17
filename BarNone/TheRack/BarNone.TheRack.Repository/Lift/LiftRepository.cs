@@ -86,7 +86,7 @@ namespace BarNone.TheRack.Repository
                 dm.Video.Path = SaveVideo(dm.Video);
             }
             //dm.Video.UserID = 2;
-            dm.VideoID = 2;
+            //dm.VideoID = 2;
             var result = Create(dm);
 
             return result;

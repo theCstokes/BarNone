@@ -54,7 +54,7 @@ export default class TabLayout extends BaseContainer {
         this.e_content = Core.create("div", this.element, "Content");
 
 
-        this.onShow.on(view => {
+        this.onBindView.on(view => {
 
             // window.addEventListener('resize', () => {
             //     console.log("rrrrrrr");
@@ -94,7 +94,7 @@ export default class TabLayout extends BaseContainer {
             } else if (tabManager.selected == null) {
                 tabManager.selected = false;
             }
-            var ueyeTab = ControlTypes.Tab.create(this.e_content, tabManager as any, this._view, data) as Tab;
+            var ueyeTab = ControlTypes.Tab.inflate(this.e_content, tabManager as any, this._view, data) as Tab;
             ueyeTab.selected = tabManager.selected;
             button.onclick = this.onClickHandler.bind(this);
 
@@ -103,7 +103,7 @@ export default class TabLayout extends BaseContainer {
             newTab.content = ueyeTab;
             newTab.actions = tabManager.actions && tabManager.actions.map(action => {
                 return ControlTypes.IconButton
-                    .create(this.e_actionBar, action, this._view, data) as IconButton;
+                    .inflate(this.e_actionBar, action, this._view, data) as IconButton;
             });
 
             return newTab;

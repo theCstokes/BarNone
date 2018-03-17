@@ -5,6 +5,9 @@ import Lift from "App/Data/Models/Lift/Lift";
 import { Resource, DetailResource } from "UEye/Data/Resource";
 import Joint from "App/Data/Models/Joint/Joint";
 import Comment from "App/Data/Models/Comment/Comment";
+
+import LiftAnalysisProfile from "App/Data/Models/LiftAnalysisProfile/LiftAnalysisProfile"
+
 import LiftType from "App/Data/Models/Lift/LiftType";
 import SettingsElement from "App/Data/Models/Settings/SettingsElement";
 
@@ -17,7 +20,11 @@ export default class DataManager extends BaseDataManager {
 
 	public static readonly Lifts: DetailResource<Lift> = new DetailResource<Lift>("Lift");
 
+	public static readonly LiftAnalysisProfile:DetailResource<LiftAnalysisProfile> 
+		= new DetailResource("LiftAnalysisProfile");
+
 	public static readonly LiftTypes: Resource<LiftType> = new Resource<LiftType>("LiftType");
+
 
 	public static readonly SharedLifts: DetailResource<Lift> = new DetailResource<Lift>("SharedLift");
 
