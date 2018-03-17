@@ -12,6 +12,9 @@ import LiftType from "App/Data/Models/Lift/LiftType";
 import SettingsElement from "App/Data/Models/Settings/SettingsElement";
 import JointType from "App/Data/Models/Joint/JointType";
 import AnalysisType from "App/Data/Models/Analysis/AnalysisType";
+import { EndPoint } from "UEye/Data/EndPoint";
+import AnalysisRequest from "App/Data/Models/Analysis/AnalysisRequest";
+import AnalysisResult from "App/Data/Models/Analysis/AnalysisResult";
 
 export default class DataManager extends BaseDataManager {
 
@@ -43,4 +46,12 @@ export default class DataManager extends BaseDataManager {
 
 	public static readonly AnalysisTypes: Resource<AnalysisType>
 	= new Resource<AnalysisType>("AnalysisTypes", true);
+
+	public static readonly AnalysisPipe
+	= new EndPoint<AnalysisRequest, AnalysisResult>("Analysis/Lift/{ID}");
+
+	// DEMO
+	// DataManager.AnalysisPipe.resource
+	// 	.param("ID", lift.ID)
+	// 	.create()
 }
