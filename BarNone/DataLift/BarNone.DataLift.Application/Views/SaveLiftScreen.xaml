@@ -7,7 +7,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:vms="clr-namespace:BarNone.DataLift.UI.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+            >
     <UserControl.Resources>
         <vms:SaveLiftVM x:Key="vm"/>
         <Style x:Key="MaterialDesignFlatButton" BasedOn="{StaticResource MaterialDesignFlatButton}" TargetType="{x:Type Button}">
@@ -19,9 +19,85 @@
     <UserControl.DataContext>
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
-    <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Center" Padding="20">
-            <Button Content="Send Lifts." Command="{Binding SendLifts}" Margin="10" Width="300" FontSize="16" />
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <materialDesign:Card Grid.Column="0" Grid.Row="0" Margin="0 0 5 0" VerticalAlignment="Stretch"  Padding="10">
+            <ListView ItemsSource="{Binding LiftIntervals}" SelectedItem="{Binding SelectedLift}" HorizontalContentAlignment="Stretch">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,10,0" 
+                                      materialDesign:HintAssist.Hint="Lift Name" Text="{Binding LiftName, Mode=TwoWay}" VerticalAlignment="Bottom" />
+                            <ComboBox Grid.Column="1" Margin="0,0,10,0" ItemsSource="{Binding LiftTypeList}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Lift Type"
+                                      materialDesign:HintAssist.HintOpacity=".26"
+                                      SelectedItem="{Binding LiftType}"  VerticalAlignment="Bottom" />
+                            <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" 
+                                    CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.DeleteSelectedRecording}">
+                                <materialDesign:PackIcon Foreground="{StaticResource PrimaryHueMidBrush}" Kind="Delete" Height="24" Width="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ListView>
         </materialDesign:Card>
-    </Viewbox>
+        <materialDesign:Card Grid.Column="1" Grid.Row="0" Margin="5 0 0 0" Padding="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <TextBox
+                     materialDesign:HintAssist.Hint="Search" Margin="0 0 0 10" Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}">
+                    </TextBox>
+                    <ListBox ItemsSource="{Binding DisplayedUsers}" SelectionMode="Multiple">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignToolToggleListBoxItem}">
+                                <Setter Property="IsSelected" Value="{Binding IsSeletcted}"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <!--Selector.SelectionChanged="{Binding IsSeletcted}"-->
+                            <DataTemplate>
+                                <Border x:Name="Border" Padding="8" BorderThickness="0 0 0 1" BorderBrush="{DynamicResource MaterialDesignDivider}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="5*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <!--TODO Add IsChecked-->
+                                        <ToggleButton VerticalAlignment="Center" Grid.Column="0" IsChecked="{Binding IsSeletcted}"
+                                                  Style="{StaticResource MaterialDesignActionLightToggleButton}"
+                                                  Content="{Binding Code}" />
+                                        <StackPanel Margin="8 0 0 0" Grid.Column="1">
+                                            <TextBlock FontWeight="Bold" Text="{Binding UserName}" />
+                                            <TextBlock Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <!--<DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsSeletcted}" Value="True" >
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>-->
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+                <Button Grid.Row="1" Content="Send Lifts" Command="{Binding SendLifts}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Padding="25 0 25 0" FontSize="12" />
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
 </UserControl>

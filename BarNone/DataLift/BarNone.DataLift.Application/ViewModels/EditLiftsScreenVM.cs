@@ -1,13 +1,12 @@
 ﻿using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Drawing;
-using BarNone.DataLift.UI.Models;
 using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DomainModel;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -15,13 +14,26 @@ using System.Windows.Threading;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
+    #region Types
+    public class PositionUpdateEventArgs : EventArgs
+    {
+        public TimeSpan Position { get; set; }
+
+        public PositionUpdateEventArgs(TimeSpan position) : base()
+        {
+            Position = position;
+        }
+    }
+
+    #endregion
+
     /// <summary>
     /// The view model for the edit screen of the Data Lift system.  This control is responsible for editing
     /// lifts that were recorded in a lifting session.
     /// </summary>
     public class EditLiftsScreenVM : ViewModelBase
     {
-        #region Video Data Properties
+        #region Lift Data Properties
         /// <summary>
         /// Field representation for the <see cref="CurrentLifts"/> bindable property
         /// </summary>
@@ -82,25 +94,44 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        #endregion
+
+        #region Video Properties
+        private Uri _videoUri;
+
         /// <summary>
-        /// Drawing group for rendering output of the middle image
+        /// Video Source Link, ensure full fath is used!
         /// </summary>
-        private DrawingGroup _middleImageDrawingGroup = new DrawingGroup();
-        /// <summary>
-        /// Field representation for the <see cref="MiddleImage"/> bindable property
-        /// </summary>
-        private DrawingImage _middleImage;
-        /// <summary>
-        /// Drawing image that we will display in the middle
-        /// </summary>
-        public ImageSource MiddleImage
+        public Uri VideoUri
         {
-            get => _middleImage;
+            get => _videoUri;
             set
             {
-                OnPropertyChanged(new PropertyChangedEventArgs("MiddleImage"));
+                _videoUri = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("VideoUri"));
             }
         }
+
+        public bool HasVideo
+        {
+            get => _videoUri != null && File.Exists(_videoUri.AbsolutePath);
+        }
+
+        private TimeSpan _videoPosition;
+        public TimeSpan VideoPosition
+        {
+            get => _videoPosition;
+            set
+            {
+                _videoPosition = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("VideoPosition"));
+            }
+        }
+
+        public event EventHandler PlayRequested;
+        public event EventHandler StopRequested;
+        public event EventHandler PauseRequested;
+        public event EventHandler<PositionUpdateEventArgs> UpdatePositionEvent;
 
         #endregion
 
@@ -109,15 +140,28 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             // TODO.  Send raw data to jon then have him send us a list of stuff back.
 
+            var ianTheCaptainLater = new List<TimeSpan>();
+
+            ianTheCaptainLater = CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame).ToList();
+
+            if(ianTheCaptainLater.Count == 0)
+            { 
+            ianTheCaptainLater = new List<TimeSpan>
+                {
+                    new TimeSpan(0)
+                };
+            }
+
             CurrentLifts.LiftInformation.Add(new LiftListVM
             {
                 LiftStartTime = 0,
-                LiftEndTime = 0,
+                LiftEndTime = (int)(ianTheCaptainLater.Max(x => x.TotalMilliseconds) + 1 / 30d * 1000),
                 LiftName = String.Format($"Temp_name_{CurrentLifts.LiftInformation.Count()}"),
                 LiftType = "Squat"
             });
-
-            Console.WriteLine($"This is how long we are shizz: {CurrentLifts.LiftInformation.Count}");
+            VideoUri = new Uri(Path.GetFullPath("TestFFMPEG.avi"));
+            if (HasVideo)
+                StopRequested.Invoke(this, EventArgs.Empty);
         }
 
         internal override void Closed()
@@ -207,7 +251,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 catch { ScrubberUpperThumb = 0d; }
 
             }
-         }
+        }
 
         #endregion
 
@@ -263,10 +307,19 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_commandPlayVideo == null)
                 {
-                    _commandPlayVideo = new RelayCommand(action => VideoTimer.IsEnabled = true);
+                    _commandPlayVideo = new RelayCommand(action => OnVideoPlayed());
                 }
                 return _commandPlayVideo;
             }
+        }
+
+        private void OnVideoPlayed()
+        {
+            GlobalTimer.Start();
+            VideoTimer.IsEnabled = true;
+            //Command the video to play
+            PlayRequested?.Invoke(this, EventArgs.Empty);
+
         }
 
         /// <summary>
@@ -282,10 +335,18 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_commandPauseVideo == null)
                 {
-                    _commandPauseVideo = new RelayCommand(action => VideoTimer.IsEnabled = false);
+                    _commandPauseVideo = new RelayCommand(action => OnVideoPaused());
                 }
                 return _commandPauseVideo;
             }
+        }
+
+        private void OnVideoPaused()
+        {
+            GlobalTimer.Stop();
+            VideoTimer.IsEnabled = false;
+            //Command the video to play
+            PauseRequested?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -351,7 +412,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Video playback synchronizer timer in Ms
         /// </summary>
-        private const int VideoTimerInterval = 15;
+        private const int VideoTimerInterval = 30;
         /// <summary>
         /// Control Timer in the UI thread to handle VM to UI timed requests
         /// </summary>
@@ -361,7 +422,6 @@ namespace BarNone.DataLift.UI.ViewModels
         /// Current Video frame to draw
         /// </summary>
         private int currentBodyDataFrame = 0;
-        private int currentColorDataFrame = 0;
 
         private int currentMs = 0;
         private int LoopTime;
@@ -374,22 +434,20 @@ namespace BarNone.DataLift.UI.ViewModels
         private void Redraw(object sender, EventArgs e)
         {
             BodyDataFrame bodyFrameToDraw;
-            ColorImageFrame colorFrameToDraw;
-            
+
             bool drawColor = false, drawBody = false;
             if (currentMs == 0)
             {
                 GlobalTimer.Restart();
 
                 //Will only happen on loaded
-                colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[currentColorDataFrame];
+                //colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[currentColorDataFrame];
                 bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[currentBodyDataFrame];
-                
+
                 drawColor = true;
                 drawBody = true;
-                var ianTheCaptainLater = CurrentLifts.CurrentRecordedColorData.Select(x => x.Time)
-                    .Concat(CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame));
-                LoopTime = (int)(ianTheCaptainLater.Max(x => x.TotalMilliseconds) + 1/30d * 1000);
+                var ianTheCaptainLater = CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame);
+                LoopTime = (int)(ianTheCaptainLater.Max(x => x.TotalMilliseconds) + 1 / 30d * 1000);
 
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberMaxValue"));
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberMinValue"));
@@ -399,18 +457,31 @@ namespace BarNone.DataLift.UI.ViewModels
             }
             else
             {
+                //if (Math.Abs(currentMs - GlobalTimer.ElapsedMilliseconds) > 25)
+                //{
+                //    Console.Out.WriteLine("The current value of CMS is {0} and Timer is {1}", currentMs, GlobalTimer.ElapsedMilliseconds);
+                //    GlobalTimer.Restart();
+                //    GlobalTimer.ElapsedMilliseconds = currentMs;
+                //}
 
                 currentMs = (int)GlobalTimer.ElapsedMilliseconds;
-                int nextBodyFrame = (currentBodyDataFrame + 1) % CurrentLifts.CurrentRecordedBodyData.Count;
-                int nextColorFrame = (currentColorDataFrame + 1) % CurrentLifts.CurrentRecordedColorData.Count;
-                colorFrameToDraw = CurrentLifts.CurrentRecordedColorData[nextColorFrame];
+
+                int nextBodyFrame = 0;
+
+                for (int i = 0; i < CurrentLifts.CurrentRecordedBodyData.Count; i++)
+                {
+                    var frame = CurrentLifts.CurrentRecordedBodyData[i];
+                    if (frame.TimeOfFrame.TotalMilliseconds > ScrubberCurrentPosition)
+                    {
+                        nextBodyFrame = i - 1;
+                        break;
+                    }
+                }
+
+                if (nextBodyFrame < 0)
+                    return;
                 bodyFrameToDraw = CurrentLifts.CurrentRecordedBodyData[nextBodyFrame];
 
-                if (colorFrameToDraw.Time.TotalMilliseconds < currentMs)
-                {
-                    drawColor = true;
-                    currentColorDataFrame = nextColorFrame;
-                }
                 if (bodyFrameToDraw.TimeOfFrame.TotalMilliseconds < currentMs)
                 {
                     drawBody = true;
@@ -420,41 +491,31 @@ namespace BarNone.DataLift.UI.ViewModels
 
             if (drawBody)
             {
-                Console.WriteLine($"Time of body print {GlobalTimer.ElapsedMilliseconds}");
+                //Console.WriteLine($"Time of body print {GlobalTimer.ElapsedMilliseconds}");
 
                 KinectToImage.DrawFrameFrontView(bodyFrameToDraw, _leftImageDrawingGroup, 424, 424);
                 KinectToImage.DrawFrameSideView(bodyFrameToDraw, _rightImageDrawingGroup, 424, 424);
             }
-            if (drawColor)
-            {
-                Console.WriteLine($"Time of color print {GlobalTimer.ElapsedMilliseconds}");
 
-                using (DrawingContext dc = _middleImageDrawingGroup.Open())
-                {
-                    var currentColorImage = colorFrameToDraw.Image;
-                    ImageBrush colorBrush = new ImageBrush(currentColorImage);
-                    dc.DrawImage(currentColorImage, new System.Windows.Rect(0, 0, 1920, 1080));
-                }
-
-                //Console.WriteLine("Redraw at: {0}", GlobalTimer.ElapsedMilliseconds);
-
-            }
-
-            
             if (currentMs > LoopTime)
             {
-                currentMs = 0;
-                //increment timer value
-                ScrubberCurrentPosition = 0;
+                currentMs = (int)ScrubberLowerThumb;
 
+                //increment timer value
+                ScrubberCurrentPosition = ScrubberLowerThumb;
+                StopRequested.Invoke(this, EventArgs.Empty);
+                PlayRequested.Invoke(this, EventArgs.Empty);
             }
             else
             {
-                currentMs += VideoTimerInterval;
+                currentMs += (1/VideoTimerInterval)*1000;
                 //increment timer value
                 ScrubberCurrentPosition += VideoTimerInterval;
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberCurrentPosition"));
             }
+
+            VideoPosition = GlobalTimer.GetTimeSpanPosition();
+            
         }
 
         #endregion
@@ -465,6 +526,9 @@ namespace BarNone.DataLift.UI.ViewModels
             get => currentMs;
             set
             {
+                //var tempTS = new TimeSpan(0,0,0,0,(int)value);
+                //GlobalTimer.Reset();
+                //GlobalTimer.
                 currentMs = (int)value;
                 OnPropertyChanged(new PropertyChangedEventArgs("CurrentScrubberPosition"));
             }
@@ -481,10 +545,20 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 //Console.WriteLine($"This is the value of the lower thumb {value}");
 
-               //if(SelectedLift != null) SelectedLift.LiftEndTime = value.ToString();
+                //if(SelectedLift != null) SelectedLift.LiftEndTime = value.ToString();
 
-                _scrubberUpperThumb = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
+                if (ScrubberLowerThumb <= value)
+                {
+                    _scrubberUpperThumb = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
+                }
+                else
+                {
+                    ScrubberLowerThumb = value;
+                    _scrubberUpperThumb = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
+                }
+
                 //new PropertyChangedEventArgs("ScrubberUpperDisplayed");
             }
         }
@@ -494,7 +568,7 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             get
             {
-                 return _scrubberLowerThumb;
+                return _scrubberLowerThumb;
             }
 
             set
@@ -502,9 +576,17 @@ namespace BarNone.DataLift.UI.ViewModels
                 //Console.WriteLine($"This is the value of the lower thumb {value}");
 
                 //if (SelectedLift != null) SelectedLift.LiftStartTime = value.ToString();
-
-                _scrubberLowerThumb = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
+                if (ScrubberUpperThumb >= value)
+                {
+                    _scrubberLowerThumb = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
+                }
+                else
+                {
+                    ScrubberUpperThumb = value;
+                    _scrubberLowerThumb = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
+                }
             }
         }
 
@@ -512,10 +594,13 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             get
             {
-                if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
-                    return 0d;
+                if (CurrentLifts.CurrentRecordedBodyData.Count == 0) return 0d;
 
-                return Math.Max(CurrentLifts.CurrentRecordedColorData.Max(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Max(x => x.TimeOfFrame.TotalMilliseconds));
+                //if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
+                //    return 0d;
+
+                //return Math.Max(CurrentLifts.CurrentRecordedColorData.Max(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Max(x => x.TimeOfFrame.TotalMilliseconds));
+                return CurrentLifts.CurrentRecordedBodyData.Max(x => x.TimeOfFrame.TotalMilliseconds);
             }
         }
 
@@ -523,16 +608,19 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             get
             {
-                if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
-                    return 0d;
+                //if (CurrentLifts.CurrentRecordedColorData.Count == 0 || CurrentLifts.CurrentRecordedBodyData.Count == 0)
+                //    return 0d;
 
-                return Math.Min(CurrentLifts.CurrentRecordedColorData.Min(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Min(x => x.TimeOfFrame.TotalMilliseconds));
+                //return Math.Min(CurrentLifts.CurrentRecordedColorData.Min(x => x.Time.TotalMilliseconds), CurrentLifts.CurrentRecordedBodyData.Min(x => x.TimeOfFrame.TotalMilliseconds));
+
+                if (CurrentLifts.CurrentRecordedBodyData.Count == 0) return 0d;
+
+                return CurrentLifts.CurrentRecordedBodyData.Min(x => x.TimeOfFrame.TotalMilliseconds);
             }
         }
-
         #endregion
 
-        Stopwatch GlobalTimer = new Stopwatch();
+        CustomTimer GlobalTimer = new CustomTimer();
 
         #region Constructor(s) & Desctructor
         /// <summary>
@@ -544,13 +632,12 @@ namespace BarNone.DataLift.UI.ViewModels
             //Init Images
             _leftImage = new DrawingImage(_leftImageDrawingGroup);
             _rightImage = new DrawingImage(_rightImageDrawingGroup);
-            _middleImage = new DrawingImage(_middleImageDrawingGroup);
 
             //Init Timer
             VideoTimer = new DispatcherTimer()
             {
                 IsEnabled = false,
-                Interval = new TimeSpan(0, 0, 0, 0, VideoTimerInterval)
+                Interval = new TimeSpan(0, 0, 0, 0, (1/VideoTimerInterval) * 1000)
 
             };
 

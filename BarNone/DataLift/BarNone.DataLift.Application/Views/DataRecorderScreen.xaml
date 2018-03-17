@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="BarNone.DataLift.UI.Views.DataRecorderScreen"
+﻿ <UserControl x:Class="BarNone.DataLift.UI.Views.DataRecorderScreen"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -19,36 +19,34 @@
     <UserControl.DataContext>
         <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
-    <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="20">
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="200">
+    <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="20, 10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+                <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-            
-            <!--<Button Content="Send recordings to Rack." Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />-->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                    <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                
-                <cmpts:VideoViewer Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="5" ImageSourceLeft="{Binding ImageSourceFront}" ImageSourceMiddle="{Binding ImageSourceColor}" ImageSourceRight="{Binding ImageSourceSide}"/>
+            <cmpts:VideoViewer_AllImage Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="5" 
+                               ImageSourceLeft="{Binding ImageSourceFront}" 
+                               ImageSourceMiddle="{Binding ImageSourceColor}" 
+                               ImageSourceRight="{Binding ImageSourceSide}"/>
 
-                <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="Start Recording." Command="{Binding StartRecording}" Margin="10" Width="300" FontSize="16" />
-                    <Button Content="Stop" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
-                </StackPanel>
-            </Grid>
-        </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Start Recording." Command="{Binding StartRecording}" Margin="10" Width="300" FontSize="16" />
+                <Button Content="Stop" Command="{Binding EndRecording}" Margin="10" Width="300" FontSize="16" />
+            </StackPanel>
+        </Grid>
     </materialDesign:Card>
     
 </UserControl>
