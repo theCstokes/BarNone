@@ -102,7 +102,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Field representation for the <see cref="LiftTypeList"/> bindable property
         /// </summary>
-        private readonly List<string> _liftTypeList = new List<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", "Other" };
+        private readonly List<string> _liftTypeList;// = new List<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", "Other" };
         /// <summary>
         /// List that dictates the drop down for the list of lifts.  
         /// </summary>
@@ -129,7 +129,9 @@ namespace BarNone.DataLift.UI.ViewModels
                     Name = u.Name
                 }).ToList());
 
-                OnPropertyChanged(new PropertyChangedEventArgs("DisplayedUsers"));
+                //OnPropertyChanged(new PropertyChangedEventArgs("DisplayedUsers"));
+
+                
             });
         }
 

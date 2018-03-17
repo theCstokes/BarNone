@@ -211,14 +211,6 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
-        #region Custom User Implementation
-        //public class SharableUser
-        //{
-            
-
-
-        //}
-        #endregion
 
         #region UserSharePropeties
         private ObservableCollection<User> _selectedUsers;
@@ -300,6 +292,15 @@ namespace BarNone.DataLift.UI.ViewModels
             File.WriteAllText(fname, toSend);
 
             Console.WriteLine("Send Lift functionality to be implemented.");
+        }
+        #endregion
+
+        #region Loaded and Closed
+        internal override void Loaded()
+        {
+            SelectedLift = LiftIntervals[0];
+
+            //base.Loaded();
         }
         #endregion
     }
