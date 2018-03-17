@@ -16,8 +16,8 @@ export default class RefreshTokenView extends DialogView {
 	public usernameInput: Input;
 	public passwordInput: Input;
 	public statusLabel: Label;
-	public cancelButton: Button;
-	public loginButton: Button;
+	// public cancelButton: Button;
+	// public loginButton: Button;
 
 	public get content(): any[] {
 		return [
@@ -39,24 +39,24 @@ export default class RefreshTokenView extends DialogView {
 			{
 				id: "statusLabel",
 				instance: ControlTypes.Label
-			},
-			{
-				instance: ControlTypes.OrderLayout,
-				content: [
-					{
-						instance: ControlTypes.Button,
-						id: "cancelButton",
-						icon: "fa-times",
-						text: "Cancel"
-					},
-					{
-						instance: ControlTypes.Button,
-						id: "loginButton",
-						icon: "fa-sign-in",
-						text: "Login"
-					}
-				]
 			}
+			// {
+			// 	instance: ControlTypes.OrderLayout,
+			// 	content: [
+			// 		{
+			// 			instance: ControlTypes.Button,
+			// 			id: "cancelButton",
+			// 			icon: "fa-times",
+			// 			text: "Cancel"
+			// 		},
+			// 		{
+			// 			instance: ControlTypes.Button,
+			// 			id: "loginButton",
+			// 			icon: "fa-sign-in",
+			// 			text: "Login"
+			// 		}
+			// 	]
+			// }
 		]
 	}
 }
