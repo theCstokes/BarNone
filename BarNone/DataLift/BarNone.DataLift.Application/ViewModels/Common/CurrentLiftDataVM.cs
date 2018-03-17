@@ -1,6 +1,9 @@
-﻿using BarNone.Shared.Core;
+﻿using BarNone.DataLift.APIRequest;
+using BarNone.Shared.Core;
+using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;

@@ -3,6 +3,7 @@ using BarNone.DataLift.UI.Drawing;
 using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DomainModel;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -139,10 +140,22 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             // TODO.  Send raw data to jon then have him send us a list of stuff back.
 
+            var ianTheCaptainLater = new List<TimeSpan>();
+
+            ianTheCaptainLater = CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame).ToList();
+
+            if(ianTheCaptainLater.Count == 0)
+            { 
+            ianTheCaptainLater = new List<TimeSpan>
+                {
+                    new TimeSpan(0)
+                };
+            }
+
             CurrentLifts.LiftInformation.Add(new LiftListVM
             {
                 LiftStartTime = 0,
-                LiftEndTime = 0,
+                LiftEndTime = (int)(ianTheCaptainLater.Max(x => x.TotalMilliseconds) + 1 / 30d * 1000),
                 LiftName = String.Format($"Temp_name_{CurrentLifts.LiftInformation.Count()}"),
                 LiftType = "Squat"
             });
@@ -486,9 +499,10 @@ namespace BarNone.DataLift.UI.ViewModels
 
             if (currentMs > LoopTime)
             {
-                currentMs = 0;
+                currentMs = (int)ScrubberLowerThumb;
+
                 //increment timer value
-                ScrubberCurrentPosition = 0;
+                ScrubberCurrentPosition = ScrubberLowerThumb;
                 StopRequested.Invoke(this, EventArgs.Empty);
                 PlayRequested.Invoke(this, EventArgs.Empty);
             }

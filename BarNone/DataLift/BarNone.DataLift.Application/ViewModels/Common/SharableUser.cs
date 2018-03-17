@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BarNone.DataLift.UI.ViewModels.Common
+{
+    public class SharableUser
+    {
+        public string Name
+        {
+            get; set;
+        }
+        public string UserName
+        {
+            get; set;
+        }
+
+        public string Code
+        {
+            get
+            {
+                return UserName[0].ToString();
+            }
+
+            private set { }
+        }
+
+        public bool IsSeletcted
+        {
+            get; set;
+        }
+
+        public SharableUser()
+        {
+            IsSeletcted = false;
+        }
+    }
+}

@@ -29,7 +29,7 @@ namespace BarNone.DataLift.UI
             InitializeComponent();
             //Remove junk page management
             PageManager.Window = this;
-            PageManager.SwitchPage(UIPages.ControlHolderView);
+            PageManager.SwitchPage(UIPages.LoginView);
 
             UserControlManager.SwitchPage(UIPages.DataRecorderView);
         }

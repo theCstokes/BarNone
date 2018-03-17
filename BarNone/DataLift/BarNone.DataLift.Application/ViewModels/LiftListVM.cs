@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using BarNone.DataLift.APIRequest;
+using BarNone.DataLift.UI.ViewModels.Common;
+using BarNone.Shared.DataTransfer;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -104,6 +109,28 @@ namespace BarNone.DataLift.UI.ViewModels
         public List<string> LiftTypeList
         {
             get => _liftTypeList;
+        }
+
+        public ObservableCollection<SharableUser> SharedUsers;
+
+        public LiftListVM()
+        {
+            List<UserDTO> allUserDTOs = new List<UserDTO>();
+
+            App.Current.Dispatcher.Invoke(async () =>
+            {
+                allUserDTOs = await DataManager.Users.GetAll();
+
+                SharedUsers = new ObservableCollection<SharableUser>(allUserDTOs.Select(u =>
+                new SharableUser
+                {
+                    UserName = u.UserName,
+                    IsSeletcted = false,
+                    Name = u.Name
+                }).ToList());
+
+                OnPropertyChanged(new PropertyChangedEventArgs("DisplayedUsers"));
+            });
         }
 
         //TODO make this list reference somewhere from shared, so we only need to maintain it in one place.
