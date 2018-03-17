@@ -19,10 +19,10 @@ export default class RefreshTokenScreen extends DialogScreen<RefreshTokenView> {
 			DataManager.logout();
 			UEye.popAll();
 			UEye.push(LoginScreen);
-		}
+		};
 
-		this.view.loginButton.onClick = async () => {
-			this.view.loginButton.enabled = false;
+		this.onAccept = async () => {
+			this.view.acceptButton.enabled = false;
 
 			if (await DataManager.authorize(this.view.usernameInput.text, this.view.passwordInput.text)) {
 				this.view.statusLabel.text = "Success!";
@@ -30,5 +30,15 @@ export default class RefreshTokenScreen extends DialogScreen<RefreshTokenView> {
 			}
 			this.view.statusLabel.text = "Password or Username incorrect.";
 		};
+
+		// this.view.loginButton.onClick = async () => {
+		// 	this.view.loginButton.enabled = false;
+
+		// 	if (await DataManager.authorize(this.view.usernameInput.text, this.view.passwordInput.text)) {
+		// 		this.view.statusLabel.text = "Success!";
+		// 		UEye.pop();
+		// 	}
+		// 	this.view.statusLabel.text = "Password or Username incorrect.";
+		// };
 	}
 }
