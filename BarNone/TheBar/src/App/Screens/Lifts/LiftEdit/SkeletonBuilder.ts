@@ -198,10 +198,10 @@ export class SkeletonBuilder {
 				// x2: (endJoint.x - spineBase.x) * -153.34 + 256,
 				// y2: endJoint.y * -153.34 + 212
 
-					x1: startJoint.x*-65+150,
-					y1: startJoint.y*-65+75,
-					x2: endJoint.x*-65+150,
-					y2: endJoint.y*-65+75,
+					x1: startJoint.x*-65+250,
+					y1: startJoint.y*-65+100,
+					x2: endJoint.x*-65+250,
+					y2: endJoint.y*-65+100,
 				}));
 				console.log("Start JointType:"+m.start, "End JointType:"+m.end, i++);
 				return result;
