@@ -89,6 +89,7 @@ export default class Video extends BaseComponent {
         this._currentIndex = 0;
         this._video.autoplay = true;
 
+    
 
 
         this._slider.onclick = (e) => {
@@ -187,6 +188,7 @@ export default class Video extends BaseComponent {
     private drawBodyDataOnly(w: number, h: number, frameIndex: number) {
         // var frameIndex = Math.round((this._frameDataList.length - 1) * percent);
         console.log('iteration', frameIndex);
+        this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
         var frameData = this._createFrame(this._frameDataList[frameIndex], w, h);
         var bit = createImageBitmap(frameData);
         // this._context.scale(0.5,0.5);
@@ -203,7 +205,7 @@ export default class Video extends BaseComponent {
 
         if (this._stopFrame == false && this._currentIndex <= this._totalNumber) {
 
-            setTimeout(this.drawBodyDataOnly.bind(this), 20, w, h, this._currentIndex);
+            setTimeout(this.drawBodyDataOnly.bind(this), 55, w, h, this._currentIndex);
         } else if (this._currentIndex > this._totalNumber) {
             this._stopFrame = true;
             this._currentIndex = 0;
@@ -327,7 +329,7 @@ export default class Video extends BaseComponent {
         frame.forEach(line => {
             context.beginPath();
             //context.arc(line.x1, line.y1, 2, 0, 2 * Math.PI);
-            context.rect(line.x1, line.y1, 5, 5);
+            context.rect(line.x1, line.y1, 1, 1);
             context.strokeStyle = "blue";
             context.stroke();
             context.fillStyle = 'blue';
@@ -336,7 +338,7 @@ export default class Video extends BaseComponent {
 
             context.beginPath();
             //context.arc(line.x2, line.y2, 2, 0, 2 * Math.PI);
-            context.rect(line.x2, line.y2, 5, 5);
+            context.rect(line.x2, line.y2, 1, 1);
             context.strokeStyle = "blue";
             context.stroke();
             context.fillStyle = 'blue';
