@@ -81,12 +81,22 @@
             Maximum="{Binding Path=Maximum, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
             Value="{Binding Path=LowerValue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
             Template="{DynamicResource ScrubberTemplate}"
-            Margin="0,0,10,0"/>
+            MouseMove="LowerSlider_MouseMove"
+            Margin="0,0,10,0">
+            <Slider.ToolTip>
+                <ToolTip x:Name="tt_lower" />
+            </Slider.ToolTip>
+        </Slider>
         <Slider x:Name="UpperSlider" VerticalAlignment="Center"
             Minimum="{Binding Path=Minimum, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
             Maximum="{Binding Path=Maximum, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
             Value="{Binding Path=UpperValue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
             Margin="10,0,0,0"
-            Template="{DynamicResource ScrubberTemplate}"/>
+            Template="{DynamicResource ScrubberTemplate}"
+            MouseMove="UpperSlider_MouseMove">
+            <Slider.ToolTip>
+                <ToolTip x:Name="tt_upper" />
+            </Slider.ToolTip>
+        </Slider>
     </Grid>
 </UserControl>

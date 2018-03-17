@@ -51,6 +51,46 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        private string _currentLiftTime;
+        /// <summary>
+        /// The lift that is selected in the lift.  Used to bind to video player to display the selected lift.
+        /// </summary>
+        public string CurrentLiftTime
+        {
+            get
+            {
+                TimeSpan currentTime = new TimeSpan(0, 0, 0, 0, currentMs);
+                return $"{currentTime.Minutes:00}:{currentTime.Seconds:00}.{currentTime.Milliseconds:000}";
+            }
+        }
+
+        private string _currentEndTime;
+        /// <summary>
+        /// The lift that is selected in the lift.  Used to bind to video player to display the selected lift.
+        /// </summary>
+        public string CurrentEndTime
+        {
+            get
+            {
+                TimeSpan currentTime = new TimeSpan(0, 0, 0, 0, LiftEndTime);
+                return $"{currentTime.Minutes:00}:{currentTime.Seconds:00}.{currentTime.Milliseconds:000}";
+            }
+        }
+
+        public int LiftEndTime
+        {
+            get
+            {
+                if (CurrentLifts.LiftInformation.Count() != 0)
+                {
+                    var temp = CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame);
+                    return (int)(temp.Max(x => x.TotalMilliseconds) + 1 / 30d * 1000);
+                }
+
+                else return 0;
+            }
+        }
+
         #endregion
 
         #region Image Properties
@@ -138,27 +178,9 @@ namespace BarNone.DataLift.UI.ViewModels
         #region Loaded and Closed
         internal override void Loaded()
         {
-            // TODO.  Send raw data to jon then have him send us a list of stuff back.
-
-            var ianTheCaptainLater = new List<TimeSpan>();
-
-            ianTheCaptainLater = CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame).ToList();
-
-            if(ianTheCaptainLater.Count == 0)
-            { 
-            ianTheCaptainLater = new List<TimeSpan>
-                {
-                    new TimeSpan(0)
-                };
-            }
-
-            CurrentLifts.LiftInformation.Add(new LiftListVM
-            {
-                LiftStartTime = 0,
-                LiftEndTime = (int)(ianTheCaptainLater.Max(x => x.TotalMilliseconds) + 1 / 30d * 1000),
-                LiftName = String.Format($"Temp_name_{CurrentLifts.LiftInformation.Count()}"),
-                LiftType = "Squat"
-            });
+            CurrentLifts.LiftInformation[0].LiftEndTime = LiftEndTime;
+            SelectedLift = CurrentLifts.LiftInformation[0];
+            
             VideoUri = new Uri(Path.GetFullPath("TestFFMPEG.avi"));
             if (HasVideo)
                 StopRequested.Invoke(this, EventArgs.Empty);
@@ -281,15 +303,52 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <param name="action">The object in the ObservableCollection that called Delete.</param>
         private void DeleteSelectedRecordingCommand(object action)
         {
+            if(CurrentLifts.LiftInformation.Count == 0)
+            {
+                return;
+            }
+            
             // Cast action to a LiftListVM.
             LiftListVM selected = (LiftListVM)action;
+
+            
 
             // If action is null then return
             if (action == null) return;
 
             // Remove the correct lift and redo count for all the remaining lifts in ListView.
             LiftIntervals.RemoveAt(selected.Count);
+
+            SelectedLift = CurrentLifts.LiftInformation[selected.Count];
+
             for (int i = 0; i < LiftIntervals.Count; i++) LiftIntervals[i].Count = i;
+        }
+
+        private RelayCommand _addRecording;
+        /// <summary>
+        /// Command that calls the function to delete lifts from the ListView.
+        /// </summary>
+        public ICommand AddRecording
+        {
+            get
+            {
+                if (_addRecording == null)
+                {
+                    _addRecording = new RelayCommand(action => AddRecordingCommand());
+                }
+                return _addRecording;
+            }
+        }
+
+        private void AddRecordingCommand()
+        {
+            CurrentLifts.LiftInformation.Add(new LiftListVM
+            {
+                LiftName = $"Lift {CurrentLifts.LiftInformation.Count}",
+                LiftStartTime = 0,
+                LiftEndTime = LiftEndTime,
+                LiftType = "Squat"  
+            });
         }
         #endregion
 
@@ -452,6 +511,8 @@ namespace BarNone.DataLift.UI.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberMaxValue"));
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberMinValue"));
 
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentEndTime")); 
+
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
             }
@@ -512,6 +573,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 //increment timer value
                 ScrubberCurrentPosition += VideoTimerInterval;
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberCurrentPosition"));
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentLiftTime"));
             }
 
             VideoPosition = GlobalTimer.GetTimeSpanPosition();
@@ -550,12 +612,17 @@ namespace BarNone.DataLift.UI.ViewModels
                 if (ScrubberLowerThumb <= value)
                 {
                     _scrubberUpperThumb = value;
+                    if (SelectedLift != null) SelectedLift.LiftEndTime = value;
+
                     OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
                 }
                 else
                 {
                     ScrubberLowerThumb = value;
+                    if (SelectedLift != null) SelectedLift.LiftStartTime = value;
+
                     _scrubberUpperThumb = value;
+                    SelectedLift.LiftEndTime = value;
                     OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
                 }
 
@@ -579,12 +646,17 @@ namespace BarNone.DataLift.UI.ViewModels
                 if (ScrubberUpperThumb >= value)
                 {
                     _scrubberLowerThumb = value;
+                    if(SelectedLift != null) SelectedLift.LiftStartTime = value;
+
                     OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
                 }
                 else
                 {
                     ScrubberUpperThumb = value;
+                    SelectedLift.LiftEndTime = value;
+
                     _scrubberLowerThumb = value;
+                    if (SelectedLift != null)  SelectedLift.LiftStartTime = value;
                     OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
                 }
             }

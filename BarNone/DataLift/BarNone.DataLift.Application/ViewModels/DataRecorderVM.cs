@@ -166,7 +166,9 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             IsRecording = false;
             CurrentRecordingState = RecordingState.NOT_RECORDING;
+
             CurrentLiftData.CurrentRecordedBodyData.Clear();
+            CurrentLiftData.LiftInformation.Clear();
         }
 
         internal override void Closed()
@@ -365,6 +367,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 CurrentRecordingState = RecordingState.WAITING_FOR_FIRST_BODY_FRAME;
                 ColorDataToBodyDataLatency.Restart();
             });
+
         }
 
         /// <summary>
@@ -400,18 +403,27 @@ namespace BarNone.DataLift.UI.ViewModels
             CurrentRecordingState = RecordingState.NOT_RECORDING;
             IsRecording = false;
 
+
             _ffmpegController.StopFfmpegRecord();
-
-
+            
             // Test Code
+
             //string json = File.ReadAllText(@"Chris_Single_Squat_1.json");
             //LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
-            //CurrentLiftData.CurrentRecordedBodyData = 
+            //CurrentLiftData.CurrentRecordedBodyData =
             //    new ObservableCollection<BodyDataFrame>(Converters
             //    .NewConvertion()
             //    .Lift.CreateDataModel(liftDTO)
             //    .BodyData
             //    .BodyDataFrames);
+
+            CurrentLiftData.LiftInformation.Add(new LiftListVM
+            {
+                LiftStartTime = 0,
+                LiftEndTime = 0,
+                LiftName = String.Format($"Lift_0"),
+                LiftType = "Squat"
+            });
 
             try
             {
