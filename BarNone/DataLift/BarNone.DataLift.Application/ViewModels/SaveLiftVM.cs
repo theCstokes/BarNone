@@ -267,6 +267,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 .Lift
                 .CreateDTO(new Lift()
                 {
+                    LiftTypeID = 1,
                     BodyData = new BodyData
                     {
                         BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData.ToList(),

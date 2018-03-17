@@ -39,6 +39,10 @@ namespace BarNone.Shared.DataTransfer
 
         [JsonProperty(Order = 3, NullValueHandling = NullValueHandling.Ignore)]
         public List<LiftPermissionDTO> Permissions { get; set; }
+
+
+        [JsonProperty(Order = 4, NullValueHandling = NullValueHandling.Ignore)]
+        public LiftTypeDTO LiftType { get; set; }
     }
 
     /// <summary>
@@ -82,5 +86,8 @@ namespace BarNone.Shared.DataTransfer
         /// </value>
         [JsonProperty(Order = 3)]
         public int? BodyDataID { get; set; }
+
+        [JsonProperty(Order = 4)]
+        public int? LiftTypeID { get; set; }
     }
 }

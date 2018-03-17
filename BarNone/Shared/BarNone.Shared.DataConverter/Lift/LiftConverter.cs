@@ -38,7 +38,8 @@ namespace BarNone.Shared.DataConverters
                 Name = dto.Name,
                 ParentID = dto.ParentID,
                 BodyDataID = dto.BodyDataID,
-                UserID = context != null ? context.UserID : 0 
+                UserID = context != null ? context.UserID : 0 ,
+                LiftTypeID = dto.LiftTypeID
             };
         }
 
@@ -54,6 +55,7 @@ namespace BarNone.Shared.DataConverters
             data.BodyData = converterContext.BodyData.CreateDataModel(dto.BodyData);
             data.Video = converterContext.Video.CreateDataModel(dto.Video);
             data.Permissions = dto?.Permissions?.Select(p => converterContext.LiftPermission.CreateDataModel(p)).ToList();
+            data.LiftType = converterContext.LiftType.CreateDataModel(dto.LiftType);
         }
 
         /// <summary>
@@ -69,8 +71,9 @@ namespace BarNone.Shared.DataConverters
                 Parent = converterContext.LiftFolder.CreateDTO(data.Parent),
                 BodyData = converterContext.BodyData.CreateDTO(data.BodyData),
                 Video = converterContext.Video.CreateDTO(data.Video),
-                Permissions = data?.Permissions?.Select(p => converterContext.LiftPermission.CreateDTO(p)).ToList()
-        };
+                Permissions = data?.Permissions?.Select(p => converterContext.LiftPermission.CreateDTO(p)).ToList(),
+                LiftType = converterContext.LiftType.CreateDTO(data.LiftType)
+            };
         }
 
         /// <summary>
@@ -86,7 +89,8 @@ namespace BarNone.Shared.DataConverters
                 ID = data.ID,
                 Name = data.Name,
                 ParentID = data.ParentID,
-                BodyDataID = data.BodyDataID
+                BodyDataID = data.BodyDataID,
+                LiftTypeID = data.LiftTypeID
             };
         }
     }

@@ -18,6 +18,7 @@ using System.Web;
 using BarNone.TheRack.ResourceServer.API.Response;
 using System.Net.WebSockets;
 using System.Threading;
+using BarNone.TheRack.ResourceServer.API;
 
 namespace BarNone.TheRack.ResourceServer.API
 {
@@ -113,39 +114,6 @@ namespace BarNone.TheRack.ResourceServer.API
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseWebSockets();
-
-            app.Use(async (http, next) =>
-            {
-                if (http.Request.Path == "/ws" && http.WebSockets.IsWebSocketRequest)
-                {
-                    var webSocket = await http.WebSockets.AcceptWebSocketAsync();
-                    while (webSocket.State == WebSocketState.Open)
-                    {
-                        var token = CancellationToken.None;
-                        var buffer = new ArraySegment<Byte>(new Byte[4096]);
-                        var received = await webSocket.ReceiveAsync(buffer, token);
-
-                        switch (received.MessageType)
-                        {
-                            case WebSocketMessageType.Text:
-                                var request = Encoding.UTF8.GetString(buffer.Array,
-                                                        buffer.Offset,
-                                                        buffer.Count);
-                                var type = WebSocketMessageType.Text;
-                                var data = Encoding.UTF8.GetBytes("Echo from server :" + request);
-                                buffer = new ArraySegment<Byte>(data);
-                                await webSocket.SendAsync(buffer, type, true, token);
-                                break;
-                        }
-                    }
-                }
-                else
-                {
-                    await next();
-                }
-            });
-
             app.Use(async (context, next) =>
              {
                  if (context.Request.QueryString.HasValue)
@@ -165,6 +133,44 @@ namespace BarNone.TheRack.ResourceServer.API
                  await next.Invoke();
              });
             app.UseAuthentication();
+
+            app.UseWebSockets();
+
+            //app.Map("/ws", (_app) => _app.UseMiddleware<NotificationWebSocketMiddleware>());
+
+            app.UseMiddleware<NotificationWebSocketMiddleware>();
+
+            //app.Use(async (context, next) =>
+            //{
+            //    if (context.Request.Path == "/Notification" && context.WebSockets.IsWebSocketRequest)
+            //    {
+            //        var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+            //        while (webSocket.State == WebSocketState.Open)
+            //        {
+            //            WebSocketManager
+            //            var token = CancellationToken.None;
+            //            var buffer = new ArraySegment<Byte>(new Byte[4096]);
+            //            var received = await webSocket.ReceiveAsync(buffer, token);
+
+            //            switch (received.MessageType)
+            //            {
+            //                case WebSocketMessageType.Text:
+            //                    var request = Encoding.UTF8.GetString(buffer.Array,
+            //                                            buffer.Offset,
+            //                                            buffer.Count);
+            //                    var type = WebSocketMessageType.Text;
+            //                    var data = Encoding.UTF8.GetBytes("Echo from server :" + request);
+            //                    buffer = new ArraySegment<Byte>(data);
+            //                    await webSocket.SendAsync(buffer, type, true, token);
+            //                    break;
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        await next();
+            //    }
+            //});
             app.UseMvc();
 
         }

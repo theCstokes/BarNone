@@ -5,11 +5,13 @@ import StringUtils from "UEye/Core/StringUtils";
 import LiftFolderEditView from "App/Screens/Lifts/LiftFolderEdit/LiftFolderEditView";
 import LiftScreen from "App/Screens/Lifts/LiftScreen";
 import { LiftListType } from "App/Screens/Lifts/Models";
+import { ELiftType } from "App/Screens/Lifts/StateManager";
+import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
+import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
 
 export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView, StateManager> {
 	public constructor() {
-		super(LiftFolderEditView, StateManager);
-		this.stateManager.bind(this._onRender.bind(this));
+		super(LiftFolderEditView, LiftFolderHelp);
 	}
 
 	private _onRender(current: State, original: State) {
@@ -23,7 +25,7 @@ export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView,
 					// selected: (item.id === current.selectionId),
 					id: item.id,
 					name: item.name,
-					icon: "fa-folder-o",
+					icon: "fa-folder",
 					onOpen: () => {
 						// alert("open");
 						LiftScreen.ParentChange.trigger({
@@ -54,13 +56,20 @@ export default class LiftFolderEditScreen extends EditScreen<LiftFolderEditView,
 		this.view.editPanel.modified = isModified;
 	}
 
-	public onShow(): void {
+	public async onShow(data: { id: number, name: string, type: ELiftType }): Promise<void> {
+		super.onShow(data);	
+		this.init(await StateManagerFactory.create(StateManager));
+		this.stateManager.bind(this._onRender.bind(this));
+
 		this.view.nameInput.onChange = (data) => {
 			this.stateManager.NameChange.trigger(data);
 		};
-		this.view.tab.onClick= () =>{
+		
+		this.view.tab.onClick= () => {
 		
 		}
+		
+		await this.stateManager.ResetState.trigger({ id: data.id, name: data.name });
 		// this.view.player.play();
 	}
 

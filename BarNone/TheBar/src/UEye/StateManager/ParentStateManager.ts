@@ -2,7 +2,7 @@ import { BaseStateManager, StateTracker } from "UEye/StateManager/BaseStateManag
 import { ChildStateUpdater } from "UEye/StateManager/ChildStateManager";
 // import { start } from "repl";
 
-export default class ParentStateManager<TState> extends BaseStateManager<TState> {
+export default abstract class ParentStateManager<TState> extends BaseStateManager<TState> {
     public constructor(TStateType: { new(): TState }) {
         super(TStateType);
     }

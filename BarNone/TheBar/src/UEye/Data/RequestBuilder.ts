@@ -64,8 +64,8 @@ export class BaseRequestBuilder {
 	 * Submit api request
 	 * @param data - data to send
 	 */
-	public async execute(data: any = null): Promise<string> {
-		return new Promise<string>((resolve, reject) => {
+	public async execute(data: any = null): Promise<any> {
+		return new Promise<any>((resolve, reject) => {
 			var xhr = new XMLHttpRequest();
 			xhr.open(this._verb, this._route, true);
 
@@ -77,7 +77,7 @@ export class BaseRequestBuilder {
 			xhr.onload = () => {
 				if (xhr.readyState === 4) {
 					if (xhr.status === 200) {
-						resolve(xhr.responseText);
+						resolve(JSON.parse(xhr.responseText));
 					} else {
 						console.warn(xhr.statusText);
 						reject(xhr.status);
@@ -120,16 +120,16 @@ export class GetRequestBuilder extends BaseRequestBuilder {
 	 * Submit api request
 	 * @param data - data object
 	 */
-	public async execute(data: any = null): Promise<string> {
+	public async execute(data: any = null): Promise<any> {
 		if (this._useOverride) {
-			var filePath = "Application/Data/DataOverride/api/v1/" + this.resource;
+			var filePath = "App/Data/DataOverride/api/v1/" + this.resource;
 			var dataOverride: any = await Loader.sync(filePath);
 
 			if (dataOverride === undefined) return "";
 
 			var DataOverrideType: { new(): BaseDataOverride<any> } = dataOverride.default;
 			var override = new DataOverrideType();
-			return override.response;
+			return override.listResult;
 		}
 		return await super.execute(data);
 	}
@@ -178,5 +178,9 @@ export class RequestBuilder {
 	 */
 	public static PUT(resource: string, route: string, args: { [key: string]: any } = {}): BaseRequestBuilder {
 		return new PutRequestBuilder(resource, "PUT", route);
+	}
+
+	public static POST(resource: string, route: string, args: { [key: string]: any } = {}): BaseRequestBuilder {
+		return new PutRequestBuilder(resource, "POST", route);
 	}
 }

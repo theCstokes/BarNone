@@ -4,6 +4,7 @@ import InflaterData from "UEye/Elements/Inflater/InflaterData";
 import StringUtils from "UEye/Core/StringUtils";
 import ControlTypes from "UEye/ControlTypes";
 import ContentContainer from "UEye/Elements/Containers/ContentContainer/ContentContainer";
+import { IHelp } from "App/Help/HelpCore";
 
 /**
  * Screen config.
@@ -29,11 +30,15 @@ export default abstract class Screen<TView extends View> {
      */
     private _view: TView;
     private _config: IScreenConfig;
-    protected _screenObj: ContentContainer;
+    private _help?: IHelp;
+    private _screenObj: ContentContainer;
+    private _inflaterData: InflaterData;
 
-    public constructor(viewType: { new(): TView }/*, config?: Partial<IScreenConfig>*/) {
-        this._view = new viewType();
+    public constructor(ViewType: { new(): TView }, HelpType?: { new() :IHelp }
+    /*, config?: Partial<IScreenConfig>*/) {
+        this._view = new ViewType();
         this._config = this.configure();
+        if (HelpType !== undefined) this._help = new HelpType();
         // Object.assign(this._config, config);
     }
 
@@ -44,6 +49,18 @@ export default abstract class Screen<TView extends View> {
 
     public get config(): IScreenConfig {
         return this._config;
+    }
+
+    public get help(): IHelp | undefined {
+        return this._help;
+    }
+
+    public get screenObj(): ContentContainer {
+        return this._screenObj;
+    }
+
+    public get inflaterData(): InflaterData {
+        return this._inflaterData;
     }
     //#endregion
 
@@ -59,7 +76,7 @@ export default abstract class Screen<TView extends View> {
         this._screenObj = results.componentMap.screenObj as ContentContainer;
 
         this._view.setElements(results.componentMap);
-
+        this._inflaterData = results;    
         return results;
     }
 

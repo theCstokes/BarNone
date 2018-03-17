@@ -1,10 +1,10 @@
 import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
-import { ISelectionState, SelectionStateManager } from "App/Core/StateManager/SelectionStateManager";
 import LiftFolder from "App/Data/Models/LiftFolder/LiftFolder";
 import DataManager from "App/Data/DataManager";
 import Lift from "App/Data/Models/Lift/Lift";
 import { LiftListItem, LiftListType } from "App/Screens/Lifts/Models";
 import StateBind from "UEye/StateManager/StateBind";
+import { ISelectionState, SelectionStateManager } from "UEye/StateManager/SelectionStateManager";
 
 export class State implements ISelectionState<LiftListItem> {
 	public selectionList: LiftListItem[];
@@ -12,14 +12,17 @@ export class State implements ISelectionState<LiftListItem> {
 	public parentID: number | null;
 }
 
-export enum LiftType { Lift = "Lift", Shared = "Shared" }
+export enum ELiftType { Lift = "Lift", Shared = "Shared" }
 
 export class StateManager extends SelectionStateManager<LiftListItem, State> {
-	private _type: LiftType;
-	public constructor(type: LiftType) {
+	
+	private _type: ELiftType;
+	public constructor(type: ELiftType) {
 		super(State);
 		this._type = type;
 	}
+
+	public async onInitialize(): Promise<void> { 	}
 
 	public ParentChange = StateBind.onAsyncAction<State, {
 		parentID: number | null;
@@ -41,8 +44,12 @@ export class StateManager extends SelectionStateManager<LiftListItem, State> {
 		return nextState.initialize();
 	});
 
+	protected async listProvider(): Promise<LiftListItem[]> {
+		return await this.onLoad();
+	}
+
 	protected async onLoad(parentID: number | null = null): Promise<LiftListItem[]> {
-		if (this._type === LiftType.Lift) {
+		if (this._type === ELiftType.Lift) {
 			let results = await Promise.all([
 				DataManager.LiftFolders.all({
 					filter: {
@@ -76,7 +83,7 @@ export class StateManager extends SelectionStateManager<LiftListItem, State> {
 					parentID: l.parentID
 				}
 			}));
-		} else if (this._type === LiftType.Shared) {
+		} else if (this._type === ELiftType.Shared) {
 			let results = await Promise.all([
 				DataManager.SharedLifts.all()
 			]);

@@ -30,13 +30,15 @@ namespace BarNone.Shared.DataConverter
         public override void OnCreateDetailDataModel(Comment data, CommentDetailDTO dto)
         {
             data.Lift = converterContext.Lift.CreateDataModel(dto.Lift);
+            // Do not allow user to come in
         }
 
         public override CommentDetailDTO OnCreateDetailDTO(Comment data)
         {
             return new CommentDetailDTO
             {
-                Lift = converterContext.Lift.CreateDTO(data.Lift)
+                Lift = converterContext.Lift.CreateDTO(data.Lift),
+                SentUser = converterContext.User.CreateDTO(data.User)
             };
         }
 
@@ -46,6 +48,7 @@ namespace BarNone.Shared.DataConverter
             {
                 ID = data.ID,
                 LiftID = data.LiftID,
+                SentUserID = data.UserID,
                 TimeSent = data.TimeSent,
                 Text = data.Text
             };

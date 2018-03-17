@@ -62,5 +62,9 @@ export default class NavigationListItem extends BaseListItem {
      * */
     public onEnabledChange(): void {
         throw new Error("Method not implemented.");
-    }  
+    }
+
+    public canSelect(): boolean {
+        return true;
+    }
 }

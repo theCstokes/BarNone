@@ -5,7 +5,7 @@
     flex-wrap: nowrap;
     align-items: center;
     overflow: hidden;
-    width: 350px;
+    width: calc(~'100% - 10px');
     padding:1px 5px 1px 5px;
     margin-bottom: 5px;
     -webkit-border-radius: 4;
@@ -16,6 +16,10 @@
     background-color: @Background;
 }
 
+.UEye-Input:hover {
+	border-bottom-color: @DefaultElementAccent;
+}
+
 .UEye-Input.Focused {
     border-bottom-color: @DefaultElementAccent;
 }
@@ -24,12 +28,36 @@
     border-bottom-color: @ModifiedElementAccent;
 }
 
+.UEye-Input.Modified > .Content > .Input {
+    color: @ModifiedElementAccent;
+}
+
+.UEye-Input.Modified > .Content > .Hint {
+    color: @ModifiedElementAccent;
+}
+
 .UEye-Input.Readonly {
     border-bottom-color: @ReadonlyElementAccent;
 }
 
+.UEye-Input.Readonly > .Content > .Input {
+    color: @ReadonlyElementAccent;
+}
+
+.UEye-Input.Readonly > .Content > .Hint {
+    color: @ReadonlyElementAccent;
+}
+
 .UEye-Input.Error {
     border-bottom-color: @ErrorElementAccent;
+}
+
+.UEye-Input.Error > .Content > .Input {
+    color: @ErrorElementAccent;
+}
+
+.UEye-Input.Error > .Content > .Hint {
+    color: @ErrorElementAccent;
 }
 
 .UEye-Input > .Content {

@@ -7,6 +7,7 @@
     text-decoration: none;
     font-weight: bold;
     padding: 10px;
+    margin: 10px;
     >.Content {
         display: flex;
         justify-content: flex-start;
@@ -21,26 +22,12 @@
         // }
         
     }
-    >.Open-Action {
-        background: @DefaultElementAccent;
-        padding: 2px 3px 2px 3px;
-        color: white;
-        border-radius: 2px;
-    }
-    // >.Open-Action:hover {
-    //     background-color: #286090;
-    //     border-color: #204d74;
-    //     text-decoration: none;
-    // }
-    >.Open-Action.disabled {
-        background-color: #B2B4B6;
-        color: #333333;
-        text-decoration: none;
-    }
 }
 
-.Data-List-Item.Selected {
-    background: white !important;
-    overflow: hidden;
-    box-shadow: none !important;
+.Data-List-Item.Current-User {
+    background-color: @DefaultElementAccent;
+}
+
+.Data-List-Item.Other-User {
+    background-color: @DefaultGrey;
 }

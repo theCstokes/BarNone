@@ -26,6 +26,8 @@ export interface ILoadOptions<T> {
      * Search filter.
      */
     filter?: Filter<T>;
+
+    params?: { [key: string]: string|number }
 }
 
 /**
@@ -41,6 +43,8 @@ export interface ILoadDetailOptions<T> {
      * Include details in results flag.
      */
     includeDetails?: boolean;
+
+    params?: { [key: string]: string|number }
 }
 
 /**
@@ -82,7 +86,8 @@ export class Resource<TData> extends BaseResource {
         var options: ILoadOptions<TData> = {};
         if (pOptions !== undefined) options = pOptions;
 
-        var route = StringUtils.format("{0}{1}", BaseDataManager.resourceAddress, this._resource);
+        var resource = StringUtils.replace(this._resource, options.params);
+        var route = StringUtils.format("{0}{1}", BaseDataManager.resourceAddress, resource);
 
         var builder = RequestBuilder
             .GET(this._resource, route, this._useOverride)
@@ -94,8 +99,7 @@ export class Resource<TData> extends BaseResource {
 
         try {
             var result = await builder.execute();
-            var data: ListResult<TData> = JSON.parse(result);
-            return data.entities;
+            return (result as ListResult<TData>).entities;
         } catch (error) {
             BaseDataManager.fail(error);
             throw error;
@@ -117,8 +121,7 @@ export class Resource<TData> extends BaseResource {
 
         try {
             var result = await builder.execute();
-            var data: EntityResult<TData> = JSON.parse(result);
-            return data.entity;
+            return (result as EntityResult<TData>).entity;
         } catch (error) {
             BaseDataManager.fail(error);
             throw error;
@@ -140,8 +143,7 @@ export class Resource<TData> extends BaseResource {
 
         try {
             var result = await builder.execute(source);;
-            var data: ListResult<TData> = JSON.parse(result);
-            return data.entities;
+            return (result as ListResult<TData>).entities;
         } catch (error) {
             BaseDataManager.fail(error);
             throw error;
@@ -173,7 +175,8 @@ export class DetailResource<TData> extends BaseResource {
         var options: ILoadDetailOptions<TData> = {};
         if (pOptions !== undefined) options = pOptions;
 
-        var route = StringUtils.format("{0}{1}", BaseDataManager.resourceAddress, this._resource);
+        var resource = StringUtils.replace(this._resource, options.params);
+        var route = StringUtils.format("{0}{1}", BaseDataManager.resourceAddress, resource);
 
         if (options.includeDetails) {
             route = StringUtils.format("{0}/{1}", route, "Details");
@@ -189,8 +192,7 @@ export class DetailResource<TData> extends BaseResource {
 
         try {
             var result = await builder.execute();
-            var data: ListResult<TData> = JSON.parse(result);
-            return data.entities;
+            return (result as ListResult<TData>).entities;
         } catch (error) {
             BaseDataManager.fail(error);
             throw error;
@@ -205,7 +207,8 @@ export class DetailResource<TData> extends BaseResource {
         var options: ILoadDetailOptions<TData> = {};
         if (pOptions !== undefined) options = pOptions;
 
-        var route = StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, this._resource, id);
+        var resource = StringUtils.replace(this._resource, options.params);
+        var route = StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, resource, id);
 
         if (options.includeDetails) {
             route = StringUtils.format("{0}/{1}", route, "Details");
@@ -221,8 +224,7 @@ export class DetailResource<TData> extends BaseResource {
 
         try {
             var result = await builder.execute();
-            var data: EntityResult<TData> = JSON.parse(result);
-            return data.entity;
+            return (result as EntityResult<TData>).entity;
         } catch (error) {
             BaseDataManager.fail(error);
             throw error;
@@ -244,8 +246,24 @@ export class DetailResource<TData> extends BaseResource {
 
         try {
             var result = await builder.execute(source);
-            var data: ListResult<TData> = JSON.parse(result);
-            return data.entities;
+            return (result as ListResult<TData>).entities;
+        } catch (error) {
+            BaseDataManager.fail(error);
+            throw error;
+        }
+    }
+
+    public async create(source: Partial<TData>): Promise<TData[]> {
+        var route = StringUtils.format("{0}{1}", BaseDataManager.resourceAddress, this._resource);
+
+        var builder = await RequestBuilder
+            .POST(this._resource, route)
+            .header("Authorization", "Bearer " + BaseDataManager.auth.access_token)
+            .header("Content-Type", "application/json");
+
+        try {
+            var result = await builder.execute(source);
+            return (result as ListResult<TData>).entities;
         } catch (error) {
             BaseDataManager.fail(error);
             throw error;

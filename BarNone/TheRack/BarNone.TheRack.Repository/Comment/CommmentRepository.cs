@@ -1,6 +1,7 @@
 ﻿using BarNone.Shared.DataConverters;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
+using BarNone.TheRack.Core;
 using BarNone.TheRack.DataAccess;
 using BarNone.TheRack.Repository.Core;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +47,9 @@ namespace BarNone.TheRack.Repository
         /// <value>
         /// The detail entity resolver.
         /// </value>
-        protected override DetailResolverDelegate<Comment> DetailEntityResolver => (folders) => folders.Include(l => l.Lift);
+        protected override DetailResolverDelegate<Comment> DetailEntityResolver => (folders) => folders
+                .Include(f => f.Lift)
+                .Include(f => f.User);
                 //.Include(l => l.SubFolders).ThenInclude(f => f.Lifts)
                 //.Include(l => l.Lifts);
 
@@ -66,5 +69,29 @@ namespace BarNone.TheRack.Repository
         /// </value>
         protected override EntityResolverDelegate<Comment> EntityResolver =>
             (comments) => comments.Where(comment => comment.UserID == context.UserID);
+
+        public List<Comment> GetLiftComments(int liftID)
+        {
+            //NotificationManager.Comment.Run(context.UserID);
+            return AllEntites.Where(comment => comment.LiftID == liftID).ToList();
+        }
+
+        protected override void OnCreate(Comment entity)
+        {
+            base.OnCreate(entity);
+            context.NotifyOnSave(NotificationManager.Comment, entity);
+        }
+
+        protected override void OnUpdate(Comment entity)
+        {
+            base.OnUpdate(entity);
+            context.NotifyOnSave(NotificationManager.Comment, entity);
+        }
+
+        protected override void OnRemove(Comment entity)
+        {
+            base.OnRemove(entity);
+            context.NotifyOnSave(NotificationManager.Comment, entity);
+        }
     }
 }

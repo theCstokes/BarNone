@@ -65,7 +65,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 RedirectStandardInput = true,
-                CreateNoWindow = true
+                CreateNoWindow = false
             };
 
             _recordProcess = new Process
@@ -158,7 +158,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                CreateNoWindow = true
+                CreateNoWindow = false
 
             };
 

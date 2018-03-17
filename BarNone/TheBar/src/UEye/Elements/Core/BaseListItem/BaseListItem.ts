@@ -8,6 +8,7 @@ export abstract class BaseListItem extends BaseComponent implements IListItem {
     private _selected: boolean;
     /**Represents event listener for when item list is selected */
     private _onSelectCallback: OnSelectCallback;
+    private _isSelectionList: boolean;
 
     /** Constructor makes basic HTMLElement for List item
 	 * @param parent HTMLElement
@@ -47,10 +48,28 @@ export abstract class BaseListItem extends BaseComponent implements IListItem {
         this._onSelectCallback = value;
     }
 
+    public set isSelectionList(value: boolean) {
+        if (this._isSelectionList !== value) {
+            this._isSelectionList = value;
+            if (this._isSelectionList) {
+                Core.addClass(this.element, "Selection-List");
+            } else {
+                Core.removeClass(this.element, "Selection-List");
+            }
+        }
+    }
+    public get isSelectionList(): boolean {
+        return this._isSelectionList;
+    }
+
     private onSelectCallback(): void {
+        if (!this.canSelect()) return;
+
         this._selected = true;
         if (this._onSelectCallback !== undefined) {
             this._onSelectCallback(this);
         }
     }
+
+    public abstract canSelect(): boolean;
 }

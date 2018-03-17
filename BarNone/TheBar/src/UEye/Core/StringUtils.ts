@@ -14,4 +14,14 @@ export default class StringUtils {
 			return result.replace(key, item);
 		}, data);
 	}
+
+	public static replace(data: string, params?: { [key: string]: string|number }) : string {
+		if (params === undefined) return data;
+
+		for(var name in params) {
+			var key = "{" + name + "}";
+			return data.replace(key, String(params[name]));
+		}
+		return data;
+	}
 }

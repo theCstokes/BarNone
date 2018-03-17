@@ -8,6 +8,7 @@ export default class DataListItem extends BaseListItem {
     private _name: string;
     private _onOpenActionCallback: OnClickCallback;
     private _icon: string;
+    private _isCurrentUser: boolean;
 
     // Private dom element(s).
     private _nameElement: HTMLElement;
@@ -19,7 +20,7 @@ export default class DataListItem extends BaseListItem {
 
         var content = Core.create("div", this.element, "Content");
 
-        this._icon = "fa-folder-o";
+        this._icon = "fa-folder";
         this._typeIcon = Core.create("div", content, "Type-Icon fa", this._icon);
 
         this._nameElement = Core.create("div", content, "Name");
@@ -58,9 +59,27 @@ export default class DataListItem extends BaseListItem {
     public get icon(): string {
         return this._icon;
     }
+
+    public set isCurrentUser(value: boolean) {
+        if (this._isCurrentUser !== value) {
+            this._isCurrentUser = value;
+            if (this._isCurrentUser) {
+                Core.replaceClass(this.element, "Other-User", "Current-User");
+            } else {
+                Core.replaceClass(this.element, "Current-User", "Other-User");
+            }
+        }
+    }
+    public get isCurrentUser(): boolean {
+        return this.isCurrentUser;
+    }
    
     public onEnabledChange(): void {
         throw new Error("Method not implemented.");
+    }
+
+    public canSelect(): boolean {
+        return false;
     }
 
     private _onOpenActionClickHandler() {
