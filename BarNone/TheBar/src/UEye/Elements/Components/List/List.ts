@@ -34,7 +34,7 @@ export default class UEyeList extends BaseComponent {
       * */
     public constructor(parent: HTMLElement) {
         super(parent, "UEye-List");
-        this.onShow.on(view => this._view = view);
+        this.onBindView.on(view => this._view = view);
 
         this.e_list = Core.create("ul", this.element, "Element-List");
     }
@@ -108,7 +108,7 @@ export default class UEyeList extends BaseComponent {
         this._items.forEach(async element => {
             var listElement = Core.create("li", this.e_list, "Element");
             // var pipeline = new InflaterPipeline();
-            var instance: BaseListItem = this._style.create(listElement, element as any, this._view) as BaseListItem;
+            var instance: BaseListItem = this._style.inflate(listElement, element as any, this._view) as BaseListItem;
 
             instance.isSelectionList = this.isSelectionList;
 

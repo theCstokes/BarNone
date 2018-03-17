@@ -10,6 +10,15 @@ import { BaseView } from "UEye/Elements/Core/BaseView";
 
 export default class Inflater {
 	public static execute(parent: HTMLElement, config: ComponentConfig[] | ComponentConfig, view: BaseView): InflaterData {
+		var data = Inflater.create(parent, config, view);
+
+		data.components.forEach(c => c.show(view));
+
+		return data;
+	}
+
+	public static create(parent: HTMLElement, config: ComponentConfig[] | ComponentConfig, 
+		view: BaseView): InflaterData {
 		if (!Array.isArray(config)) config = [config];
 
 		var validConfigList = config.filter(config => Inflater.validateConfig(config));
