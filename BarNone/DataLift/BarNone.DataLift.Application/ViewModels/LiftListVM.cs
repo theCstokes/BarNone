@@ -14,6 +14,7 @@ namespace BarNone.DataLift.UI.ViewModels
     /// </summary>
     public class LiftListVM : ViewModelBase
     {
+       
         /// <summary>
         /// Corresponds to the index in the <see cref="EditLiftsScreenVM.LiftIntervals"/>
         /// </summary>
@@ -58,7 +59,24 @@ namespace BarNone.DataLift.UI.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs("LiftType"));
             }
         }
-        
+
+        private string _liftFolder;
+        /// <summary>
+        /// The type  of lift; squat, clean etc.
+        /// </summary>
+        public string LiftFolder
+        {
+            get { return _liftFolder; }
+
+            set
+            {
+                if (_liftFolder == value) return;
+
+                _liftFolder = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("LiftFolder"));
+            }
+        }
+
         /// <summary>
         /// Field representation for the <see cref="LiftName"/> bindable property
         /// </summary>
@@ -102,13 +120,37 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Field representation for the <see cref="LiftTypeList"/> bindable property
         /// </summary>
-        private readonly List<string> _liftTypeList;// = new List<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", "Other" };
+        private List<string> _liftTypeList = new List<string>(); // = new List<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", "Other" };
         /// <summary>
         /// List that dictates the drop down for the list of lifts.  
         /// </summary>
         public List<string> LiftTypeList
         {
-            get => _liftTypeList;
+            get { return _liftTypeList; }
+
+            set
+            {
+                if (_liftTypeList == value) return;
+
+                _liftTypeList = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("LiftTypeList"));
+            }
+        }
+
+
+        private List<string> _liftFolderList = new List<string>();
+
+        public List<string> LiftFolderList
+        {
+            get { return _liftFolderList; }
+
+            set
+            {
+                if (_liftFolderList == value) return;
+
+                _liftFolderList = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("LiftFolderList"));
+            }
         }
 
         public ObservableCollection<SharableUser> SharedUsers;
@@ -116,6 +158,8 @@ namespace BarNone.DataLift.UI.ViewModels
         public LiftListVM()
         {
             List<UserDTO> allUserDTOs = new List<UserDTO>();
+            List<LiftTypeDTO> liftDTOs = new List<LiftTypeDTO>();
+            List<LiftFolderDTO> folderDTOs = new List<LiftFolderDTO>();
 
             App.Current.Dispatcher.Invoke(async () =>
             {
@@ -131,7 +175,11 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 //OnPropertyChanged(new PropertyChangedEventArgs("DisplayedUsers"));
 
-                
+                liftDTOs = await DataManager.Types.GetAll();
+                _liftTypeList = liftDTOs.Select(u => u.Name).ToList();
+
+                folderDTOs = await DataManager.Folders.GetAll();
+                _liftFolderList = folderDTOs.Select(u => u.Name).ToList();
             });
         }
 
