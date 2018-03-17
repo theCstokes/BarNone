@@ -20,6 +20,12 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         /// Field representation for the <see cref="CurrentRecordedBodyData"/> bindable property list
         /// </summary>
         private ObservableCollection<BodyDataFrame> _currentRecordedData = new ObservableCollection<BodyDataFrame>();
+
+        public double DataLength()
+        {
+            return (_currentRecordedData[_currentRecordedData.Count - 1].TimeOfFrame - _currentRecordedData[0].TimeOfFrame).TotalMilliseconds;
+        }
+
         /// <summary>
         /// Binding property for the currently recorded data. This data represents all recorded data from start recording to stop recorrding.
         /// </summary>
@@ -43,6 +49,8 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                 OnPropertyChanged(new PropertyChangedEventArgs("FirstColorDataFrame"));
             }
         }
+
+        public long ColorDataOffset;
 
         private TimeSpan? _latencyBetweenFirstColorFrameAndFirstBodyFrame = null;
         public TimeSpan? LatencyBetweenFirstColorFrameAndFirstBodyFrame
@@ -68,11 +76,13 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                 return;
             if (CurrentRecordedBodyData.Count > 0)
             {
-                TimeSpan bodyCandidate = CurrentRecordedBodyData[0].TimeOfFrame;
+                //DateTime normalizatioTime = FirstColorDataFrame.Value;
+                var first = CurrentRecordedBodyData[0].TimeOfFrame;
                 //var m = DateTime.Now.AddMilliseconds(-Environment.TickCount + bodyCandidate.Ticks / 10000);
                 // is the difference m - FirstColorDataFrame.Value;
                 //TimeSpan candidate = (colorCandidate < bodyCandidate) ? colorCandidate : bodyCandidate;
-                CurrentRecordedBodyData.ToList().ForEach(x => x.TimeOfFrame = x.TimeOfFrame.Subtract(bodyCandidate));
+                CurrentRecordedBodyData.ToList()
+                    .ForEach(x => x.TimeOfFrame = x.TimeOfFrame.Add(new TimeSpan(ColorDataOffset*10000)) - first);
             }
             else
             {

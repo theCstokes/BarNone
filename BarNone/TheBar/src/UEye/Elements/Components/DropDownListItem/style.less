@@ -1,0 +1,33 @@
+.Drop-Down-List-Item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px;
+    >.Content {
+        display: flex;
+        justify-content: flex-start;
+        >.Type-Icon {
+            margin-right: 5px;
+        }
+        // >.Name:hover{
+        //     // color: #286090;
+        //     color: @DefaultElementAccent;
+        //     text-decoration: underline;
+        //     cursor: pointer;
+        // }
+        
+    }
+}
+
+.Drop-Down-List-Item.Selection-List {
+    margin: 0 -5px -5px -5px;
+    border-radius: 0;
+}
+
+.Drop-Down-List-Item:hover {
+    background-color: @DefaultGrey;
+}

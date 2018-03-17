@@ -104,6 +104,10 @@
         //
         // Summary:
         //     Right thumb.
-        ThumbRight = 24
+        ThumbRight = 24,
+        //
+        // Summary:
+        //      Center of  bar.
+        BarCenter = 25
     }
 }

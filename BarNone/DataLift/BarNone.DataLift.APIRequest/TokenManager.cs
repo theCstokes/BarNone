@@ -20,7 +20,7 @@ namespace BarNone.DataLift.APIRequest
         /// <returns>Authorization results</returns>
         public static async Task<AuthDTO> Authorize(string userName, string password)
         {
-
+            
             var postData = new Dictionary<string, string>
             {
                 ["userName"] = userName,
@@ -35,7 +35,7 @@ namespace BarNone.DataLift.APIRequest
                     content.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
 
                     HttpResponseMessage response = await httpClient
-                        .PostAsync(@"http://localhost:58428/api/v1/Authorization/Login", content);
+                        .PostAsync($"http://{Endpoint<UserDTO>.BASE_URL}/api/v1/Authorization/Login", content);
 
                     var result = await response.Content.ReadAsStringAsync();
                     var auth = JsonConvert.DeserializeObject<AuthDTO>(result);
@@ -73,7 +73,7 @@ namespace BarNone.DataLift.APIRequest
                     content.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
 
                     HttpResponseMessage response = await httpClient
-                        .PostAsync(@"http://localhost:58428/api/v1/Authorization/Create", content);
+                        .PostAsync($"http://{Endpoint<UserDTO>.BASE_URL}/api/v1/Authorization/Create", content);
 
                     var result = await response.Content.ReadAsStringAsync();
                     var auth = JsonConvert.DeserializeObject<AuthDTO>(result);

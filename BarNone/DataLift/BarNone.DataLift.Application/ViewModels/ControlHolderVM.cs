@@ -181,7 +181,6 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region Public Properties
-
         /// <summary>
         /// Field representation for the <see cref="StepOneStyleController"/> bindable property
         /// </summary>

@@ -259,12 +259,17 @@ namespace BarNone.DataLift.UI.ViewModels
                 .Lift
                 .CreateDTO(new Lift()
                 {
+                    LiftTypeID = 1,
                     BodyData = new BodyData
                     {
                         BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData.ToList(),
                         RecordDate = DateTime.Now
                     },
-                    Name = CurrentLiftData.LiftInformation[0].LiftName // TODO.  Not make this a hardcoded 0.
+                    Name = CurrentLiftData.LiftInformation[0].LiftName, // TODO.  Not make this a hardcoded 0.
+                    Video = new VideoRecord
+                    {
+                        Data = File.ReadAllBytes("TestFFMPEG.avi")
+                    }
                 });
 
             var toSend = JsonConvert.SerializeObject(liftDTO, Formatting.Indented,
@@ -285,6 +290,27 @@ namespace BarNone.DataLift.UI.ViewModels
                     }
                 }
             });
+
+
+            //DataManager.Flex.Post(new FlexDTO
+            //{
+            //    Entities = new List<FlexEntityDTO>
+            //    {
+            //        new FlexEntityDTO
+            //        {
+            //            Entity = new LiftDTO
+            //            {
+            //                Details = new LiftDetailDTO
+            //                {
+            //                    Video = new VideoDTO
+            //                    {
+            //                        Data = File.ReadAllBytes("TestFFMPEG.avi")
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //});
 
             string fname = string.Format("{0}.json", liftDTO.Name);
             if (File.Exists(fname))

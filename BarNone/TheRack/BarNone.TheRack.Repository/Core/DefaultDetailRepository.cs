@@ -76,12 +76,12 @@ namespace BarNone.TheRack.Repository.Core
         {
             if (where != null)
             {
-                return entites
+                return Entites
                     .Where(b => where(b))
                     .ToList();
             }
 
-            return entites.ToList();
+            return Entites.ToList();
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace BarNone.TheRack.Repository.Core
         /// <returns></returns>
         public override TDomainModel Get(int id)
         {
-            return entites.Where(b => b.ID == id).FirstOrDefault();
+            return Entites.Where(b => b.ID == id).FirstOrDefault();
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace BarNone.TheRack.Repository.Core
         /// <returns></returns>
         public override TDomainModel GetWithDetails(int id)
         {
-            var detailEntities = DetailEntityResolver(entites);
+            var detailEntities = DetailEntityResolver(Entites);
 
             return detailEntities
                 .Where(b => b.ID == id)

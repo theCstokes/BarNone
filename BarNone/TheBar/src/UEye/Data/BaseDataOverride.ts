@@ -16,4 +16,10 @@ export abstract class BaseDataOverride<TData> {
 		};
 		return JSON.stringify(entities);
 	}
+
+	public get listResult(): any {
+		return {
+			entities: this.data
+		};
+	}
 }

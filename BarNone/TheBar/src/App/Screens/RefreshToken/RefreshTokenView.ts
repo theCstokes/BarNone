@@ -7,12 +7,17 @@ import Input from "UEye/Elements/Components/Input/Input";
 import Label from "UEye/Elements/Components/Label/Label";
 
 export default class RefreshTokenView extends DialogView {
+	public caption: string = "Login";
+	public cancelButtonText: string = "Cancel";
+	public cancelButtonIcon: string = "fa-times";
+	public acceptButtonText: string = "Login";
+	public acceptButtonIcon: string = "fa-sign-in-alt";
 
 	public usernameInput: Input;
 	public passwordInput: Input;
 	public statusLabel: Label;
-	public cancelButton: Button;
-	public loginButton: Button;
+	// public cancelButton: Button;
+	// public loginButton: Button;
 
 	public get content(): any[] {
 		return [
@@ -34,24 +39,24 @@ export default class RefreshTokenView extends DialogView {
 			{
 				id: "statusLabel",
 				instance: ControlTypes.Label
-			},
-			{
-				instance: ControlTypes.OrderLayout,
-				content: [
-					{
-						instance: ControlTypes.Button,
-						id: "cancelButton",
-						icon: "fa-times",
-						text: "Cancel"
-					},
-					{
-						instance: ControlTypes.Button,
-						id: "loginButton",
-						icon: "fa-sign-in",
-						text: "Login"
-					}
-				]
 			}
+			// {
+			// 	instance: ControlTypes.OrderLayout,
+			// 	content: [
+			// 		{
+			// 			instance: ControlTypes.Button,
+			// 			id: "cancelButton",
+			// 			icon: "fa-times",
+			// 			text: "Cancel"
+			// 		},
+			// 		{
+			// 			instance: ControlTypes.Button,
+			// 			id: "loginButton",
+			// 			icon: "fa-sign-in",
+			// 			text: "Login"
+			// 		}
+			// 	]
+			// }
 		]
 	}
 }

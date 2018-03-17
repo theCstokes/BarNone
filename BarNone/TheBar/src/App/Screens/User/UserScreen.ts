@@ -57,7 +57,7 @@ export default class UserScreen extends Screen<UserView> {
 		};
 
 		this.subScreen = UEye.push(UserEditScreen) as UserEditScreen;
-		this._stateManager.init();
+		this._stateManager.ResetState.trigger();
 
 		// this.subScreen.stateManager.saveEvent.on(() => {
 		// 	this.stateManager.init();

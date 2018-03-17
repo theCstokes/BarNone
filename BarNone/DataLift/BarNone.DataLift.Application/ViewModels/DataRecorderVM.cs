@@ -216,9 +216,12 @@ namespace BarNone.DataLift.UI.ViewModels
                     if(CurrentRecordingState == RecordingState.WAITING_FOR_FIRST_BODY_FRAME)
                     {
                         ColorDataToBodyDataLatency.Stop();
+                        CurrentLiftData.ColorDataOffset = _ffmpegController.durationInMs;
                         CurrentRecordingState = RecordingState.RECORDING;
                     }
                     CurrentLiftData.CurrentRecordedBodyData.Add(dataFrame);
+                    //Console.WriteLine($"{dataFrame.TimeOfFrame.Milliseconds} versus {new TimeSpan(Environment.TickCount).Milliseconds} versus {DateTime.Now} versus {DateTime.UtcNow}");
+
                 }
                 //Update The Side And Front Views
                 KinectToImage.DrawFrameSideView(dataFrame, SideProfileDrawingGroup, displayHeight, displayWidth);
@@ -400,6 +403,7 @@ namespace BarNone.DataLift.UI.ViewModels
             CurrentRecordingState = RecordingState.NOT_RECORDING;
             IsRecording = false;
 
+
             //_ffmpegController.StopFfmpegRecord();
             //CurrentLiftData.FirstColorDataFrame = _ffmpegController.FirstFrameTime;
 
@@ -431,6 +435,7 @@ namespace BarNone.DataLift.UI.ViewModels
             catch (ArgumentException)
             {
                 //Argument exception if the data cannot be normalized for processing
+                //TODO do not enable moving to edit and print an error in red
             }
             return;
             //TODO CLEAN!
@@ -479,8 +484,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 //kinectSensor?.Close();
                 kinectSensor = null;
             }
-
-            //_webCamHandler.Dispose();
         }
 
         /// <summary>
@@ -490,7 +493,6 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             // one sensor is currently supported
             kinectSensor = KinectSensor.GetDefault();
-
             // get the coordinate mapper
             coordinateMapper = kinectSensor.CoordinateMapper;
 
@@ -510,7 +512,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
             // open the sensor
             kinectSensor.Open();
-
+            
             // Create the drawing group we'll use for drawing
             FrontProfileDrawingGroup = new DrawingGroup();
 

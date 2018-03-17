@@ -1,45 +1,72 @@
 import { BaseContainer } from "UEye/Elements/Core/BaseContainer/BaseContainer";
 import Core from "UEye/Elements/Core/Core";
+import { BaseView } from "UEye/Elements/Core/BaseView";
+import InflaterData from "UEye/Elements/Inflater/InflaterData";
+import IconButton from "UEye/Elements/Components/IconButton/IconButton";
+import ControlTypes from "UEye/ControlTypes";
 
 export default class Panel extends BaseContainer {
 
-    // Region Private Member(s).
-    private _topDockElement: HTMLElement;
-    private _captionElement: HTMLElement
-    private _modeElement: HTMLElement;
-    private _contentElement: HTMLElement;
-    private _bottomDockElement: HTMLElement;
+    //#region Private DOM Element(s).
+    private e_topDock: HTMLElement;
+    private e_actionBar: HTMLElement;
+    private e_caption: HTMLElement
+    private e_mode: HTMLElement;
+    private e_content: HTMLElement;
+    private e_bottomDock: HTMLElement;
+    //#endregion
 
-    private _caption: string
-    // End Region.
+    //#region Private Field(s).
+    private _view: BaseView;
+    private _caption: string;
+    //#endregion
 
-    // Public Constructor(s).
+    //#region Public Constructor(s).
     constructor(parent: HTMLElement) {
         super(parent, "UEye-Panel");
-        // Core.addClass(this.element, "UEye-Panel");
 
-        this._topDockElement = Core.create("div", this.element, "Top-Dock");
-        this._captionElement = Core.create("div", this._topDockElement, "Name");
-        this._modeElement = Core.create("div", this._topDockElement, "Mode");
-        this._contentElement = Core.create("div", this.element, "Content");
-        this.linkComponentContainer("content", this._contentElement);
-        this._bottomDockElement = Core.create("div", this.element, "Bottom-Dock");
-        this.linkComponentContainer("dockBottom", this._bottomDockElement);
+        this.e_topDock = Core.create("div", this.element, "Top-Dock");
+        this.e_actionBar = Core.create("div", this.e_topDock, "Action-Bar");
+        this.linkComponentContainer("actionBar", this.e_actionBar);
+
+        this.e_caption = Core.create("div", this.e_topDock, "Name");
+        this.e_mode = Core.create("div", this.e_topDock, "Mode");
+
+        this.e_content = Core.create("div", this.element, "Content");
+        this.linkComponentContainer("content", this.e_content);
+
+        this.e_bottomDock = Core.create("div", this.element, "Bottom-Dock");
+        this.linkComponentContainer("dockBottom", this.e_bottomDock);
+
+        this.onBindView.on(view => this._view = view);
     }
-    // End Region
+    //#endregion
 
-    // Region Public Property(s).
+    //#region Public Property(s).
     public set caption(value: any) {
         this._caption = value;
-        this._captionElement.textContent = this._caption;
-        if(!Utils.isNullOrWhitespace(this._caption)) {
-            Core.addClass(this._topDockElement, "Has-Caption");
+        this.e_caption.textContent = this._caption;
+        if (!Utils.isNullOrWhitespace(this._caption)) {
+            Core.addClass(this.e_topDock, "Has-Caption");
         } else {
-            Core.removeClass(this._topDockElement, "Has-Caption");
+            Core.removeClass(this.e_topDock, "Has-Caption");
         }
     }
     public get caption(): any {
         return this._caption;
+    }
+
+    public set actions(value: IconButton[]) {
+        var data = new InflaterData();
+        value.map(action => {
+            return ControlTypes.IconButton
+                .inflate(this.e_actionBar, action, this._view, data) as IconButton;
+        });
+        this._view.setElements(data.componentMap);
+        this.setComponentContainer("content", value);
+    }
+    public get actions(): IconButton[] {
+        return this.getComponentContainer("content");
     }
 
     public set content(value: any[]) {
@@ -50,34 +77,42 @@ export default class Panel extends BaseContainer {
     }
 
     public set dockBottom(value: any[]) {
+        console.log("dock is undefined: " + (value === undefined));
+        if (value !== undefined) {
+            Core.addClass(this.e_content, "Has-Bottom-Dock");
+        } else {
+            Core.removeClass(this.e_content, "Has-Bottom-Dock");
+        }
+
         this.setComponentContainer("dockBottom", value);
     }
     public get dockBottom(): any[] {
         return this.getComponentContainer("dockBottom");
     }
-    // End Region
+    //#endregion
 
-    // Region Protected Member(s).
-    protected onModify(): void {
-        
-    }
-    
-    protected onReadonly(): void {
-        
-    }
-    // End Region
+    // // Region Protected Member(s).
+    public onModifiedChange(): void { }
+    // protected onModify(): void {
 
-    // Region Private Member(s).
-    private renderMode(mode: boolean, flag: string) {
-        if(mode) {
-            Core.addClass(this._topDockElement, flag);
-            this._modeElement.textContent = flag;
-            Core.addClass(this._modeElement, flag);
-        } else {
-            Core.removeClass(this._topDockElement, flag);
-            this._modeElement.textContent = "";
-            Core.removeClass(this._modeElement, flag);
-        }
-    }
+    // }
+
+    // protected onReadonly(): void {
+
+    // }
+    // // End Region
+
+    // // Region Private Member(s).
+    // private renderMode(mode: boolean, flag: string) {
+    //     if (mode) {
+    //         Core.addClass(this.e_topDock, flag);
+    //         this.e_mode.textContent = flag;
+    //         Core.addClass(this.e_mode, flag);
+    //     } else {
+    //         Core.removeClass(this.e_topDock, flag);
+    //         this.e_mode.textContent = "";
+    //         Core.removeClass(this.e_mode, flag);
+    //     }
+    // }
 
 }

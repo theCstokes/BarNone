@@ -8,4 +8,9 @@
     <Configurations>Debug;Release;DataLift - Debug;WorkingWithTheRack;DL;DebugRack</Configurations>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj" />
+    <ProjectReference Include="..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj" />
+  </ItemGroup>
+
 </Project>

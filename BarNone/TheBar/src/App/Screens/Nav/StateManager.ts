@@ -7,6 +7,7 @@ import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import { ContextState } from "App/Screens/Nav/ContextStateManager";
 import ParentStateManager from "UEye/StateManager/ParentStateManager";
 import LiftScreen from "App/Screens/Lifts/LiftScreen";
+import LiftProfileScreen from "App/Screens/LiftProfile/LiftProfileScreen";
 import DataManager from "App/Data/DataManager";
 
 /**
@@ -24,20 +25,14 @@ class NavElement {
  *  Represents State for Nav Screen.
  */
 export class State {
-	/**
- *  Represents Current screen id
- */
+	/** Represents Current screen id */
 	public currentScreenId: number;
-	/**
- *  Represents array storing navigation history
- */
+	/** Represents array storing navigation history */
 	public navHistory: number[] = [];
 
 	public context: ContextState = new ContextState();
 
-	/**
- *  Represents lists seen as part Navigation List
- */
+	/** Represents lists seen as part Navigation List */
 	public navElementList: NavElement[] = [
 		// {
 		// 	id: 1,
@@ -72,12 +67,18 @@ export class State {
 			screen: LiftScreen,
 			initData: "Shared"
 		},
+		{	
+			id: 3,
+			name:"Lift Profile",
+			icon: "fa-user",
+			screen: LiftProfileScreen
+		},
 		{
 			id: 2,
 			name: "Settings",
 			icon: "fa-cog",
 			screen: SettingsScreen
-		}
+		}	
 	]
 }
 
@@ -85,6 +86,8 @@ export class StateManager extends ParentStateManager<State> {
 	public constructor() {
 		super(State);
 	}
+
+	public async onInitialize(): Promise<void> { 	}
 
 	// public constructor() {
 	// 	super();

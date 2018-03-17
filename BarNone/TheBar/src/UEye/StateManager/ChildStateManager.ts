@@ -5,7 +5,7 @@ import ParentStateManager from "UEye/StateManager/ParentStateManager";
 export type ChildStateAccessor<TState, TParentState> = (state: TParentState) => TState;
 export type ChildStateUpdater<TState, TParentState> = (state: TParentState, data: TState) => void;
 
-export default class ChildStateManager<TState, TParentState> extends BaseStateManager<TState> {
+export default abstract class ChildStateManager<TState, TParentState> extends BaseStateManager<TState> {
     private _parentStateManager: ParentStateManager<TParentState>;
     private _TStateType: { new(): TState };
     private _accessor: ChildStateAccessor<TState, TParentState>;

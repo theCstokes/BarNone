@@ -3,7 +3,7 @@ import Lift from "App/Data/Models/Lift/Lift";
 export default class Comment {
 	public id: number;
 
-	public userID: number;
+	public sentUserID: number;
 
 	public liftID: number;
 
@@ -11,7 +11,7 @@ export default class Comment {
 
 	public text: string;
 
-	public details: CommentDetails;
+	public details?: CommentDetails;
 }
 
 class CommentDetails {

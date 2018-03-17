@@ -69,6 +69,8 @@ namespace TheRack.ResourceServer.API.Controllers
                 }, _serializerSettings));
             }
 
+            await NotificationWebSocketMiddleware.NotifyAll($"{applicationUser.Name} has logged in.");
+
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, applicationUser.UserName),

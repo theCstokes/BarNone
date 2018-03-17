@@ -59,6 +59,7 @@ namespace BarNone.TheRack.Repository
                 .Include(u => u.Parent)
                 .Include(u => u.Video)
                 .Include(u => u.Permissions)
+                .Include(u => u.LiftType)
                 .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints)
                 .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointType)
                 .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointTrackingStateType);
@@ -85,7 +86,7 @@ namespace BarNone.TheRack.Repository
                 dm.Video.Path = SaveVideo(dm.Video);
             }
             //dm.Video.UserID = 2;
-            dm.VideoID = 2;
+            //dm.VideoID = 2;
             var result = Create(dm);
 
             return result;

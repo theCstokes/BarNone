@@ -5,52 +5,125 @@ import Panel from "UEye/Elements/Containers/Panel/Panel";
 import Video from "UEye/Elements/Components/Video/Video";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import List from "UEye/Elements/Components/List/List";
+import IconButton from "UEye/Elements/Components/IconButton/IconButton";
+import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout";
+import Messenger from "UEye/Elements/Components/Messenger/Messenger";
+import DropDownInput from "UEye/Elements/Components/DropDownInput/DropDownInput";
+import { LiftPermissionTab, ILiftPermissionView } from "App/Screens/Lifts/Shared/LiftPermissionView";
 
-export default class LiftEditView extends EditView {
+export default class LiftEditView extends EditView implements ILiftPermissionView {
+	protected caption: string = "Lift Edit";
+
 	public nameInput: Input;
-	public ageInput: Input;
-	public editPanel: Panel;
+	public typeDropDown: DropDownInput;
+	public parentDropDown: DropDownInput;
+	public userShareList: List;
 	public player: Video;
-	public commentList: List;
+	public messenger: Messenger;
+	public analyticsButton: IconButton;
+	public videoLayout: SideBarLayout;
 
 	public get content(): any[] {
 		return [
 			{
-				id: "editPanel",
-				instance: ControlTypes.Panel,
-				caption: "User Edit",
+				id: "nameInput",
+				instance: ControlTypes.Input,
+				hint: "Name"
+			},
+			{
+				instance: ControlTypes.OrderLayout,
 				content: [
 					{
-						id: "nameInput",
-						instance: ControlTypes.Input,
-						hint: "Name"
+						id: "typeDropDown",
+						instance: ControlTypes.DropDownInput,
+						hint: "Lift Type"
 					},
 					{
-						instance: ControlTypes.TabLayout,
-						tabs: [
+						id: "parentDropDown",
+						instance: ControlTypes.DropDownInput,
+						hint: "Parent Folder"
+					}
+				]
+			},
+			{
+				instance: ControlTypes.TabLayout,
+				tabs: [
+					{
+						actions: [
 							{
-								title: "Video",
+								id: "analyticsButton",
+								text: "Settings",
+								icon: "fa-cog"
+							}
+						],
+						title: "Video",
+						content: [
+							{
+								instance: ControlTypes.SideBarLayout,
+								id: "videoLayout",
 								content: [
 									{
 										id: "player",
 										instance: ControlTypes.Video
-									},
-								]
-							},
-							{
-								title: "Comments",
-								content: [
+									}
+								],
+								sideBar: [
 									{
-										id: "commentList",
-										instance: ControlTypes.List,
-										style: ControlTypes.DataListItem
+										instance: ControlTypes.Panel,
+										caption: "Analytics",
+										actions: [
+											{
+												id: "editButton",
+												text: "Edit",
+												icon: "fa-pencil-alt"
+											}
+										],
+										content: [
+											{
+												instance: ControlTypes.Checkbox,
+												id: "checkOne",
+												text: "Skeletal View"
+											},
+											{
+												instance: ControlTypes.List,
+												id: "liftList",
+												style: ControlTypes.AnalysisListItem,
+												items: [
+													{
+														id: 1,
+														name: "Acceleration",
+														value: "55m/s",
+														icon: "fa-plus",
+														onAction: () => alert(11)
+													},
+													{
+														id: 2,
+														name: "Knee Angle",
+														value: "30 deg",
+														onAction: () => alert(22)
+													},
+												]
+											}
+										]
 									}
 								]
 							}
 						]
-					}
+					},
+					{
+						title: "Comments",
+						content: [
+							{
+								id: "messenger",
+								instance: ControlTypes.Messenger,
+								// style: ControlTypes.DataListItem
+							}
+						]
+					},
+					LiftPermissionTab.content
 				]
 			}
-		];
+				
+		 ]
 	}
 }

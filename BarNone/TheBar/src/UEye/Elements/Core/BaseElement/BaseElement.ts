@@ -1,6 +1,7 @@
 import Core from "UEye/Elements/Core/Core";
 import { BaseView } from "UEye/Elements/Core/BaseView";
 import DataEvent from "UEye/Core/DataEvent/DataEvent";
+import StringUtils from "UEye/Core/StringUtils";
 
 /**Parent Class to all components including BaseComponent.BaseElement provides the basic HTML functionality*/
 export abstract class BaseElement {
@@ -22,6 +23,7 @@ export abstract class BaseElement {
 	private _parent: HTMLElement;
 
 	/** Represents onShow callback  */
+	protected onBindView: DataEvent<BaseView>;
 	protected onShow: DataEvent<BaseView>;
 
 	/** Constructor makes basic HTMLElement
@@ -31,8 +33,10 @@ export abstract class BaseElement {
 	public constructor(parent: HTMLElement, ...styles: string[]) {
 		this._element = Core.create('div', parent, ...styles);
 		this._parent = parent;
+		this.onBindView = new DataEvent<BaseView>();
 		this.onShow = new DataEvent<BaseView>();
 	}
+	
 	/** Accessor to get _element property.
 	* @returns Returns element property.
 	* */
@@ -134,20 +138,28 @@ export abstract class BaseElement {
 		}
 	}
 
+	public bindView(view: BaseView): void {
+		this.onBindView.trigger(view);
+	}
+	
 	public show(view: BaseView): void {
 		this.onShow.trigger(view);
 	}
 
 	/**Abstract event listener */
 	public onModifiedChange(): void {
-		throw ("No onModifiedChange implemented for component.")
+		throw (StringUtils.format("No onModifiedChange implemented for component: {0}", this.getName()))
 	}
 	/**Abstract event listener */
 	public onReadonlyChange(): void {
-		throw ("No onModifiedChange implemented for component.")
+		throw (StringUtils.format("No onReadonlyChange implemented for component: {0}", this.getName()))
 	}
 	/**Abstract event listener */
 	public onErrorChange(): void {
-		throw ("No onModifiedChange implemented for component.")
+		throw (StringUtils.format("No onErrorChange implemented for component: {0}", this.getName()))
 	}
+
+	private getName(): string { 
+		return this.constructor.name;
+ };
 }

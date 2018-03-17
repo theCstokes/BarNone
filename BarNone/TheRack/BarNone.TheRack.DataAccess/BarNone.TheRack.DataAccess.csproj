@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj" />
+    <ProjectReference Include="..\BarNone.TheRack.Core\BarNone.TheRack.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
