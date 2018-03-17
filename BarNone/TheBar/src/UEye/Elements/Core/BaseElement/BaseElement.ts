@@ -23,6 +23,7 @@ export abstract class BaseElement {
 	private _parent: HTMLElement;
 
 	/** Represents onShow callback  */
+	protected onBindView: DataEvent<BaseView>;
 	protected onShow: DataEvent<BaseView>;
 
 	/** Constructor makes basic HTMLElement
@@ -32,8 +33,10 @@ export abstract class BaseElement {
 	public constructor(parent: HTMLElement, ...styles: string[]) {
 		this._element = Core.create('div', parent, ...styles);
 		this._parent = parent;
+		this.onBindView = new DataEvent<BaseView>();
 		this.onShow = new DataEvent<BaseView>();
 	}
+	
 	/** Accessor to get _element property.
 	* @returns Returns element property.
 	* */
@@ -135,6 +138,10 @@ export abstract class BaseElement {
 		}
 	}
 
+	public bindView(view: BaseView): void {
+		this.onBindView.trigger(view);
+	}
+	
 	public show(view: BaseView): void {
 		this.onShow.trigger(view);
 	}

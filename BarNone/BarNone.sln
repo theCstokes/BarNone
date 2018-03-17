@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{77D27D1C-4BFF-4CBC-8102-2B311548C1FE}"
 EndProject
@@ -53,7 +53,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.Shared.Analysis", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.Shared.AnalysisTests", "BarNone.Shared.AnalysisTests\BarNone.Shared.AnalysisTests.csproj", "{542145FC-2FAC-449E-BDFC-43C9810B6B0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarNone.TheRack.NotificationManager", "TheRack\BarNone.TheRack.NotificationManager\BarNone.TheRack.NotificationManager.csproj", "{9A5CEC0B-6D07-4B5A-B000-A938F3ED7D60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarNone.TheRack.NotificationManager", "TheRack\BarNone.TheRack.NotificationManager\BarNone.TheRack.NotificationManager.csproj", "{9A5CEC0B-6D07-4B5A-B000-A938F3ED7D60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

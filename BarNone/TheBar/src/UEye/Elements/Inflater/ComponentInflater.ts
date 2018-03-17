@@ -8,17 +8,27 @@ import { BaseView } from "UEye/Elements/Core/BaseView";
 type ComponentBuilder = (parent: HTMLElement) => BaseComponent;
 
 export default class ComponentType implements IControlType<BaseComponent> {
-    private _builder: ComponentBuilder;
+	private _builder: ComponentBuilder;
 
 	public constructor(builder: ComponentBuilder) {
-        this._builder = builder;
+		this._builder = builder;
 	}
 
-    public create(parent: HTMLElement, config: ComponentConfig, view: BaseView, data?: InflaterData): BaseComponent {
-        if (data === undefined) data = new InflaterData();
+	public inflate(parent: HTMLElement, config: ComponentConfig, view: BaseView,
+		data?: InflaterData): BaseComponent {
+		if (data === undefined) data = new InflaterData();
+		var result = this.create(parent, config, view, data);
+		// result.show(view);
+		data!.componentList.forEach(c => c.show(view));
+		return result;
+	}
+
+	public create(parent: HTMLElement, config: ComponentConfig, view: BaseView,
+		data?: InflaterData): BaseComponent {
+		if (data === undefined) data = new InflaterData();
 		var component = this._builder(parent);
 
-		component.show(view);
+		component.bindView(view);
 
 		// if ("onShow" in component) {
 		// 	component.onShow();

@@ -38,7 +38,7 @@ export default class Panel extends BaseContainer {
         this.e_bottomDock = Core.create("div", this.element, "Bottom-Dock");
         this.linkComponentContainer("dockBottom", this.e_bottomDock);
 
-        this.onShow.on(view => this._view = view);
+        this.onBindView.on(view => this._view = view);
     }
     //#endregion
 
@@ -60,7 +60,7 @@ export default class Panel extends BaseContainer {
         var data = new InflaterData();
         value.map(action => {
             return ControlTypes.IconButton
-                .create(this.e_actionBar, action, this._view, data) as IconButton;
+                .inflate(this.e_actionBar, action, this._view, data) as IconButton;
         });
         this._view.setElements(data.componentMap);
         this.setComponentContainer("content", value);

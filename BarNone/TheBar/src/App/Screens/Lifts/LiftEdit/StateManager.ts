@@ -3,10 +3,10 @@ import StateBind from "UEye/StateManager/StateBind";
 import DataManager from "App/Data/DataManager";
 import Lift from "App/Data/Models/Lift/Lift";
 import Comment from "App/Data/Models/Comment/Comment";
-import { ELiftType } from "App/Screens/Lifts/StateManager";
 import LiftType from "App/Data/Models/Lift/LiftType";
 import LiftFolder from "App/Data/Models/LiftFolder/LiftFolder";
 import BodyData from "App/Data/Models/BodyData/BodyData";
+import { ELiftType } from "App/Screens/Lifts/StateManagers/BaseLiftStateManager";
 
 export class State {
 	public id: number;
@@ -46,6 +46,7 @@ export class StateManager extends BaseStateManager<State> {
 			// Setup static data.
 			var nextState = state.empty();
 
+
 			nextState.current.type = data.type;
 
 			var lift = null;
@@ -53,6 +54,7 @@ export class StateManager extends BaseStateManager<State> {
 				lift = await DataManager.Lifts.single(data.id, { includeDetails: true });
 			} else if (data.type === ELiftType.Shared) {
 				lift = await DataManager.SharedLifts.single(data.id, { includeDetails: true });
+
 			}
 			nextState.current.name = lift!.name;
 			nextState.current.liftType = lift!.details.liftType;
