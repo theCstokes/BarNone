@@ -1,4 +1,5 @@
 import BodyData from "App/Data/Models/BodyData/BodyData";
+import { JointTypeEnum } from "App/Screens/Lifts/LiftEdit/JointTypeEnum";
 
 export class SkeletonLine {
 	public x1: number;
@@ -12,106 +13,6 @@ export class SkeletonLine {
 	public constructor(init?: Partial<SkeletonLine>) {
 		Object.assign(this, init);
 	}
-}
-
-enum JointTypeEnum {
-	SpineBase = 0,
-	//
-	// Summary:
-	//     Middle of the spine.
-	SpineMid = 1,
-	//
-	// Summary:
-	//     Neck.
-	Neck = 2,
-	//
-	// Summary:
-	//     Head.
-	Head = 3,
-	//
-	// Summary:
-	//     Left shoulder.
-	ShoulderLeft = 4,
-	//
-	// Summary:
-	//     Left elbow.
-	ElbowLeft = 5,
-	//
-	// Summary:
-	//     Left wrist.
-	WristLeft = 6,
-	//
-	// Summary:
-	//     Left hand.
-	HandLeft = 7,
-	//
-	// Summary:
-	//     Right shoulder.
-	ShoulderRight = 8,
-	//
-	// Summary:
-	//     Right elbow.
-	ElbowRight = 9,
-	//
-	// Summary:
-	//     Right wrist.
-	WristRight = 10,
-	//
-	// Summary:
-	//     Right hand.
-	HandRight = 11,
-	//
-	// Summary:
-	//     Left hip.
-	HipLeft = 12,
-	//
-	// Summary:
-	//     Left knee.
-	KneeLeft = 13,
-	//
-	// Summary:
-	//     Left ankle.
-	AnkleLeft = 14,
-	//
-	// Summary:
-	//     Left foot.
-	FootLeft = 15,
-	//
-	// Summary:
-	//     Right hip.
-	HipRight = 16,
-	//
-	// Summary:
-	//     Right knee.
-	KneeRight = 17,
-	//
-	// Summary:
-	//     Right ankle.
-	AnkleRight = 18,
-	//
-	// Summary:
-	//     Right foot.
-	FootRight = 19,
-	//
-	// Summary:
-	//     Between the shoulders on the spine.
-	SpineShoulder = 20,
-	//
-	// Summary:
-	//     Tip of the left hand.
-	HandTipLeft = 21,
-	//
-	// Summary:
-	//     Left thumb.
-	ThumbLeft = 22,
-	//
-	// Summary:
-	//     Tip of the right hand.
-	HandTipRight = 23,
-	//
-	// Summary:
-	//     Right thumb.
-	ThumbRight = 24
 }
 
 export class SkeletonBuilder {
@@ -168,7 +69,6 @@ export class SkeletonBuilder {
 		SkeletonBuilder._init();
 		return bodyData.details.orderedFrames.map(f => {
 			var spineBase = f.details.joints.find(j => j.jointTypeID === (JointTypeEnum.SpineBase));
-			console.log("Spine Base"+spineBase);
 			
 			if (spineBase === undefined) return [];
 
@@ -203,7 +103,7 @@ export class SkeletonBuilder {
 					x2: endJoint.x*-65+250,
 					y2: endJoint.y*-65+100,
 				}));
-				console.log("Start JointType:"+m.start, "End JointType:"+m.end, i++);
+				// console.log("Start JointType:"+m.start, "End JointType:"+m.end, i++);
 				return result;
 			}, new Array<SkeletonLine>());
 		});

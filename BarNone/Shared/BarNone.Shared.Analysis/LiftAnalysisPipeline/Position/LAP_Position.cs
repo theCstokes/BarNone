@@ -40,10 +40,15 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Position
 
             }
 
+            List<float> time = new List<float>(_jtsList[(int)Request.Joint].t);
+
             return new ResultEntity
             {
                 Type = ELiftAnalysisType.Position,
-                Value = result
+                Value = new Dictionary<string, List<float>>() {
+                    ["time"]= time,
+                    ["data"]= result
+                }
             };
         }
 

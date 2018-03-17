@@ -37,4 +37,8 @@ export default class DataManager extends BaseDataManager {
 
 	public static readonly Settings: Resource<SettingsElement> 
 		= new Resource<SettingsElement>("Settings", true);
+
+	public static readonly LiftAnalysis: Resource<any> 
+		= new Resource<any>("Analysis/Lift", true);
+
 }

@@ -10,6 +10,7 @@ import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout"
 import Messenger from "UEye/Elements/Components/Messenger/Messenger";
 import DropDownInput from "UEye/Elements/Components/DropDownInput/DropDownInput";
 import { LiftPermissionTab, ILiftPermissionView } from "App/Screens/Lifts/Shared/LiftPermissionView";
+import { ChartTab } from "App/Screens/Lifts/Chart/ChartTab";
 
 export default class LiftEditView extends EditView implements ILiftPermissionView {
 	protected caption: string = "Lift Edit";
@@ -120,7 +121,8 @@ export default class LiftEditView extends EditView implements ILiftPermissionVie
 							}
 						]
 					},
-					LiftPermissionTab.content
+					LiftPermissionTab.content,
+					ChartTab.content
 				]
 			}
 				

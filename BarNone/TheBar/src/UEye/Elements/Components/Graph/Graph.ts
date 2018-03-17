@@ -107,11 +107,11 @@ export default class Graph extends BaseComponent {
                     scales: {
                         yAxes: [{
                             ticks: {
-                                beginAtZero: true
+                                // beginAtZero: true
                             },
                           scaleLabel: {
                             display: true,
-                            labelString: this._xAxisLabel
+                            labelString: this._yAxisLabel
                            
                           }
                         }],
@@ -119,13 +119,10 @@ export default class Graph extends BaseComponent {
                             type: 'linear',
                             ticks: {
                                 beginAtZero: true,
-                                min: 0,
-                                max: 100,
-                                stepSize: 15
                             },
                             scaleLabel: {
                               display: true,
-                              labelString: this._yAxisLabel
+                              labelString: this._xAxisLabel
                             }
                           }],
                       }  
