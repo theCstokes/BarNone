@@ -362,11 +362,11 @@ namespace BarNone.DataLift.UI.ViewModels
             CurrentLiftData.CurrentRecordedBodyData.Clear();
             CurrentRecordingState = RecordingState.WAITING_FOR_FIRST_COLOR_FRAME;
 
-            _ffmpegController.StartFfmpegRecord("TestFFMPEG.avi", () =>
-            {
-                CurrentRecordingState = RecordingState.WAITING_FOR_FIRST_BODY_FRAME;
-                ColorDataToBodyDataLatency.Restart();
-            });
+            //_ffmpegController.StartFfmpegRecord("TestFFMPEG.avi", () =>
+            //{
+            //    CurrentRecordingState = RecordingState.WAITING_FOR_FIRST_BODY_FRAME;
+            //    ColorDataToBodyDataLatency.Restart();
+            //});
 
         }
 
@@ -404,18 +404,18 @@ namespace BarNone.DataLift.UI.ViewModels
             IsRecording = false;
 
 
-            _ffmpegController.StopFfmpegRecord();
-            
+            //_ffmpegController.StopFfmpegRecord();
+
             // Test Code
 
-            //string json = File.ReadAllText(@"Chris_Single_Squat_1.json");
-            //LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
-            //CurrentLiftData.CurrentRecordedBodyData =
-            //    new ObservableCollection<BodyDataFrame>(Converters
-            //    .NewConvertion()
-            //    .Lift.CreateDataModel(liftDTO)
-            //    .BodyData
-            //    .BodyDataFrames);
+            string json = File.ReadAllText(@"Chris_Single_Squat_1.json");
+            LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
+            CurrentLiftData.CurrentRecordedBodyData =
+                new ObservableCollection<BodyDataFrame>(Converters
+                .NewConvertion()
+                .Lift.CreateDataModel(liftDTO)
+                .BodyData
+                .BodyDataFrames);
 
             CurrentLiftData.LiftInformation.Add(new LiftListVM
             {
