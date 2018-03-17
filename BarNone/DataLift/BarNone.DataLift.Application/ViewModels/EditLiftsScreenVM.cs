@@ -273,14 +273,24 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <param name="action">The object in the ObservableCollection that called Delete.</param>
         private void DeleteSelectedRecordingCommand(object action)
         {
+            if(CurrentLifts.LiftInformation.Count == 0)
+            {
+                return;
+            }
+            
             // Cast action to a LiftListVM.
             LiftListVM selected = (LiftListVM)action;
+
+            
 
             // If action is null then return
             if (action == null) return;
 
             // Remove the correct lift and redo count for all the remaining lifts in ListView.
             LiftIntervals.RemoveAt(selected.Count);
+
+            SelectedLift = CurrentLifts.LiftInformation[selected.Count];
+
             for (int i = 0; i < LiftIntervals.Count; i++) LiftIntervals[i].Count = i;
         }
 
@@ -563,14 +573,14 @@ namespace BarNone.DataLift.UI.ViewModels
                 if(ScrubberLowerThumb <= value)
                 {
                     _scrubberUpperThumb = value;
-                    SelectedLift.LiftEndTime = value;
+                    if (SelectedLift != null) SelectedLift.LiftEndTime = value;
 
                     OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
                 }
                 else
                 {
                     ScrubberLowerThumb = value;
-                    SelectedLift.LiftStartTime = value;
+                    if (SelectedLift != null) SelectedLift.LiftStartTime = value;
 
                     _scrubberUpperThumb = value;
                     SelectedLift.LiftEndTime = value;
@@ -597,7 +607,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 if(ScrubberUpperThumb >= value)
                 {
                     _scrubberLowerThumb = value;
-                    SelectedLift.LiftStartTime = value;
+                    if(SelectedLift != null) SelectedLift.LiftStartTime = value;
 
                     OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
                 }
@@ -607,7 +617,7 @@ namespace BarNone.DataLift.UI.ViewModels
                     SelectedLift.LiftEndTime = value;
 
                     _scrubberLowerThumb = value;
-                    SelectedLift.LiftStartTime = value;
+                    if (SelectedLift != null)  SelectedLift.LiftStartTime = value;
                     OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
                 }
             }
