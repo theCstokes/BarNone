@@ -23,12 +23,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
 
         public double DataLength()
         {
-            double tot = 0.0;
-            for(int i = 0; i < _currentRecordedData.Count - 1; i++ )
-            {
-                tot += (_currentRecordedData[i+1].TimeOfFrame - _currentRecordedData[i].TimeOfFrame).TotalMilliseconds;
-            }
-            return tot;
+            return (_currentRecordedData[_currentRecordedData.Count - 1].TimeOfFrame - _currentRecordedData[0].TimeOfFrame).TotalMilliseconds;
         }
 
         /// <summary>

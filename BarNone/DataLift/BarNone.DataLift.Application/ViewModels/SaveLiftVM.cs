@@ -294,6 +294,27 @@ namespace BarNone.DataLift.UI.ViewModels
                 }
             });
 
+
+            DataManager.Flex.Post(new FlexDTO
+            {
+                Entities = new List<FlexEntityDTO>
+                {
+                    new FlexEntityDTO
+                    {
+                        Entity = new LiftDTO
+                        {
+                            Details = new LiftDetailDTO
+                            {
+                                Video = new VideoDTO
+                                {
+                                    Data = null
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
             string fname = string.Format("{0}.json", liftDTO.Name);
             if (File.Exists(fname))
                 File.Delete(fname);
