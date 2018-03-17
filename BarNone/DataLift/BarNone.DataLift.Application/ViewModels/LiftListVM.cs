@@ -14,7 +14,6 @@ namespace BarNone.DataLift.UI.ViewModels
     /// </summary>
     public class LiftListVM : ViewModelBase
     {
-       
         /// <summary>
         /// Corresponds to the index in the <see cref="EditLiftsScreenVM.LiftIntervals"/>
         /// </summary>
@@ -136,8 +135,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs("LiftTypeList"));
             }
         }
-
-
+        
         private List<string> _liftFolderList = new List<string>();
 
         public List<string> LiftFolderList
@@ -182,7 +180,5 @@ namespace BarNone.DataLift.UI.ViewModels
                 _liftFolderList = folderDTOs.Select(u => u.Name).ToList();
             });
         }
-
-        //TODO make this list reference somewhere from shared, so we only need to maintain it in one place.
     }
 }

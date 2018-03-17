@@ -181,11 +181,11 @@ namespace BarNone.DataLift.UI.ViewModels
                     }
                     catch
                     {
-                            //Do nuffin'
+                        //Do nuffin'
                     }
                 }
             };
-            
+
             _videoInformationProcess.Start();
 
             _videoInformationProcess.BeginOutputReadLine();
@@ -198,7 +198,7 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         #endregion
-
+        
         #region IDisposable Support
         /// <summary>
         /// Determines redundant dispose call
