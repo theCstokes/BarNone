@@ -17,7 +17,7 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
         {
             InitializeComponent();
         }
-  
+
         //public string CurrentStringTime
         //{
         //    get

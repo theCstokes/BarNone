@@ -40,12 +40,43 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        private string _currentLiftTime;
+        /// <summary>
+        /// The lift that is selected in the lift.  Used to bind to video player to display the selected lift.
+        /// </summary>
+        public string CurrentLiftTime
+        {
+            get
+            {
+                TimeSpan currentTime = new TimeSpan(0, 0, 0, 0, currentMs);
+                return $"{currentTime.Minutes:00}:{currentTime.Seconds:00}.{currentTime.Milliseconds:000}";
+            }
+        }
+
+        private string _currentEndTime;
+        /// <summary>
+        /// The lift that is selected in the lift.  Used to bind to video player to display the selected lift.
+        /// </summary>
+        public string CurrentEndTime
+        {
+            get
+            {
+                TimeSpan currentTime = new TimeSpan(0, 0, 0, 0, LiftEndTime);
+                return $"{currentTime.Minutes:00}:{currentTime.Seconds:00}.{currentTime.Milliseconds:000}";
+            }
+        }
+
         public int LiftEndTime
         {
             get
             {
-                var temp = CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame);
-                return (int)(temp.Max(x => x.TotalMilliseconds) + 1 / 30d * 1000);
+                if (CurrentLifts.LiftInformation.Count() != 0)
+                {
+                    var temp = CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame);
+                    return (int)(temp.Max(x => x.TotalMilliseconds) + 1 / 30d * 1000);
+                }
+
+                else return 0;
             }
         }
 
@@ -437,6 +468,8 @@ namespace BarNone.DataLift.UI.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberMaxValue"));
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberMinValue"));
 
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentEndTime")); 
+
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
             }
@@ -494,6 +527,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 //increment timer value
                 ScrubberCurrentPosition += VideoTimerInterval;
                 OnPropertyChanged(new PropertyChangedEventArgs("ScrubberCurrentPosition"));
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentLiftTime"));
             }
         }
 
