@@ -40,6 +40,15 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        public int LiftEndTime
+        {
+            get
+            {
+                var temp = CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame);
+                return (int)(temp.Max(x => x.TotalMilliseconds) + 1 / 30d * 1000);
+            }
+        }
+
         #endregion
 
         #region Image Properties
@@ -108,29 +117,12 @@ namespace BarNone.DataLift.UI.ViewModels
         #region Loaded and Closed
         internal override void Loaded()
         {
+            CurrentLifts.LiftInformation[0].LiftEndTime = LiftEndTime;
+            SelectedLift = CurrentLifts.LiftInformation[0];
+
             // TODO.  Send raw data to jon then have him send us a list of stuff back.
 
-            var ianTheCaptainLater = new List<TimeSpan>();
-
-            ianTheCaptainLater = CurrentLifts.CurrentRecordedBodyData.Select(x => x.TimeOfFrame).ToList();
-
-            if(ianTheCaptainLater.Count == 0)
-            { 
-            ianTheCaptainLater = new List<TimeSpan>
-                {
-                    new TimeSpan(0)
-                };
-            }
-
-            CurrentLifts.LiftInformation.Add(new LiftListVM
-            {
-                LiftStartTime = 0,
-                LiftEndTime = (int)(ianTheCaptainLater.Max(x => x.TotalMilliseconds) + 1 / 30d * 1000),
-                LiftName = String.Format($"Temp_name_{CurrentLifts.LiftInformation.Count()}"),
-                LiftType = "Squat"
-            });
-
-            Console.WriteLine($"This is how long we are shizz: {CurrentLifts.LiftInformation.Count}");
+            //Console.WriteLine($"This is how long we are shizz: {CurrentLifts.LiftInformation.Count}");
         }
 
         internal override void Closed()
@@ -259,6 +251,33 @@ namespace BarNone.DataLift.UI.ViewModels
             // Remove the correct lift and redo count for all the remaining lifts in ListView.
             LiftIntervals.RemoveAt(selected.Count);
             for (int i = 0; i < LiftIntervals.Count; i++) LiftIntervals[i].Count = i;
+        }
+
+        private RelayCommand _addRecording;
+        /// <summary>
+        /// Command that calls the function to delete lifts from the ListView.
+        /// </summary>
+        public ICommand AddRecording
+        {
+            get
+            {
+                if (_addRecording == null)
+                {
+                    _addRecording = new RelayCommand(action => AddRecordingCommand());
+                }
+                return _addRecording;
+            }
+        }
+
+        private void AddRecordingCommand()
+        {
+            CurrentLifts.LiftInformation.Add(new LiftListVM
+            {
+                LiftName = $"Lift {CurrentLifts.LiftInformation.Count}",
+                LiftStartTime = 0,
+                LiftEndTime = LiftEndTime,
+                LiftType = "Squat"  
+            });
         }
         #endregion
 
@@ -510,12 +529,17 @@ namespace BarNone.DataLift.UI.ViewModels
                 if(ScrubberLowerThumb <= value)
                 {
                     _scrubberUpperThumb = value;
+                    SelectedLift.LiftEndTime = value;
+
                     OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
                 }
                 else
                 {
                     ScrubberLowerThumb = value;
+                    SelectedLift.LiftStartTime = value;
+
                     _scrubberUpperThumb = value;
+                    SelectedLift.LiftEndTime = value;
                     OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
                 }
 
@@ -539,12 +563,17 @@ namespace BarNone.DataLift.UI.ViewModels
                 if(ScrubberUpperThumb >= value)
                 {
                     _scrubberLowerThumb = value;
+                    SelectedLift.LiftStartTime = value;
+
                     OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
                 }
                 else
                 {
                     ScrubberUpperThumb = value;
+                    SelectedLift.LiftEndTime = value;
+
                     _scrubberLowerThumb = value;
+                    SelectedLift.LiftStartTime = value;
                     OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
                 }
             }

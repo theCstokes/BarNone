@@ -29,28 +29,39 @@
     </UserControl.DataContext>
     <DockPanel>
         <materialDesign:Card DockPanel.Dock="Left" VerticalAlignment="Stretch" Margin="0 0 10 0">
-            <ListView ItemsSource="{Binding LiftIntervals}" SelectionMode="Single" SelectedItem="{Binding SelectedLift}" DockPanel.Dock="Left">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Width="300">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <TextBox Grid.Column="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,10,0" 
-                                      materialDesign:HintAssist.Hint="Lift Name" Text="{Binding LiftName, Mode=TwoWay}" VerticalAlignment="Bottom" />
-                            <ComboBox Grid.Column="1" Margin="0,0,10,0" ItemsSource="{Binding LiftTypeList}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Lift Type"
-                                      materialDesign:HintAssist.HintOpacity=".26"
-                                      SelectedItem="{Binding LiftType}"  VerticalAlignment="Bottom" />
-                            <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" 
-                                    CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.DeleteSelectedRecording}">
-                                <materialDesign:PackIcon Foreground="{StaticResource PrimaryHueMidBrush}" Kind="Delete" Height="24" Width="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
-                            </Button>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ListView>
+            <StackPanel>
+                <materialDesign:ColorZone Mode="PrimaryMid" materialDesign:ShadowAssist.ShadowDepth="Depth0">
+                    <Grid>
+                        <TextBlock Padding="10" VerticalAlignment="Center" Text="Lifts" HorizontalAlignment="Left" />
+                        <Button materialDesign:ShadowAssist.ShadowDepth="Depth0" HorizontalAlignment="Right" Command="{Binding AddRecording}">
+                            <materialDesign:PackIcon Kind="Plus" Height="24" Width="24" />
+                        </Button>
+                    </Grid>
+                </materialDesign:ColorZone>
+                <ListView ItemsSource="{Binding LiftIntervals}" SelectionMode="Single" SelectedItem="{Binding SelectedLift}" DockPanel.Dock="Left">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="300">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,10,0" 
+                                    materialDesign:HintAssist.Hint="Lift Name" Text="{Binding LiftName, Mode=TwoWay}" VerticalAlignment="Bottom" />
+                                <ComboBox Grid.Column="1" Margin="0,0,10,0" ItemsSource="{Binding LiftTypeList}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Lift Type"
+                                    materialDesign:HintAssist.HintOpacity=".26"
+                                    SelectedItem="{Binding LiftType}"  VerticalAlignment="Bottom" />
+                                <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" 
+                                CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.DeleteSelectedRecording}">
+                                    <materialDesign:PackIcon Foreground="{StaticResource PrimaryHueMidBrush}" Kind="Delete" Height="24" Width="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ListView>
+            </StackPanel>
+            
         </materialDesign:Card>
         <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="20" DockPanel.Dock="Right">
             <StackPanel VerticalAlignment="Top">
