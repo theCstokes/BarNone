@@ -65,7 +65,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 RedirectStandardInput = true,
-                CreateNoWindow = false
+                CreateNoWindow = true
             };
 
             _recordProcess = new Process
@@ -158,7 +158,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                CreateNoWindow = false
+                CreateNoWindow = true
 
             };
 
@@ -183,17 +183,11 @@ namespace BarNone.DataLift.UI.ViewModels
                     }
                     catch
                     {
-                            //Do nuffin
-                        }
+                            //Do nuffin'
+                    }
                 }
             };
-
-            //_videoInformationProcess.Exited += (s, e) =>
-            //{
-            //    if (curTime < breakCondition)
-            //        _videoInformationProcess.Start();
-            //};
-
+            
             _videoInformationProcess.Start();
 
             _videoInformationProcess.BeginOutputReadLine();
