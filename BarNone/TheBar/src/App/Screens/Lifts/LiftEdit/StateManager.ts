@@ -46,6 +46,7 @@ export class StateManager extends BaseStateManager<State> {
 			// Setup static data.
 			var nextState = state.empty();
 
+
 			nextState.current.type = data.type;
 
 			var lift = null;
@@ -53,6 +54,7 @@ export class StateManager extends BaseStateManager<State> {
 				lift = await DataManager.Lifts.single(data.id, { includeDetails: true });
 			} else if (data.type === ELiftType.Shared) {
 				lift = await DataManager.SharedLifts.single(data.id, { includeDetails: true });
+
 			}
 			nextState.current.name = lift!.name;
 			nextState.current.liftType = lift!.details.liftType;

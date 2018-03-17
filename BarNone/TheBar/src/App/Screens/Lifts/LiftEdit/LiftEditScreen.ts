@@ -12,6 +12,7 @@ import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
 import ScreenPipeLine from "UEye/Screen/ScreenPipeLineStage";
 import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
 import { ELiftType } from "App/Screens/Lifts/StateManagers/BaseLiftStateManager";
+import BodyExample from "App/Data/DataOverride/api/v1/Joints"
 
 export default class LiftEditScreen extends EditScreen<LiftEditView, StateManager> {
 	public constructor() {
@@ -72,7 +73,8 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		this.view.analyticsButton.onClick = () => this.view.videoLayout.toggleSideBar();
 	})
 	.onRender((current: State, original: State) => {
-		this.view.player.frameData = SkeletonBuilder.build(current.bodyData);
+		let bd= new BodyExample();
+		this.view.player.frameData = SkeletonBuilder.build(bd.data[0]);
 	})
 	//#endregion
 	

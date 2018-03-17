@@ -12,6 +12,7 @@ export default class Lift {
     public LiftTypeID: number;
 
     public details: LiftDetails;
+	liftType: default;
 }
 
 class LiftDetails {
