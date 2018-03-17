@@ -60,6 +60,14 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
+        public int LiftTypeID
+        {
+            get
+            {
+               return 1 + LiftTypeList.FindIndex(a => a == LiftType);
+            }
+        }
+
         private string _liftFolder;
         /// <summary>
         /// The type  of lift; squat, clean etc.
