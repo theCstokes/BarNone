@@ -100,7 +100,7 @@ export default class UEye {
 
 		window.addEventListener('resize', () => {
 			this._screenList.forEach(screen =>
-				screen.inflaterData.componentList.forEach(component => component.show(screen.view)));
+				screen.inflaterData.componentList.forEach(component => component.bindView(screen.view)));
 		}, true);
 	}
 
@@ -211,5 +211,9 @@ export default class UEye {
 			return UEye._screenList[UEye._screenList.length - 1];
 		}
 		return undefined;
+	}
+
+	public static get screens(): Screen<any>[] {
+		return UEye._screenList;
 	}
 }

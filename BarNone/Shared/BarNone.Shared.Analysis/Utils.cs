@@ -8,6 +8,7 @@ namespace BarNone.Shared.Analysis
 {
     public struct JointTimeSeries
     {
+        public float[] t;
         public float[] X;
         public float[] Y;
         public float[] Z;
@@ -18,10 +19,14 @@ namespace BarNone.Shared.Analysis
 
         public static List<JointTimeSeries> ConvertBodyDataToTimeSeriesSet(BodyData bodyData)
         {
-            List<JointTimeSeries> joints = new List<JointTimeSeries>();
+            List<TimeSpan> timeSpans = (from frame in bodyData.BodyDataFrames select frame.TimeOfFrame).ToList<TimeSpan>();
+            List<float> seconds = (from x in timeSpans select ((float) x.TotalSeconds)).ToList();
+            
+            List <JointTimeSeries> joints = new List<JointTimeSeries>();
             for (int i = 0; i < 25; i++)
             {
                 JointTimeSeries jts;
+                jts.t = seconds.ToArray();
                 jts.X = (from frame in bodyData.BodyDataFrames select frame.Joints[i].X).ToArray();
                 jts.Y = (from frame in bodyData.BodyDataFrames select frame.Joints[i].Y).ToArray();
                 jts.Z = (from frame in bodyData.BodyDataFrames select frame.Joints[i].Z).ToArray();

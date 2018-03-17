@@ -1,4 +1,6 @@
 ﻿using BarNone.Shared.Analysis;
+using BarNone.Shared.Analysis.LiftAnalysisPipeline.Core;
+using BarNone.Shared.Analysis.LiftAnalysisPipeline.Velocity;
 using BarNone.Shared.DataConverters;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
@@ -15,14 +17,6 @@ namespace BarNone.Shared.AnalysisTests
     [TestClass]
     class UtilsTest { 
     
-        [TestMethod]
-        public void UtilsChrisThreeSquats1()
-        {
-            string json = File.ReadAllText(@"\Users\jon\developer\barnone\analysis\lifts\Chris_Three_Squats_1.json");
-            LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
-            Lift lift = Converters.NewConvertion().Lift.CreateDataModel(liftDTO);
-
-            Console.WriteLine(string.Join<float>(",", Utils.ConvertBodyDataToTimeSeriesSet(lift.BodyData)[0].X));
-        }
+       
     }
 }

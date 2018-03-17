@@ -14,12 +14,12 @@ export default class LiftProfileDialogScreen extends DialogScreen<LiftProfileDia
 		// TODO - remove hard code login.
 
 
-		this.view.cancelButton.onClick = () => {
-			UEye.pop();
-		}
+		// this.view.cancelButton.onClick = () => {
+		// 	UEye.pop();
+		// }
 
-		
-		};
-    }
+
+	};
+}
 
 

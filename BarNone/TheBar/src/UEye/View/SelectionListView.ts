@@ -5,6 +5,7 @@ import Panel from "UEye/Elements/Containers/Panel/Panel";
 import Info from "UEye/Elements/Components/Info/Info";
 import { BaseListItem } from "UEye/Elements/Core/BaseListItem/BaseListItem";
 import StringUtils from "UEye/Core/StringUtils";
+import ComponentType from "UEye/Elements/Inflater/ComponentInflater";
 
 export abstract class SelectionListView extends View {
 	public listPanel: Panel;
@@ -15,7 +16,7 @@ export abstract class SelectionListView extends View {
 	
 	public abstract get caption(): string;
 
-	public abstract get listType(): BaseListItem;
+	public abstract get listType(): ComponentType;
 
 	public abstract get errorMessage(): string;
 

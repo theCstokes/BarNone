@@ -4,13 +4,15 @@ import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 import ScreenPipeLine from "UEye/Screen/ScreenPipeLineStage";
 import UEye from "UEye/UEye";
 import CancelDialogScreen from "UEye/Screen/CancelDialog/CancelDialogScreen";
+import { IHelp } from "App/Help/HelpCore";
 
 /**
  * Edit base screen.
  */
 export default abstract class EditScreen<
     TView extends EditView,
-    TStateManager extends BaseStateManager<any>> extends Screen<TView> {
+    TStateManager extends BaseStateManager<any>
+> extends Screen<TView> {
     /**
      * Edit screen state manager.
      */
@@ -21,13 +23,13 @@ export default abstract class EditScreen<
      * @param ViewType - view builder
      * @param StateManagerType - state manager builder
      */
-    public constructor(ViewType: { new(): TView },
-        StateManagerType: { new(): TStateManager } | null = null) {
-        super(ViewType);
-        if (StateManagerType !== null) {
-            this._stateManager = new StateManagerType();
-            this._stateManager.bind(this._basePipeLine.onRenderInvokable.bind(this));
-        }
+    public constructor(ViewType: { new(): TView }, HelpType?: { new(): IHelp }) {
+        // StateManagerType: { new(): TStateManager } | null = null) {
+        super(ViewType, HelpType);
+        // if (StateManagerType !== null) {
+        //     this._stateManager = new StateManagerType();
+        //     this._stateManager.bind(this._basePipeLine.onRenderInvokable.bind(this));
+        // }
     }
 
     public init(stateManager: TStateManager) {
@@ -62,11 +64,8 @@ export default abstract class EditScreen<
             await this.stateManager.Reset.trigger();
         } else {
             var dialog = UEye.push(CancelDialogScreen) as CancelDialogScreen;
-
-            dialog.onNo = () => {
-                UEye.pop();
-            }   
-            dialog.onYes = async () => {
+ 
+            dialog.onAccept = async () => {
                 await this.stateManager.Reset.trigger();
                 UEye.pop();
             }

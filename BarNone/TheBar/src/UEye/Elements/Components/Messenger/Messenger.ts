@@ -32,7 +32,7 @@ export default class Messenger extends BaseComponent {
 		this._list.style = ControlTypes.MessageListItem;
 		// this._list.list.scrollTop = (this.element.offsetTop + this.element.offsetHeight);
 
-		this.onShow.on((view) => {
+		this.onBindView.on((view) => {
 			// this._list.list.scrollTop = (this.element.offsetTop + this.element.offsetHeight);
 			this._list.list.scrollTop = 1000;
 		});

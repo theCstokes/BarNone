@@ -63,7 +63,7 @@ export default class Video extends BaseComponent {
 
 
         this._video = Core.create("video", this.element, "Video") as HTMLVideoElement;
-        this._video.width = this._canvas.width;
+        // this._video.width = this._canvas.width;
         this._video.crossOrigin = "Anonymous";
         this._video.muted = true;
 
@@ -372,8 +372,12 @@ export default class Video extends BaseComponent {
 
     private _onShowHandler(view: BaseView) {
         console.log("video");
-        let scaleVerticalFactor = this._canvas.height / this._canvas.offsetHeight;
-        let scaleHorizontalFactor = this._canvas.width / this._canvas.offsetWidth;
-        this._context.scale(scaleHorizontalFactor, scaleVerticalFactor);
+        this._canvas.height = this._canvas.offsetHeight;
+        this._canvas.width = this._canvas.offsetWidth;
+        this._video.width = this._canvas.width;
+
+        // let scaleVerticalFactor = this._canvas.height / this._canvas.offsetHeight;
+        // let scaleHorizontalFactor = this._canvas.width / this._canvas.offsetWidth;
+        this._context.scale(2, 2);
     }
 }

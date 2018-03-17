@@ -9,16 +9,19 @@ import Comment from "App/Data/Models/Comment/Comment";
 import LiftAnalysisProfile from "App/Data/Models/LiftAnalysisProfile/LiftAnalysisProfile"
 
 import LiftType from "App/Data/Models/Lift/LiftType";
+import SettingsElement from "App/Data/Models/Settings/SettingsElement";
 
 export default class DataManager extends BaseDataManager {
 
 	public static readonly Users: Resource<User> = new Resource<User>("User");
 
-	public static readonly LiftFolders: DetailResource<LiftFolder> = new DetailResource<LiftFolder>("LiftFolder");
+	public static readonly LiftFolders: DetailResource<LiftFolder> 
+		= new DetailResource<LiftFolder>("LiftFolder");
 
 	public static readonly Lifts: DetailResource<Lift> = new DetailResource<Lift>("Lift");
 
-	public static readonly LiftAnalysisProfile:DetailResource<LiftAnalysisProfile> = new DetailResource("LiftAnalysisProfile");
+	public static readonly LiftAnalysisProfile:DetailResource<LiftAnalysisProfile> 
+		= new DetailResource("LiftAnalysisProfile");
 
 	public static readonly LiftTypes: Resource<LiftType> = new Resource<LiftType>("LiftType");
 
@@ -31,4 +34,7 @@ export default class DataManager extends BaseDataManager {
 		= new DetailResource<Comment>("Comment/Lift/{liftID}");
 
 	public static readonly Joints: Resource<Joint> = new Resource<Joint>("Joints");
+
+	public static readonly Settings: Resource<SettingsElement> 
+		= new Resource<SettingsElement>("Settings", true);
 }
