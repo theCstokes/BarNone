@@ -11,6 +11,8 @@ import NotificationRequestDTO from "App/Data/Models/NotificationRequestDTO";
 import Comment from "App/Data/Models/Comment/Comment";
 import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
 import ScreenPipeLine from "UEye/Screen/ScreenPipeLineStage";
+import BodyExample from "App/Data/DataOverride/api/v1/Joints"
+import BodyData from "../../../Data/Models/BodyData/BodyData";
 
 export default class LiftEditScreen extends EditScreen<LiftEditView, StateManager> {
 	public constructor() {
@@ -71,7 +73,8 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		this.view.analyticsButton.onClick = () => this.view.videoLayout.toggleSideBar();
 	})
 	.onRender((current: State, original: State) => {
-		this.view.player.frameData = SkeletonBuilder.build(current.bodyData);
+		let bd= new BodyExample();
+		this.view.player.frameData = SkeletonBuilder.build(bd.data[0]);
 	})
 	//#endregion
 	

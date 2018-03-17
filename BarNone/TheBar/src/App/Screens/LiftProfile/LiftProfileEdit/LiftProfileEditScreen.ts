@@ -5,7 +5,7 @@ import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import UEye from "UEye/UEye"
 import StringUtils from "UEye/Core/StringUtils";
 import DataManager from "App/Data/DataManager";
-import { LiftType } from "App/Screens/Lifts/StateManager";
+//import { LiftType } from "App/Screens/Lifts/StateManager";
 import LiftProfileDialogView from "../LiftProfileDialog/LiftProfileDialogView";
 
 

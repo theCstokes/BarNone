@@ -164,16 +164,18 @@ export class SkeletonBuilder {
 	}
 
 	public static build(bodyData: BodyData): SkeletonLine[][] {
+		let i=0;
 		SkeletonBuilder._init();
 		return bodyData.details.orderedFrames.map(f => {
-			var spineBase = f.details.joints.find(j => j.jointTypeID === (JointTypeEnum.SpineBase + 1));
+			var spineBase = f.details.joints.find(j => j.jointTypeID === (JointTypeEnum.SpineBase));
+			console.log("Spine Base"+spineBase);
 			
 			if (spineBase === undefined) return [];
 
 			return SkeletonBuilder._jointMap.reduce((result, m) => {
 				// Note: the jointTypeIds from the api are currently sifted up by 1.
-				var startJoint = f.details.joints.find(j => j.jointTypeID === (m.start + 1));
-				var endJoint = f.details.joints.find(j => j.jointTypeID === (m.end + 1));
+				var startJoint = f.details.joints.find(j => j.jointTypeID === (m.start));
+				var endJoint = f.details.joints.find(j => j.jointTypeID === (m.end));
 
 				if (startJoint === undefined) return result;
 				if (endJoint === undefined) return result;
@@ -184,16 +186,24 @@ export class SkeletonBuilder {
 					// y1: startJoint.y * -103.34 + 52,
 					// x2: (endJoint.x /*- spineBase.x*/) * -103.34 + 206,
 					// y2: endJoint.y * -103.34 + 52
-					x1: (startJoint.x /*- spineBase.x*/) * -75.34 + 185,
-					y1: startJoint.y * -75.34 + 82,
-					x2: (endJoint.x /*- spineBase.x*/) * -75.34 + 185,
-					y2: endJoint.y * -75.34 + 82
-					// x1: (startJoint.x - spineBase.x) * -153.34 + 256,
-					// y1: startJoint.y * -153.34 + 212,
-					// x2: (endJoint.x - spineBase.x) * -153.34 + 256,
-					// y2: endJoint.y * -153.34 + 212
-				}));
 
+					// x1: (startJoint.x /*- spineBase.x*/) * -75.34 + 185,
+					// y1: startJoint.y * -75.34 + 55,
+					// x2: (endJoint.x /*- spineBase.x*/) * -75.34 + 185,
+					// y2: endJoint.y * -75.34 + 55
+			
+
+				// x1: (startJoint.x - spineBase.x) * -153.34 + 256,
+				// y1: startJoint.y * -153.34 + 212,
+				// x2: (endJoint.x - spineBase.x) * -153.34 + 256,
+				// y2: endJoint.y * -153.34 + 212
+
+					x1: startJoint.x*-65+150,
+					y1: startJoint.y*-65+75,
+					x2: endJoint.x*-65+150,
+					y2: endJoint.y*-65+75,
+				}));
+				console.log("Start JointType:"+m.start, "End JointType:"+m.end, i++);
 				return result;
 			}, new Array<SkeletonLine>());
 		});

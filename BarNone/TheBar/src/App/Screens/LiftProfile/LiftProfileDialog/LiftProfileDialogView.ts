@@ -5,7 +5,11 @@ import UEye from "UEye/UEye";
 import Button from "UEye/Elements/Components/Button/Button"; 
 import Dropdown from "UEye/Elements/Components/DropdownInput/DropDownInput"; 
 
+
 export default class LiftProfileDialogView extends DialogView {
+    cancelButton: Button;
+    jointType: Dropdown;
+    analysisType: Dropdown;
     public get content(): any[] {
 		return [
             {
