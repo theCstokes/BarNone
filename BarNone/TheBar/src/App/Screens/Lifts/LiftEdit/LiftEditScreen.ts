@@ -74,7 +74,9 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 	})
 	.onRender((current: State, original: State) => {
 		let bd= new BodyExample();
-		this.view.player.frameData = SkeletonBuilder.build(bd.data[0]);
+		this.view.player.frameData = SkeletonBuilder.build(bd.data[0], this.view.player.canvasHeight, this.view.player.canvasWidth);
+		 this.view.player.src = StringUtils.format("https://www.rmp-streaming.com/media/bbb-360p.mp4",
+		 	BaseDataManager.auth.access_token);
 	})
 	//#endregion
 	
