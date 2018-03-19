@@ -6,13 +6,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
-namespace BarNone.DataLift.UI.ViewModels
+namespace BarNone.DataLift.UI.ViewModels.Common
 {
     /// <summary>
     /// The view model for each item containted in the list of lifts in the edit screen of Data Lift.  Holds all
     /// values bound to the ListView and an ObservableCollection of these VMs will be bound to the ListView.
     /// </summary>
-    public class LiftListVM : ViewModelBase
+    public class LiftItemVM : ViewModelBase
     {
         /// <summary>
         /// Corresponds to the index in the <see cref="EditLiftsScreenVM.LiftIntervals"/>
@@ -56,14 +56,6 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 _liftType = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("LiftType"));
-            }
-        }
-
-        public int LiftTypeID
-        {
-            get
-            {
-               return 1 + LiftTypeList.FindIndex(a => a == LiftType);
             }
         }
 
@@ -161,7 +153,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
         public ObservableCollection<SharableUser> SharedUsers;
 
-        public LiftListVM()
+        public LiftItemVM()
         {
             List<UserDTO> allUserDTOs = new List<UserDTO>();
             List<LiftTypeDTO> liftDTOs = new List<LiftTypeDTO>();
@@ -188,5 +180,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 _liftFolderList = folderDTOs.Select(u => u.Name).ToList();
             });
         }
+
     }
 }

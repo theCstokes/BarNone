@@ -1,11 +1,11 @@
-﻿using BarNone.DataLift.UI.ViewModels.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
-namespace BarNone.DataLift.UI.ViewModels
+namespace BarNone.DataLift.UI.ViewModels.Common
 {
     public class FfmpegController : IDisposable
     {
@@ -142,9 +142,6 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region Video Info Controller
-        private static Regex VideoInfoFpsRegex = new Regex(@"([0-9]+) fps", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static Regex VideoInfoFrameRegex = new Regex(@"frame=\s*([0-9]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
         private static Regex NewVideoFrameTimeRegex = new Regex(@"frame,([0-9\.]+)", RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
         private double GetVideoDuration(string fname, double breakCondition)
@@ -198,7 +195,44 @@ namespace BarNone.DataLift.UI.ViewModels
         }
 
         #endregion
-        
+
+        #region Video Splitter
+        /// <summary>
+        /// Takes the parent recording and divides it into
+        /// </summary>
+        /// <param name="fname">Name of the file being split</param>
+        /// <param name="startTime">Time in the video to start seeking from</param>
+        /// <param name="length">Length of the recording</param>
+        /// <returns>Name of the split video created</returns>
+        public async Task<string> SplitVideo(string fname, double startTime, double length)
+        {
+            string cutFile = $"{Guid.NewGuid().ToString()}.avi";
+
+            await Task.Run(() =>
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = $"{Directory.GetCurrentDirectory()}/res/ffmpeg.exe",
+                    Arguments = $"-i {fname} -ss {startTime} -t {length} -c {cutFile}",
+                    UseShellExecute = false,
+                    CreateNoWindow = false
+                };
+
+                _videoInformationProcess = new Process
+                {
+                    StartInfo = psi,
+                    EnableRaisingEvents = true
+                };
+
+                _videoInformationProcess.Start();
+                _videoInformationProcess.WaitForExit();
+            });
+
+            return cutFile;
+        }
+
+        #endregion
+
         #region IDisposable Support
         /// <summary>
         /// Determines redundant dispose call

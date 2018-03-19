@@ -60,7 +60,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             }
         }
 
-        public ObservableCollection<LiftListVM> LiftInformation = new ObservableCollection<LiftListVM>();
+        public ObservableCollection<LiftItemVM> LiftInformation = new ObservableCollection<LiftItemVM>();
 
         private bool isNormalized = false;
 

@@ -417,7 +417,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 .BodyData
                 .BodyDataFrames);
 
-            CurrentLiftData.LiftInformation.Add(new LiftListVM
+            CurrentLiftData.LiftInformation.Add(new LiftItemVM
             {
                 LiftStartTime = 0,
                 LiftEndTime = 0,

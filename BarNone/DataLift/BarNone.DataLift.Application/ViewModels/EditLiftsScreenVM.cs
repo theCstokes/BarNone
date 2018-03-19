@@ -220,7 +220,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Observable collection to be displayed in the ListView.
         /// </summary>
-        public ObservableCollection<LiftListVM> LiftIntervals
+        public ObservableCollection<LiftItemVM> LiftIntervals
         {
             get
             {
@@ -240,11 +240,11 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Field representation for the <see cref="SelectedLift"/> bindable property
         /// </summary>
-        private LiftListVM _selectedLift;
+        private LiftItemVM _selectedLift;
         /// <summary>
         /// The lift that is selected in the lift.  Used to bind to video player to display the selected lift.
         /// </summary>
-        public LiftListVM SelectedLift
+        public LiftItemVM SelectedLift
         {
             get { return _selectedLift; }
 
@@ -309,7 +309,7 @@ namespace BarNone.DataLift.UI.ViewModels
             }
             
             // Cast action to a LiftListVM.
-            LiftListVM selected = (LiftListVM)action;
+            LiftItemVM selected = (LiftItemVM)action;
 
             
 
@@ -342,7 +342,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
         private void AddRecordingCommand()
         {
-            CurrentLifts.LiftInformation.Add(new LiftListVM
+            CurrentLifts.LiftInformation.Add(new LiftItemVM
             {
                 LiftName = $"Lift {CurrentLifts.LiftInformation.Count}",
                 LiftStartTime = 0,

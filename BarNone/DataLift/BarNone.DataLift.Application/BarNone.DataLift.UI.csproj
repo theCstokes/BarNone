@@ -129,12 +129,12 @@
     <Compile Include="Validation\TimeInputRule.cs" />
     <Compile Include="ViewModels\Common\CurrentLiftDataVM.cs" />
     <Compile Include="ViewModels\Common\SharableUser.cs" />
-    <Compile Include="ViewModels\FfmpegController.cs" />
+    <Compile Include="ViewModels\Common\FfmpegController.cs" />
     <Compile Include="ViewModels\Common\CustomTimer.cs" />
     <Compile Include="ViewModels\SaveLiftVM.cs" />
     <Compile Include="ViewModels\ControlHolderVM.cs" />
     <Compile Include="ViewModels\EditLiftsScreenVM.cs" />
-    <Compile Include="ViewModels\LiftListVM.cs" />
+    <Compile Include="ViewModels\Common\LiftItemVM.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\DataRecorderVM.cs" />
     <Compile Include="ViewModels\LoginScreenVM.cs" />

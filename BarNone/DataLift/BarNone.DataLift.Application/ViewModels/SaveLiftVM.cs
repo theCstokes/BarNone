@@ -61,7 +61,7 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
-        public ObservableCollection<LiftListVM> LiftIntervals
+        public ObservableCollection<LiftItemVM> LiftIntervals
         {
             get
             {
@@ -80,11 +80,11 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Field representation for the <see cref="SelectedLift"/> bindable property
         /// </summary>
-        private LiftListVM _selectedLift;
+        private LiftItemVM _selectedLift;
         /// <summary>
         /// The lift that is selected in the lift.  Used to bind to video player to display the selected lift.
         /// </summary>
-        public LiftListVM SelectedLift
+        public LiftItemVM SelectedLift
         {
             get { return _selectedLift; }
 
@@ -126,7 +126,7 @@ namespace BarNone.DataLift.UI.ViewModels
         private void DeleteSelectedRecordingCommand(object action)
         {
             // Cast action to a LiftListVM.
-            LiftListVM selected = (LiftListVM)action;
+            LiftItemVM selected = (LiftItemVM)action;
 
             // If action is null then return
             if (action == null) return;
@@ -259,7 +259,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 .Lift
                 .CreateDTO(new Lift()
                 {
-                    LiftTypeID = CurrentLiftData.LiftInformation[0].LiftTypeID,
+                    LiftTypeID = 1,
                     BodyData = new BodyData
                     {
                         BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData.ToList(),
@@ -291,26 +291,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 }
             });
 
-
-            //DataManager.Flex.Post(new FlexDTO
-            //{
-            //    Entities = new List<FlexEntityDTO>
-            //    {
-            //        new FlexEntityDTO
-            //        {
-            //            Entity = new LiftDTO
-            //            {
-            //                Details = new LiftDetailDTO
-            //                {
-            //                    Video = new VideoDTO
-            //                    {
-            //                        Data = File.ReadAllBytes("TestFFMPEG.avi")
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //});
+            
 
             string fname = string.Format("{0}.json", liftDTO.Name);
             if (File.Exists(fname))
