@@ -79,15 +79,16 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 	//#endregion
 	
 	//#region Massager
-	.onShow(() => {
+	.onShow((data: { id: number, name: string, type: ELiftType }) => {
 		NotificationManager.addListener<Comment>(new NotificationRequestDTO<Comment>({
 			type: "Comment",
 			filter: {
 				property: (comment) => comment.liftID,
 				comparisons: "eq",
-				value: this.stateManager.getCurrentState().id
+				value: data.id
 			}
 		}), async () => {
+			console.log("GoT");
 			await this.stateManager.RefreshComments.trigger();
 		});
 
@@ -115,7 +116,7 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 	public async onShow(data: { id: number, name: string, type: ELiftType }): Promise<void> {
 		super.onShow(data);
 		this.init(await StateManagerFactory.create(StateManager));
-		this._pipeLine.onShowInvokable();
+		this._pipeLine.onShowInvokable(data);
 		this.stateManager.bind(this._pipeLine.onRenderInvokable.bind(this));		
 		await this.stateManager.ResetState.trigger(data);
 	}

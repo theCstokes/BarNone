@@ -25,7 +25,7 @@ namespace TheRack.ResourceServer.API.Controllers
     /// <seealso cref="BarNone.TheRack.ResourceServer.API.Controllers.Core.DefaultDetailController{BarNone.Shared.DataTransfer.LiftDTO, BarNone.Shared.DomainModel.Lift, BarNone.TheRack.Repository.LiftRepository}" />
     [Route("api/v1/[controller]")]
     [Authorize(Policy = "User")]
-    public class LiftTypeController : DefaultDetailController<LiftTypeDTO, LiftType, LiftTypeRepository>
+    public class LiftTypeController : DefaultController<LiftTypeDTO, LiftType, LiftTypeRepository>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LiftController"/> class.

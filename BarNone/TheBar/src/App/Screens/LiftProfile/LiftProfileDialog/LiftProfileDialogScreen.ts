@@ -3,22 +3,28 @@ import LiftProfileDialogView from "App/Screens/LiftProfile/LiftProfileDialog/Lif
 import DataManager from "App/Data/DataManager";
 import UEye from "UEye/UEye";
 import LiftProfileScreen from "App/Screens/LiftProfile/LiftProfileScreen";
+import { LiftProfileDialogStateManager } from "App/Screens/LiftProfile/LiftProfileDialog/LiftProfileDialogStateManager";
+import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
+import ScreenPipeLine from "UEye/Screen/ScreenPipeLineStage";
 
 export default class LiftProfileDialogScreen extends DialogScreen<LiftProfileDialogView> {
+	private stateManager: LiftProfileDialogStateManager;
+
 	public constructor() {
 		super(LiftProfileDialogView);
 	}
 
-	public onShow(): void {
+	private _pipeline = ScreenPipeLine.create()
+	//#region Lift Type Drop Down.
+	.onShow(() => {
+		this.view.analysisTypeDropDown.items = this.stateManager.s_AnalysisTypeList;
+	});
+	//#endregion
+
+	public async onShow(): Promise<void> {
 		super.onShow();
-		// TODO - remove hard code login.
-
-
-		// this.view.cancelButton.onClick = () => {
-		// 	UEye.pop();
-		// }
-
-
+		this.stateManager = await StateManagerFactory.create(LiftProfileDialogStateManager);
+		this._pipeline.onShowInvokable();
 	};
 }
 
