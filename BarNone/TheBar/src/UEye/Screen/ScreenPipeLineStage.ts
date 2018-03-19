@@ -1,6 +1,6 @@
 type RenderPipeLineStage<TState> = (current: TState, original: TState) => void;
 
-type ScreenPipeLineStage = () => void;
+type ScreenPipeLineStage = (data?: any) => void;
 
 export default class ScreenPipeLine<TState> {
 	private renderStages: RenderPipeLineStage<TState>[];
@@ -30,6 +30,6 @@ export default class ScreenPipeLine<TState> {
 	}
 
 	public get onShowInvokable(): ScreenPipeLineStage {
-		return () => this.showStages.forEach(s => s());
+		return (data?: any) => this.showStages.forEach(s => s(data));
 	}
 }

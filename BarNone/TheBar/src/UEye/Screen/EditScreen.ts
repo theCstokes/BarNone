@@ -37,14 +37,19 @@ export default abstract class EditScreen<
         this._stateManager.bind(this._basePipeLine.onRenderInvokable.bind(this));
     }
 
+    public isModified(current: any, original: any): boolean {
+        return JSON.stringify(original) !== JSON.stringify(current);
+    }
+
     private _basePipeLine = ScreenPipeLine.create()
         //#region Panel
         .onShow(() => {
             this.view.cancelButton.onClick = this._onCancelHandler.bind(this);
         })
         .onRender((current: any, original: any) => {
-            var isModified = (JSON.stringify(original) !== JSON.stringify(current));
+            var isModified = this.isModified(current, original);
 
+            this.view.editPanel.modified = isModified;
             this.view.cancelButton.enabled = isModified;
             this.view.saveButton.enabled = isModified;
         })
