@@ -12,6 +12,8 @@ namespace BarNone.DataLift.UI.ViewModels.Common
     /// </summary>
     public class CurrentLiftDataVM : ViewModelBase
     {
+        public string CurrentUser;
+
         //If we need to get item modified ask me -Riley
         /// <summary>
         /// Field representation for the <see cref="CurrentRecordedBodyData"/> bindable property list

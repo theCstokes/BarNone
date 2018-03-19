@@ -19,6 +19,13 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         /// </summary>
         public int Count;
 
+        public int UserID;
+
+        public int LiftID
+        {
+            get { return _liftTypeDictionary[LiftType]; }
+        }
+
         /// <summary>
         /// Field representation for the <see cref="LiftName"/> bindable property
         /// </summary>
@@ -119,21 +126,15 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         /// <summary>
         /// Field representation for the <see cref="LiftTypeList"/> bindable property
         /// </summary>
-        private List<string> _liftTypeList = new List<string>(); // = new List<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", "Other" };
+        /// 
+
+        private Dictionary<string, int> _liftTypeDictionary = new Dictionary<string, int>(); // = new List<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", "Other" };
         /// <summary>
         /// List that dictates the drop down for the list of lifts.  
         /// </summary>
         public List<string> LiftTypeList
         {
-            get { return _liftTypeList; }
-
-            set
-            {
-                if (_liftTypeList == value) return;
-
-                _liftTypeList = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("LiftTypeList"));
-            }
+            get { return new List<string>(_liftTypeDictionary.Keys); }
         }
         
         private List<string> _liftFolderList = new List<string>();
@@ -153,7 +154,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
 
         public ObservableCollection<SharableUser> SharedUsers;
 
-        public LiftItemVM()
+        public LiftItemVM(string currentUser)
         {
             List<UserDTO> allUserDTOs = new List<UserDTO>();
             List<LiftTypeDTO> liftDTOs = new List<LiftTypeDTO>();
@@ -168,16 +169,19 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                 {
                     UserName = u.UserName,
                     IsSeletcted = false,
-                    Name = u.Name
+                    Name = u.Name,
+                    ID = u.ID
                 }).ToList());
 
                 //OnPropertyChanged(new PropertyChangedEventArgs("DisplayedUsers"));
 
                 liftDTOs = await DataManager.Types.GetAll();
-                _liftTypeList = liftDTOs.Select(u => u.Name).ToList();
+                _liftTypeDictionary = liftDTOs.ToDictionary(k => k.Name, v => v.ID);
 
                 folderDTOs = await DataManager.Folders.GetAll();
                 _liftFolderList = folderDTOs.Select(u => u.Name).ToList();
+
+                UserID = (allUserDTOs.ToDictionary(k => k.UserName, v => v.ID))[currentUser];
             });
         }
 

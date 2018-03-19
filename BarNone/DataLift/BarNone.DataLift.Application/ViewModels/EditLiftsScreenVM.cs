@@ -342,7 +342,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
         private void AddRecordingCommand()
         {
-            CurrentLifts.LiftInformation.Add(new LiftItemVM
+            CurrentLifts.LiftInformation.Add(new LiftItemVM(CurrentLifts.CurrentUser)
             {
                 LiftName = $"Lift {CurrentLifts.LiftInformation.Count}",
                 LiftStartTime = 0,
