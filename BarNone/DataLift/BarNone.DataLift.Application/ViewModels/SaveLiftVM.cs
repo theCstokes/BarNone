@@ -255,59 +255,59 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private async void SendLiftCommand()
         {
-            var liftDTO = Converters.NewConvertion()
-                .Lift
-                .CreateDTO(new Lift()
-                {
-                    LiftTypeID = 1,
-                    BodyData = new BodyData
-                    {
-                        BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData.ToList(),
-                        RecordDate = DateTime.Now
-                    },
-                    Name = CurrentLiftData.LiftInformation[0].LiftName, // TODO.  Not make this a hardcoded 0.
-                    Video = new VideoRecord
-                    {
-                        Data = File.ReadAllBytes("TestFFMPEG.avi")
-                    }
-                });
-
-            var toSend = JsonConvert.SerializeObject(liftDTO, Formatting.Indented,
-                new JsonSerializerSettings()
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                }
-            );
-
-            var temp = await DataManager.Flex.Post(new FlexDTO
+            //TODO producer consumer this
+            var PostTasks = new List<Task>();
+            var ffmpeg = new FfmpegController();
+            foreach(var lift in CurrentLiftData.LiftInformation)
             {
-                Entities = new List<FlexEntityDTO>
-                {
-                    new FlexEntityDTO
+                PostTasks.Add(Task.Run(async () => {
+                    var liftDTO = Converters.NewConvertion()
+                    .Lift
+                    .CreateDTO(new Lift()
                     {
-                        Resource = "LIFT",
-                        Entity = liftDTO
-                    }
-                }
-            });
+                        LiftTypeID = 1,
+                        BodyData = new BodyData
+                        {
+                            BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData
+                                .Where(f => f.TimeOfFrame.Milliseconds >= lift.LiftStartTime && f.TimeOfFrame.Milliseconds <= lift.LiftEndTime)
+                                .OrderBy(f => f.TimeOfFrame.Milliseconds)
+                                .ToList(),
+                            UserID = 2,
+                            RecordDate = DateTime.Now
+                        },
+                        Name = CurrentLiftData.LiftInformation[0].LiftName, // TODO. Not make this a hardcoded 0.
+                        UserID = 2,
+                        Video = new VideoRecord
+                        {
+                            Data = File.ReadAllBytes(await ffmpeg.SplitVideo("TestFFMPEG.avi", lift.LiftStartTime/1000, (lift.LiftEndTime-lift.LiftStartTime)/1000)),
+                            UserID = 1
+                        }
+                    });
 
-            
+                    var temp = await DataManager.Flex.Post(new FlexDTO
+                    {
+                        Entities = new List<FlexEntityDTO>
+                        {
+                            new FlexEntityDTO
+                            {
+                                Resource = "LIFT",
+                                Entity = liftDTO
+                            }
+                        }
+                    });
+                }));
+            }
 
-            string fname = string.Format("{0}.json", liftDTO.Name);
-            if (File.Exists(fname))
-                File.Delete(fname);
-            File.WriteAllText(fname, toSend);
-
-            Console.WriteLine("Send Lift functionality to be implemented.");
+            Task.WaitAll(PostTasks.ToArray());
         }
         #endregion
 
         #region Loaded and Closed
         internal override void Loaded()
         {
+            //TODO update this behavior
             SelectedLift = LiftIntervals[0];
 
-            //base.Loaded();
         }
         #endregion
     }
