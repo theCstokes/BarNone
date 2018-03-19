@@ -58,6 +58,9 @@
         right: 0;
         margin: -5px 10px;
     }
+    > .Mode {
+        padding-left: 6px;
+    }
 }
 
 .UEye-Panel > .Top-Dock.Has-Caption {
@@ -72,14 +75,16 @@
     font-size: @AccentFontSize;
 }
 
-.UEye-Panel > .Top-Dock > .Mode.Modified {
-    padding-left: 5px;
-    font-size: @AccentFontSize;
+.UEye-Panel.Modified > .Top-Dock {
+    // padding-left: 5px;
+    // font-size: @AccentFontSize;
     color: @ModifiedElementAccent;
+    border-bottom-color: @ModifiedElementAccent;
 }
 
 .UEye-Panel > .Top-Dock > .Mode.Readonly {
     color: @ReadonlyElementAccent;
+    
 }
 
 .UEye-Panel > .Top-Dock > .Mode.Error {

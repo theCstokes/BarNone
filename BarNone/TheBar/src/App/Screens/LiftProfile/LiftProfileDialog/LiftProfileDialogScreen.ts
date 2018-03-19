@@ -18,6 +18,7 @@ export default class LiftProfileDialogScreen extends DialogScreen<LiftProfileDia
 	//#region Lift Type Drop Down.
 	.onShow(() => {
 		this.view.analysisTypeDropDown.items = this.stateManager.s_AnalysisTypeList;
+		this.view.jointTypeDropDown.items = this.stateManager.s_JointTypeList;
 	});
 	//#endregion
 

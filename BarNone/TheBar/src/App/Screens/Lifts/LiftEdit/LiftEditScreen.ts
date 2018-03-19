@@ -19,12 +19,17 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		super(LiftEditView, LiftFolderHelp);
 	}
 
+	public isModified(current: State, original: State) {
+		return !Utils.compare(original, current, ["comments"]);
+	}
+
 	private _pipeLine = ScreenPipeLine.create()
 	//#region Panel
-	.onRender((current: State, original: State) => {
-		var isModified = (JSON.stringify(original) !== JSON.stringify(current));
-		this.view.editPanel.modified = isModified;
-	})
+	// .onRender((current: State, original: State) => {
+	// 	// var isModified = (JSON.stringify(original) !== JSON.stringify(current));
+	// 	var isModified = !Utils.compare(original, current, ["comments"]);
+	// 	this.view.editPanel.modified = isModified;
+	// })
 	//#endregion
 
 	//#region Name Input
