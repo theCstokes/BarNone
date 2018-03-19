@@ -168,7 +168,7 @@ export class SkeletonBuilder {
 		SkeletonBuilder._init();
 		return bodyData.details.orderedFrames.map(f => {
 			var spineBase = f.details.joints.find(j => j.jointTypeID === (JointTypeEnum.SpineBase));
-			console.log("Spine Base"+spineBase);
+			// console.log("Spine Base"+spineBase);
 			
 			if (spineBase === undefined) return [];
 
