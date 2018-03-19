@@ -96,26 +96,7 @@ export default class Video extends BaseComponent {
 
         this.videoSetup();
 
-        this._slider.onclick = (e) => {
-            this._bar.style.width = this._thumb.style.marginLeft = e.offsetX + "px";
-            var percent = (e.offsetX / this._slider.offsetWidth);
-          
-                // this._stopFrame = true;
-                // this._video.pause();
-                this._currentIndex = Math.floor(percent * this._totalNumber);
-                // this._video.play();
-                // this._stopFrame=false;
-                // setTimeout(this.drawBodyDataOnly.bind(this), 55, this._canvas.width, this._canvas.height, this._currentIndex);
-                
-           
-                var currentTime = percent * this._video.duration;
-                this._minutesCurrent = Math.floor(currentTime / 60);
-                this._secondsCurrent = Math.floor(currentTime - this._minutesCurrent * 60);
-                this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
-                this._video.currentTime = (this._video.duration * percent);
-            
-        };
-
+        this._slider.onclick = (e) => {this.seekTime(e)};
 
         this._video.addEventListener('play', () => {
             this.draw(this._canvasVideo.width, this._canvasVideo.height);
@@ -153,12 +134,26 @@ export default class Video extends BaseComponent {
     public get width(): number {
         return this._canvasVideo.width;
     }
+
+    private seekTime(e:MouseEvent){
+        this._bar.style.width = this._thumb.style.marginLeft = e.offsetX + "px";
+            var percent = (e.offsetX / this._slider.offsetWidth);
+                // this._stopFrame = true;
+                // this._video.pause();
+                //this._currentIndex = Math.floor(percent * this._totalNumber);
+                // this._video.play();
+                // this._stopFrame=false;
+                // setTimeout(this.drawBodyDataOnly.bind(this), 55, this._canvas.width, this._canvas.height, this._currentIndex)
+                var currentTime = percent * this._video.duration;
+                this._minutesCurrent = Math.floor(currentTime / 60);
+                this._secondsCurrent = Math.floor(currentTime - this._minutesCurrent * 60);
+                this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
+                this._video.currentTime = (this._video.duration * percent);
+            
+    }
     private updateTime(){
-       
-        
             var percent = (this._video.currentTime / this._video.duration);
             this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
-
             this._minutesCurrent = Math.floor(this._video.currentTime / 60);
             this._secondsCurrent = Math.floor(this._video.currentTime - this._minutesCurrent * 60);
             this._minutesDuration = Math.floor(this._video.duration / 60);
@@ -186,7 +181,6 @@ export default class Video extends BaseComponent {
     }
     private drawBodyDataOnly(w: number, h: number, frameIndex: number) {
         // var frameIndex = Math.round((this._frameDataList.length - 1) * percent);
-        console.log('iteration', frameIndex);
         this._contextFront.clearRect(0, 0, this._canvasFront.width, this._canvasFront.height);
         this._contextSide.clearRect(0, 0, this._canvasFront.width, this._canvasFront.height);
         var frameData1 = this._createFrame(this._frameDataList[frameIndex], w, h, "front");
@@ -196,9 +190,7 @@ export default class Video extends BaseComponent {
         this._contextFront.putImageData(frameData1, 0, 0);
         this._contextSide.putImageData(frameData2, 0, 0);
         //  this._context.scale(2,2);
-
         var percentTwo = ((frameIndex) / this._totalNumber);
-
         // this._minutesCurrent = Math.floor(this._video.currentTime / 60);
         // this._secondsCurrent = Math.floor(this._video.currentTime - this._minutesCurrent * 60);
         // this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
@@ -211,7 +203,6 @@ export default class Video extends BaseComponent {
             this._stopFrame = true;
             this._currentIndex = 0;
             //this.replacePlayIcon(false);
-            this._stopFrame=true;
         }
       
     }
@@ -226,25 +217,17 @@ export default class Video extends BaseComponent {
             this._totalNumber = this._frameDataList.length - 1;
             console.log("Total", this._totalNumber);
             this.drawBodyDataOnly(w, h, this._currentIndex);
+        }   
+        if (this._video.paused || this._video.ended) {
+            return;
         }
-
-            if (this._video.paused || this._video.ended) {
-                return;
-            }
-
-
-            var percent = (this._video.currentTime / this._video.duration);
-
-            this._contextVideo.drawImage(this._video, 0, 0, w, h);
-
-            this._minutesCurrent = Math.floor(this._video.currentTime / 60);
-            this._secondsCurrent = Math.floor(this._video.currentTime - this._minutesCurrent * 60);
-            this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
-            this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
-
-            setTimeout(this.draw.bind(this), 33, w, h);
-        
-
+        var percent = (this._video.currentTime / this._video.duration);
+        this._contextVideo.drawImage(this._video, 0, 0, w, h);
+        this._minutesCurrent = Math.floor(this._video.currentTime / 60);
+        this._secondsCurrent = Math.floor(this._video.currentTime - this._minutesCurrent * 60);
+        this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
+        this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
+        setTimeout(this.draw.bind(this), 33, w, h);
     }
     /** Accessor to get source path of video.
     * @returns Returns string path
@@ -277,7 +260,6 @@ export default class Video extends BaseComponent {
             this._video.load();
             this._video.currentTime = 0;
 
-
             // this._video.play();
 
         }
@@ -287,7 +269,6 @@ export default class Video extends BaseComponent {
     }
  
   
-
     /** Method that toggles enable and disable state of a Video element.
      * @returns Nothing (return part of property definition).
      * */
@@ -319,6 +300,7 @@ export default class Video extends BaseComponent {
                 context.strokeStyle = "purple";
                 context.stroke();
                 context.closePath();
+      
             });
 
             frame.forEach(line => {
@@ -350,6 +332,7 @@ export default class Video extends BaseComponent {
             context.strokeStyle = "purple";
             context.stroke();
             context.closePath();
+           
         });
 
         frame.forEach(line => {
@@ -378,17 +361,14 @@ export default class Video extends BaseComponent {
     private _onActionHandel() {
         if (this._video.paused || this._video.ended) {
             // Pause put in play more.
-        
-                this._stopFrame = false;
-            
+            this._stopFrame = false;
             this._video.play();
             this.replacePlayIcon(true);
         } else {
             // Play put in pause more.
-         
-                this._stopFrame = true;
-         
+            this._stopFrame = true;
             this._video.pause();
+            this._currentIndex-1;
             this.replacePlayIcon(false)
         }
     }
