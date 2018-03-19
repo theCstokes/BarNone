@@ -2,20 +2,15 @@
 using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DataConverters;
-using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.Flex;
 using BarNone.Shared.DomainModel;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace BarNone.DataLift.UI.ViewModels
@@ -211,7 +206,6 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
-
         #region UserSharePropeties
         private ObservableCollection<User> _selectedUsers;
         public ObservableCollection<User> SelectedUsers
@@ -260,6 +254,10 @@ namespace BarNone.DataLift.UI.ViewModels
             var ffmpeg = new FfmpegController();
             foreach(var lift in CurrentLiftData.LiftInformation)
             {
+                var firstFrameTime = CurrentLiftData.CurrentRecordedBodyData.FirstOrDefault(f => f.TimeOfFrame.Milliseconds >= lift.LiftStartTime).TimeOfFrame;
+                if (firstFrameTime == null)
+                    continue;
+
                 PostTasks.Add(Task.Run(async () => {
                     var liftDTO = Converters.NewConvertion()
                     .Lift
@@ -270,6 +268,13 @@ namespace BarNone.DataLift.UI.ViewModels
                         {
                             BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData
                                 .Where(f => f.TimeOfFrame.Milliseconds >= lift.LiftStartTime && f.TimeOfFrame.Milliseconds <= lift.LiftEndTime)
+                                //Clone the frame to normalize start times!
+                                .Select(f => new BodyDataFrame()
+                                {
+                                    UserID = 2,
+                                    Joints = f.Joints,
+                                    TimeOfFrame = f.TimeOfFrame - firstFrameTime
+                                })
                                 .OrderBy(f => f.TimeOfFrame.Milliseconds)
                                 .ToList(),
                             UserID = 2,
@@ -280,7 +285,7 @@ namespace BarNone.DataLift.UI.ViewModels
                         Video = new VideoRecord
                         {
                             Data = File.ReadAllBytes(await ffmpeg.SplitVideo("TestFFMPEG.avi", lift.LiftStartTime/1000, (lift.LiftEndTime-lift.LiftStartTime)/1000)),
-                            UserID = 1
+                            UserID = 2
                         }
                     });
 
@@ -310,5 +315,6 @@ namespace BarNone.DataLift.UI.ViewModels
 
         }
         #endregion
+
     }
 }
