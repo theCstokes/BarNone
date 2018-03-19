@@ -1,7 +1,10 @@
+declare function require(moduleNames: string): any;
 import { BaseComponent } from "UEye/Elements/Core/BaseComponent/BaseComponent";
 import Core from "UEye/Elements/Core/Core";
 import { OnChangeCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import { BaseView } from "UEye/Elements/Core/BaseView";
+// Stub a local require for the ts compiler.
+const moment = require("momentjs");
 /**Type Definition: for LineData to be drawn on canvas */
 type LineData = {
     /**x-coordinate for point 1*/
@@ -55,9 +58,9 @@ export default class Video extends BaseComponent {
     private _src: string;
     private _frameDataList: FrameData[];
     private _totalNumber: number;
-    private _minutesCurrent: number;
+    private _timeCurrent: string;
     private _secondsCurrent: number;
-    private _minutesDuration: number;
+    private _timeDuration: string;
     private _secondsDuration: number;
     private _stopFrame: boolean;
    //#endregion
@@ -105,7 +108,7 @@ export default class Video extends BaseComponent {
         this._video.addEventListener('timeupdate', () => {this.updateTime()}, false);
 
         this._video.addEventListener("loadedmetadata", () => {
-            this._minutesDuration = this._secondsDuration = 0;
+            this._secondsDuration = 0;
         }, false);
         this._video.addEventListener("ended", () => {
             this.replacePlayIcon(false);
@@ -138,35 +141,24 @@ export default class Video extends BaseComponent {
     private seekTime(e:MouseEvent){
         this._bar.style.width = this._thumb.style.marginLeft = e.offsetX + "px";
             var percent = (e.offsetX / this._slider.offsetWidth);
-                // this._stopFrame = true;
-                // this._video.pause();
-                //this._currentIndex = Math.floor(percent * this._totalNumber);
-                // this._video.play();
-                // this._stopFrame=false;
-                // setTimeout(this.drawBodyDataOnly.bind(this), 55, this._canvas.width, this._canvas.height, this._currentIndex)
                 var currentTime = percent * this._video.duration;
-                this._minutesCurrent = Math.floor(currentTime / 60);
-                this._secondsCurrent = Math.floor(currentTime - this._minutesCurrent * 60);
-                this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
                 this._video.currentTime = (this._video.duration * percent);
             
     }
     private updateTime(){
             var percent = (this._video.currentTime / this._video.duration);
             this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
-            this._minutesCurrent = Math.floor(this._video.currentTime / 60);
-            this._secondsCurrent = Math.floor(this._video.currentTime - this._minutesCurrent * 60);
-            this._minutesDuration = Math.floor(this._video.duration / 60);
-            this._secondsDuration = Math.floor(this._video.duration - this._minutesDuration * 60);
-            if (isNaN(this._minutesDuration) || isNaN(this._secondsDuration)) {
-                this._minutesDuration = this._secondsDuration = 0;
-            }
-            this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
-        
+            this._timeCurrent=moment.unix(this._video.currentTime).format("mm:ss");;
+            // if(moment.isDate(this._timeDuration)==false){
+            //     this._timeDuration=moment.unix(0.0).format("mm:ss");
+            // }
+            this._timeDuration=moment.unix(this._video.duration).format("mm:ss");
+            
+            this._timeStamp.innerHTML= this._timeCurrent+"/"+this._timeDuration;
+            
     }
     private videoSetup(){
-        this._timeStamp.innerHTML = "0:00/0:00";
-        this._minutesDuration = 0;
+        //this._timeStamp.innerHTML = "0:00/0:00";
         this._secondsDuration = 0;
         this._currentIndex = 0;
         this._video.autoplay = true;
@@ -186,17 +178,14 @@ export default class Video extends BaseComponent {
         var frameData1 = this._createFrame(this._frameDataList[frameIndex], w, h, "front");
         var frameData2 = this._createFrame(this._frameDataList[frameIndex], w, h, "side");
         var bit = createImageBitmap(frameData1);
-        // this._context.scale(0.5,0.5);
         this._contextFront.putImageData(frameData1, 0, 0);
         this._contextSide.putImageData(frameData2, 0, 0);
-        //  this._context.scale(2,2);
         var percentTwo = ((frameIndex) / this._totalNumber);
         // this._minutesCurrent = Math.floor(this._video.currentTime / 60);
         // this._secondsCurrent = Math.floor(this._video.currentTime - this._minutesCurrent * 60);
-        // this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
+        // this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._timeDuration + ":" + this._secondsDuration;
         // this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percentTwo + "px");
         this._currentIndex = frameIndex + 1;
-
         if (this._stopFrame == false && this._currentIndex <= this._totalNumber) {
             setTimeout(this.drawBodyDataOnly.bind(this), 55, w, h, this._currentIndex);
         } else if (this._currentIndex > this._totalNumber) {
@@ -215,7 +204,6 @@ export default class Video extends BaseComponent {
 
         if ( this._frameDataList != undefined) {
             this._totalNumber = this._frameDataList.length - 1;
-            console.log("Total", this._totalNumber);
             this.drawBodyDataOnly(w, h, this._currentIndex);
         }   
         if (this._video.paused || this._video.ended) {
@@ -223,10 +211,7 @@ export default class Video extends BaseComponent {
         }
         var percent = (this._video.currentTime / this._video.duration);
         this._contextVideo.drawImage(this._video, 0, 0, w, h);
-        this._minutesCurrent = Math.floor(this._video.currentTime / 60);
-        this._secondsCurrent = Math.floor(this._video.currentTime - this._minutesCurrent * 60);
-        this._timeStamp.innerHTML = this._minutesCurrent + ":" + this._secondsCurrent + "/" + this._minutesDuration + ":" + this._secondsDuration;
-        this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
+       this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
         setTimeout(this.draw.bind(this), 33, w, h);
     }
     /** Accessor to get source path of video.
@@ -381,7 +366,6 @@ export default class Video extends BaseComponent {
         }
     }
     private _onShowHandler(view: BaseView) {
-        console.log("video");
         this._canvasVideo.height = this._canvasVideo.offsetHeight;
         this._canvasVideo.width = this._canvasVideo.offsetWidth;
         this._video.width = this._canvasVideo.width;

@@ -3,7 +3,8 @@ require.config({
 	paths: {
 		data: "../../data",
 		lodash: '../../node_modules/lodash/lodash',
-		chartjs: '../../libs/Chart'
+		chartjs: '../../libs/Chart',
+		momentjs: '../../libs/moment'
 	},
 	// urlArgs: "v=" + (new Date()).getTime()
 });
@@ -19,7 +20,8 @@ define([
 	"App/App", // TODO - Play
 
 	// Preload modules.
-	"chartjs"
+	"chartjs",
+	"momentjs"
 ], function (UEye, UEye_config_d, App, PlayGround) {
 	// TODO - Debug.
 	$App = App.default;
