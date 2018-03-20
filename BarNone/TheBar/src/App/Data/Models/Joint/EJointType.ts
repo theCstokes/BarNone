@@ -1,4 +1,4 @@
-export enum JointTypeEnum {
+export enum EJointType {
 	SpineBase = 0,
 	//
 	// Summary:

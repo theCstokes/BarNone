@@ -13,8 +13,11 @@ import ScreenPipeLine from "UEye/Screen/ScreenPipeLineStage";
 import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
 import { ELiftType } from "App/Screens/Lifts/StateManagers/BaseLiftStateManager";
 import BodyExample from "App/Data/DataOverride/api/v1/Joints"
+import ChartTabHelper from "App/Screens/Lifts/ChartTab/ChartTabHelper";
 
 export default class LiftEditScreen extends EditScreen<LiftEditView, StateManager> {
+	private _chartTabHelper : ChartTabHelper;
+
 	public constructor() {
 		super(LiftEditView, LiftFolderHelp);
 	}
@@ -41,7 +44,7 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 
 	//#region Type Drop Down
 	.onShow(() => {
-		this.view.typeDropDown.items = this.stateManager.s_LiftTypeList
+		this.view.typeDropDown.items = this.stateManager.s_LiftTypeList;
 	})
 	.onRender((current: State, original: State) => {
 		this.view.typeDropDown.selected = current.liftType;
@@ -115,6 +118,8 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 	public async onShow(data: { id: number, name: string, type: ELiftType }): Promise<void> {
 		super.onShow(data);
 		this.init(await StateManagerFactory.create(StateManager));
+		this._chartTabHelper = new ChartTabHelper(this.view,data.id);
+		this._chartTabHelper.onShow();
 		this._pipeLine.onShowInvokable();
 		this.stateManager.bind(this._pipeLine.onRenderInvokable.bind(this));		
 		await this.stateManager.ResetState.trigger(data);

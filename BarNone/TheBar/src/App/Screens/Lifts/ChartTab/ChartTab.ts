@@ -2,11 +2,20 @@ import ControlTypes from "UEye/ControlTypes";
 import List from "UEye/Elements/Components/List/List";
 import DropDownInput from "UEye/Elements/Components/DropdownInput/DropdownInput";
 import Graph from "UEye/Elements/Components/Graph/Graph";
+import { View } from "UEye/View/View";
+import ComponentConfig from "UEye/Elements/Core/ComponentConfig";
 
-export class ChartTab {
-	public static get content(): any {
+export interface IChartTabView{
+	analysisTypeDropdown : DropDownInput;
+	jointDropdown: DropDownInput;
+	dimensionDropdown: DropDownInput;
+	chart: Graph;
+}
+
+export class ChartTab{
+	public static get content() : any{
 		return {
-			title: "Chart",
+			title: "Charts",
 			content: [
 				{
 					id: "analysisTypeDropdown",
@@ -17,6 +26,11 @@ export class ChartTab {
 					id: "jointDropdown",
 					instance: ControlTypes.DropDownInput,
 					hint: "Joint"
+				},
+				{
+					id: "dimensionDropdown",
+					instance: ControlTypes.DropDownInput,
+					hint: "Dimension"
 				},
 				{
 					id: "chart",

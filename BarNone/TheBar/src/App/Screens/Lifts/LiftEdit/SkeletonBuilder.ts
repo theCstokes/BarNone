@@ -1,5 +1,5 @@
 import BodyData from "App/Data/Models/BodyData/BodyData";
-import { JointTypeEnum } from "App/Screens/Lifts/LiftEdit/JointTypeEnum";
+import { EJointType } from "App/Data/Models/Joint/EJointType";
 
 export class SkeletonLine {
 	public x1: number;
@@ -17,15 +17,15 @@ export class SkeletonLine {
 
 export class SkeletonBuilder {
 
-	private static _jointMap: { start: JointTypeEnum, end: JointTypeEnum }[];
+	private static _jointMap: { start: EJointType, end: EJointType }[];
 
 	private static _init() {
 		SkeletonBuilder._jointMap = [
 			// Spine
-			{ start: JointTypeEnum.Head, end: JointTypeEnum.Neck },
-			{ start: JointTypeEnum.Neck, end: JointTypeEnum.SpineShoulder },
-			{ start: JointTypeEnum.SpineShoulder, end: JointTypeEnum.SpineMid },
-			{ start: JointTypeEnum.SpineMid, end: JointTypeEnum.SpineBase },
+			{ start: EJointType.Head, end: EJointType.Neck },
+			{ start: EJointType.Neck, end: EJointType.SpineShoulder },
+			{ start: EJointType.SpineShoulder, end: EJointType.SpineMid },
+			{ start: EJointType.SpineMid, end: EJointType.SpineBase },
 
 
 
@@ -35,32 +35,32 @@ export class SkeletonBuilder {
 			// { start: JointTypeEnum.Neck, end: JointTypeEnum.SpineShoulder },
 
 			// Right Top
-			{ start: JointTypeEnum.SpineShoulder, end: JointTypeEnum.ShoulderRight },
-			{ start: JointTypeEnum.ElbowRight, end: JointTypeEnum.ShoulderRight },
-			{ start: JointTypeEnum.WristRight, end: JointTypeEnum.ElbowRight },
-			{ start: JointTypeEnum.HandRight, end: JointTypeEnum.WristRight },
-			{ start: JointTypeEnum.HandTipRight, end: JointTypeEnum.HandRight },
-			{ start: JointTypeEnum.ThumbRight, end: JointTypeEnum.WristRight },
+			{ start: EJointType.SpineShoulder, end: EJointType.ShoulderRight },
+			{ start: EJointType.ElbowRight, end: EJointType.ShoulderRight },
+			{ start: EJointType.WristRight, end: EJointType.ElbowRight },
+			{ start: EJointType.HandRight, end: EJointType.WristRight },
+			{ start: EJointType.HandTipRight, end: EJointType.HandRight },
+			{ start: EJointType.ThumbRight, end: EJointType.WristRight },
 
 			// Right Bottom
-			{ start: JointTypeEnum.SpineBase, end: JointTypeEnum.HipRight },
-			{ start: JointTypeEnum.KneeRight, end: JointTypeEnum.HipRight },
-			{ start: JointTypeEnum.AnkleRight, end: JointTypeEnum.KneeRight },
-			{ start: JointTypeEnum.FootRight, end: JointTypeEnum.AnkleRight },
+			{ start: EJointType.SpineBase, end: EJointType.HipRight },
+			{ start: EJointType.KneeRight, end: EJointType.HipRight },
+			{ start: EJointType.AnkleRight, end: EJointType.KneeRight },
+			{ start: EJointType.FootRight, end: EJointType.AnkleRight },
 
 			// Left Top
-			{ start: JointTypeEnum.SpineShoulder, end: JointTypeEnum.ShoulderLeft },
-			{ start: JointTypeEnum.ElbowLeft, end: JointTypeEnum.ShoulderLeft },
-			{ start: JointTypeEnum.WristLeft, end: JointTypeEnum.ElbowLeft },
-			{ start: JointTypeEnum.HandLeft, end: JointTypeEnum.WristLeft },
-			{ start: JointTypeEnum.HandTipLeft, end: JointTypeEnum.HandLeft },
-			{ start: JointTypeEnum.ThumbLeft, end: JointTypeEnum.WristLeft },
+			{ start: EJointType.SpineShoulder, end: EJointType.ShoulderLeft },
+			{ start: EJointType.ElbowLeft, end: EJointType.ShoulderLeft },
+			{ start: EJointType.WristLeft, end: EJointType.ElbowLeft },
+			{ start: EJointType.HandLeft, end: EJointType.WristLeft },
+			{ start: EJointType.HandTipLeft, end: EJointType.HandLeft },
+			{ start: EJointType.ThumbLeft, end: EJointType.WristLeft },
 
 			// Left Bottom
-			{ start: JointTypeEnum.SpineBase, end: JointTypeEnum.HipLeft },
-			{ start: JointTypeEnum.KneeLeft, end: JointTypeEnum.HipLeft },
-			{ start: JointTypeEnum.AnkleLeft, end: JointTypeEnum.KneeLeft },
-			{ start: JointTypeEnum.FootLeft, end: JointTypeEnum.AnkleLeft },
+			{ start: EJointType.SpineBase, end: EJointType.HipLeft },
+			{ start: EJointType.KneeLeft, end: EJointType.HipLeft },
+			{ start: EJointType.AnkleLeft, end: EJointType.KneeLeft },
+			{ start: EJointType.FootLeft, end: EJointType.AnkleLeft },
 		];
 	}
 
@@ -68,7 +68,7 @@ export class SkeletonBuilder {
 		let i=0;
 		SkeletonBuilder._init();
 		return bodyData.details.orderedFrames.map(f => {
-			var spineBase = f.details.joints.find(j => j.jointTypeID === (JointTypeEnum.SpineBase));
+			var spineBase = f.details.joints.find(j => j.jointTypeID === (EJointType.SpineBase));
 			
 			if (spineBase === undefined) return [];
 

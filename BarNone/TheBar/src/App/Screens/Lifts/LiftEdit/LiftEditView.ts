@@ -1,4 +1,5 @@
 import ControlTypes from "UEye/ControlTypes";
+import UEye from "UEye/UEye"
 import { EditView } from "UEye/View/EditView";
 import Input from "UEye/Elements/Components/Input/Input";
 import Panel from "UEye/Elements/Containers/Panel/Panel";
@@ -10,9 +11,10 @@ import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout"
 import Messenger from "UEye/Elements/Components/Messenger/Messenger";
 import DropDownInput from "UEye/Elements/Components/DropDownInput/DropDownInput";
 import { LiftPermissionTab, ILiftPermissionView } from "App/Screens/Lifts/Shared/LiftPermissionView";
-import { ChartTab } from "App/Screens/Lifts/Chart/ChartTab";
+import { ChartTab, IChartTabView } from "App/Screens/Lifts/ChartTab/ChartTab";
+import Graph from "UEye/Elements/Components/Graph/Graph";
 
-export default class LiftEditView extends EditView implements ILiftPermissionView {
+export default class LiftEditView extends EditView implements ILiftPermissionView, IChartTabView {
 	protected caption: string = "Lift Edit";
 
 	public nameInput: Input;
@@ -23,6 +25,13 @@ export default class LiftEditView extends EditView implements ILiftPermissionVie
 	public messenger: Messenger;
 	public analyticsButton: IconButton;
 	public videoLayout: SideBarLayout;
+
+	//Members used by the chart tab
+	public analysisTypeDropdown : DropDownInput;
+	public jointDropdown: DropDownInput;
+	public dimensionDropdown: DropDownInput;
+	public chart: Graph;
+
 
 	public get content(): any[] {
 		return [
@@ -123,6 +132,7 @@ export default class LiftEditView extends EditView implements ILiftPermissionVie
 					},
 					LiftPermissionTab.content,
 					ChartTab.content
+					
 				]
 			}
 				
