@@ -14,9 +14,11 @@ import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
 import { ELiftType } from "App/Screens/Lifts/StateManagers/BaseLiftStateManager";
 import BodyExample from "App/Data/DataOverride/api/v1/Joints"
 import ChartTabHelper from "App/Screens/Lifts/ChartTab/ChartTabHelper";
+import LiftPermissionHelper from "App/Screens/Lifts/Shared/LiftPermissionHelper";
 
 export default class LiftEditScreen extends EditScreen<LiftEditView, StateManager> {
 	private _chartTabHelper : ChartTabHelper;
+	private _liftpermissionHelper: LiftPermissionHelper;
 
 	public constructor() {
 		super(LiftEditView, LiftFolderHelp);
@@ -98,7 +100,7 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 			filter: {
 				property: (comment) => comment.liftID,
 				comparisons: "eq",
-				value: data.id
+				value: this.stateManager.getCurrentState().id
 			}
 		}), async () => {
 			console.log("GoT");
@@ -130,6 +132,8 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		super.onShow(data);
 		this.init(await StateManagerFactory.create(StateManager));
 		this._chartTabHelper = new ChartTabHelper(this.view,data.id);
+		this._liftpermissionHelper= new LiftPermissionHelper(this.view,data.id);
+		this._liftpermissionHelper.onShow();
 		this._chartTabHelper.onShow();
 		this._pipeLine.onShowInvokable();
 		this.stateManager.bind(this._pipeLine.onRenderInvokable.bind(this));		

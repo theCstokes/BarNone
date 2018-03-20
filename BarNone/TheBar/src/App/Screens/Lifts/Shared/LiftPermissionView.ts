@@ -1,8 +1,9 @@
 import ControlTypes from "UEye/ControlTypes";
 import List from "UEye/Elements/Components/List/List";
+import SearchBar from "UEye/Elements/Components/SearchBar/SearchBar";
 
 export interface ILiftPermissionView {
-	userShareList: List;
+	userShareSearchBar: SearchBar;
 }
 
 export class LiftPermissionTab {
@@ -13,10 +14,6 @@ export class LiftPermissionTab {
 				{
 					id: "userShareSearchBar",
 					instance: ControlTypes.SearchBar
-				},
-				{
-					id: "userShareList",
-					instance: ControlTypes.List
 				}
 			]
 		};

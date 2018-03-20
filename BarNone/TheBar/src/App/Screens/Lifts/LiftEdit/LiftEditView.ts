@@ -10,6 +10,7 @@ import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout";
 import Messenger from "UEye/Elements/Components/Messenger/Messenger";
 import DropDownInput from "UEye/Elements/Components/DropDownInput/DropDownInput";
+import SearchBar from "UEye/Elements/Components/SearchBar/SearchBar";
 import { LiftPermissionTab, ILiftPermissionView } from "App/Screens/Lifts/Shared/LiftPermissionView";
 import { ChartTab, IChartTabView } from "App/Screens/Lifts/ChartTab/ChartTab";
 import Graph from "UEye/Elements/Components/Graph/Graph";
@@ -20,7 +21,6 @@ export default class LiftEditView extends EditView implements ILiftPermissionVie
 	public nameInput: Input;
 	public typeDropDown: DropDownInput;
 	public parentDropDown: DropDownInput;
-	public userShareList: List;
 	public player: Video;
 	public messenger: Messenger;
 	public analyticsButton: IconButton;
@@ -31,6 +31,9 @@ export default class LiftEditView extends EditView implements ILiftPermissionVie
 	public jointDropdown: DropDownInput;
 	public dimensionDropdown: DropDownInput;
 	public chart: Graph;
+
+	//Members used by shared tab
+	public userShareSearchBar: SearchBar;
 
 
 	public get content(): any[] {
