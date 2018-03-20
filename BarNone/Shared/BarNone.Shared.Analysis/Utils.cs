@@ -19,8 +19,10 @@ namespace BarNone.Shared.Analysis
 
         public static List<JointTimeSeries> ConvertBodyDataToTimeSeriesSet(BodyData bodyData)
         {
-            List<TimeSpan> timeSpans = (from frame in bodyData.BodyDataFrames select frame.TimeOfFrame).ToList<TimeSpan>();
+            List<BodyDataFrame> frames = (from frame in bodyData.BodyDataFrames select frame).OrderBy(x => x.TimeOfFrame).ToList();
+            List<TimeSpan> timeSpans = (from frame in frames select frame.TimeOfFrame).ToList<TimeSpan>();
             List<float> seconds = (from x in timeSpans select ((float) x.TotalSeconds)).ToList();
+            seconds.Sort();
             
             List <JointTimeSeries> joints = new List<JointTimeSeries>();
             if (bodyData.BodyDataFrames.Count < 1)
@@ -30,11 +32,13 @@ namespace BarNone.Shared.Analysis
             {
                 JointTimeSeries jts;
                 jts.t = seconds.ToArray();
-                jts.X = (from frame in bodyData.BodyDataFrames select frame.Joints[i].X).ToArray();
-                jts.Y = (from frame in bodyData.BodyDataFrames select frame.Joints[i].Y).ToArray();
-                jts.Z = (from frame in bodyData.BodyDataFrames select frame.Joints[i].Z).ToArray();
+                jts.X = (from frame in frames select frame.Joints[i].X).ToArray();
+                jts.Y = (from frame in frames select frame.Joints[i].Y).ToArray();
+                jts.Z = (from frame in frames select frame.Joints[i].Z).ToArray();
                 joints.Add(jts);
             }
+
+
             return joints;
         }
 
