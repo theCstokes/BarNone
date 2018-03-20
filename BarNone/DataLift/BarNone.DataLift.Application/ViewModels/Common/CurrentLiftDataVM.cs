@@ -1,9 +1,6 @@
-﻿using BarNone.DataLift.APIRequest;
-using BarNone.Shared.Core;
-using BarNone.Shared.DataTransfer;
+﻿using BarNone.Shared.Core;
 using BarNone.Shared.DomainModel;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -15,6 +12,8 @@ namespace BarNone.DataLift.UI.ViewModels.Common
     /// </summary>
     public class CurrentLiftDataVM : ViewModelBase
     {
+        public string CurrentUser;
+
         //If we need to get item modified ask me -Riley
         /// <summary>
         /// Field representation for the <see cref="CurrentRecordedBodyData"/> bindable property list
@@ -50,20 +49,11 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             }
         }
 
+        public string ParentLiftVideoName { get; internal set; }
+
         public long ColorDataOffset;
-
-        private TimeSpan? _latencyBetweenFirstColorFrameAndFirstBodyFrame = null;
-        public TimeSpan? LatencyBetweenFirstColorFrameAndFirstBodyFrame
-        {
-            get => _latencyBetweenFirstColorFrameAndFirstBodyFrame;
-            set
-            {
-                _latencyBetweenFirstColorFrameAndFirstBodyFrame = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("LatencyBetweenFirstColorFrameAndFirstBodyFrame"));
-            }
-        }
-
-        public ObservableCollection<LiftListVM> LiftInformation = new ObservableCollection<LiftListVM>();
+        
+        public ObservableCollection<LiftItemVM> LiftInformation = new ObservableCollection<LiftItemVM>();
 
         private bool isNormalized = false;
 

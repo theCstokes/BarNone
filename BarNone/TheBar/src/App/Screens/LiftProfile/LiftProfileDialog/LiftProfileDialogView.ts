@@ -3,7 +3,7 @@ import ComponentConfig from "UEye/Elements/Core/ComponentConfig";
 import ControlTypes from "UEye/ControlTypes";
 import UEye from "UEye/UEye";
 import Button from "UEye/Elements/Components/Button/Button";
-import Dropdown from "UEye/Elements/Components/DropdownInput/DropDownInput";
+import DropDownInput from "UEye/Elements/Components/DropdownInput/DropdownInput";
 
 
 export default class LiftProfileDialogView extends DialogView {
@@ -13,17 +13,20 @@ export default class LiftProfileDialogView extends DialogView {
     public acceptButtonText: string = "Add";
     public acceptButtonIcon: string = "fa-plus";
 
+    public jointTypeDropDown: DropDownInput;
+    public analysisTypeDropDown: DropDownInput;
+
     protected content: ComponentConfig[] = [
         {
 
             instance: ControlTypes.DropDownInput,
-            id: "jointType",
+            id: "jointTypeDropDown",
             hint: "Joint Type"
 
         },
         {
             instance: ControlTypes.DropDownInput,
-            id: "analysisType",
+            id: "analysisTypeDropDown",
             hint: "Analysis Type"
         }
     ]

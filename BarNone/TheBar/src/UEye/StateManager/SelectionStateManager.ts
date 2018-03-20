@@ -46,7 +46,9 @@ export abstract class SelectionStateManager<
 		.onAsyncCallable<TState>(this, async (state) => {
 			var nextState = state.empty();
 			nextState.current.selectionList = await this.listProvider();
-			nextState.current.selectionId = nextState.current.selectionList[0].id;
+			if (nextState.current.selectionList.length > 0) {
+				nextState.current.selectionId = nextState.current.selectionList[0].id;
+			}
 
 			return nextState.initialize();
 		});

@@ -2,20 +2,15 @@
 using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DataConverters;
-using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DataTransfer.Flex;
 using BarNone.Shared.DomainModel;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace BarNone.DataLift.UI.ViewModels
@@ -61,7 +56,7 @@ namespace BarNone.DataLift.UI.ViewModels
             }
         }
 
-        public ObservableCollection<LiftListVM> LiftIntervals
+        public ObservableCollection<LiftItemVM> LiftIntervals
         {
             get
             {
@@ -80,11 +75,11 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Field representation for the <see cref="SelectedLift"/> bindable property
         /// </summary>
-        private LiftListVM _selectedLift;
+        private LiftItemVM _selectedLift;
         /// <summary>
         /// The lift that is selected in the lift.  Used to bind to video player to display the selected lift.
         /// </summary>
-        public LiftListVM SelectedLift
+        public LiftItemVM SelectedLift
         {
             get { return _selectedLift; }
 
@@ -126,7 +121,7 @@ namespace BarNone.DataLift.UI.ViewModels
         private void DeleteSelectedRecordingCommand(object action)
         {
             // Cast action to a LiftListVM.
-            LiftListVM selected = (LiftListVM)action;
+            LiftItemVM selected = (LiftItemVM)action;
 
             // If action is null then return
             if (action == null) return;
@@ -211,15 +206,6 @@ namespace BarNone.DataLift.UI.ViewModels
         }
         #endregion
 
-        #region Custom User Implementation
-        //public class SharableUser
-        //{
-            
-
-
-        //}
-        #endregion
-
         #region UserSharePropeties
         private ObservableCollection<User> _selectedUsers;
         public ObservableCollection<User> SelectedUsers
@@ -263,70 +249,72 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private async void SendLiftCommand()
         {
-            var liftDTO = Converters.NewConvertion()
-                .Lift
-                .CreateDTO(new Lift()
-                {
-                    LiftTypeID = 1,
-                    BodyData = new BodyData
-                    {
-                        BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData.ToList(),
-                        RecordDate = DateTime.Now
-                    },
-                    Name = CurrentLiftData.LiftInformation[0].LiftName, // TODO.  Not make this a hardcoded 0.
-                    Video = new VideoRecord
-                    {
-                        Data = File.ReadAllBytes("TestFFMPEG.avi")
-                    }
-                });
-
-            var toSend = JsonConvert.SerializeObject(liftDTO, Formatting.Indented,
-                new JsonSerializerSettings()
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                }
-            );
-
-            var temp = await DataManager.Flex.Post(new FlexDTO
+            //TODO producer consumer this
+            var PostTasks = new List<Task>();
+            var ffmpeg = new FfmpegController();
+            foreach(var lift in CurrentLiftData.LiftInformation)
             {
-                Entities = new List<FlexEntityDTO>
-                {
-                    new FlexEntityDTO
+                var firstFrame = CurrentLiftData.CurrentRecordedBodyData.FirstOrDefault(f => f.TimeOfFrame.TotalMilliseconds >= lift.LiftStartTime);
+                if (firstFrame == null)
+                    continue;
+
+                PostTasks.Add(Task.Run(async () => {
+                    var liftDTO = Converters.NewConvertion()
+                    .Lift
+                    .CreateDTO(new Lift()
                     {
-                        Resource = "LIFT",
-                        Entity = liftDTO
-                    }
-                }
-            });
+                        LiftTypeID = lift.LiftID,
+                        BodyData = new BodyData
+                        {
+                            BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData
+                                .Where(f => f.TimeOfFrame.TotalMilliseconds >= lift.LiftStartTime && f.TimeOfFrame.TotalMilliseconds<= lift.LiftEndTime)
+                                //Clone the frame to normalize start times!
+                                .Select(f => new BodyDataFrame()
+                                {
+                                    UserID = lift.UserID,
+                                    Joints = f.Joints,
+                                    TimeOfFrame = f.TimeOfFrame - firstFrame.TimeOfFrame
+                                })
+                                .OrderBy(f => f.TimeOfFrame.TotalMilliseconds)
+                                .ToList(),
+                            UserID = lift.UserID,
+                            RecordDate = DateTime.Now
+                        },
+                        Name = lift.LiftName, // TODO. Not make this a hardcoded 0.
+                        UserID = lift.UserID,
+                        Video = new VideoRecord
+                        {
+                            Data = File.ReadAllBytes(await ffmpeg.SplitVideo(CurrentLiftData.ParentLiftVideoName, lift.LiftStartTime/1000, (lift.LiftEndTime-lift.LiftStartTime)/1000)),
+                            UserID = lift.UserID
+                        }
+                    });
 
+                    var temp = await DataManager.Flex.Post(new FlexDTO
+                    {
+                        Entities = new List<FlexEntityDTO>
+                        {
+                            new FlexEntityDTO
+                            {
+                                Resource = "LIFT",
+                                Entity = liftDTO
+                            }
+                        }
+                    });
+                }));
+            }
 
-            //DataManager.Flex.Post(new FlexDTO
-            //{
-            //    Entities = new List<FlexEntityDTO>
-            //    {
-            //        new FlexEntityDTO
-            //        {
-            //            Entity = new LiftDTO
-            //            {
-            //                Details = new LiftDetailDTO
-            //                {
-            //                    Video = new VideoDTO
-            //                    {
-            //                        Data = File.ReadAllBytes("TestFFMPEG.avi")
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //});
-
-            string fname = string.Format("{0}.json", liftDTO.Name);
-            if (File.Exists(fname))
-                File.Delete(fname);
-            File.WriteAllText(fname, toSend);
-
-            Console.WriteLine("Send Lift functionality to be implemented.");
+            Task.WaitAll(PostTasks.ToArray());
         }
         #endregion
+
+        #region Loaded and Closed
+        internal override void Loaded()
+        {
+            //TODO update this behavior
+            SelectedLift = LiftIntervals[0];
+
+        }
+        #endregion
+
     }
 }

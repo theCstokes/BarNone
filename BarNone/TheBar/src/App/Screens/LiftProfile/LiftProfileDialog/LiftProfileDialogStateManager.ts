@@ -19,6 +19,7 @@ export class LiftProfileDialogStateManager extends BaseStateManager<State> {
 
 	public async onInitialize(): Promise<void> {
 		this.s_JointTypeList = await DataManager.JointTypes.all();
+		this.s_AnalysisTypeList = await DataManager.AnalysisTypes.all();
 	}
 
 	public readonly CreateState = StateBind

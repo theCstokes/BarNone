@@ -91,9 +91,9 @@ export default class LoginView extends View {
 						]
 					},
 					{
-						instance: ControlTypes.Video,
-						id: "video",
-						visible: false
+						// instance: ControlTypes.Video,
+						// id: "video",
+						// visible: false
 					}
 				]
 			}

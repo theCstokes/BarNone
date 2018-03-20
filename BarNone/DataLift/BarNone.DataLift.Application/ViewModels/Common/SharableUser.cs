@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BarNone.DataLift.UI.ViewModels.Common
+﻿namespace BarNone.DataLift.UI.ViewModels.Common
 {
     public class SharableUser
     {
@@ -28,6 +22,11 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         }
 
         public bool IsSeletcted
+        {
+            get; set;
+        }
+
+        public int ID
         {
             get; set;
         }
