@@ -284,7 +284,7 @@ namespace BarNone.DataLift.UI.ViewModels
                         UserID = 2,
                         Video = new VideoRecord
                         {
-                            Data = File.ReadAllBytes(await ffmpeg.SplitVideo("TestFFMPEG.avi", lift.LiftStartTime/1000, (lift.LiftEndTime-lift.LiftStartTime)/1000)),
+                            Data = File.ReadAllBytes(await ffmpeg.SplitVideo(CurrentLiftData.ParentLiftVideoName, lift.LiftStartTime/1000, (lift.LiftEndTime-lift.LiftStartTime)/1000)),
                             UserID = 2
                         }
                     });

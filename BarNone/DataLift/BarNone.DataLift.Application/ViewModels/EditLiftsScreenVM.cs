@@ -177,7 +177,7 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             SelectedLift = CurrentLifts.LiftInformation[0];
 
-            VideoUri = new Uri(Path.GetFullPath("TestFFMPEG.avi"));
+            VideoUri = new Uri(Path.GetFullPath(CurrentLifts.ParentLiftVideoName));
             if (HasVideo)
                 StopRequested.Invoke(this, EventArgs.Empty);
 
@@ -189,11 +189,12 @@ namespace BarNone.DataLift.UI.ViewModels
             OnPropertyChanged(new PropertyChangedEventArgs("CurrentEndTime"));
 
             OnPropertyChanged(new PropertyChangedEventArgs("ScrubberLowerThumb"));
-            //OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
+            OnPropertyChanged(new PropertyChangedEventArgs("ScrubberUpperThumb"));
         }
 
         internal override void Closed()
         {
+            OnVideoPaused();
             base.Closed();
         }
 
@@ -287,9 +288,7 @@ namespace BarNone.DataLift.UI.ViewModels
             
             // Cast action to a LiftListVM.
             LiftItemVM selected = (LiftItemVM)action;
-
             
-
             // If action is null then return
             if (action == null) return;
 
@@ -357,7 +356,6 @@ namespace BarNone.DataLift.UI.ViewModels
             VideoTimer.IsEnabled = true;
             //Command the video to play
             PlayRequested?.Invoke(this, EventArgs.Empty);
-
         }
 
         /// <summary>

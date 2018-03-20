@@ -1,5 +1,4 @@
 ﻿using BarNone.DataLift.APIRequest;
-using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DataTransfer;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
