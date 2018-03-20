@@ -173,12 +173,12 @@ export class SkeletonBuilder {
 		let i=0;
 		SkeletonBuilder._init();
 		return bodyData.details.orderedFrames.map(f => {
-			var spineBase = f.details.joints.find(j => j.jointTypeID === (JointTypeEnum.SpineBase));
+			var spineBase = f.details.joints.find(j => j.jointTypeID === (JointTypeEnum.SpineBase + 1));
 			if (spineBase === undefined) return [];
 			return SkeletonBuilder._jointMap.reduce((result, m) => {
 				// Note: the jointTypeIds from the api are currently sifted up by 1.
-				var startJoint = f.details.joints.find(j => j.jointTypeID === (m.start));
-				var endJoint = f.details.joints.find(j => j.jointTypeID === (m.end));
+				var startJoint = f.details.joints.find(j => j.jointTypeID === (m.start + 1));
+				var endJoint = f.details.joints.find(j => j.jointTypeID === (m.end + 1));
 
 				if (startJoint === undefined) return result;
 				if (endJoint === undefined) return result;
@@ -200,10 +200,10 @@ export class SkeletonBuilder {
 					// x2: (endJoint.x - spineBase.x) * -153.34 + 256,
 					// y2: endJoint.y * -153.34 + 212
 						x1: startJoint.x*-60+(canvasWidth/3),
-						y1: startJoint.y*-60+(canvasHeight/3),
+						y1: startJoint.y*-60+(canvasHeight/2),
 						z1: startJoint.z*-60+(canvasWidth*3/5),
 						x2: endJoint.x*-60+(canvasWidth/3),
-						y2: endJoint.y*-60+(canvasHeight/3),
+						y2: endJoint.y*-60+(canvasHeight/2),
 						z2: endJoint.z*-60+(canvasWidth*3/5),
 						timeStamp: f.timeOfFrame
 
