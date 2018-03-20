@@ -16,7 +16,7 @@ namespace BarNone.DataLift.APIRequest
     {
 
 #if DEBUG
-        public static readonly string BASE_URL = "http://localhost:58428";
+        public static readonly string BASE_URL = "localhost:58428";
 #elif! DEBUG
                 public static readonly string BASE_URL = "192.168.0.142:81";
 #endif
