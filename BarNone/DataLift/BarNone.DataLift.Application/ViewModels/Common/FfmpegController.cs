@@ -211,14 +211,14 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         /// <returns>Name of the split video created</returns>
         public async Task<string> SplitVideo(string fname, double startTime, double length)
         {
-            string cutFile = $"{Guid.NewGuid().ToString()}.avi";
+            string cutFile = $"{Guid.NewGuid().ToString()}.mp4";
 
             await Task.Run(() =>
             {
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = $"{Directory.GetCurrentDirectory()}/res/ffmpeg.exe",
-                    Arguments = $"-i {fname} -ss {startTime} -t {length} {cutFile}",
+                    Arguments = $"-i {fname} -ss {startTime} -t {length} -vcodec libx264 {cutFile}",
                     UseShellExecute = false,
                     CreateNoWindow = false
                 };
