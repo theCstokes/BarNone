@@ -27,103 +27,103 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 	}
 
 	private _pipeLine = ScreenPipeLine.create()
-	//#region Panel
-	// .onRender((current: State, original: State) => {
-	// 	// var isModified = (JSON.stringify(original) !== JSON.stringify(current));
-	// 	var isModified = !Utils.compare(original, current, ["comments"]);
-	// 	this.view.editPanel.modified = isModified;
-	// })
-	//#endregion
+		//#region Panel
+		// .onRender((current: State, original: State) => {
+		// 	// var isModified = (JSON.stringify(original) !== JSON.stringify(current));
+		// 	var isModified = !Utils.compare(original, current, ["comments"]);
+		// 	this.view.editPanel.modified = isModified;
+		// })
+		//#endregion
 
-	//#region Name Input
-	.onShow(() => {
-		this.view.nameInput.onChange = (data) => {
-			this.stateManager.NameChange.trigger(data);
-		};
-	})
-	.onRender((current: State, original: State) => {
-		this.view.nameInput.text = current.name;
-		this.view.nameInput.modified = (original.name !== current.name);
-	})
-	//#endregion
+		//#region Name Input
+		.onShow(() => {
+			this.view.nameInput.onChange = (data) => {
+				this.stateManager.NameChange.trigger(data);
+			};
+		})
+		.onRender((current: State, original: State) => {
+			this.view.nameInput.text = current.name;
+			this.view.nameInput.modified = (original.name !== current.name);
+		})
+		//#endregion
 
-	//#region Type Drop Down
-	.onShow(() => {
-		this.view.typeDropDown.items = this.stateManager.s_LiftTypeList;
-	})
-	.onRender((current: State, original: State) => {
-		this.view.typeDropDown.selected = current.liftType;
-		this.view.typeDropDown.modified =
-			(JSON.stringify(current.liftType) !== JSON.stringify(original.liftType));
-	})
-	//#endregion
-	
-	//#region Parent Drop Down
-	.onShow(() => {
-		this.view.typeDropDown.items = this.stateManager.s_LiftTypeList;
-		this.view.parentDropDown.items = this.stateManager.s_FolderList;
+		//#region Type Drop Down
+		.onShow(() => {
+			this.view.typeDropDown.items = this.stateManager.s_LiftTypeList
+		})
+		.onRender((current: State, original: State) => {
+			this.view.typeDropDown.selected = current.liftType;
+			this.view.typeDropDown.modified =
+				(JSON.stringify(current.liftType) !== JSON.stringify(original.liftType));
+		})
+		//#endregion
 
-		this.view.parentDropDown.onSelect = (item) => {
-			this.stateManager.ParentChange.trigger({ parentID: item.id });
-		};
-	})
-	.onRender((current: State, original: State) => {
-		var currentParent = this.stateManager.s_FolderList.find(f => f.id === current.parentID);
-		var originalParent = this.stateManager.s_FolderList.find(f => f.id === original.parentID);
-		this.view.parentDropDown.selected = currentParent;
-		this.view.parentDropDown.modified =
-			(JSON.stringify(currentParent) !== JSON.stringify(originalParent));
-	})
-	//#endregion
+		//#region Parent Drop Down
+		.onShow(() => {
+			this.view.typeDropDown.items = this.stateManager.s_LiftTypeList;
+			this.view.parentDropDown.items = this.stateManager.s_FolderList;
 
-	//#region Video
-	.onShow(() => {
-		this.view.analyticsButton.onClick = () => this.view.videoLayout.toggleSideBar();
-	})
-	.onRender((current: State, original: State) => {
-		let bd= new BodyExample();
-		this.view.player.frameData = SkeletonBuilder.build(bd.data[0], this.view.player.canvasHeight, this.view.player.canvasWidth);
-		 this.view.player.src = StringUtils.format("{0}Lift/{1}/Video?access_token={2}", //https://www.rmp-streaming.com/media/bbb-360p.mp4",
-			 BaseDataManager.resourceAddress,
-			 current.id,
-			 BaseDataManager.auth.access_token);
-			 console.log(this.view.player.src);
-	})
-	//#endregion
-	
-	//#region Massager
-	.onShow((data: { id: number, name: string, type: ELiftType }) => {
-		NotificationManager.addListener<Comment>(new NotificationRequestDTO<Comment>({
-			type: "Comment",
-			filter: {
-				property: (comment) => comment.liftID,
-				comparisons: "eq",
-				value: data.id
-			}
-		}), async () => {
-			console.log("GoT");
-			await this.stateManager.RefreshComments.trigger();
-		});
+			this.view.parentDropDown.onSelect = (item) => {
+				this.stateManager.ParentChange.trigger({ parentID: item.id });
+			};
+		})
+		.onRender((current: State, original: State) => {
+			var currentParent = this.stateManager.s_FolderList.find(f => f.id === current.parentID);
+			var originalParent = this.stateManager.s_FolderList.find(f => f.id === original.parentID);
+			this.view.parentDropDown.selected = currentParent;
+			this.view.parentDropDown.modified =
+				(JSON.stringify(currentParent) !== JSON.stringify(originalParent));
+		})
+		//#endregion
 
-		this.view.messenger.onSend = (msg: string) => {
-			DataManager.Comments.create({
-				liftID: this.stateManager.getCurrentState().id,
-				text: msg,
-				timeSent: "2018-02-04"
+		//#region Video
+		.onShow(() => {
+			this.view.analyticsButton.onClick = () => this.view.videoLayout.toggleSideBar();
+		})
+		.onRender((current: State, original: State) => {
+			let bd = new BodyExample();
+			this.view.player.frameData = SkeletonBuilder.build(current.bodyData, this.view.player.canvasHeight, this.view.player.canvasWidth);
+			this.view.player.src = StringUtils.format("{0}Lift/{1}/Video?access_token={2}", //https://www.rmp-streaming.com/media/bbb-360p.mp4",
+				BaseDataManager.resourceAddress,
+				current.id,
+				BaseDataManager.auth.access_token);
+			console.log(this.view.player.src);
+		})
+		//#endregion
+
+		//#region Massager
+		.onShow((data: { id: number, name: string, type: ELiftType }) => {
+			NotificationManager.addListener<Comment>(new NotificationRequestDTO<Comment>({
+				type: "Comment",
+				filter: {
+					property: (comment) => comment.liftID,
+					comparisons: "eq",
+					value: data.id
+				}
+			}), async () => {
+				console.log("GoT");
+				await this.stateManager.RefreshComments.trigger();
 			});
-		};
-	})
-	.onRender((current: State, original: State) => {
-		this.view.messenger.messages = current.comments.map(comment => {
-			return {
-				id: comment.id,
-				value: comment.text,
-				userName: (comment.sentUserID === BaseDataManager.auth.userID) ? "You" : "Other",
-				date: comment.timeSent,
-				isCurrentUser: (comment.sentUserID === BaseDataManager.auth.userID)
-			}
-		});
-	})
+
+			this.view.messenger.onSend = (msg: string) => {
+				DataManager.Comments.create({
+					liftID: this.stateManager.getCurrentState().id,
+					text: msg,
+					timeSent: "2018-02-04"
+				});
+			};
+		})
+		.onRender((current: State, original: State) => {
+			this.view.messenger.messages = current.comments.map(comment => {
+				return {
+					id: comment.id,
+					value: comment.text,
+					userName: (comment.sentUserID === BaseDataManager.auth.userID) ? "You" : "Other",
+					date: comment.timeSent,
+					isCurrentUser: (comment.sentUserID === BaseDataManager.auth.userID)
+				}
+			});
+		})
 	//#endregion
 
 	public async onShow(data: { id: number, name: string, type: ELiftType }): Promise<void> {
@@ -132,7 +132,7 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		this._chartTabHelper = new ChartTabHelper(this.view,data.id);
 		this._chartTabHelper.onShow();
 		this._pipeLine.onShowInvokable(data);
-		this.stateManager.bind(this._pipeLine.onRenderInvokable.bind(this));		
+		this.stateManager.bind(this._pipeLine.onRenderInvokable.bind(this));
 		await this.stateManager.ResetState.trigger(data);
 	}
 }
