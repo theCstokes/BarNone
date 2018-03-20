@@ -7,6 +7,8 @@ import { BaseView } from "UEye/Elements/Core/BaseView";
 const moment = require("momentjs");
 /**Type Definition: for LineData to be drawn on canvas */
 type LineData = {
+    /** Frame id */
+    id: number;
     /**x-coordinate for point 1*/
     x1: number,
     /**y-coordinate for point 1*/

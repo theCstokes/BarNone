@@ -14,7 +14,7 @@ namespace BarNone.DataLift.APIRequest
     public class Endpoint<TDTO> : MapEnum<Endpoint<TDTO>>
         where TDTO : BaseDTO<TDTO>, new()
     {
-        public static readonly string BASE_URL = "172.20.10.2:81";
+        public static readonly string BASE_URL = "http://localhost:58428";
         #region Private Field(s).
         /// <summary>
         /// URL to database table which handles the <see cref="TDTO"/> type 

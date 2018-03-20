@@ -110,7 +110,7 @@ namespace TheRack.ResourceServer.API.Controllers
                     var lift = repo.GetWithDetails(id);
 
                     var path = "C:\\VideoDB\\EM.mp4";
-                    var file = new FileInfo(path);
+                    var file = new FileInfo(lift.Video.Path);
                     if (!file.Exists) return NotFound();
                     var stream = file.OpenRead();
 
