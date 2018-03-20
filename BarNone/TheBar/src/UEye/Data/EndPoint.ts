@@ -9,6 +9,8 @@ class EntityResult<TSource> {
 	public entity: TSource;
 }
 
+const RESOURCE_URL = "/api/v1/";
+
 export class EndPoint<TSource, TResult> {
 	private _path: string;
 
@@ -24,7 +26,7 @@ export class EndPoint<TSource, TResult> {
 export class EndPointResource<TSource, TResult> {
 	private _path: string;
 	private _verb: string;
-	private _params: { [key: string]: string }
+	private _params: { [key: string]: string } = {};
 
 	public constructor(path: string) {
 		this._path = path;
@@ -60,7 +62,8 @@ export class EndPointResource<TSource, TResult> {
 		this._verb = "POST";
 
 		var result = await this.execute(data);
-		return (result as EntityResult<TResult>).entity;
+		console.log(result);
+		return (result as TResult); //fix this server side but leave it for now.
 	}
 
 	private async execute(data: any = null): Promise<any> {
@@ -111,6 +114,6 @@ export class EndPointResource<TSource, TResult> {
 			""
 		);
 
-		return route;
+		return window.location.origin + RESOURCE_URL + route;
 	}
 }

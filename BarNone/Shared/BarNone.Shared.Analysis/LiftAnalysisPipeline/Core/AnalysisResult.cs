@@ -18,7 +18,6 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Core
 
     public class ResultEntity
     {
-        [JsonConverter(typeof(StringEnumConverter))]
         public ELiftAnalysisType Type { get; set; }
 
         public object Value { get; set; }

@@ -44,7 +44,6 @@ export default class DropDownInput extends BaseComponent {
         this.e_inputArea = Core.create("div", this.element, "Input-Area");
         this.e_dropDown = Core.create("div", this.element, "Holder");
         this.e_dropDown.onclick = (e) => {
-            console.log("EEEEE");
             e.stopPropagation();
         }
 

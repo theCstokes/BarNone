@@ -15,7 +15,7 @@ export enum ELiftAnalysisType {
 export class RequestEntity {
 	[key: string]: any;
 
-	public type: ELiftAnalysisType;
+	public Type: ELiftAnalysisType;
 }
 
 export class AnalysisRequestVelocity extends RequestEntity {

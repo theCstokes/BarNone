@@ -29,16 +29,22 @@ export class ChartTabState {
     public selectedJoint: EJointType;
     public selectedDimension: EDimension;
     public timeSeries: TimeSeries;
-    public liftID: string;
+    public liftID: number;
 }
 
 export class ChartTabStateManager extends BaseStateManager<ChartTabState> {
-    public constructor() {
+    public constructor(liftID: number) {
         super(ChartTabState);
+        this.JointTypes = [];
+        this._stateTracker.current.liftID = liftID;
+        //build the joint types array.
+        for (var num = 0; num < 25; num++){
+            this.JointTypes.push(num);
+        }
     }
 
     public LiftAnalysisTypes = [ELiftAnalysisType.Position,ELiftAnalysisType.Velocity,ELiftAnalysisType.Angle];
-    public JointTypes = ["A","B","C"];
+    public JointTypes : EJointType[];
     public Dimensions = [EDimension.X,EDimension.Y,EDimension.Z];
 
     public async onInitialize(): Promise<void> { 	}
@@ -48,7 +54,6 @@ export class ChartTabStateManager extends BaseStateManager<ChartTabState> {
         .onAction<ChartTabState, ELiftAnalysisType>(this, (state,data) => {
             var nextState = Utils.clone(state);
             nextState.current.selectedAnalysisType = data;
-            this.UpdateTimeSeries.trigger();
             return nextState;
         });
 
@@ -56,12 +61,22 @@ export class ChartTabStateManager extends BaseStateManager<ChartTabState> {
         .onAction<ChartTabState, EJointType>(this,(state,data) =>{
             var nextState = Utils.clone(state);
             nextState.current.selectedJoint = data;
-            this.UpdateTimeSeries.trigger();
+            return nextState;
+        })
+
+    public readonly DimensionChanged = StateBind
+        .onAction<ChartTabState, EDimension>(this,(state,data) =>{
+            var nextState = Utils.clone(state);
+            nextState.current.selectedDimension = data;
             return nextState;
         })
 
     public readonly UpdateTimeSeries = StateBind
         .onAsyncCallable<ChartTabState>(this, async (state) => {
+            if (state.current.selectedAnalysisType == null || state.current.selectedDimension == null || state.current.selectedJoint == null){
+                return state;
+            }
+
             var ar : AnalysisRequest = new AnalysisRequest();
             var re : RequestEntity = new RequestEntity();
             var nextState = Utils.clone(state);
@@ -69,7 +84,7 @@ export class ChartTabStateManager extends BaseStateManager<ChartTabState> {
             switch(state.current.selectedAnalysisType){
                 case ELiftAnalysisType.Position:{
                     var pre = new AnalysisRequestPosition();
-                    pre.type = state.current.selectedAnalysisType;
+                    pre.Type = state.current.selectedAnalysisType;
                     pre.Dimension = state.current.selectedDimension;
                     pre.Joint = state.current.selectedJoint;
                     re = pre;
@@ -77,7 +92,7 @@ export class ChartTabStateManager extends BaseStateManager<ChartTabState> {
                 }
                 case ELiftAnalysisType.Velocity:{
                     var vre = new AnalysisRequestVelocity();
-                    vre.type = state.current.selectedAnalysisType;
+                    vre.Type = state.current.selectedAnalysisType;
                     vre.Dimension = state.current.selectedDimension;
                     vre.Joint = state.current.selectedJoint;
                     re = vre;
@@ -88,10 +103,11 @@ export class ChartTabStateManager extends BaseStateManager<ChartTabState> {
                 }
             }
             ar.requests = [re];
-            var results: AnalysisResult = await DataManager.AnalysisPipe.resource.param("ID",state.current.liftID).create(ar);
+            var results = await DataManager.AnalysisPipe.resource.param("ID",state.current.liftID.toString()).create(ar);
+            console.log(results);
             nextState.current.timeSeries = new TimeSeries();
-            nextState.current.timeSeries.t = results.Results[0].value["time"];
-            nextState.current.timeSeries.y = results.Results[0].value["data"];
+            nextState.current.timeSeries.t = results.results[0].value["time"];
+            nextState.current.timeSeries.y = results.results[0].value["data"];
             return nextState;
     });
 }

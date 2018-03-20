@@ -10,12 +10,12 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Position
     /// <summary>
     /// Analysis Pipe that produces the velocity of a specified joint along a given dimension.
     /// </summary>
-    public class LAP_Velocity : BaseLiftAnalysisPipe<AR_Position>
+    public class LAP_Position : BaseLiftAnalysisPipe<AR_Position>
     {
         private Lift _lift;
         private List<JointTimeSeries> _jtsList;
 
-        public LAP_Velocity(AR_Position request, Lift lift) : base(request)
+        public LAP_Position(AR_Position request, Lift lift) : base(request)
         {
             _lift = lift;
             _jtsList = Utils.ConvertBodyDataToTimeSeriesSet(_lift.BodyData);
