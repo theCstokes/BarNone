@@ -14,12 +14,18 @@ export default class LiftProfileDialogView extends DialogView {
     public acceptButtonText: string = "Add";
     public acceptButtonIcon: string = "fa-plus";
 
-    public jointTypeDropDown: DropDownInput;
     public analysisTypeDropDown: DropDownInput;
     public accelerationContainer: ContentContainer;
     public speedContainer: ContentContainer;
     public positionContainer: ContentContainer;
     public angleContainer: ContentContainer;
+
+    public accelerationJointTypeDropDown: DropDownInput;
+    public speedJointTypeDropDown: DropDownInput;
+    public positionJointTypeDropDown: DropDownInput;
+    public angleJointTypeDropDownA: DropDownInput;
+    public angleJointTypeDropDownB: DropDownInput;
+    public angleJointTypeDropDownC: DropDownInput;
 
     protected content: ComponentConfig[] = [
         // {
@@ -36,11 +42,12 @@ export default class LiftProfileDialogView extends DialogView {
         {
             instance: ControlTypes.ContentContainer,
             id: "accelerationContainer",
+            visible: false,
             content: [
                 {
 
                     instance: ControlTypes.DropDownInput,
-                    // id: "jointTypeDropDown",
+                    id: "accelerationJointTypeDropDown",
                     hint: "Joint Type"
                 }
             ]
@@ -48,11 +55,12 @@ export default class LiftProfileDialogView extends DialogView {
         {
             instance: ControlTypes.ContentContainer,
             id: "speedContainer",
+            visible: false,
             content: [
                 {
 
                     instance: ControlTypes.DropDownInput,
-                    // id: "jointTypeDropDown",
+                    id: "speedJointTypeDropDown",
                     hint: "Joint Type"
                 }
             ]
@@ -60,11 +68,12 @@ export default class LiftProfileDialogView extends DialogView {
         {
             instance: ControlTypes.ContentContainer,
             id: "positionContainer",
+            visible: false,
             content: [
                 {
 
                     instance: ControlTypes.DropDownInput,
-                    // id: "jointTypeDropDown",
+                    id: "positionJointTypeDropDown",
                     hint: "Joint Type"
                 }
             ]
@@ -72,23 +81,24 @@ export default class LiftProfileDialogView extends DialogView {
         {
             instance: ControlTypes.ContentContainer,
             id: "angleContainer",
+            visible: false,
             content: [
                 {
 
                     instance: ControlTypes.DropDownInput,
-                    // id: "jointTypeDropDown",
+                    id: "angleJointTypeDropDownA",
                     hint: "Joint Type A"
                 },
                 {
 
                     instance: ControlTypes.DropDownInput,
-                    // id: "jointTypeDropDown",
+                    id: "angleJointTypeDropDownB",
                     hint: "Joint Type B"
                 },
                 {
 
                     instance: ControlTypes.DropDownInput,
-                    // id: "jointTypeDropDown",
+                    id: "angleJointTypeDropDownC",
                     hint: "Joint Type C"
                 }
             ]

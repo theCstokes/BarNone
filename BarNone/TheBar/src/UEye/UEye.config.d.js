@@ -23,10 +23,22 @@ Utils.guid = function () {
 		"-" + s4() + s4() + s4();
 }
 Utils.compare = function (obj1, obj2, ignore) {
+	let keys1 = [];
+	let keys2 = [];
 	if (ignore === undefined) ignore = [];
-	// _.differenceWith(source, target, _.isEqual);
-	const diff = Object.keys(obj1)
-		.filter(key => ignore.indexOf(key) === -1)
+	
+	if (obj1 !== undefined) {
+		keys1 = Object.keys(obj1).filter(key => ignore.indexOf(key) === -1);
+	} else {
+		obj1 = {};
+	}
+	if (obj2 !== undefined) {
+		keys2 = Object.keys(obj2).filter(key => ignore.indexOf(key) === -1);
+	} else {
+		obj2 = {};
+	}
+
+	const diff = keys1
 		.reduce((result, key) => {
 			if (!obj2.hasOwnProperty(key) && !(key in obj2)) {
 				result.push(key);
@@ -35,9 +47,7 @@ Utils.compare = function (obj1, obj2, ignore) {
 				result.splice(resultKeyIndex, 1);
 			}
 			return result;
-		},
-		Object.keys(obj2)
-			.filter(key => ignore.indexOf(key) === -1));
+		}, keys2);
 
 	return diff.length === 0;
 }
