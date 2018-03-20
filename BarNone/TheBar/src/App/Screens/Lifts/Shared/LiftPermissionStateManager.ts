@@ -14,16 +14,15 @@ export class LiftPermissionStateManager extends BaseStateManager<State> {
     public s_UserList: User[];
     public constructor() {
         super(State);
+        
         this.s_UserList = [];
-        this.onInitialize();
     }
-    public async onInitialize(): Promise<void> {}
+    public async onInitialize(): Promise<void> {
+        this.s_UserList = await DataManager.Users.all();
+    }
 
     public readonly CreateState = StateBind
 		.onAsyncCallable<State>(this, async (state) => {
-      console.log("Triggering");
-      this.s_UserList = await DataManager.Users.all();
-      console.log(this.s_UserList);
 			return state;
 		});
 

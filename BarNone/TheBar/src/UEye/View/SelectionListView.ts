@@ -29,6 +29,13 @@ export abstract class SelectionListView extends View {
 						instance: ControlTypes.Panel,
 						id: "listPanel",
 						caption: this.caption,
+						actions: [
+							{
+								id: "addButton",
+								text: "New",
+								icon: "fa-plus",
+							}
+						],
 						content: [
 							{
 								instance: ControlTypes.List,

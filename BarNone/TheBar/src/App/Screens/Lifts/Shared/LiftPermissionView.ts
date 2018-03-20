@@ -1,9 +1,11 @@
 import ControlTypes from "UEye/ControlTypes";
 import List from "UEye/Elements/Components/List/List";
 import SearchBar from "UEye/Elements/Components/SearchBar/SearchBar";
+import DropDownInput from "UEye/Elements/Components/DropdownInput/DropdownInput";
 
 export interface ILiftPermissionView {
-	userShareSearchBar: SearchBar;
+	userShareSearch: DropDownInput;
+	userShareList: List;
 }
 
 export class LiftPermissionTab {
@@ -12,8 +14,12 @@ export class LiftPermissionTab {
 			title: "Share",
 			content: [
 				{
-					id: "userShareSearchBar",
-					instance: ControlTypes.SearchBar
+					id: "userShareSearch",
+					instance: ControlTypes.DropDownInput
+				},
+				{
+					id:"userShareList",
+					instance: ControlTypes.List
 				}
 			]
 		};

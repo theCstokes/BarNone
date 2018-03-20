@@ -1,6 +1,7 @@
 import {LiftPermissionStateManager} from "App/Screens/Lifts/Shared/LiftPermissionStateManager"
 import {LiftPermissionTab} from "App/Screens/Lifts/Shared/LiftPermissionView"
 import LiftEditView from "App/Screens/Lifts/LiftEdit/LiftEditView";
+import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
 
 export default class LiftPermissionHelper {
     private _stateManager: LiftPermissionStateManager;
@@ -8,23 +9,19 @@ export default class LiftPermissionHelper {
     
     constructor(view: LiftEditView, id: number){
         this._view = view;
-        this._stateManager = new LiftPermissionStateManager();
+        
     }
 
     private _onRender(){
         console.log("On render being called")
-        this._view.userShareSearchBar.items = 
-        this._stateManager.s_UserList.map((user) => {
-            var x :{title: string, id: number|string }
-                ={title: user.name, id:user.id};
-            return x;
-        });
-        console.log(this._view.userShareSearchBar.items);
+        console.log(this._view.userShareSearch.items);
     }
     
-    public onShow(data?: any){
-        this._stateManager.bind(this._onRender.bind(this));
-        this._stateManager.CreateState.trigger();
+    public async onShow(data?: any):Promise<void>{
+        this._stateManager =await StateManagerFactory.create(LiftPermissionStateManager);
+        //this._stateManager.CreateState.trigger();
+        this._view.userShareSearch.items = this._stateManager.s_UserList;
     }
+
 
 }

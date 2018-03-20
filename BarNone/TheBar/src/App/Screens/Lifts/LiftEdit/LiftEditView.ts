@@ -33,7 +33,8 @@ export default class LiftEditView extends EditView implements ILiftPermissionVie
 	public chart: Graph;
 
 	//Members used by shared tab
-	public userShareSearchBar: SearchBar;
+	public userShareSearch: DropDownInput;
+	public userShareList: List;
 
 
 	public get content(): any[] {
