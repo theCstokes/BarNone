@@ -263,7 +263,7 @@ namespace BarNone.DataLift.UI.ViewModels
                     .Lift
                     .CreateDTO(new Lift()
                     {
-                        LiftTypeID = 1,
+                        LiftTypeID = lift.LiftID,
                         BodyData = new BodyData
                         {
                             BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData
@@ -271,21 +271,21 @@ namespace BarNone.DataLift.UI.ViewModels
                                 //Clone the frame to normalize start times!
                                 .Select(f => new BodyDataFrame()
                                 {
-                                    UserID = 2,
+                                    UserID = lift.UserID,
                                     Joints = f.Joints,
                                     TimeOfFrame = f.TimeOfFrame - firstFrame.TimeOfFrame
                                 })
                                 .OrderBy(f => f.TimeOfFrame.TotalMilliseconds)
                                 .ToList(),
-                            UserID = 2,
+                            UserID = lift.UserID,
                             RecordDate = DateTime.Now
                         },
                         Name = lift.LiftName, // TODO. Not make this a hardcoded 0.
-                        UserID = 2,
+                        UserID = lift.UserID,
                         Video = new VideoRecord
                         {
                             Data = File.ReadAllBytes(await ffmpeg.SplitVideo(CurrentLiftData.ParentLiftVideoName, lift.LiftStartTime/1000, (lift.LiftEndTime-lift.LiftStartTime)/1000)),
-                            UserID = 2
+                            UserID = lift.UserID
                         }
                     });
 
