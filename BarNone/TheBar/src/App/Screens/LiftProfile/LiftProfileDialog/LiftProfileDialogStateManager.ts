@@ -5,7 +5,7 @@ import DataManager from "App/Data/DataManager";
 import AnalysisType from "App/Data/Models/Analysis/AnalysisType";
 
 export class State {
-
+	public analysisTypeID: number;
 }
 
 export class LiftProfileDialogStateManager extends BaseStateManager<State> {
@@ -24,7 +24,7 @@ export class LiftProfileDialogStateManager extends BaseStateManager<State> {
 
 	public readonly CreateState = StateBind
 		.onCallable<State>(this, (state) => {
-			return state;
+			return Utils.clone(state);
 		});
 
 }
