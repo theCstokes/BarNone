@@ -173,12 +173,12 @@ export class SkeletonBuilder {
 		let i=0;
 		SkeletonBuilder._init();
 		return bodyData.details.orderedFrames.map(f => {
-			var spineBase = f.details.joints.find(j => j.jointTypeID === (JointTypeEnum.SpineBase));
+			var spineBase = f.details.joints.find(j => j.jointTypeID === (JointTypeEnum.SpineBase + 1));
 			if (spineBase === undefined) return [];
 			return SkeletonBuilder._jointMap.reduce((result, m) => {
 				// Note: the jointTypeIds from the api are currently sifted up by 1.
-				var startJoint = f.details.joints.find(j => j.jointTypeID === (m.start));
-				var endJoint = f.details.joints.find(j => j.jointTypeID === (m.end));
+				var startJoint = f.details.joints.find(j => j.jointTypeID === (m.start + 1));
+				var endJoint = f.details.joints.find(j => j.jointTypeID === (m.end + 1));
 
 				if (startJoint === undefined) return result;
 				if (endJoint === undefined) return result;
