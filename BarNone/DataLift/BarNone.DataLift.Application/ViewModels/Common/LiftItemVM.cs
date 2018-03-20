@@ -127,7 +127,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         /// </summary>
         /// 
 
-        private Dictionary<string, int> _liftTypeDictionary = new Dictionary<string, int>(); // = new List<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", "Other" };
+        private static Dictionary<string, int> _liftTypeDictionary = new Dictionary<string, int>(); // = new List<string>() { "Squat", "Snatch", "Clean", "Clean and Jerk", "Other" };
         /// <summary>
         /// List that dictates the drop down for the list of lifts.  
         /// </summary>
@@ -136,7 +136,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             get { return new List<string>(_liftTypeDictionary.Keys); }
         }
         
-        private List<string> _liftFolderList = new List<string>();
+        private static List<string> _liftFolderList = new List<string>();
 
         public List<string> LiftFolderList
         {
