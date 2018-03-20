@@ -12,17 +12,19 @@ export default class LiftPermissionHelper {
     }
 
     private _onRender(){
-       
+        console.log("On render being called")
+        this._view.userShareSearchBar.items = 
+        this._stateManager.s_UserList.map((user) => {
+            var x :{title: string, id: number|string }
+                ={title: user.name, id:user.id};
+            return x;
+        });
+        console.log(this._view.userShareSearchBar.items);
     }
     
     public onShow(data?: any){
-        this._view.userShareSearchBar.items = 
-            this._stateManager.s_UserList.map((user) => {
-                var x :{title: string, id: number|string }
-                    ={title: user.name, id:user.id};
-                return x;
-        });
-        console.log(this._view.userShareSearchBar.items);
+        this._stateManager.bind(this._onRender.bind(this));
+        this._stateManager.CreateState.trigger();
     }
 
 }
