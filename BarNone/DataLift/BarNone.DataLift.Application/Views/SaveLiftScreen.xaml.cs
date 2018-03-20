@@ -24,6 +24,10 @@ namespace BarNone.DataLift.UI.Views
         public SaveLiftScreen()
         {
             InitializeComponent();
+
+            var vm = DataContext as ViewModelBase;
+
+            Loaded += (a, b) => vm.Loaded();
         }
     }
 }
