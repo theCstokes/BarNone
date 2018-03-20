@@ -7,6 +7,7 @@ import { BaseView } from "UEye/Elements/Core/BaseView";
 const moment = require("momentjs");
 /**Type Definition: for LineData to be drawn on canvas */
 type LineData = {
+    // id: number;
     /**x-coordinate for point 1*/
     x1: number,
     /**y-coordinate for point 1*/
@@ -104,6 +105,7 @@ export default class Video extends BaseComponent {
 
         this._video.addEventListener('play', () => {
             this.draw(this._canvasVideo.width, this._canvasVideo.height);
+           // this.drawBodyDataOnly(this._canvasVideo.width, this._canvasVideo.height, this._currentIndex);
         }, false);
 
         this._video.addEventListener('timeupdate', () => {this.updateTime()}, false);
@@ -188,7 +190,7 @@ export default class Video extends BaseComponent {
         // this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percentTwo + "px");
         this._currentIndex = frameIndex + 1;
         if (this._stopFrame == false && this._currentIndex <= this._totalNumber) {
-            //setTimeout(this.drawBodyDataOnly.bind(this), 55, w, h, this._currentIndex);
+            setTimeout(this.drawBodyDataOnly.bind(this), 95, w, h, this._currentIndex);
         } else if (this._currentIndex > this._totalNumber) {
             this._stopFrame = true;
             this._currentIndex = 0;
@@ -202,26 +204,21 @@ export default class Video extends BaseComponent {
      * @param h Height parameter of the canvas
      * */
     private draw(w: number, h: number) {
-
+        if (this._video.paused || this._video.ended) {
+            return;
+        }
         if ( this._frameDataList != undefined) {
             this._totalNumber = this._frameDataList.length - 1;
             var x=moment(this._frameDataList[this._currentIndex][0].timeStamp, "hh:mm:ss:SSSSSSS");
             var y=moment(this._timeCheck, "hh:mm:ss:SSSSSSS");
-            if(moment(x).isSameOrBefore(y)){ 
-                this.drawBodyDataOnly(w, h, this._currentIndex);
-            }
-           // console.log(moment(this._frameDataList[this._currentIndex][0].timeStamp).isBefore(this._timeCheck));
-            
-                
-            
-        }   
-        if (this._video.paused || this._video.ended) {
-            return;
-        }
-        var percent = (this._video.currentTime / this._video.duration);
-        this._contextVideo.drawImage(this._video, 0, 0, w, h);
-       this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
+            // if(moment(x).isSame(y))
+            this.drawBodyDataOnly(w, h, this._currentIndex);
+                var percent = (this._video.currentTime / this._video.duration);
+            this._contextVideo.drawImage(this._video, 0, 0, w, h);
+            this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
         setTimeout(this.draw.bind(this), 33, w, h);
+        }   
+        
     }
     /** Accessor to get source path of video.
     * @returns Returns string path

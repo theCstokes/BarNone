@@ -149,6 +149,30 @@ export class Resource<TData> extends BaseResource {
             throw error;
         }
     }
+
+    /**
+     * Access POST for this resource
+     * @param id - id for entity
+     * @param source - data
+     */
+    public async post(id: number, source: TData): Promise<TData> {
+        var route = StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, this._resource, id);
+
+        var builder = await RequestBuilder
+            .POST(this._resource, route, { id: id })
+            .header("Authorization", "Bearer " + BaseDataManager.auth.access_token)
+            .header("Content-Type", "application/json");
+
+        try {
+            var result = await builder.execute(source);;
+            return result as TData;
+        } catch (error) {
+            BaseDataManager.fail(error);
+            throw error;
+        }
+    }
+
+    
 }
 
 /**

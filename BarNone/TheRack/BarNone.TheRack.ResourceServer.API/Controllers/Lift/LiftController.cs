@@ -42,7 +42,7 @@ namespace TheRack.ResourceServer.API.Controllers
         /// Gets video stream for the video linked with the lift from the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        [HttpGet("{id}/VideoOld")]
+        [HttpGet("{id}/Video")]
         public async Task GetOld(int id)
         {
             using (var context = new DomainContext(UserID))
@@ -100,7 +100,7 @@ namespace TheRack.ResourceServer.API.Controllers
             return new FileStreamResult(stream, "video/mp4");
         }
 
-        [HttpGet("{id}/Video")]
+        [HttpGet("{id}/Videof")]
         public IActionResult Get(int id)
         {
             using (var context = new DomainContext(UserID))
@@ -110,39 +110,42 @@ namespace TheRack.ResourceServer.API.Controllers
                     var lift = repo.GetWithDetails(id);
 
                     var path = "C:\\VideoDB\\EM.mp4";
-                    var file = new FileInfo(path);
+                    var file = new FileInfo(lift.Video.Path);
                     if (!file.Exists) return NotFound();
-                    var stream = file.OpenRead();
-
-                    //var stream = _fileStorageClient.GetStream(container, name); //Got from storage
-                    if (stream == null)
-                        return NotFound();
-
-                    Response.Headers["Accept-Ranges"] = "bytes";
-
-                    //if there is no range - this is usual request
-                    var rangeHeaderValue = Request.Headers["Range"].FirstOrDefault();
-                    if (string.IsNullOrEmpty(rangeHeaderValue))
+                    using (var stream = file.OpenRead())
                     {
-                        var fileStreamResult = new FileStreamResult(stream, "video/mp4");
-                        Response.ContentLength = stream.Length;
-                        Response.StatusCode = (int)HttpStatusCode.OK;
-                        return fileStreamResult;
+                        //var stream = _fileStorageClient.GetStream(container, name); //Got from storage
+                        if (stream == null)
+                            return NotFound();
+
+                        Response.Headers["Accept-Ranges"] = "bytes";
+
+                        //if there is no range - this is usual request
+                        var rangeHeaderValue = Request.Headers["Range"].FirstOrDefault();
+                        if (string.IsNullOrEmpty(rangeHeaderValue))
+                        {
+                            var fileStreamResult = new FileStreamResult(stream, "video/mp4");
+                            Response.ContentLength = stream.Length;
+                            Response.StatusCode = (int)HttpStatusCode.OK;
+                            return fileStreamResult;
+                        }
+
+                        if (!TryReadRangeItem(rangeHeaderValue, stream.Length, out long start, out long end))
+                        {
+                            return StatusCode((int)HttpStatusCode.RequestedRangeNotSatisfiable);
+                        }
+
+                        Response.Headers["Content-Range"] = $"{start}-{end}/{stream.Length}";
+                        Response.ContentLength = end - start + 1;
+                        Response.StatusCode = (int)HttpStatusCode.PartialContent;
+
+                        using (var outStream = new MemoryStream())
+                        {
+                            CreatePartialContent(stream, outStream, start, end);
+                            outStream.Seek(0, SeekOrigin.Begin);
+                            return new FileStreamResult(outStream, "video/mp4");
+                        }
                     }
-
-                    if (!TryReadRangeItem(rangeHeaderValue, stream.Length, out long start, out long end))
-                    {
-                        return StatusCode((int)HttpStatusCode.RequestedRangeNotSatisfiable);
-                    }
-
-                    Response.Headers["Content-Range"] = $"{start}-{end}/{stream.Length}";
-                    Response.ContentLength = end - start + 1;
-                    Response.StatusCode = (int)HttpStatusCode.PartialContent;
-
-                    var outStream = new MemoryStream();
-                    CreatePartialContent(stream, outStream, start, end);
-                    outStream.Seek(0, SeekOrigin.Begin);
-                    return new FileStreamResult(outStream, "video/mp4");
                 }
             }
         }

@@ -71,6 +71,7 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Flex
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [RequestSizeLimit(1000_000_000_000)]
         public IActionResult Flex()
         {
             using (MemoryStream ms = new MemoryStream())

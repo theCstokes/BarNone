@@ -42,10 +42,19 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Velocity
             //foreach (var item in velocity)
             //    Console.Write("{0}", item);
 
+            var time = new List<float>(_jtsList[(int)Request.Joint].t);
+            var vmaList = y.Select((n) => (float)n).ToList();
+
+
+
             return new ResultEntity
             {
                 Type = ELiftAnalysisType.Velocity,
-                Value = vma
+                Value = new Dictionary<string, List<float>>()
+                {
+                    ["time"] = time,
+                    ["data"] = vmaList
+                }
             };
 
            

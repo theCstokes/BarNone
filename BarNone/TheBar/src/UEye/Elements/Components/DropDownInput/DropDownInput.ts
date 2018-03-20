@@ -4,6 +4,7 @@ import { IListItem, OnSelectCallback } from "UEye/Elements/Core/EventCallbackTyp
 import List from "UEye/Elements/Components/List/List";
 import ControlTypes from "UEye/ControlTypes";
 import StringUtils from "UEye/Core/StringUtils";
+import DropDownListItem from "UEye/Elements/Components/DropDownListItem/DropDownListItem";
 
 /**
  *  Represents interactive element Input. This component is editable and takes text (strings) input.
@@ -43,7 +44,6 @@ export default class DropDownInput extends BaseComponent {
         this.e_inputArea = Core.create("div", this.element, "Input-Area");
         this.e_dropDown = Core.create("div", this.element, "Holder");
         this.e_dropDown.onclick = (e) => {
-            console.log("EEEEE");
             e.stopPropagation();
         }
 
@@ -96,6 +96,7 @@ export default class DropDownInput extends BaseComponent {
             this._items = value;
             this.c_list.items = value;
         }
+        console.log(value)
     }
     public get items(): any[] {
         return this._items;

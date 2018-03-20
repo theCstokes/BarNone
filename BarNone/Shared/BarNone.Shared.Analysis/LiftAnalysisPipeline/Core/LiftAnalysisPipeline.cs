@@ -34,7 +34,7 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Core
         {
             return pipes.Aggregate(new AnalysisResult(), (result, pipe) =>
             {
-                if (!pipe.Validate()) return result;
+                //if (!pipe.Validate()) return result;
                 result.Results.Add(pipe.Execute());
                 return result;
             });

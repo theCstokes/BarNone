@@ -4,7 +4,7 @@ declare function require(moduleNames: string): any;
 import { BaseComponent } from "UEye/Elements/Core/BaseComponent/BaseComponent";
 import Core from "UEye/Elements/Core/Core";
 /**Type Definition: for LineData to be drawn on canvas */
-type LineData = { 
+export type LineData = { 
     /**x-coordinate on canvas*/
     x: number, 
       /**y-coordinate on canvas*/
@@ -107,11 +107,11 @@ export default class Graph extends BaseComponent {
                     scales: {
                         yAxes: [{
                             ticks: {
-                                beginAtZero: true
+                                // beginAtZero: true
                             },
                           scaleLabel: {
                             display: true,
-                            labelString: this._xAxisLabel
+                            labelString: this._yAxisLabel
                            
                           }
                         }],
@@ -119,13 +119,10 @@ export default class Graph extends BaseComponent {
                             type: 'linear',
                             ticks: {
                                 beginAtZero: true,
-                                min: 0,
-                                max: 100,
-                                stepSize: 15
                             },
                             scaleLabel: {
                               display: true,
-                              labelString: this._yAxisLabel
+                              labelString: this._xAxisLabel
                             }
                           }],
                       }  
