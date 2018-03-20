@@ -12,11 +12,11 @@ export class LiftPermissionTab {
 			content: [
 				{
 					id: "userShareSearchBar",
-					interface: ControlTypes.SearchBar
+					instance: ControlTypes.SearchBar
 				},
 				{
 					id: "userShareList",
-					interface: ControlTypes.List
+					instance: ControlTypes.List
 				}
 			]
 		};

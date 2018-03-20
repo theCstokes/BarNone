@@ -9,6 +9,7 @@ import InflaterData from "UEye/Elements/Inflater/InflaterData";
 import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import StringUtils from "UEye/Core/StringUtils";
 import IconButton from "UEye/Elements/Components/IconButton/IconButton";
+import { View } from "UEye/View/View";
 
 class TabConfig implements IListItem {
     public id: number | string;
@@ -77,8 +78,25 @@ export default class TabLayout extends BaseContainer {
     }
     public get tabs(): TabConfig[] {
         return this._tabElements;
-    }
 
+    }
+    public set view(value: View){
+        this.onBindView.on(value => {
+
+            // window.addEventListener('resize', () => {
+            //     console.log("rrrrrrr");
+            // }, true);
+
+            this._view = value;
+            // var height = (this.element.parentElement!.offsetHeight - this.element.offsetTop);
+
+            var top = (this.e_tabList.offsetTop + this.e_tabList.offsetHeight);
+            this.e_content.style.top = StringUtils.format("{0}px", top);
+
+            // this.element.style.height = StringUtils.format("{0}px", height);
+            // this._contentElement.style.height = StringUtils.format("{0}px", height - 32);
+        });
+    }
     private _renderTabs(): void {
         if (this._tabElements === undefined) return;
 
