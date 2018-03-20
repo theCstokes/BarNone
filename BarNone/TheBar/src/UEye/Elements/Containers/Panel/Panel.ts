@@ -92,7 +92,15 @@ export default class Panel extends BaseContainer {
     //#endregion
 
     // // Region Protected Member(s).
-    public onModifiedChange(): void { }
+    public onModifiedChange(): void {
+        if (this.modified) {
+            Core.addClass(this.element, "Modified");
+            this.e_mode.textContent = "Modified";
+        } else {
+            Core.removeClass(this.element, "Modified");
+            this.e_mode.textContent = "";
+        }
+    }
     // protected onModify(): void {
 
     // }
