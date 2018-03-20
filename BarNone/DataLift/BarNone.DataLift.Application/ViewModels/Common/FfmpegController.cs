@@ -213,19 +213,19 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = $"{Directory.GetCurrentDirectory()}/res/ffmpeg.exe",
-                    Arguments = $"-i {fname} -ss {startTime} -t {length} -c {cutFile}",
+                    Arguments = $"-i {fname} -ss {startTime} -t {length} {cutFile}",
                     UseShellExecute = false,
                     CreateNoWindow = false
                 };
 
-                _videoInformationProcess = new Process
+                var proc = new Process
                 {
                     StartInfo = psi,
                     EnableRaisingEvents = true
                 };
 
-                _videoInformationProcess.Start();
-                _videoInformationProcess.WaitForExit();
+                proc.Start();
+                proc.WaitForExit();
             });
 
             return cutFile;

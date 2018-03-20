@@ -254,8 +254,8 @@ namespace BarNone.DataLift.UI.ViewModels
             var ffmpeg = new FfmpegController();
             foreach(var lift in CurrentLiftData.LiftInformation)
             {
-                var firstFrameTime = CurrentLiftData.CurrentRecordedBodyData.FirstOrDefault(f => f.TimeOfFrame.Milliseconds >= lift.LiftStartTime).TimeOfFrame;
-                if (firstFrameTime == null)
+                var firstFrame = CurrentLiftData.CurrentRecordedBodyData.FirstOrDefault(f => f.TimeOfFrame.TotalMilliseconds >= lift.LiftStartTime);
+                if (firstFrame == null)
                     continue;
 
                 PostTasks.Add(Task.Run(async () => {
@@ -267,20 +267,20 @@ namespace BarNone.DataLift.UI.ViewModels
                         BodyData = new BodyData
                         {
                             BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData
-                                .Where(f => f.TimeOfFrame.Milliseconds >= lift.LiftStartTime && f.TimeOfFrame.Milliseconds <= lift.LiftEndTime)
+                                .Where(f => f.TimeOfFrame.TotalMilliseconds >= lift.LiftStartTime && f.TimeOfFrame.TotalMilliseconds<= lift.LiftEndTime)
                                 //Clone the frame to normalize start times!
                                 .Select(f => new BodyDataFrame()
                                 {
                                     UserID = 2,
                                     Joints = f.Joints,
-                                    TimeOfFrame = f.TimeOfFrame - firstFrameTime
+                                    TimeOfFrame = f.TimeOfFrame - firstFrame.TimeOfFrame
                                 })
-                                .OrderBy(f => f.TimeOfFrame.Milliseconds)
+                                .OrderBy(f => f.TimeOfFrame.TotalMilliseconds)
                                 .ToList(),
                             UserID = 2,
                             RecordDate = DateTime.Now
                         },
-                        Name = CurrentLiftData.LiftInformation[0].LiftName, // TODO. Not make this a hardcoded 0.
+                        Name = lift.LiftName, // TODO. Not make this a hardcoded 0.
                         UserID = 2,
                         Video = new VideoRecord
                         {

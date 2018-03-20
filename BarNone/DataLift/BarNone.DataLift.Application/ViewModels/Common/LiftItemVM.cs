@@ -178,6 +178,8 @@ namespace BarNone.DataLift.UI.ViewModels.Common
 
                 folderDTOs = await DataManager.Folders.GetAll();
                 _liftFolderList = folderDTOs.Select(u => u.Name).ToList();
+
+                OnPropertyChanged(new PropertyChangedEventArgs("LiftTypeList"));
             });
         }
 
