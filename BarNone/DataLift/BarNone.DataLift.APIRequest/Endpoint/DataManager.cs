@@ -35,6 +35,12 @@ namespace BarNone.DataLift.APIRequest
         /// </summary>
         public static Endpoint<BodyDataDTO> Bodies { get; } =
             new Endpoint<BodyDataDTO>("BodyData");
+
+        public static Endpoint<LiftTypeDTO> Types { get; } =
+            new Endpoint<LiftTypeDTO>("LiftType");
+
+        public static Endpoint<LiftFolderDTO> Folders { get; } =
+            new Endpoint<LiftFolderDTO>("LiftFolder");
         #endregion
     }
 }
