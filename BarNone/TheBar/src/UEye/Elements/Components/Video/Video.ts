@@ -59,6 +59,7 @@ export default class Video extends BaseComponent {
     private _frameDataList: FrameData[];
     private _totalNumber: number;
     private _timeCurrent: string;
+    private _timeCheck: string;
     private _secondsCurrent: number;
     private _timeDuration: string;
     private _secondsDuration: number;
@@ -152,8 +153,8 @@ export default class Video extends BaseComponent {
             // if(moment.isDate(this._timeDuration)==false){
             //     this._timeDuration=moment.unix(0.0).format("mm:ss");
             // }
+            this._timeCheck= moment.unix(this._video.currentTime).format("00:mm:ss.SSSSSSS");
             this._timeDuration=moment.unix(this._video.duration).format("mm:ss");
-            
             this._timeStamp.innerHTML= this._timeCurrent+"/"+this._timeDuration;
             
     }
@@ -187,7 +188,7 @@ export default class Video extends BaseComponent {
         // this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percentTwo + "px");
         this._currentIndex = frameIndex + 1;
         if (this._stopFrame == false && this._currentIndex <= this._totalNumber) {
-            setTimeout(this.drawBodyDataOnly.bind(this), 55, w, h, this._currentIndex);
+            //setTimeout(this.drawBodyDataOnly.bind(this), 55, w, h, this._currentIndex);
         } else if (this._currentIndex > this._totalNumber) {
             this._stopFrame = true;
             this._currentIndex = 0;
@@ -204,7 +205,15 @@ export default class Video extends BaseComponent {
 
         if ( this._frameDataList != undefined) {
             this._totalNumber = this._frameDataList.length - 1;
-            this.drawBodyDataOnly(w, h, this._currentIndex);
+            var x=moment(this._frameDataList[this._currentIndex][0].timeStamp, "hh:mm:ss:SSSSSSS");
+            var y=moment(this._timeCheck, "hh:mm:ss:SSSSSSS");
+            if(moment(x).isSameOrBefore(y)){ 
+                this.drawBodyDataOnly(w, h, this._currentIndex);
+            }
+           // console.log(moment(this._frameDataList[this._currentIndex][0].timeStamp).isBefore(this._timeCheck));
+            
+                
+            
         }   
         if (this._video.paused || this._video.ended) {
             return;
