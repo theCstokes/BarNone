@@ -1,6 +1,8 @@
 ﻿using BarNone.Shared.Analysis;
 using BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration;
 using BarNone.Shared.Analysis.LiftAnalysisPipeline.Core;
+using BarNone.Shared.Analysis.LiftAnalysisPipeline.Position;
+using BarNone.Shared.Analysis.LiftAnalysisPipeline.Velocity;
 using BarNone.Shared.DataTransfer.LiftData;
 using BarNone.Shared.DomainModel;
 using BarNone.TheRack.DataAccess;
@@ -36,10 +38,10 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers
                     var pipeline = requestDTO.Requests.Aggregate(new LiftAnalysisPipeline(), (result, obj) =>
                     {
                         var request = GetObject<RequestEntity>(obj);
-                        if (request.Type == ELiftAnalysisType.Acceleration)
-                        {
-                            result.Register(new LAP_Acceleration(GetObject<AR_Acceleration>(obj), lift));
-                        }
+                        if (request.Type == ELiftAnalysisType.Position)
+                            result.Register(new LAP_Position(GetObject<AR_Position>(obj), lift));
+                        else if (request.Type == ELiftAnalysisType.Velocity)
+                            result.Register(new LAP_Velocity(GetObject<AR_Velocity>(obj), lift));
 
                         return result;
                     });

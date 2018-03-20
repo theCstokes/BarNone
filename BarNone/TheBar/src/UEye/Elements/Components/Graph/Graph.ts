@@ -4,7 +4,7 @@ declare function require(moduleNames: string): any;
 import { BaseComponent } from "UEye/Elements/Core/BaseComponent/BaseComponent";
 import Core from "UEye/Elements/Core/Core";
 /**Type Definition: for LineData to be drawn on canvas */
-type LineData = { 
+export type LineData = { 
     /**x-coordinate on canvas*/
     x: number, 
       /**y-coordinate on canvas*/

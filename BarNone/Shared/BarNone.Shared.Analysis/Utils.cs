@@ -23,7 +23,10 @@ namespace BarNone.Shared.Analysis
             List<float> seconds = (from x in timeSpans select ((float) x.TotalSeconds)).ToList();
             
             List <JointTimeSeries> joints = new List<JointTimeSeries>();
-            for (int i = 0; i < 25; i++)
+            if (bodyData.BodyDataFrames.Count < 1)
+                return joints;
+
+            for (int i = 0; i < bodyData.BodyDataFrames[0].Joints.Count; i++)
             {
                 JointTimeSeries jts;
                 jts.t = seconds.ToArray();

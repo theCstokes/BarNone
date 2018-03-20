@@ -1,7 +1,7 @@
 import { ELiftAnalysisType } from "App/Data/Models/Analysis/AnalysisRequest";
 
 export default class AnalysisResult {
-	public Results: ResultEntity[];
+	public results: ResultEntity[];
 }
 
 export class ResultEntity {
