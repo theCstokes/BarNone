@@ -64,12 +64,10 @@
             
         </materialDesign:Card>
         <materialDesign:Card VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="20" DockPanel.Dock="Right">
-            <StackPanel VerticalAlignment="Top">
+            <StackPanel VerticalAlignment="Center">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
-                        <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                         <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                         <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
                         <ColumnDefinition SharedSizeGroup="buttonWidthGroup" />
@@ -84,7 +82,7 @@
 
                     <!--ImageSourceMiddle="{Binding MiddleImage}"-->
                     <!-- Video Player -->
-                    <Viewbox Stretch="Uniform" Grid.Column="2" Grid.ColumnSpan="5" Grid.Row="0" >
+                    <Viewbox Stretch="Uniform" Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="0">
                         <Grid Height="2040" Width="1920" Background="Black">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="960"/>
@@ -100,7 +98,7 @@
                         </Grid>
                     </Viewbox>
 
-                        <Grid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="5" Margin="10, 10, 10, 0">
+                        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Margin="10, 10, 10, 0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*" />
                                 <ColumnDefinition Width="7*" />

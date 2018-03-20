@@ -1,5 +1,4 @@
 ﻿using BarNone.DataLift.APIRequest;
-using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DataTransfer;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -180,8 +179,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
 
                 folderDTOs = await DataManager.Folders.GetAll();
                 _liftFolderList = folderDTOs.Select(u => u.Name).ToList();
-
-                UserID = (allUserDTOs.ToDictionary(k => k.UserName, v => v.ID))[currentUser];
+                UserID = (allUserDTOs.ToDictionary(k => k.UserName, v => v.ID))[currentUser];         
             });
         }
 

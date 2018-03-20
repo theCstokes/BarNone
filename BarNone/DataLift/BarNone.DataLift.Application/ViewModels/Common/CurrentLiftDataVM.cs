@@ -49,19 +49,10 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             }
         }
 
+        public string ParentLiftVideoName { get; internal set; }
+
         public long ColorDataOffset;
-
-        private TimeSpan? _latencyBetweenFirstColorFrameAndFirstBodyFrame = null;
-        public TimeSpan? LatencyBetweenFirstColorFrameAndFirstBodyFrame
-        {
-            get => _latencyBetweenFirstColorFrameAndFirstBodyFrame;
-            set
-            {
-                _latencyBetweenFirstColorFrameAndFirstBodyFrame = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("LatencyBetweenFirstColorFrameAndFirstBodyFrame"));
-            }
-        }
-
+        
         public ObservableCollection<LiftItemVM> LiftInformation = new ObservableCollection<LiftItemVM>();
 
         private bool isNormalized = false;

@@ -39,7 +39,6 @@ namespace BarNone.DataLift.UI.ViewModels.Common
 
         public void Restart()
         {
-            offset = 0;
             internalTimer.Restart();
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -42,8 +43,10 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         /// Starts an FFMPEG Recording
         /// </summary>
         /// <param name="fname">Output File Name</param>
-        public void StartFfmpegRecord(string fname, Action firstFrameAction)
+        public string StartFfmpegRecord(Action firstFrameAction)
         {
+            string fname = $"__{Guid.NewGuid().ToString()}.avi";
+
             //Clean up
             if (File.Exists(fname))
                 File.Delete(fname);
@@ -81,6 +84,8 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             _recordProcess.BeginErrorReadLine();
 
             _createdFiles.Add(fname);
+            _currentLiftDataVM.ParentLiftVideoName = fname;
+            return fname;
         }
 
         /// <summary>
@@ -206,26 +211,26 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         /// <returns>Name of the split video created</returns>
         public async Task<string> SplitVideo(string fname, double startTime, double length)
         {
-            string cutFile = $"{Guid.NewGuid().ToString()}.avi";
+            string cutFile = $"{Guid.NewGuid().ToString()}.mp4";
 
             await Task.Run(() =>
             {
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = $"{Directory.GetCurrentDirectory()}/res/ffmpeg.exe",
-                    Arguments = $"-i {fname} -ss {startTime} -t {length} -c {cutFile}",
+                    Arguments = $"-i {fname} -ss {startTime} -t {length} -vcodec libx264 {cutFile}",
                     UseShellExecute = false,
                     CreateNoWindow = false
                 };
 
-                _videoInformationProcess = new Process
+                var proc = new Process
                 {
                     StartInfo = psi,
                     EnableRaisingEvents = true
                 };
 
-                _videoInformationProcess.Start();
-                _videoInformationProcess.WaitForExit();
+                proc.Start();
+                proc.WaitForExit();
             });
 
             return cutFile;
@@ -255,11 +260,12 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                 _recordProcess?.Kill();
                 _recordProcess = null;
 
-                _createdFiles.ForEach(f => File.Delete(f));
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
+                _createdFiles
+                    .Distinct()
+                    .Where(f => File.Exists(f))
+                    .ToList()
+                    .ForEach(f => File.Delete(f));
+                
                 disposedValue = true;
             }
         }

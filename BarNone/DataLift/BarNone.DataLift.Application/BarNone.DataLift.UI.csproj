@@ -286,6 +286,9 @@
     <Content Include="res\ffplay.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\ffprobe.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BarNone.DataLift.DataConverters\BarNone.DataLift.DataConverters.csproj">

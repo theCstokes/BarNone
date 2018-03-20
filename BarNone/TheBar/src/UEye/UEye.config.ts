@@ -18,5 +18,7 @@ export interface IUtils {
 	isNullOrWhitespace: (obj: any | null | undefined) => boolean;
 
 	guid(): string;
+
+	compare(source: any, target: any, ignore?: string[]): boolean;
 }
 

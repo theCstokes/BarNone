@@ -1,20 +1,14 @@
-﻿using BarNone.DataLift.APIRequest;
-using BarNone.DataLift.DataConverters.KinectToDM;
+﻿using BarNone.DataLift.DataConverters.KinectToDM;
 using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Drawing;
 using BarNone.DataLift.UI.Nav;
 using BarNone.DataLift.UI.ViewModels.Common;
-using BarNone.Shared.DataConverters;
 using BarNone.Shared.DataTransfer;
-using BarNone.Shared.DataTransfer.Flex;
 using BarNone.Shared.DomainModel;
 using Microsoft.Kinect;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -166,7 +160,7 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             IsRecording = false;
             CurrentRecordingState = RecordingState.NOT_RECORDING;
-
+            _ffmpegController = new FfmpegController();
             CurrentLiftData.CurrentRecordedBodyData.Clear();
             CurrentLiftData.LiftInformation.Clear();
         }
@@ -358,16 +352,14 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private void StartNewRecording()
         {
-            //TODO move this to the VM
             CurrentLiftData.CurrentRecordedBodyData.Clear();
             CurrentRecordingState = RecordingState.WAITING_FOR_FIRST_COLOR_FRAME;
 
-            //_ffmpegController.StartFfmpegRecord("TestFFMPEG.avi", () =>
-            //{
-            //    CurrentRecordingState = RecordingState.WAITING_FOR_FIRST_BODY_FRAME;
-            //    ColorDataToBodyDataLatency.Restart();
-            //});
-
+            _ffmpegController.StartFfmpegRecord(() =>
+            {
+                CurrentRecordingState = RecordingState.WAITING_FOR_FIRST_BODY_FRAME;
+                ColorDataToBodyDataLatency.Restart();
+            });
         }
 
         /// <summary>
@@ -403,20 +395,20 @@ namespace BarNone.DataLift.UI.ViewModels
             CurrentRecordingState = RecordingState.NOT_RECORDING;
             IsRecording = false;
 
-
-            //_ffmpegController.StopFfmpegRecord();
-
             // Test Code
 
-            string json = File.ReadAllText(@"Chris_Single_Squat_1.json");
-            LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
-            CurrentLiftData.CurrentRecordedBodyData =
-                new ObservableCollection<BodyDataFrame>(Converters
-                .NewConvertion()
-                .Lift.CreateDataModel(liftDTO)
-                .BodyData
-                .BodyDataFrames);
+            //string json = File.ReadAllText(@"Chris_Single_Squat_1.json");
+            //LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
+            //CurrentLiftData.CurrentRecordedBodyData =
+            //    new ObservableCollection<BodyDataFrame>(Converters
+            //    .NewConvertion()
+            //    .Lift.CreateDataModel(liftDTO)
+            //    .BodyData
+            //    .BodyDataFrames);
 
+            //CurrentLiftData.LiftInformation.Add(new LiftItemVM(CurrentLiftData.CurrentUser)
+            _ffmpegController.StopFfmpegRecord();
+            
             CurrentLiftData.LiftInformation.Add(new LiftItemVM(CurrentLiftData.CurrentUser)
             {
                 LiftStartTime = 0,
@@ -428,6 +420,7 @@ namespace BarNone.DataLift.UI.ViewModels
             try
             {
                 CurrentLiftData.NormalizeTimes();
+                //UserControlManager.SwitchPage(UIPages.EditLiftView);
                 //TODO Notify To Switch Page
             }
             catch (ArgumentException)
@@ -435,35 +428,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 //Argument exception if the data cannot be normalized for processing
                 //TODO do not enable moving to edit and print an error in red
             }
-            return;
-            //TODO CLEAN!
-            //TempAddCurrentLift();
-
-            var toSend = new LiftDTO
-            {
-                ParentID = 1,
-                Name = "FIX_NAME_SENDS" + Guid.NewGuid(),
-                Details = new LiftDetailDTO()
-                {
-                    BodyData = new BodyDataDTO()
-                }
-            };
-
-            var bodyDto = Converters.NewConvertion().BodyData.CreateDTO(KinectDepthFrameConverter.KinectBodyDataToDmBodyData(CurrentLiftData.CurrentRecordedBodyData));
-            toSend.Details.BodyData = bodyDto;
-
-            var temp = await DataManager.Flex.Post(new FlexDTO
-            {
-                Entities = new List<FlexEntityDTO>
-                {
-                    new FlexEntityDTO
-                    {
-                        Resource = "LIFT",
-                        Entity = toSend
-                    }
-                }
-            });
-
         }
 
         #endregion
