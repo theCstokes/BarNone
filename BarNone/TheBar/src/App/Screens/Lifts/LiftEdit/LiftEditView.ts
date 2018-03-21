@@ -102,7 +102,7 @@ export default class LiftEditView extends EditView implements ILiftPermissionVie
 													{
 														id: 1,
 														name: "Bar Acceleration",
-														value: "55m/s",
+														value: "4.72m/s",
 														icon: "fa-plus",
 														onAction: () => alert(11)
 													},

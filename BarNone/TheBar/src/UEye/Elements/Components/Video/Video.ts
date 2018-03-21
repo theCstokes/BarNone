@@ -190,7 +190,7 @@ export default class Video extends BaseComponent {
         // this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percentTwo + "px");
         this._currentIndex = frameIndex + 1;
         if (this._stopFrame == false && this._currentIndex <= this._totalNumber) {
-            setTimeout(this.drawBodyDataOnly.bind(this), 95, w, h, this._currentIndex);
+            setTimeout(this.drawBodyDataOnly.bind(this), 115, w, h, this._currentIndex);
         } else if (this._currentIndex > this._totalNumber) {
             this._stopFrame = true;
             this._currentIndex = 0;
