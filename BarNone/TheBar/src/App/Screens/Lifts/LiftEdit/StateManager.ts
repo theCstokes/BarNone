@@ -7,8 +7,9 @@ import LiftType from "App/Data/Models/Lift/LiftType";
 import LiftFolder from "App/Data/Models/LiftFolder/LiftFolder";
 import BodyData from "App/Data/Models/BodyData/BodyData";
 import { ELiftType } from "App/Screens/Lifts/StateManagers/BaseLiftStateManager";
-import ParentStateManager from "UEye/StateManager/ParentStateManager";
 import { ChartTabState } from "App/Screens/Lifts/ChartTab/ChartTabStateManager";
+// import ParentStateManager from "UEye/StateManager/ParentStateManager";
+// import { ChartTabState } from "App/Screens/Lifts/ChartTab/ChartTabStateManager";
 
 export class State {
 	public id: number;
@@ -21,7 +22,7 @@ export class State {
 	public context: ChartTabState;
 }
 
-export class StateManager extends ParentStateManager<State> {
+export class StateManager extends BaseStateManager<State> {
 
 	public async onInitialize(): Promise<void> {
 		this.s_LiftTypeList = await DataManager.LiftTypes.all();
