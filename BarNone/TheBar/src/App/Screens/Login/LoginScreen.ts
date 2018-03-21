@@ -32,8 +32,8 @@ export default class LoginScreen extends Screen<LoginView> {
 	 * */
 	public onShow(): void {
 		// TODO - remove hard code login.
-		this.view.usernameInput.text = "admin";
-		this.view.passwordInput.text = "admin";
+		// this.view.usernameInput.text = "admin";
+		// this.view.passwordInput.text = "admin";
 
 		this.view.frame.onDo = async () => {
 			this.view.container.visible = !this.view.container.visible;

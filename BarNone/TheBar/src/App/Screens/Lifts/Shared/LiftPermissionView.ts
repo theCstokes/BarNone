@@ -9,6 +9,7 @@ export class LiftPermissionTab {
 	public static get content(): any {
 		return {
 			title: "Share",
+			visible: false,
 			content: [
 				{
 					id: "userShareSearchBar",
