@@ -5,7 +5,10 @@ import DataManager from "App/Data/DataManager";
 import AnalysisType from "App/Data/Models/Analysis/AnalysisType";
 
 export class State {
-
+	public analysisTypeID: number;
+	public jointTypeIDA?: number
+	public jointTypeIDB?: number
+	public jointTypeIDC?: number
 }
 
 export class LiftProfileDialogStateManager extends BaseStateManager<State> {
@@ -24,7 +27,37 @@ export class LiftProfileDialogStateManager extends BaseStateManager<State> {
 
 	public readonly CreateState = StateBind
 		.onCallable<State>(this, (state) => {
-			return state;
+			return Utils.clone(state);
+		});
+
+	public readonly AnalysisTypeChange = StateBind
+		.onAction<State, {
+			id: number
+		}>(this, (state, data) => {
+			var next_state = Utils.clone(state);
+			next_state.current.analysisTypeID = data.id;
+			return next_state;
+		});
+
+	public readonly JointTypeChange = StateBind
+		.onAction<State, {
+			jointTypeIDA?: number,
+			jointTypeIDB?: number,
+			jointTypeIDC?: number
+		}>(this, (state, data) => {
+			var next_state = Utils.clone(state);
+
+			if (data.jointTypeIDA !== undefined) {
+				next_state.current.jointTypeIDA = data.jointTypeIDA;
+			}
+			if (data.jointTypeIDB !== undefined) {
+				next_state.current.jointTypeIDB = data.jointTypeIDB;
+			}
+			if (data.jointTypeIDC !== undefined) {
+				next_state.current.jointTypeIDC = data.jointTypeIDC;
+			}
+
+			return next_state;
 		});
 
 }

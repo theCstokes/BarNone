@@ -5,7 +5,6 @@ import UserScreen from "App/Screens/User/UserScreen";
 import SettingsScreen from "App/Screens/Settings/SettingsScreen"
 import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import { ContextState } from "App/Screens/Nav/ContextStateManager";
-import ParentStateManager from "UEye/StateManager/ParentStateManager";
 import LiftScreen from "App/Screens/Lifts/LiftScreen";
 import LiftProfileScreen from "App/Screens/LiftProfile/LiftProfileScreen";
 import DataManager from "App/Data/DataManager";
@@ -82,7 +81,7 @@ export class State {
 	]
 }
 
-export class StateManager extends ParentStateManager<State> {
+export class StateManager extends BaseStateManager<State> {
 	public constructor() {
 		super(State);
 	}

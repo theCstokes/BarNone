@@ -93,11 +93,11 @@ export default class LiftEditView extends EditView implements ILiftPermissionVie
 											}
 										],
 										content: [
-											{
-												instance: ControlTypes.Checkbox,
-												id: "checkOne",
-												text: "Skeletal View"
-											},
+											// {
+											// 	instance: ControlTypes.Checkbox,
+											// 	id: "checkOne",
+											// 	text: "Skeletal View"
+											// },
 											{
 												instance: ControlTypes.List,
 												id: "liftList",
@@ -105,17 +105,17 @@ export default class LiftEditView extends EditView implements ILiftPermissionVie
 												items: [
 													{
 														id: 1,
-														name: "Acceleration",
-														value: "55m/s",
+														name: "Bar Acceleration",
+														value: "4.72m/s",
 														icon: "fa-plus",
 														onAction: () => alert(11)
 													},
-													{
-														id: 2,
-														name: "Knee Angle",
-														value: "30 deg",
-														onAction: () => alert(22)
-													},
+													// {
+													// 	id: 2,
+													// 	name: "Knee Angle",
+													// 	value: "30 deg",
+													// 	onAction: () => alert(22)
+													// },
 												]
 											}
 										]

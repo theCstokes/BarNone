@@ -3,11 +3,14 @@ import { View } from "UEye/View/View";
 import ControlTypes from "UEye/ControlTypes";
 import Button from "UEye/Elements/Components/Button/Button";
 import { EDialogSize } from "UEye/Elements/Containers/Dialog/Dialog";
+import Panel from "UEye/Elements/Containers/Panel/Panel";
 
 /**
  * Base edit view.
  */
 export abstract class DialogView extends View {
+    public dialogPanel: Panel;
+    
     public cancelButton: Button;
 
     public acceptButton: Button;

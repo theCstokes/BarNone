@@ -1,6 +1,7 @@
 ﻿using BarNone.DataLift.APIRequest;
 using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Nav;
+using BarNone.DataLift.UI.ViewModels.Common;
 using System.ComponentModel;
 using System.Security;
 using System.Threading.Tasks;
@@ -117,6 +118,12 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
+        #region Private Properties
+
+        private CurrentLiftDataVM currentLifts = CurrentLiftDataVMSingleton.GetInstance();
+
+        #endregion
+
         #region Commands
         /// <summary>
         /// Field representation for the <see cref="LoginCommand"/> bindable command
@@ -167,7 +174,10 @@ namespace BarNone.DataLift.UI.ViewModels
             if (await WasLoginSuccessful())
             {
                 //Login server calls here to get a valid token and shift to data recorder or notify bad user pass combo
+                currentLifts.CurrentUser = Username;
+
                 PageManager.SwitchPage(UIPages.ControlHolderView);
+                
                 LoginState = LoginStates.NoShow;
             }
             else

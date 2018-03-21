@@ -1,17 +1,17 @@
 import { BaseStateManager, StateTracker } from "UEye/StateManager/BaseStateManager";
 // import { start } from "repl";
-import ParentStateManager from "UEye/StateManager/ParentStateManager";
+// import ParentStateManager from "UEye/StateManager/ParentStateManager";
 
 export type ChildStateAccessor<TState, TParentState> = (state: TParentState) => TState;
 export type ChildStateUpdater<TState, TParentState> = (state: TParentState, data: TState) => void;
 
 export default abstract class ChildStateManager<TState, TParentState> extends BaseStateManager<TState> {
-    private _parentStateManager: ParentStateManager<TParentState>;
+    private _parentStateManager: BaseStateManager<TParentState>;
     private _TStateType: { new(): TState };
     private _accessor: ChildStateAccessor<TState, TParentState>;
     private _updater: ChildStateUpdater<TState, TParentState>;
 
-    public constructor(parentStateManager: ParentStateManager<TParentState>, 
+    public constructor(parentStateManager: BaseStateManager<TParentState>, 
         TStateType: { new(): TState }, 
         accessor: ChildStateAccessor<TState, TParentState>,
         updater: ChildStateUpdater<TState, TParentState>) {
@@ -41,22 +41,7 @@ export default abstract class ChildStateManager<TState, TParentState> extends Ba
     }
 
     public updateState(state: StateTracker<TState>) {
-        // var parent = this._parentStateManager.getState();
-        // this._updater(parent.current, state.current);
-        // this._updater(parent.original, state.original);
-
-        // this._parentStateManager.updateState(parent);
         this._parentStateManager.updateSubState(this._updater, state);
         super.updateState(state);
-		// if (this._stateTracker !== state) {
-		// 	this._stateTracker = Utils.clone(state);
-			
-		// 	this._renderCallbackList.forEach(rc => rc(
-        //         this.getCurrentState(),
-        //         this.getOriginalState()
-		// 	));
-		// }
     }
-    
-    // private _get
 }

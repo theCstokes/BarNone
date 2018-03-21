@@ -1,4 +1,5 @@
 import StateBind, { StateCallableBind, StateCallable } from "UEye/StateManager/StateBind";
+import { ChildStateUpdater } from "UEye/StateManager/ChildStateManager";
 
 /**
  * State render callback function.
@@ -85,6 +86,11 @@ export abstract class BaseStateManager<TState> {
 		this._renderCallbackList = [];
 		this._stateTracker = new StateTracker(TStateType);
 	}
+
+	public updateSubState<TChildState>(updater: ChildStateUpdater<TChildState, TState>, state: StateTracker<TChildState>): void {
+        updater(this._stateTracker.current, state.current);
+        updater(this._stateTracker.original, state.original);
+    }
 
 	public async initialize(): Promise<void> {
 		await this.onInitialize();
