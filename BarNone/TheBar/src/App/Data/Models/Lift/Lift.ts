@@ -1,6 +1,7 @@
 import BodyData from "App/Data/Models/BodyData/BodyData";
 import LiftFolder from "App/Data/Models/LiftFolder/LiftFolder";
 import LiftType from "App/Data/Models/Lift/LiftType";
+import Permission from "App/Data/Models/Lift/Permission";
 
 export default class Lift {
     public id: number;
@@ -11,8 +12,11 @@ export default class Lift {
 
     public LiftTypeID: number;
 
-    public details: LiftDetails;
-	liftType: default;
+    public liftType: LiftType;
+
+    public details: Partial<LiftDetails>;
+
+    public updateFilter: string[];
 }
 
 class LiftDetails {
@@ -21,4 +25,6 @@ class LiftDetails {
     public parent: LiftFolder;
 
     public liftType: LiftType;
+
+    public permissions: Permission[];
 }

@@ -44,6 +44,7 @@ export default abstract class EditScreen<
     private _basePipeLine = ScreenPipeLine.create()
         //#region Panel
         .onShow(() => {
+            this.view.saveButton.onClick = async() => await this.stateManager.save();
             this.view.cancelButton.onClick = this._onCancelHandler.bind(this);
         })
         .onRender((current: any, original: any) => {

@@ -260,7 +260,7 @@ export class DetailResource<TData> extends BaseResource {
      * @param id - id for entity
      * @param source - data
      */
-    public async update(id: number, source: TData): Promise<TData[]> {
+    public async update(id: number, source: Partial<TData>): Promise<TData[]> {
         var route = StringUtils.format("{0}{1}/{2}", BaseDataManager.resourceAddress, this._resource, id);
 
         var builder = await RequestBuilder

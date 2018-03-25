@@ -19,7 +19,8 @@ export class LiftPermissionTab {
 				},
 				{
 					id:"userShareList",
-					instance: ControlTypes.List
+					instance: ControlTypes.List,
+					style: ControlTypes.DataListItem
 				}
 			]
 		};

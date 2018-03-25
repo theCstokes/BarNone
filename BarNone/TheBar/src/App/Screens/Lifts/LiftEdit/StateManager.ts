@@ -8,6 +8,8 @@ import LiftFolder from "App/Data/Models/LiftFolder/LiftFolder";
 import BodyData from "App/Data/Models/BodyData/BodyData";
 import { ELiftType } from "App/Screens/Lifts/StateManagers/BaseLiftStateManager";
 import { ChartTabState } from "App/Screens/Lifts/ChartTab/ChartTabStateManager";
+import { LiftPermissionState } from "App/Screens/Lifts/Shared/LiftPermissionStateManager";
+import Permission from "App/Data/Models/Lift/Permission";
 // import ParentStateManager from "UEye/StateManager/ParentStateManager";
 // import { ChartTabState } from "App/Screens/Lifts/ChartTab/ChartTabStateManager";
 
@@ -20,6 +22,7 @@ export class State {
 	public bodyData: BodyData;
 	public type: ELiftType;
 	public context: ChartTabState;
+	public liftPermissionState: LiftPermissionState = new LiftPermissionState();
 }
 
 export class StateManager extends BaseStateManager<State> {
@@ -61,9 +64,12 @@ export class StateManager extends BaseStateManager<State> {
 
 			}
 			nextState.current.name = lift!.name;
-			nextState.current.liftType = lift!.details.liftType;
+			nextState.current.liftType = lift!.details!.liftType!;
 			nextState.current.parentID = lift!.parentID;
-			nextState.current.bodyData = lift!.details.bodyData;
+			nextState.current.bodyData = lift!.details!.bodyData!;
+			
+			nextState.current.liftPermissionState.liftID = lift!.id!;
+			nextState.current.liftPermissionState.permissions = lift!.details!.permissions!;
 
 			var comments = await DataManager.LiftComments.all({
 				params: {
@@ -128,13 +134,33 @@ export class StateManager extends BaseStateManager<State> {
 	// 	this.ResetState.trigger();
 	// }
 
-	public async onSave(): Promise<void> {
-		var currentState = this.getCurrentState();
-		await DataManager.Users.update(currentState.id, {
-			id: currentState.id,
-			name: currentState.name,
-			userName: currentState.name,
-			password: ""
+	public async save(): Promise<void> {
+		let current = this.getCurrentState();
+		let permissions: Permission[] = current.liftPermissionState.permissions.map(p => {
+			return {
+				// id: p.id,
+				liftID: current.id,
+				userID: p.userID
+			}
+		}) as Permission[];
+
+		await DataManager.Lifts.update(current.id, {
+			id: current.id,
+			name: current.name,
+			updateFilter: ["Permissions"],
+			details: {
+				permissions: permissions
+			}
 		});
 	}
+
+	// public async onSave(): Promise<void> {
+	// 	var currentState = this.getCurrentState();
+	// 	await DataManager.Users.update(currentState.id, {
+	// 		id: currentState.id,
+	// 		name: currentState.name,
+	// 		userName: currentState.name,
+	// 		password: ""
+	// 	});
+	// }
 }

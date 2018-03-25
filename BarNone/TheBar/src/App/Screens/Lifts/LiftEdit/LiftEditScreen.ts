@@ -17,7 +17,7 @@ import ChartTabHelper from "App/Screens/Lifts/ChartTab/ChartTabHelper";
 import LiftPermissionHelper from "App/Screens/Lifts/Shared/LiftPermissionHelper";
 
 export default class LiftEditScreen extends EditScreen<LiftEditView, StateManager> {
-	private _chartTabHelper : ChartTabHelper;
+	private _chartTabHelper: ChartTabHelper;
 	private _liftpermissionHelper: LiftPermissionHelper;
 
 	public constructor() {
@@ -65,36 +65,6 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 			this.view.typeDropDown.items = this.stateManager.s_LiftTypeList;
 			this.view.parentDropDown.items = this.stateManager.s_FolderList;
 
-// <<<<<<< HEAD
-// 	//#region Video
-// 	.onShow(() => {
-// 		this.view.analyticsButton.onClick = () => this.view.videoLayout.toggleSideBar();
-// 	})
-// 	.onRender((current: State, original: State) => {
-// 		let bd= new BodyExample();
-// 		this.view.player.frameData = SkeletonBuilder.build(bd.data[0], this.view.player.canvasHeight, this.view.player.canvasWidth);
-// 		 this.view.player.src = StringUtils.format("{0}Lift/{1}/Video?access_token={2}", //https://www.rmp-streaming.com/media/bbb-360p.mp4",
-// 			 BaseDataManager.resourceAddress,
-// 			 current.id,
-// 			 BaseDataManager.auth.access_token);
-// 			 console.log(this.view.player.src);
-// 	})
-// 	//#endregion
-	
-// 	//#region Massager
-// 	.onShow((data: { id: number, name: string, type: ELiftType }) => {
-// 		NotificationManager.addListener<Comment>(new NotificationRequestDTO<Comment>({
-// 			type: "Comment",
-// 			filter: {
-// 				property: (comment) => comment.liftID,
-// 				comparisons: "eq",
-// 				value: this.stateManager.getCurrentState().id
-// 			}
-// 		}), async () => {
-// 			console.log("GoT");
-// 			await this.stateManager.RefreshComments.trigger();
-// 		});
-// =======
 			this.view.parentDropDown.onSelect = (item) => {
 				this.stateManager.ParentChange.trigger({ parentID: item.id });
 			};
@@ -114,11 +84,10 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		})
 		.onRender((current: State, original: State) => {
 			let bd = new BodyExample();
-// >>>>>>> develop
 
 			var data = SkeletonBuilder.build(
-				current.bodyData, 
-				this.view.player.canvasHeight, 
+				current.bodyData,
+				this.view.player.canvasHeight,
 				this.view.player.canvasWidth
 			);
 			this.view.player.frameData = data;
@@ -169,17 +138,12 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 	public async onShow(data: { id: number, name: string, type: ELiftType }): Promise<void> {
 		super.onShow(data);
 		this.init(await StateManagerFactory.create(StateManager));
-		this._chartTabHelper = new ChartTabHelper(this.view,data.id);
-		this._liftpermissionHelper= new LiftPermissionHelper(this.view,data.id);
+		this._chartTabHelper = new ChartTabHelper(this.view, data.id);
+		this._liftpermissionHelper = new LiftPermissionHelper(this.view, this.stateManager);
 		this._liftpermissionHelper.onShow();
 		this._chartTabHelper.onShow();
-// <<<<<<< HEAD
-// 		this._pipeLine.onShowInvokable();
-// 		this.stateManager.bind(this._pipeLine.onRenderInvokable.bind(this));		
-// =======
 		this._pipeLine.onShowInvokable(data);
 		this.stateManager.bind(this._pipeLine.onRenderInvokable.bind(this));
-// >>>>>>> develop
 		await this.stateManager.ResetState.trigger(data);
 	}
 }

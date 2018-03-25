@@ -87,11 +87,6 @@ export abstract class BaseStateManager<TState> {
 		this._stateTracker = new StateTracker(TStateType);
 	}
 
-	public updateSubState<TChildState>(updater: ChildStateUpdater<TChildState, TState>, state: StateTracker<TChildState>): void {
-        updater(this._stateTracker.current, state.current);
-        updater(this._stateTracker.original, state.original);
-    }
-
 	public async initialize(): Promise<void> {
 		await this.onInitialize();
 	}
@@ -133,6 +128,10 @@ export abstract class BaseStateManager<TState> {
 		return Object.freeze(this.getState().original);
 	}
 
+	public async save(): Promise<void> {
+
+	}
+
 	/**
 	 * Update state.
 	 * @param state - tacker object
@@ -148,5 +147,28 @@ export abstract class BaseStateManager<TState> {
 		}
 	}
 
-	// public abstract init(): void;
+	/**
+	 * Updates the state object with the given sub state object.
+	 * @param updater - the updater function
+	 * @param state - the child state tracker
+	 * @param trackChildChanges - flag to trigger render on state update. 
+	 * 														if true render may be triggered if changes occurred
+	 * 														if false original state will be updated as well as current
+	 */
+	public updateSubState<TChildState>(
+		updater: ChildStateUpdater<TChildState, TState>,
+		state: StateTracker<TChildState>,
+		trackChildChanges: boolean): void {
+		updater(this._stateTracker.current, state.current);
+
+		if (trackChildChanges) {
+			// this.updateState(this._stateTracker);
+			this._renderCallbackList.forEach(rc => rc(
+				this.getCurrentState(),
+				this.getOriginalState()
+			));
+		} else {
+			updater(this._stateTracker.original, state.original);
+		}
+	}
 }

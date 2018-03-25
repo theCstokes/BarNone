@@ -5,15 +5,25 @@ import StateBind from "UEye/StateManager/StateBind";
 import { LiftTypeItem } from "App/Screens/LiftProfile/Models";
 import { SelectionStateManager, ISelectionState } from "UEye/StateManager/SelectionStateManager";
 import User from "App/Data/Models/User/User";
+import ChildStateManager from "UEye/StateManager/ChildStateManager";
+import { State } from "App/Screens/Lifts/LiftEdit/StateManager";
+import Permission from "App/Data/Models/Lift/Permission";
 
-export class State  {
-   
+export class LiftPermissionState  {
+    public liftID: number;
+    public permissions: Permission[] = [];
 }
 
-export class LiftPermissionStateManager extends BaseStateManager<State> {
+export class LiftPermissionStateManager extends ChildStateManager<LiftPermissionState, State> {
     public s_UserList: User[];
-    public constructor() {
-        super(State);
+    public constructor(parentStateManager: BaseStateManager<State>) {
+        super(
+            parentStateManager,
+            LiftPermissionState,
+            true,
+            (state: State) => state.liftPermissionState,
+            (state: State, data: LiftPermissionState) => state.liftPermissionState = data
+        );
         
         this.s_UserList = [];
     }
@@ -22,8 +32,24 @@ export class LiftPermissionStateManager extends BaseStateManager<State> {
     }
 
     public readonly CreateState = StateBind
-		.onAsyncCallable<State>(this, async (state) => {
-			return state;
-		});
+		.onAsyncCallable<LiftPermissionState>(this, async (state) => {
+            let nextState = state.empty();
+			return nextState.initialize();
+        });
+        
+    public readonly AddUserPermission = StateBind
+        .onAction<LiftPermissionState, {
+            userID: number
+        }>(this, (state, data) => {
+            let nextState = Utils.clone(state);
+            
+            nextState.current.permissions.push({
+                id: Utils.guid(),
+                liftID: nextState.current.liftID,
+                userID: data.userID
+            });
+
+            return nextState;
+        });
 
 }

@@ -22,6 +22,7 @@ export class ContextState {
 export class ContextStateManager extends ChildStateManager<ContextState, State> {
     public constructor(parentStateManager: StateManager) {
         super(parentStateManager, ContextState,
+            false,
             (state: State) => state.context,
             (state: State, data: ContextState) => state.context = data);
     }
