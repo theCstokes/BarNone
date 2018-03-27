@@ -95,6 +95,7 @@ export default class DropDownInput extends BaseComponent {
         if (this._items !== value) {
             this._items = value;
             this.c_list.items = value;
+            this.selected = undefined;
         }
         console.log(value)
     }

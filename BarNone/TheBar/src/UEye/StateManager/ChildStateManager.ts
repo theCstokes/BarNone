@@ -1,4 +1,4 @@
-import { BaseStateManager, StateTracker } from "UEye/StateManager/BaseStateManager";
+import { BaseStateManager, StateTracker, RenderCallback } from "UEye/StateManager/BaseStateManager";
 // import { start } from "repl";
 // import ParentStateManager from "UEye/StateManager/ParentStateManager";
 
@@ -56,5 +56,13 @@ export default abstract class ChildStateManager<TState, TParentState> extends Ba
     public updateState(state: StateTracker<TState>) {
         this._parentStateManager.updateSubState(this._updater, state, this._trackChildChanges);
         super.updateState(state);
+    }
+
+    public bindToParent(renderCallback: RenderCallback<TState>) {
+        this._parentStateManager.bind((current: TParentState, original: TParentState) => {
+            let currentSub = this._accessor(current);
+            let originalSub = this._accessor(original);
+            renderCallback(currentSub, originalSub);
+        });
     }
 }

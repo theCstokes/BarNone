@@ -4,7 +4,7 @@ import { ChildStateUpdater } from "UEye/StateManager/ChildStateManager";
 /**
  * State render callback function.
  */
-type RenderCallback<TState> = (current: TState, original: TState) => void;
+export type RenderCallback<TState> = (current: TState, original: TState) => void;
 
 /**
  * State tracker for current and original state.

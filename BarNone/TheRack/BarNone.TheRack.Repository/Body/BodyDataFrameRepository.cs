@@ -49,6 +49,7 @@ namespace BarNone.TheRack.Repository
             var results = frame.Include(f => f.BodyData)
                 .Include(l => l.Joints).ThenInclude(j => j.JointType)
                 .Include(l => l.Joints).ThenInclude(j => j.JointTrackingStateType);
+
             return results.OrderBy(f => f.TimeOfFrame);
         };
 

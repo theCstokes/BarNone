@@ -29,12 +29,16 @@ export default class LiftPermissionHelper {
             });
             return result;
         }, new Array<IListItem>());
+
+        this._view.userShareSearch.items = this._stateManager.s_UserList
+            .filter(user => current.permissions.find(p => p.userID === user.id) === undefined);
     }
 
-    public async onShow(data?: { liftID: number, permissions: Permission[] }): Promise<void> {
+    public async onShow(): Promise<void> {
         this._stateManager = await StateManagerFactory
             .create(LiftPermissionStateManager, this._parentStateManager);
 
+        this._stateManager.bindToParent(this._onRender.bind(this));
         this._stateManager.bind(this._onRender.bind(this));
 
         this._view.userShareSearch.items = this._stateManager.s_UserList;
@@ -42,10 +46,10 @@ export default class LiftPermissionHelper {
             this._stateManager.AddUserPermission.trigger({ userID: data.id })
         }
 
-        this._stateManager.CreateState.trigger({
-            // liftID: data.liftID,
-            // permissions: data.permissions
-        });
+        // this._stateManager.CreateState.trigger({
+        //     // liftID: data.liftID,
+        //     // permissions: data.permissions
+        // });
     }
 
     public async onSave(): Promise<void> {

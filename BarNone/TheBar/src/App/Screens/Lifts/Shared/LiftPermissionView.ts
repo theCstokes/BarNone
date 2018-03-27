@@ -15,6 +15,7 @@ export class LiftPermissionTab {
 			content: [
 				{
 					id: "userShareSearch",
+					hint: "Search User",
 					instance: ControlTypes.DropDownInput
 				},
 				{

@@ -61,8 +61,8 @@ export class StateManager extends BaseStateManager<State> {
 				lift = await DataManager.Lifts.single(data.id, { includeDetails: true });
 			} else if (data.type === ELiftType.Shared) {
 				lift = await DataManager.SharedLifts.single(data.id, { includeDetails: true });
-
 			}
+			
 			nextState.current.name = lift!.name;
 			nextState.current.liftType = lift!.details!.liftType!;
 			nextState.current.parentID = lift!.parentID;

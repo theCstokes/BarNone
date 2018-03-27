@@ -9,7 +9,7 @@ import ChildStateManager from "UEye/StateManager/ChildStateManager";
 import { State } from "App/Screens/Lifts/LiftEdit/StateManager";
 import Permission from "App/Data/Models/Lift/Permission";
 
-export class LiftPermissionState  {
+export class LiftPermissionState {
     public liftID: number;
     public permissions: Permission[] = [];
 }
@@ -24,25 +24,30 @@ export class LiftPermissionStateManager extends ChildStateManager<LiftPermission
             (state: State) => state.liftPermissionState,
             (state: State, data: LiftPermissionState) => state.liftPermissionState = data
         );
-        
+
         this.s_UserList = [];
     }
     public async onInitialize(): Promise<void> {
         this.s_UserList = await DataManager.Users.all();
     }
 
-    public readonly CreateState = StateBind
-		.onAsyncCallable<LiftPermissionState>(this, async (state) => {
-            let nextState = state.empty();
-			return nextState.initialize();
-        });
-        
+    // public readonly CreateState = StateBind
+    //     .onAsyncAction<LiftPermissionState, {
+    //         // liftID: number,
+    //         // permissions: Permission[]
+    //     }>(this, async (state, data) => {
+    //         let nextState = state.empty();
+    //         // nextState.current.liftID = data.liftID;
+    //         // nextState.current.permissions = data.permissions;
+    //         return nextState.initialize();
+    //     });
+
     public readonly AddUserPermission = StateBind
         .onAction<LiftPermissionState, {
             userID: number
         }>(this, (state, data) => {
             let nextState = Utils.clone(state);
-            
+
             nextState.current.permissions.push({
                 id: Utils.guid(),
                 liftID: nextState.current.liftID,

@@ -42,6 +42,9 @@ namespace BarNone.TheRack.Repository.Core
         public delegate IQueryable<TDomainModel> EntityResolverDelegate<TDomainModel>(DbSet<TDomainModel> set)
             where TDomainModel : class, IDomainModel<TDomainModel>, new();
 
+        public delegate IQueryable<TDomainModel> ListFormattingDelegate<TDomainModel>(DbSet<TDomainModel> set)
+            where TDomainModel : class, IDomainModel<TDomainModel>, new();
+
         /// <summary>
         /// Delegate to resolve detail entities.
         /// </summary>
