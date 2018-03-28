@@ -41,7 +41,17 @@ export abstract class SelectionListScreen<
 				}
 
 				var sub = this.onRenderEditScreen(userData);
-				if (sub !== undefined) this.subScreen = sub;
+				if (sub !== undefined) {
+					this.subScreen = sub
+					this.subScreen.onSave.register(() => {
+						let selected = this.view.selectionList.selected;
+						if (selected === undefined) return;
+
+						this.stateManager.SelectionChange.trigger({
+							id: selected.id
+						});
+					})
+				}
 			}
 		});
 

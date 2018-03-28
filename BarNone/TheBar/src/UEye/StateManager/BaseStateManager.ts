@@ -1,4 +1,4 @@
-import StateBind, { StateCallableBind, StateCallable } from "UEye/StateManager/StateBind";
+import StateBind, { StateCallableBind, StateCallable, StateAsyncActionBind } from "UEye/StateManager/StateBind";
 import { ChildStateUpdater } from "UEye/StateManager/ChildStateManager";
 
 /**
@@ -85,16 +85,36 @@ export abstract class BaseStateManager<TState> {
 	public constructor(TStateType: { new(): TState }) {
 		this._renderCallbackList = [];
 		this._stateTracker = new StateTracker(TStateType);
+
+		this._resetBind = StateBind
+			.onAsyncAction<TState, any>(this, async (state, data) => {
+				return state.reset();
+			});
 	}
 
 	public async initialize(): Promise<void> {
 		await this.onInitialize();
 	}
 
+	public onReset(bind: StateAsyncActionBind<TState, any>) {
+		this._resetBind = bind;
+	}
+
+	private _resetBind: StateAsyncActionBind<TState, any>;
+
+	// public get Reset(): StateAsyncActionBind<TState, any> {
+	// 	return this._resetBind;
+	// }
+
 	public readonly Reset = StateBind
 		.onCallable<TState>(this, (state) => {
 			return state.reset();
-		})
+		});
+
+	// public readonly Reset = StateBind
+	// 	.onCallable<TState>(this, (state) => {
+	// 		return state.reset();
+	// 	})
 
 	protected async onInitialize(): Promise<void> { }
 	// protected async onReset(): Promise<void> {}
@@ -134,11 +154,16 @@ export abstract class BaseStateManager<TState> {
 
 	/**
 	 * Update state.
-	 * @param state - tacker object
+	 * @param nextState - tacker object
 	 */
-	public updateState(state: StateTracker<TState>) {
-		if (JSON.stringify(state) !== JSON.stringify(this._stateTracker)) {
-			this._stateTracker = Utils.clone(state);
+	public stateTransition(
+		originalState: StateTracker<TState>,
+		nextState: StateTracker<TState>,
+		id?: string
+	) {
+		// if (JSON.stringify(nextState) !== JSON.stringify(originalState)) {
+		if (nextState !== originalState) {
+			this._stateTracker = Utils.clone(nextState);
 
 			this._renderCallbackList.forEach(rc => rc(
 				this.getCurrentState(),
@@ -158,7 +183,8 @@ export abstract class BaseStateManager<TState> {
 	public updateSubState<TChildState>(
 		updater: ChildStateUpdater<TChildState, TState>,
 		state: StateTracker<TChildState>,
-		trackChildChanges: boolean): void {
+		trackChildChanges: boolean
+	): void {
 		updater(this._stateTracker.current, state.current);
 
 		if (trackChildChanges) {

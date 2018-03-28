@@ -11,20 +11,26 @@ import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout"
 import Messenger from "UEye/Elements/Components/Messenger/Messenger";
 import DropDownInput from "UEye/Elements/Components/DropDownInput/DropDownInput";
 import SearchBar from "UEye/Elements/Components/SearchBar/SearchBar";
-import { LiftPermissionTab, ILiftPermissionView } from "App/Screens/Lifts/Shared/LiftPermissionView";
-import { ChartTab, IChartTabView } from "App/Screens/Lifts/ChartTab/ChartTab";
 import Graph from "UEye/Elements/Components/Graph/Graph";
+import { LiftVideoTab, ILiftVideoView } from "App/Screens/Lifts/LiftEdit/Tabs/Video/LiftVideoView";
+import { ILiftPermissionView, LiftPermissionTab } from "App/Screens/Lifts/LiftEdit/Tabs/Share/LiftPermissionView";
+import { IChartTabView, ChartTab } from "App/Screens/Lifts/LiftEdit/Tabs/Charts/ChartTab";
+import { LiftCommentsTab, ILiftCommentsView } from "App/Screens/Lifts/LiftEdit/Tabs/Comments/LiftCommentsView";
 
-export default class LiftEditView extends EditView implements ILiftPermissionView, IChartTabView {
+export default class LiftEditView extends EditView 
+	implements ILiftPermissionView, ILiftVideoView, ILiftCommentsView, IChartTabView {
+
 	protected caption: string = "Lift Edit";
 
 	public nameInput: Input;
 	public typeDropDown: DropDownInput;
 	public parentDropDown: DropDownInput;
+
 	public player: Video;
-	public messenger: Messenger;
 	public analyticsButton: IconButton;
 	public videoLayout: SideBarLayout;
+
+	public messenger: Messenger;
 
 	//Members used by the chart tab
 	public analysisTypeDropdown : DropDownInput;
@@ -62,81 +68,10 @@ export default class LiftEditView extends EditView implements ILiftPermissionVie
 			{
 				instance: ControlTypes.TabLayout,
 				tabs: [
-					{
-						actions: [
-							{
-								id: "analyticsButton",
-								text: "Settings",
-								icon: "fa-cog"
-							}
-						],
-						title: "Video",
-						content: [
-							{
-								instance: ControlTypes.SideBarLayout,
-								id: "videoLayout",
-								content: [
-									{
-										id: "player",
-										instance: ControlTypes.Video
-									}
-								],
-								sideBar: [
-									{
-										instance: ControlTypes.Panel,
-										caption: "Analytics",
-										actions: [
-											{
-												id: "editButton",
-												text: "Edit",
-												icon: "fa-pencil-alt"
-											}
-										],
-										content: [
-											// {
-											// 	instance: ControlTypes.Checkbox,
-											// 	id: "checkOne",
-											// 	text: "Skeletal View"
-											// },
-											{
-												instance: ControlTypes.List,
-												id: "liftList",
-												style: ControlTypes.AnalysisListItem,
-												items: [
-													{
-														id: 1,
-														name: "Bar Acceleration",
-														value: "4.72m/s",
-														icon: "fa-plus",
-														onAction: () => alert(11)
-													},
-													// {
-													// 	id: 2,
-													// 	name: "Knee Angle",
-													// 	value: "30 deg",
-													// 	onAction: () => alert(22)
-													// },
-												]
-											}
-										]
-									}
-								]
-							}
-						]
-					},
-					{
-						title: "Comments",
-						content: [
-							{
-								id: "messenger",
-								instance: ControlTypes.Messenger,
-								// style: ControlTypes.DataListItem
-							}
-						]
-					},
+					LiftVideoTab.content,
+					LiftCommentsTab.content,
 					LiftPermissionTab.content,
-					ChartTab.content
-					
+					ChartTab.content					
 				]
 			}
 				

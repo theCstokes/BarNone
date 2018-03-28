@@ -10,7 +10,7 @@ export default class Lift {
 
     public name: string;
 
-    public LiftTypeID: number;
+    public liftTypeID: number;
 
     public liftType: LiftType;
 

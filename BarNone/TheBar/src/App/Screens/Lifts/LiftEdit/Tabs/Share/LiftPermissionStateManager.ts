@@ -16,6 +16,7 @@ export class LiftPermissionState {
 
 export class LiftPermissionStateManager extends ChildStateManager<LiftPermissionState, State> {
     public s_UserList: User[];
+
     public constructor(parentStateManager: BaseStateManager<State>) {
         super(
             parentStateManager,
@@ -25,22 +26,30 @@ export class LiftPermissionStateManager extends ChildStateManager<LiftPermission
             (state: State, data: LiftPermissionState) => state.liftPermissionState = data
         );
 
+        this.trackChildChangesFrom(this.CreateState);
+
         this.s_UserList = [];
     }
+
     public async onInitialize(): Promise<void> {
         this.s_UserList = await DataManager.Users.all();
     }
 
-    // public readonly CreateState = StateBind
-    //     .onAsyncAction<LiftPermissionState, {
-    //         // liftID: number,
-    //         // permissions: Permission[]
-    //     }>(this, async (state, data) => {
-    //         let nextState = state.empty();
-    //         // nextState.current.liftID = data.liftID;
-    //         // nextState.current.permissions = data.permissions;
-    //         return nextState.initialize();
-    //     });
+    public readonly CreateState = StateBind
+        .onAsyncAction<LiftPermissionState, {
+            liftID: number,
+            // permissions: Permission[]
+        }>(this, async (state, data) => {
+            let nextState = state.empty();
+
+            nextState.current.liftID = data.liftID;
+            nextState.current.permissions = await DataManager
+                .Permission.resource
+                .param("liftID", data.liftID.toString())
+                .all();
+
+            return nextState.initialize();
+        });
 
     public readonly AddUserPermission = StateBind
         .onAction<LiftPermissionState, {
@@ -51,7 +60,8 @@ export class LiftPermissionStateManager extends ChildStateManager<LiftPermission
             nextState.current.permissions.push({
                 id: Utils.guid(),
                 liftID: nextState.current.liftID,
-                userID: data.userID
+                userID: data.userID,
+                isNew: true
             });
 
             return nextState;

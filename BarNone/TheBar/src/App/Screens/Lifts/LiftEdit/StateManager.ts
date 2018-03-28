@@ -2,14 +2,15 @@ import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 import StateBind from "UEye/StateManager/StateBind";
 import DataManager from "App/Data/DataManager";
 import Lift from "App/Data/Models/Lift/Lift";
-import Comment from "App/Data/Models/Comment/Comment";
 import LiftType from "App/Data/Models/Lift/LiftType";
 import LiftFolder from "App/Data/Models/LiftFolder/LiftFolder";
 import BodyData from "App/Data/Models/BodyData/BodyData";
 import { ELiftType } from "App/Screens/Lifts/StateManagers/BaseLiftStateManager";
-import { ChartTabState } from "App/Screens/Lifts/ChartTab/ChartTabStateManager";
-import { LiftPermissionState } from "App/Screens/Lifts/Shared/LiftPermissionStateManager";
+import { LiftPermissionState } from "App/Screens/Lifts/LiftEdit/Tabs/Share/LiftPermissionStateManager";
 import Permission from "App/Data/Models/Lift/Permission";
+import { LiftVideoState } from "App/Screens/Lifts/LiftEdit/Tabs/Video/LiftVideoStateManager";
+import { ChartTabState } from "App/Screens/Lifts/LiftEdit/Tabs/Charts/ChartTabStateManager";
+import { LiftCommentsState } from "App/Screens/Lifts/LiftEdit/Tabs/Comments/LiftCommentsStateManager";
 // import ParentStateManager from "UEye/StateManager/ParentStateManager";
 // import { ChartTabState } from "App/Screens/Lifts/ChartTab/ChartTabStateManager";
 
@@ -17,12 +18,14 @@ export class State {
 	public id: number;
 	public name: string;
 	public liftType: LiftType;
-	public comments: Comment[];
+	// public comments: Comment[];
 	public parentID: number;
 	public bodyData: BodyData;
 	public type: ELiftType;
-	public context: ChartTabState;
+	public chartState: ChartTabState = new ChartTabState();
 	public liftPermissionState: LiftPermissionState = new LiftPermissionState();
+	public liftVideoState: LiftVideoState = new LiftVideoState();
+	public liftCommentsState: LiftCommentsState = new LiftCommentsState();
 }
 
 export class StateManager extends BaseStateManager<State> {
@@ -40,6 +43,7 @@ export class StateManager extends BaseStateManager<State> {
 	//#region Public Constructor(s).
 	public constructor() {
 		super(State);
+		this.onReset(this.ResetState);
 	}
 	//#endregion
 
@@ -53,31 +57,26 @@ export class StateManager extends BaseStateManager<State> {
 			// Setup static data.
 			var nextState = state.empty();
 
-
 			nextState.current.type = data.type;
 
-			var lift = null;
+			var lift = {} as Lift;
 			if (data.type === ELiftType.Lift) {
-				lift = await DataManager.Lifts.single(data.id, { includeDetails: true });
+				var lift = await DataManager.Lifts.single(data.id);
 			} else if (data.type === ELiftType.Shared) {
-				lift = await DataManager.SharedLifts.single(data.id, { includeDetails: true });
+				var lift = await DataManager.SharedLifts.single(data.id);
+			} else {
+				return state;
 			}
-			
+
+			nextState.current.liftType = await DataManager.LiftTypes.single(lift.liftTypeID);
+
 			nextState.current.name = lift!.name;
-			nextState.current.liftType = lift!.details!.liftType!;
+			// nextState.current.liftType = lift!.details!.liftType!;
 			nextState.current.parentID = lift!.parentID;
-			nextState.current.bodyData = lift!.details!.bodyData!;
-			
-			nextState.current.liftPermissionState.liftID = lift!.id!;
-			nextState.current.liftPermissionState.permissions = lift!.details!.permissions!;
+			// nextState.current.bodyData = lift!.details!.bodyData!;
 
-			var comments = await DataManager.LiftComments.all({
-				params: {
-					liftID: data.id
-				}
-			});
-
-			nextState.current.comments = comments;
+			// nextState.current.liftPermissionState.liftID = lift!.id!;
+			// nextState.current.liftPermissionState.permissions = lift!.details!.permissions!;
 
 			nextState.current.id = data.id;
 			nextState.current.name = data.name;
@@ -89,19 +88,6 @@ export class StateManager extends BaseStateManager<State> {
 		.onAction<State, string>(this, (state, data) => {
 			var nextState = Utils.clone(state);
 			nextState.current.name = data as string;
-
-			return nextState;
-		});
-
-	public readonly RefreshComments = StateBind
-		.onAsyncCallable<State>(this, async (state) => {
-			var nextState = Utils.clone(state);
-
-			nextState.current.comments = await DataManager.LiftComments.all({
-				params: {
-					liftID: nextState.current.id
-				}
-			});
 
 			return nextState;
 		});
@@ -136,13 +122,15 @@ export class StateManager extends BaseStateManager<State> {
 
 	public async save(): Promise<void> {
 		let current = this.getCurrentState();
-		let permissions: Permission[] = current.liftPermissionState.permissions.map(p => {
-			return {
-				// id: p.id,
-				liftID: current.id,
-				userID: p.userID
-			}
-		}) as Permission[];
+		let permissions: Permission[] = current.liftPermissionState.permissions
+			.filter(p => p.isNew)
+			.map(p => {
+				return {
+					// id: p.id,
+					liftID: current.id,
+					userID: p.userID
+				}
+			}) as Permission[];
 
 		await DataManager.Lifts.update(current.id, {
 			id: current.id,
@@ -152,6 +140,8 @@ export class StateManager extends BaseStateManager<State> {
 				permissions: permissions
 			}
 		});
+
+		// await this.Reset.trigger(null);
 	}
 
 	// public async onSave(): Promise<void> {

@@ -48,7 +48,7 @@ export abstract class EditView extends View {
                             {
                                 id: "saveButton",
                                 instance: ControlTypes.Button,
-                                icon: "fa-floppy-o",
+                                icon: "fa-save",
                                 text: "Save",
                                 enabled: false
                             }

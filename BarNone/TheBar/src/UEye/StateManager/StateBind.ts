@@ -77,7 +77,8 @@ export default class StateBind {
 /**
  * State Callable Bind.
  */
-export class StateCallableBind<TState> {
+export class StateCallableBind<TState> implements IStateBind {
+    public readonly id: string;
     /**
      * Create state callable bind
      * @param _stateManager - state manager
@@ -86,22 +87,24 @@ export class StateCallableBind<TState> {
     public constructor(
         private _stateManager: BaseStateManager<TState>, 
         private _action: StateCallable<TState>) {
+            this.id = Utils.guid();
     }
 
     /**
      * Trigger action.
      */
     public trigger(): void {
-        // var reset = this._config && this._config.resetState;
-        var next_state = this._action(this._stateManager.getState());
-        this._stateManager.updateState(next_state);
+        var originalState = this._stateManager.getState();
+        var nextState = this._action(originalState);
+        this._stateManager.stateTransition(originalState, nextState, this.id);
     }
 }
 
 /**
  * State Callable Bind.
  */
-export class StateAsyncCallableBind<TState> {
+export class StateAsyncCallableBind<TState> implements IStateBind {
+    public readonly id: string;
     /**
      * Create state callable bind
      * @param _stateManager - state manager
@@ -110,23 +113,24 @@ export class StateAsyncCallableBind<TState> {
     public constructor(
         private _stateManager: BaseStateManager<TState>, 
         private _action: StateAsyncCallable<TState>) {
+            this.id = Utils.guid();
     }
 
     /**
      * Trigger action.
      */
     public async trigger(): Promise<void> {
-        // var reset = this._config && this._config.resetState;
-        var next_state = await this._action(this._stateManager.getState());
-        this._stateManager.updateState(next_state);
+        var originalState = this._stateManager.getState();
+        var nextState = await this._action(originalState);
+        this._stateManager.stateTransition(originalState, nextState, this.id);
     }
 }
 
 /**
  * State action bind.
  */
-export class StateActionBind<TState, TData> {
-
+export class StateActionBind<TState, TData> implements IStateBind {
+    public readonly id: string;
     /**
      * Create state action bind.
      * @param _stateManager 
@@ -135,6 +139,7 @@ export class StateActionBind<TState, TData> {
     public constructor(
         private _stateManager: BaseStateManager<TState>, 
         private _action: StateAction<TState, TData>) {
+            this.id = Utils.guid();
     }
 
     /**
@@ -142,16 +147,17 @@ export class StateActionBind<TState, TData> {
      * @param data - data
      */
     public trigger(data: TData): void {
-        // var reset = this._config && this._config.resetState;
-        var next_state = this._action(this._stateManager.getState(), data);
-        this._stateManager.updateState(next_state);
+        var originalState = this._stateManager.getState();
+        var nextState = this._action(originalState, data);
+        this._stateManager.stateTransition(originalState, nextState, this.id);
     }
 }
 
 /**
  * State async bind.
  */
-export class StateAsyncActionBind<TState, TData> {
+export class StateAsyncActionBind<TState, TData> implements IStateBind {
+    public readonly id: string;
 
     /**
      * Crate async action bind
@@ -161,6 +167,7 @@ export class StateAsyncActionBind<TState, TData> {
     public constructor(
         private _stateManager: BaseStateManager<TState>, 
         private _action: StateAsyncAction<TState, TData>) {
+            this.id = Utils.guid();
     }
 
     /**
@@ -168,8 +175,12 @@ export class StateAsyncActionBind<TState, TData> {
      * @param data - data
      */
     public async trigger(data: TData): Promise<void> {
-        // var reset = this._config && this._config.resetState;
-        var next_state = await this._action(this._stateManager.getState(), data);
-        this._stateManager.updateState(next_state);
+        var originalState = this._stateManager.getState();
+        var nextState = await this._action(originalState, data);
+        this._stateManager.stateTransition(originalState, nextState, this.id);
     }
+}
+
+export interface IStateBind {
+    id: string;
 }
