@@ -5,6 +5,8 @@ import { BaseDataManager } from "UEye/Data/BaseDataManager";
 import UEye from "UEye/UEye"
 import StringUtils from "UEye/Core/StringUtils";
 import DataManager from "App/Data/DataManager";
+import LiftProfileHelper from "App/Screens/LiftProfile/LiftProfileEdit/Tabs/Profile/LiftProfileHelper";
+import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
 
 export default class LiftProfileEditScreen extends EditScreen<LiftProfileEditView, StateManager> {
 	public constructor() {
@@ -19,14 +21,20 @@ export default class LiftProfileEditScreen extends EditScreen<LiftProfileEditVie
 		this.view.editPanel.modified = isModified;
 	}
 
-	public async onShow(data: {id: number, name: string}): Promise<void> {
-		this.init(new StateManager());
+	public async onShow(data: { liftProfileID: number }): Promise<void> {
+		console.log("LiftProfileEditScreen Show.");
+		this.init(await StateManagerFactory.create(StateManager));
+		this.bindSections(LiftProfileHelper);
+
 		this.stateManager.bind(this._onRender.bind(this));
-		await this.stateManager.ResetState.trigger({ id: data.id, name: data.name });
-		
+
 		this.view.nameInput.onChange = (data) => {
 			this.stateManager.NameChange.trigger(data);
 		};
+
+		await this.stateManager.ResetState.trigger({ liftTypeID: data.liftProfileID });
+
+		super.onShow(data);
 	}
 
 	public save(): void {

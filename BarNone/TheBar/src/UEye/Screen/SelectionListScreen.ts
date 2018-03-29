@@ -14,12 +14,15 @@ export abstract class SelectionListScreen<
 	TState extends ISelectionState<TListItem>
 	> extends Screen<TView> {
 
-	private subScreen: EditScreen<any, any> | undefined
+	protected subScreen: EditScreen<any, any> | undefined
 
 	protected stateManager: TStateManager;
 
-	public constructor(ViewType: { new(): TView }, ) {
+	private _popOnSelection: boolean;
+
+	public constructor(ViewType: { new(): TView }, popOnSelection: boolean = true ) {
 		super(ViewType);
+		this._popOnSelection = popOnSelection;
 	}
 
 	private _basePipeLine = ScreenPipeLine.create()
@@ -36,7 +39,7 @@ export abstract class SelectionListScreen<
 			});
 
 			if (userData !== undefined) {
-				if (this.subScreen !== undefined) {
+				if (this._popOnSelection && this.subScreen !== undefined) {
 					UEye.popTo(this);
 				}
 

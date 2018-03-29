@@ -2,14 +2,12 @@ import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 import StateBind from "UEye/StateManager/StateBind";
 import DataManager from "App/Data/DataManager";
 import LiftAnalysisProfile from "App/Data/Models/LiftAnalysisProfile/LiftAnalysisProfile"
-
-
+import { LiftProfileState } from "App/Screens/LiftProfile/LiftProfileEdit/Tabs/Profile/LiftProfileStateManager";
 
 export class State {
 	public id: number;
 	public name: string = "";
-	public age: number;
-	public liftProfile: LiftAnalysisProfile;
+	public liftProfileState: LiftProfileState = new LiftProfileState();
 }
 
 export class StateManager extends BaseStateManager<State> {
@@ -20,17 +18,14 @@ export class StateManager extends BaseStateManager<State> {
 
 	public readonly ResetState = StateBind
 		.onAsyncAction<State, {
-			id: number,
-			name: string
+			liftTypeID: number
 		}>(this, async (state, data) => {
 			var nextState = state.empty();
 
-			//var liftProfile = await DataManager.LiftAnalysisProfile(data.id, { includeDetails: true });
-			//console.log(liftProfile);
-			//nextState.current.liftProfile = liftProfile;
+			nextState.current.id = data.liftTypeID;
 
-			nextState.current.id = data.id;
-			nextState.current.name = data.name;
+			let liftType = await DataManager.LiftTypes.single(data.liftTypeID);
+			nextState.current.name = liftType.name;
 
 			return nextState.initialize();
 		});

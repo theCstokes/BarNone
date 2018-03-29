@@ -3,7 +3,7 @@ import CancelDialogView from "UEye/View/CancelDialog/CancelDialogView";
 import { OnClickCallback } from "UEye/Elements/Core/EventCallbackTypes";
 import ScreenPipeLine from "UEye/Screen/ScreenPipeLineStage";
 
-export default class CancelDialogScreen extends DialogScreen<CancelDialogView> {
+export default class CancelDialogScreen extends DialogScreen<CancelDialogView, any, any> {
 	// private _onNo: OnClickCallback;
 	// private _onAccept: OnClickCallback;
 

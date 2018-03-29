@@ -15,19 +15,21 @@ import { LiftTypeItem } from "App/Screens/LiftProfile/Models";
 export default class LiftProfileScreen
     extends SelectionListScreen<LiftProfileView, StateManager, LiftTypeItem, State> {
 
-    // private subScreen: EditScreen<any, any>;
-    // private _stateManager: StateManager;
-    // //public static AnalysisProfile: DataEvent<AnalysisListItem>;
-    // public static TypeChange: DataEvent<LiftAnalysisProfile>;
     public constructor() {
-        super(LiftProfileView);
+        super(LiftProfileView, false);
     }
 
     public onRenderEditScreen(data: LiftTypeItem): EditScreen<any, any> | undefined {
-        return UEye.push(LiftProfileEditScreen, {
-            id: data.id,
-            name: data.name,
-        }) as LiftProfileEditScreen;
+        if (this.subScreen === undefined) {
+            return UEye.push(LiftProfileEditScreen, {
+                liftProfileID: data.id
+            }) as LiftProfileEditScreen;
+        }
+
+        this.subScreen.onShow({
+            liftProfileID: data.id
+        });
+        return this.subScreen;
     }
 
     public listTransform(item: LiftTypeItem): IListItem {
@@ -44,6 +46,8 @@ export default class LiftProfileScreen
     }
 
     public async onShow(): Promise<void> {
+        console.log("LiftProfileScreen Show.");
+
         super.onShow();
         this.init(await StateManagerFactory.create(StateManager));
         this.stateManager.ResetState.trigger();

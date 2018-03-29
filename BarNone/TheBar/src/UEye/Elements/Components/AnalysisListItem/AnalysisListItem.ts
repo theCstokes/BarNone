@@ -4,9 +4,19 @@ import { OnClickCallback, OnChangeCallback } from "UEye/Elements/Core/EventCallb
 import { Translate } from "UEye/Translate";
 
 export default class AnalysisListItem extends BaseListItem {
-    
+
     // Private property field(s).
     private _name: string;
+
+    private _value1: string;
+    private _caption1: string;
+
+    private _value2: string;
+    private _caption2: string;
+
+    private _value3: string;
+    private _caption3: string;
+
     private _value: string;
     private _onActionCallback: OnClickCallback;
     private _icon: string;
@@ -49,17 +59,63 @@ export default class AnalysisListItem extends BaseListItem {
         return this._name;
     }
 
-    public set value(value: string) {
-        this._value = value;
-        this.e_value.textContent = this._value;
+    //#region Value Caption 1
+    public set value1(value: string) {
+        this._value1 = value;
+        this.e_name.textContent = this._name;
     }
-    public get value(): string {
-        return this._value;
+    public get value1(): string {
+        return this._value1;
     }
+
+    public set caption1(value: string) {
+        this._caption1 = value;
+        this.e_name.textContent = this._name;
+    }
+    public get caption1(): string {
+        return this._caption1;
+    }
+    //#endregion
+
+    //#region Value Caption 2
+    public set value2(value: string) {
+        this._value2 = value;
+        this.e_name.textContent = this._name;
+    }
+    public get value2(): string {
+        return this._value2;
+    }
+
+    public set caption2(value: string) {
+        this._caption2 = value;
+        this.e_name.textContent = this._name;
+    }
+    public get caption2(): string {
+        return this._caption2;
+    }
+    //#endregion
+
+    //#region Value Caption 3
+    public set value3(value: string) {
+        this._value3 = value;
+        this.e_name.textContent = this._name;
+    }
+    public get value3(): string {
+        return this._value3;
+    }
+
+    public set caption3(value: string) {
+        this._caption3 = value;
+        this.e_name.textContent = this._name;
+    }
+    public get caption3(): string {
+        return this._caption3;
+    }
+    //#endregion
 
     public set icon(value: string) {
         this.e_action.style.display = (value === undefined ? 'none' : 'block');
-        
+
         if (value !== this._icon) {
             Core.replaceClass(this.e_action, this._icon, value);
             this._icon = value;
@@ -75,7 +131,7 @@ export default class AnalysisListItem extends BaseListItem {
     public get onAction(): OnClickCallback {
         return this._onActionCallback;
     }
-   
+
     public onEnabledChange(): void {
         throw new Error("Method not implemented.");
     }

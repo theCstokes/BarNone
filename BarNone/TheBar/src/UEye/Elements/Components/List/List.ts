@@ -5,10 +5,22 @@ import ComponentType from "UEye/Elements/Inflater/ComponentInflater";
 import { OnSelectCallback, IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import { BaseView } from "UEye/Elements/Core/BaseView";
 
+export interface IList<
+    TListItem extends BaseListItem
+    > {
+    items: TListItem[];
+
+    selected: TListItem | undefined;
+
+    onSelect: OnSelectCallback;
+
+    style: ComponentType;
+}
+
 /**
  *  Represents an unordered list of items. This component is rendered as a bulletless list and can have different styles of list items to suit different purposes.
  */
-export default class UEyeList extends BaseComponent {
+export default class List extends BaseComponent implements IList<any> {
     /**  Represents the List parent element of the unordered list (ul tg).  */
     private e_list: HTMLElement;
 

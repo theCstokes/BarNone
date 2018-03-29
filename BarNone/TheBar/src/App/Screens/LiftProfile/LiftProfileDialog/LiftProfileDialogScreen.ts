@@ -1,16 +1,16 @@
-import DialogScreen from "UEye/Screen/DialogScreen";
+import DialogScreen, { OnAcceptCallback } from "UEye/Screen/DialogScreen";
 import LiftProfileDialogView from "App/Screens/LiftProfile/LiftProfileDialog/LiftProfileDialogView";
 import DataManager from "App/Data/DataManager";
 import UEye from "UEye/UEye";
 import LiftProfileScreen from "App/Screens/LiftProfile/LiftProfileScreen";
-import { LiftProfileDialogStateManager, State } from "App/Screens/LiftProfile/LiftProfileDialog/LiftProfileDialogStateManager";
+import { LiftProfileDialogStateManager, LiftProfileDialogState } from "App/Screens/LiftProfile/LiftProfileDialog/LiftProfileDialogStateManager";
 import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
 import ScreenPipeLine from "UEye/Screen/ScreenPipeLineStage";
 import { AnalysisTypeEnum } from "App/Data/DataOverride/api/v1/AnalysisTypes";
 import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 
-export default class LiftProfileDialogScreen extends DialogScreen<LiftProfileDialogView> {
-	private stateManager: LiftProfileDialogStateManager;
+export default class LiftProfileDialogScreen
+	extends DialogScreen<LiftProfileDialogView, LiftProfileDialogStateManager, LiftProfileDialogState> {
 
 	public constructor() {
 		super(LiftProfileDialogView);
@@ -57,7 +57,7 @@ export default class LiftProfileDialogScreen extends DialogScreen<LiftProfileDia
 
 			// this.view.jointTypeDropDown.items = this.stateManager.s_JointTypeList;
 		})
-		.onRender((current: State, original: State) => {
+		.onRender((current: LiftProfileDialogState, original: LiftProfileDialogState) => {
 			this.view.dialogPanel.modified = !Utils.compare(current, original);
 
 			this.view.accelerationContainer.visible = (current.analysisTypeID === AnalysisTypeEnum.Acceleration);
@@ -69,36 +69,36 @@ export default class LiftProfileDialogScreen extends DialogScreen<LiftProfileDia
 
 			let jointTypeA = this.stateManager.s_JointTypeList.find(t => t.id === current.jointTypeIDA);
 			let originalJointTypeA = this.stateManager.s_JointTypeList.find(t => t.id === original.jointTypeIDA);
-			
+
 			let jointTypeB = this.stateManager.s_JointTypeList.find(t => t.id === current.jointTypeIDB);
 			let originalJointTypeB = this.stateManager.s_JointTypeList.find(t => t.id === original.jointTypeIDB);
-			
+
 			let jointTypeC = this.stateManager.s_JointTypeList.find(t => t.id === current.jointTypeIDC);
 			let originalJointTypeC = this.stateManager.s_JointTypeList.find(t => t.id === original.jointTypeIDC);
-			
+
 			this.view.accelerationJointTypeDropDown.selected = jointTypeA
 			this.view.accelerationJointTypeDropDown.modified = !Utils.compare(jointTypeA, originalJointTypeA);
-			
+
 			this.view.speedJointTypeDropDown.selected = jointTypeA;
 			this.view.speedJointTypeDropDown.modified = !Utils.compare(jointTypeA, originalJointTypeA);
-			
+
 			this.view.positionJointTypeDropDown.selected = jointTypeA;
 			this.view.positionJointTypeDropDown.modified = !Utils.compare(jointTypeA, originalJointTypeA);
-			
+
 			this.view.angleJointTypeDropDownA.selected = jointTypeA;
 			this.view.angleJointTypeDropDownA.modified = !Utils.compare(jointTypeA, originalJointTypeA);
-			
+
 			this.view.angleJointTypeDropDownB.selected = jointTypeB;
 			this.view.angleJointTypeDropDownB.modified = !Utils.compare(jointTypeB, originalJointTypeB);
-			
+
 			this.view.angleJointTypeDropDownC.selected = jointTypeC;
 			this.view.angleJointTypeDropDownC.modified = !Utils.compare(jointTypeC, originalJointTypeC);
 
 		});
 	//#endregion
 
-	public async onShow(): Promise<void> {
-		super.onShow();
+	public async onShow(data: { onAccept: OnAcceptCallback<LiftProfileDialogState>}): Promise<void> {
+		super.onShow(data);
 		this.stateManager = await StateManagerFactory.create(LiftProfileDialogStateManager);
 		this._pipeline.onShowInvokable();
 		this.stateManager.bind(this._pipeline.onRenderInvokable);
