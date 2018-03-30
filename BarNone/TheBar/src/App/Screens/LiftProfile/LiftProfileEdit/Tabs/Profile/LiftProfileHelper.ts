@@ -7,7 +7,7 @@ import LiftEditView from "App/Screens/LiftProfile/LiftProfileEdit/LiftProfileEdi
 import UEye from "UEye/UEye";
 import LiftProfileDialogScreen from "App/Screens/LiftProfile/LiftProfileDialog/LiftProfileDialogScreen";
 import { LiftProfileDialogState } from "App/Screens/LiftProfile/LiftProfileDialog/LiftProfileDialogStateManager";
-import DataListItem from "UEye/Elements/Components/DataListItem/DataListItem";
+import AnalysisListItem from "UEye/Elements/Components/AnalysisListItem/AnalysisListItem";
 import { BaseListItem } from "UEye/Elements/Core/BaseListItem/BaseListItem";
 
 export default class LiftProfileHelper extends ScreenSection<LiftEditView, StateManager> {
@@ -19,14 +19,34 @@ export default class LiftProfileHelper extends ScreenSection<LiftEditView, State
 
     private _onRender(current: LiftProfileState, original: LiftProfileState) {
         console.log(original, current);
-        
-        this.view.profileList.items = current.profiles.map(p => {
+
+        this.view.criteriaListInfo.visible = (current.profiles.length === 0);
+        this.view.criteriaTab.modified = (current.profiles.length > 0);
+        this.view.criteriaList.items = current.profiles.map(p => {
             let analysisType = this._stateManager
                 .s_AnalysisTypeList.find(t => t.id === p.analysisTypeID);
 
-            return BaseListItem.create<DataListItem>({
+            let jointTypeIDA = this._stateManager
+                .s_JointTypeList.find(t => t.id === p.jointTypeIDA);
+
+            let jointTypeIDB = this._stateManager
+                .s_JointTypeList.find(t => t.id === p.jointTypeIDB);
+
+            let jointTypeIDC = this._stateManager
+                .s_JointTypeList.find(t => t.id === p.jointTypeIDC);
+
+            return BaseListItem.create<AnalysisListItem>({
                 id: 1,
-                name: analysisType === undefined ? "" : analysisType.name
+                icon: "fa-fire",
+                name: analysisType === undefined ? "" : analysisType.name,
+                nameCaption: "Analysis Type",
+                value1: jointTypeIDA === undefined ? "" : jointTypeIDA.name,
+                caption1: "Joint Type",
+                value2: jointTypeIDB === undefined ? "" : jointTypeIDB.name,
+                caption2: "Joint Type",
+                value3: jointTypeIDC === undefined ? "" : jointTypeIDC.name,
+                caption3: "Joint Type",
+                modified: true
             });
         });
     }

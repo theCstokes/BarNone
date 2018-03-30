@@ -50,6 +50,11 @@ export default class DialogScreen<
 		.onShow(() => {
 			this.view.cancelButton.onClick = () => UEye.pop();
 			this.view.acceptButton.onClick = this._onAcceptHandler.bind(this);
+		})
+		.onRender((current: TState, original: TState) => {
+			let modified = !Utils.compare(current, original);
+			this.view.dialogPanel.modified = modified;
+			this.view.acceptButton.enabled = modified;
 		});
 
 	public onShow(data?: { onAccept: OnAcceptCallback<TState> }): void {
@@ -58,6 +63,10 @@ export default class DialogScreen<
 		}
 
 		this._basePipeline.onShowInvokable();
+
+		if (this.stateManager !== undefined) {
+			this.stateManager.bind(this._basePipeline.onRenderInvokable);
+		}
 
 		for (var i = 0; i < this.screenObj.parent.children.length; i++) {
 			var item = this.screenObj.parent.children[i] as HTMLElement;

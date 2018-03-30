@@ -11,6 +11,8 @@ export default class RefreshTokenScreen extends DialogScreen<RefreshTokenView, a
 
 	public onShow(): void {
 		super.onShow();
+		this.view.acceptButton.enabled = true;
+		
 		// TODO - remove hard code login.
 		this.view.usernameInput.text = "admin";
 		this.view.passwordInput.text = "admin";

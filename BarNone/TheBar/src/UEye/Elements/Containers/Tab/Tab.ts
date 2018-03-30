@@ -1,5 +1,6 @@
 import { BaseContainer } from "UEye/Elements/Core/BaseContainer/BaseContainer";
 import Core from "UEye/Elements/Core/Core";
+import { OnChangeCallback } from "UEye/Elements/Core/EventCallbackTypes";
 
 export default class Tab extends BaseContainer {
 
@@ -9,6 +10,7 @@ export default class Tab extends BaseContainer {
     // Private Field(s).
     private _title: string;
     private _selected: boolean = false;
+    private _onModifiedCallback: OnChangeCallback;
 
     public constructor(parent: HTMLElement) {
         super(parent, "UEye-Tab");
@@ -45,6 +47,19 @@ export default class Tab extends BaseContainer {
     }
     public get content(): any[] {
         return this.getComponentContainer("content");
+    }
+
+    public onModifiedChange() {
+        if (this._onModifiedCallback !== undefined) {
+            this._onModifiedCallback(this.modified);
+        }
+    }
+
+    public get onModified(): OnChangeCallback {
+        return this._onModifiedCallback;
+    }
+    public set onModified(value: OnChangeCallback) {
+        this._onModifiedCallback = value;
     }
     
 }

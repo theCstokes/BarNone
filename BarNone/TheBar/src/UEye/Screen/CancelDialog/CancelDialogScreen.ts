@@ -13,6 +13,7 @@ export default class CancelDialogScreen extends DialogScreen<CancelDialogView, a
 
 	public onShow() {
 		super.onShow();
+		this.view.acceptButton.enabled = true;
 		// this._pipeline.onShowInvokable();
 	}
 

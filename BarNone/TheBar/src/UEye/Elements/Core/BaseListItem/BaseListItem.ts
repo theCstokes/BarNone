@@ -80,4 +80,12 @@ export abstract class BaseListItem
     }
 
     public abstract canSelect(): boolean;
+
+    public onModifiedChange() {
+        if (this.modified) {
+            Core.addClass(this.element, "Modified");
+        } else {
+            Core.removeClass(this.element, "Modified");
+        }
+    }
 }

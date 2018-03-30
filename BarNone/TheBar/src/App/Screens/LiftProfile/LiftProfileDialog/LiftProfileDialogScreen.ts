@@ -58,7 +58,6 @@ export default class LiftProfileDialogScreen
 			// this.view.jointTypeDropDown.items = this.stateManager.s_JointTypeList;
 		})
 		.onRender((current: LiftProfileDialogState, original: LiftProfileDialogState) => {
-			this.view.dialogPanel.modified = !Utils.compare(current, original);
 
 			this.view.accelerationContainer.visible = (current.analysisTypeID === AnalysisTypeEnum.Acceleration);
 			this.view.speedContainer.visible = (current.analysisTypeID === AnalysisTypeEnum.Speed);
@@ -98,8 +97,8 @@ export default class LiftProfileDialogScreen
 	//#endregion
 
 	public async onShow(data: { onAccept: OnAcceptCallback<LiftProfileDialogState>}): Promise<void> {
-		super.onShow(data);
 		this.stateManager = await StateManagerFactory.create(LiftProfileDialogStateManager);
+		super.onShow(data);		
 		this._pipeline.onShowInvokable();
 		this.stateManager.bind(this._pipeline.onRenderInvokable);
 		this.stateManager.CreateState.trigger();

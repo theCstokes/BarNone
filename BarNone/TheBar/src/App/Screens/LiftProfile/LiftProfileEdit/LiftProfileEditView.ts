@@ -12,6 +12,9 @@ import UEye from "UEye/UEye";
 import { BaseElement } from "UEye/Elements/Core/BaseElement/BaseElement";
 import { ILiftProfileView, LiftProfileTab } from "App/Screens/LiftProfile/LiftProfileEdit/Tabs/Profile/LiftProfileView";
 import DataListItem from "UEye/Elements/Components/DataListItem/DataListItem";
+import AnalysisListItem from "UEye/Elements/Components/AnalysisListItem/AnalysisListItem";
+import Tab from "UEye/Elements/Containers/Tab/Tab";
+import Info from "UEye/Elements/Components/Info/Info";
 
 export default class LiftEditView extends EditView implements ILiftProfileView {
 	protected caption: string = "Lift Edit";
@@ -19,7 +22,9 @@ export default class LiftEditView extends EditView implements ILiftProfileView {
 	public nameInput: Input;
 	public messenger: Messenger;
 	public addButton: IconButton;
-	public profileList: IList<DataListItem>;
+	public criteriaList: IList<AnalysisListItem>;
+	public criteriaTab: Tab;
+	public criteriaListInfo: Info;
 
 	public get content(): any[] {
 		return [
