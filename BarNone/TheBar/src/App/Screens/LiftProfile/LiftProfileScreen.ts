@@ -6,8 +6,6 @@ import { StateManager, State } from "App/Screens/LiftProfile/StateManager";
 import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 import EditScreen from "UEye/Screen/EditScreen";
 import LiftProfileEditScreen from "App/Screens/LiftProfile/LiftProfileEdit/LiftProfileEditScreen"
-import App from "App/App";
-import LiftAnalysisProfile from "App/Data/Models/LiftAnalysisProfile/LiftAnalysisProfile";
 import { SelectionListScreen } from "UEye/Screen/SelectionListScreen";
 import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
 import { LiftTypeItem } from "App/Screens/LiftProfile/Models";
