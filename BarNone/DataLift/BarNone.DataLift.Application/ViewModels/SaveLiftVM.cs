@@ -267,7 +267,7 @@ namespace BarNone.DataLift.UI.ViewModels
                         BodyData = new BodyData
                         {
                             BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData
-                                .Where(f => f.TimeOfFrame.TotalMilliseconds >= lift.LiftStartTime && f.TimeOfFrame.TotalMilliseconds<= lift.LiftEndTime)
+                                .Where(f => f.TimeOfFrame.TotalMilliseconds >= lift.LiftStartTime && f.TimeOfFrame.TotalMilliseconds <= lift.LiftEndTime)
                                 //Clone the frame to normalize start times!
                                 .Select(f => new BodyDataFrame()
                                 {
@@ -284,9 +284,11 @@ namespace BarNone.DataLift.UI.ViewModels
                         UserID = lift.UserID,
                         Video = new VideoRecord
                         {
-                            Data = File.ReadAllBytes(await ffmpeg.SplitVideo(CurrentLiftData.ParentLiftVideoName, lift.LiftStartTime/1000, (lift.LiftEndTime-lift.LiftStartTime)/1000)),
+                            Data = File.ReadAllBytes(await ffmpeg.SplitVideo(CurrentLiftData.ParentLiftVideoName, lift.LiftStartTime / 1000, (lift.LiftEndTime - lift.LiftStartTime) / 1000)),
                             UserID = lift.UserID
-                        }
+                        },
+                        Permissions = (Users.Where(su => (su.IsSeletcted == true)).ToList())
+                            .Select(su => (new LiftPermission() { UserID = su.ID })).ToList()
                     });
 
                     var temp = await DataManager.Flex.Post(new FlexDTO
