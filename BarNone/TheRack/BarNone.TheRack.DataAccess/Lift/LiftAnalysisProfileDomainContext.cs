@@ -21,6 +21,6 @@ namespace BarNone.TheRack.DataAccess
                 .HasOne(r => r.Parent)
                 .WithMany(rc => rc.Lifts));
 
-        public DbSet<AccelerationAnalysisProfile> AccelerationAnalysisProfiles { get; set; }
+        public DbSet<AccelerationAnalysisCriteria> AccelerationAnalysisProfiles { get; set; }
     }
 }

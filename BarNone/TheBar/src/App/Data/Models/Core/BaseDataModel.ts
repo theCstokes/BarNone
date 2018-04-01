@@ -4,4 +4,6 @@ export class BaseDataModel {
 	public isNew?: boolean;
 
 	public isDeleted?: boolean;
+
+	public updateFilter?: string[];
 }

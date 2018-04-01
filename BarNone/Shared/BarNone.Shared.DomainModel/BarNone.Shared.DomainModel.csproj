@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Lift\Analysis\AccelerationAnalysisProfile.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BarNone.Shared.Core\BarNone.Shared.Core.csproj" />
   </ItemGroup>
 

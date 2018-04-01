@@ -15,8 +15,6 @@ export default class Lift {
     public liftType: LiftType;
 
     public details: Partial<LiftDetails>;
-
-    public updateFilter: string[];
 }
 
 class LiftDetails {

@@ -1,8 +1,11 @@
 import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 import StateBind from "UEye/StateManager/StateBind";
 import DataManager from "App/Data/DataManager";
-import LiftAnalysisProfile from "App/Data/Models/LiftAnalysisProfile/LiftAnalysisProfile"
 import { LiftProfileState } from "App/Screens/LiftProfile/LiftProfileEdit/Tabs/Profile/LiftProfileStateManager";
+import AccelerationAnalysisCriteria from "App/Data/Models/Lift/Analysis/AccelerationAnalysisCriteria";
+import SpeedAnalysisCriteria from "App/Data/Models/Lift/Analysis/SpeedAnalysisCriteria";
+import PositionAnalysisCriteria from "App/Data/Models/Lift/Analysis/PositionAnalysisCriteria";
+import AngleAnalysisCriteria from "App/Data/Models/Lift/Analysis/AngleAnalysisCriteria";
 
 export class State {
 	public id: number;
@@ -11,7 +14,7 @@ export class State {
 }
 
 export class StateManager extends BaseStateManager<State> {
-	
+
 	public constructor() {
 		super(State);
 	}
@@ -57,12 +60,66 @@ export class StateManager extends BaseStateManager<State> {
 	}
 
 	public async onSave(): Promise<void> {
-		var currentState = this.getCurrentState();
-		await DataManager.Users.update(currentState.id, {
-			id: currentState.id,
-			name: currentState.name,
-			userName: currentState.name,
-			password: ""
+		let current = this.getCurrentState();
+		let accelerationCriteriaList: AccelerationAnalysisCriteria[]
+			= current.liftProfileState.accelerationCriteriaList
+				.filter(p => p.isNew)
+				.map(p => {
+					return {
+						jointTypeID: p.jointTypeID
+					}
+				}) as AccelerationAnalysisCriteria[];
+
+		let speedCriteriaList: SpeedAnalysisCriteria[]
+			= current.liftProfileState.speedCriteriaList
+				.filter(p => p.isNew)
+				.map(p => {
+					return {
+						jointTypeID: p.jointTypeID
+					}
+				}) as SpeedAnalysisCriteria[];
+
+		let positionCriteriaList: PositionAnalysisCriteria[]
+			= current.liftProfileState.positionCriteriaList
+				.filter(p => p.isNew)
+				.map(p => {
+					return {
+						jointTypeID: p.jointTypeID
+					}
+				}) as PositionAnalysisCriteria[];
+
+		let angleCriteriaList: AngleAnalysisCriteria[]
+			= current.liftProfileState.angleCriteriaList
+				.filter(p => p.isNew)
+				.map(p => {
+					return {
+						jointTypeIDA: p.jointTypeAID,
+						jointTypeIDB: p.jointTypeBID,
+						jointTypeIDC: p.jointTypeBID,
+					}
+				}) as AngleAnalysisCriteria[];
+
+		await DataManager.LiftAnalysisProfile.update(current.id, {
+			id: current.id,
+			updateFilter: [
+				"accelerationAnalysis",
+				"positionAnalysisCriteria",
+				"speedAnalysisCriteria",
+				"angleAnalysisCriteria"
+			],
+			details: {
+				accelerationAnalysis: accelerationCriteriaList,
+				positionAnalysisCriteria: positionCriteriaList,
+				speedAnalysisCriteria: speedCriteriaList,
+				angleAnalysisCriteria: angleCriteriaList
+			}
 		});
+
+		// await DataManager.Users.update(currentState.id, {
+		// 	id: currentState.id,
+		// 	name: currentState.name,
+		// 	userName: currentState.name,
+		// 	password: ""
+		// });
 	}
 }

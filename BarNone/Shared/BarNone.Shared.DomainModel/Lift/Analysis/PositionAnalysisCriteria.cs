@@ -6,8 +6,8 @@ using System.Text;
 
 namespace BarNone.Shared.DomainModel
 {
-    [Table("AccelerationAnalysisProfile", Schema = "public")]
-    public class AccelerationAnalysisCriteria : IDomainModel<AccelerationAnalysisCriteria>, IOwnedDomainModel
+    [Table("PositionAnalysisCriteria", Schema = "public")]
+    public class PositionAnalysisCriteria : IDomainModel<PositionAnalysisCriteria>, IOwnedDomainModel
     {
         public int ID { get; set; }
 

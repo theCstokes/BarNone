@@ -11,8 +11,17 @@ namespace BarNone.Shared.DataTransfer
         [JsonProperty(Order = 0, NullValueHandling = NullValueHandling.Ignore)]
         public LiftTypeDTO LiftType { get; set; }
 
-        [JsonProperty(Order = 0, NullValueHandling = NullValueHandling.Ignore)]
-        public List<AccelerationAnalysisProfileDTO> AccelerationAnalysis { get; set; }
+        [JsonProperty(Order = 1, NullValueHandling = NullValueHandling.Ignore)]
+        public List<AccelerationAnalysisCriteriaDTO> AccelerationAnalysisCriteria { get; set; }
+
+        [JsonProperty(Order = 2, NullValueHandling = NullValueHandling.Ignore)]
+        public List<PositionAnalysisCriteriaDTO> PositionAnalysisCriteria { get; set; }
+
+        [JsonProperty(Order = 3, NullValueHandling = NullValueHandling.Ignore)]
+        public List<SpeedAnalysisCriteriaDTO> SpeedAnalysisCriteria { get; set; }
+
+        [JsonProperty(Order = 4, NullValueHandling = NullValueHandling.Ignore)]
+        public List<AngleAnalysisCriteriaDTO> AngleAnalysisCriteria { get; set; }
     }
 
     public class LiftAnalysisProfileDTO : BaseParentDTO<LiftAnalysisProfileDTO, LiftAnalysisProfileDetailDTO>

@@ -4,7 +4,7 @@ import LiftFolder from "App/Data/Models/LiftFolder/LiftFolder";
 import Lift from "App/Data/Models/Lift/Lift";
 import { Resource, DetailResource } from "UEye/Data/Resource";
 import Joint from "App/Data/Models/Joint/Joint";
-import LiftAnalysisProfile from "App/Data/Models/LiftAnalysisProfile/LiftAnalysisProfile"
+// import LiftAnalysisProfile from "App/Data/Models/LiftAnalysisProfile/LiftAnalysisProfile"
 import LiftType from "App/Data/Models/Lift/LiftType";
 import SettingsElement from "App/Data/Models/Settings/SettingsElement";
 import JointType from "App/Data/Models/Joint/JointType";
@@ -15,6 +15,7 @@ import AnalysisResult from "App/Data/Models/Analysis/AnalysisResult";
 import BodyData from "App/Data/Models/BodyData/BodyData";
 import Permission from "App/Data/Models/Lift/Permission";
 import LiftComment from "App/Data/Models/Comment/LiftComment";
+import LiftAnalysisProfile from "App/Data/Models/Lift/LiftAnalysisProfile";
 
 export default class DataManager extends BaseDataManager {
 

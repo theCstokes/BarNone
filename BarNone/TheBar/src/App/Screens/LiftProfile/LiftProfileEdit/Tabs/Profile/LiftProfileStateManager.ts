@@ -5,23 +5,30 @@ import StateBind from "UEye/StateManager/StateBind";
 import JointType from "App/Data/Models/Joint/JointType";
 import DataManager from "App/Data/DataManager";
 import AnalysisType from "App/Data/Models/Analysis/AnalysisType";
+import AccelerationAnalysisCriteria from "App/Data/Models/Lift/Analysis/AccelerationAnalysisCriteria";
+import SpeedAnalysisCriteria from "App/Data/Models/Lift/Analysis/SpeedAnalysisCriteria";
+import PositionAnalysisCriteria from "App/Data/Models/Lift/Analysis/PositionAnalysisCriteria";
+import AngleAnalysisCriteria from "App/Data/Models/Lift/Analysis/AngleAnalysisCriteria";
 
-export class ProfileAnalysisType {
-    public analysisTypeID: number;
-    public jointTypeIDA?: number
-    public jointTypeIDB?: number
-    public jointTypeIDC?: number
-}
+// export class ProfileAnalysisType {
+//     public analysisTypeID: number;
+//     public jointTypeIDA?: number
+//     public jointTypeIDB?: number
+//     public jointTypeIDC?: number
+// }
 
 export class LiftProfileState {
     public liftProfileID: number;
-    public profiles: ProfileAnalysisType[] = [];
+    public accelerationCriteriaList: AccelerationAnalysisCriteria[] = [];
+    public speedCriteriaList: SpeedAnalysisCriteria[] = [];
+    public positionCriteriaList: PositionAnalysisCriteria[] = [];
+    public angleCriteriaList: AngleAnalysisCriteria[] = [];
 }
 
 export class LiftProfileStateManager extends ChildStateManager<LiftProfileState, State> {
 
     public s_JointTypeList: JointType[];
-	public s_AnalysisTypeList: AnalysisType[];
+    public s_AnalysisTypeList: AnalysisType[];
 
     public constructor(parentStateManager: BaseStateManager<State>) {
         super(
@@ -37,7 +44,7 @@ export class LiftProfileStateManager extends ChildStateManager<LiftProfileState,
 
     public async onInitialize(): Promise<void> {
         this.s_JointTypeList = await DataManager.JointTypes.all();
-		this.s_AnalysisTypeList = await DataManager.AnalysisTypes.all();
+        this.s_AnalysisTypeList = await DataManager.AnalysisTypes.all();
     }
 
     public readonly CreateState = StateBind
@@ -55,14 +62,59 @@ export class LiftProfileStateManager extends ChildStateManager<LiftProfileState,
             return nextState.initialize();
         });
 
-    public readonly AddAnalysisType = StateBind
+    public readonly AddAccelerationCriteria = StateBind
         .onAction<LiftProfileState, {
-            analysisType: ProfileAnalysisType
+            jointTypeID: number
         }>(this, (state, data) => {
-           let nextState = Utils.clone(state);
-           
-           nextState.current.profiles.push(data.analysisType);
+            let nextState = Utils.clone(state);
+            nextState.current.accelerationCriteriaList.push({
+                id: Utils.guid(),
+                jointTypeID: data.jointTypeID,
+                isNew: true
+            });
+            return nextState;
+        });
 
-           return nextState;
+    public readonly AddSpeedCriteria = StateBind
+        .onAction<LiftProfileState, {
+            jointTypeID: number
+        }>(this, (state, data) => {
+            let nextState = Utils.clone(state);
+            nextState.current.speedCriteriaList.push({
+                id: Utils.guid(),
+                jointTypeID: data.jointTypeID,
+                isNew: true
+            });
+            return nextState;
+        });
+
+    public readonly AddPositionCriteria = StateBind
+        .onAction<LiftProfileState, {
+            jointTypeID: number
+        }>(this, (state, data) => {
+            let nextState = Utils.clone(state);
+            nextState.current.positionCriteriaList.push({
+                id: Utils.guid(),
+                jointTypeID: data.jointTypeID,
+                isNew: true
+            });
+            return nextState;
+        });
+
+    public readonly AddAngleCriteria = StateBind
+        .onAction<LiftProfileState, {
+            jointTypeAID: number,
+            jointTypeBID: number,
+            jointTypeCID: number
+        }>(this, (state, data) => {
+            let nextState = Utils.clone(state);
+            nextState.current.angleCriteriaList.push({
+                id: Utils.guid(),
+                jointTypeAID: data.jointTypeAID,
+                jointTypeBID: data.jointTypeBID,
+                jointTypeCID: data.jointTypeCID,
+                isNew: true
+            });
+            return nextState;
         });
 }

@@ -9,6 +9,8 @@ import LiftProfileDialogScreen from "App/Screens/LiftProfile/LiftProfileDialog/L
 import { LiftProfileDialogState } from "App/Screens/LiftProfile/LiftProfileDialog/LiftProfileDialogStateManager";
 import AnalysisListItem from "UEye/Elements/Components/AnalysisListItem/AnalysisListItem";
 import { BaseListItem } from "UEye/Elements/Core/BaseListItem/BaseListItem";
+import AnalysisType from "App/Data/Models/Analysis/AnalysisType";
+import { AnalysisTypeEnum } from "App/Data/Models/Analysis/AnalysisTypeEnum";
 
 export default class LiftProfileHelper extends ScreenSection<LiftEditView, StateManager> {
     private _stateManager: LiftProfileStateManager;
@@ -20,35 +22,81 @@ export default class LiftProfileHelper extends ScreenSection<LiftEditView, State
     private _onRender(current: LiftProfileState, original: LiftProfileState) {
         console.log(original, current);
 
-        this.view.criteriaListInfo.visible = (current.profiles.length === 0);
-        this.view.criteriaTab.modified = (current.profiles.length > 0);
-        this.view.criteriaList.items = current.profiles.map(p => {
-            let analysisType = this._stateManager
-                .s_AnalysisTypeList.find(t => t.id === p.analysisTypeID);
+        let isListModified =
+            Utils.compare(current.accelerationCriteriaList, original.accelerationCriteriaList) ||
+            Utils.compare(current.angleCriteriaList, original.angleCriteriaList) ||
+            Utils.compare(current.speedCriteriaList, original.speedCriteriaList) ||
+            Utils.compare(current.positionCriteriaList, original.positionCriteriaList);
 
-            let jointTypeIDA = this._stateManager
-                .s_JointTypeList.find(t => t.id === p.jointTypeIDA);
+        this.view.criteriaListInfo.visible = !isListModified;
+        this.view.criteriaTab.modified = isListModified;
+        this.view.criteriaList.items =
+            current.accelerationCriteriaList.map(p => {
+                let jointType = this._stateManager
+                    .s_JointTypeList.find(t => t.id === p.jointTypeID);
 
-            let jointTypeIDB = this._stateManager
-                .s_JointTypeList.find(t => t.id === p.jointTypeIDB);
-
-            let jointTypeIDC = this._stateManager
-                .s_JointTypeList.find(t => t.id === p.jointTypeIDC);
-
-            return BaseListItem.create<AnalysisListItem>({
-                id: 1,
-                icon: "fa-fire",
-                name: analysisType === undefined ? "" : analysisType.name,
-                nameCaption: "Analysis Type",
-                value1: jointTypeIDA === undefined ? "" : jointTypeIDA.name,
-                caption1: "Joint Type",
-                value2: jointTypeIDB === undefined ? "" : jointTypeIDB.name,
-                caption2: "Joint Type",
-                value3: jointTypeIDC === undefined ? "" : jointTypeIDC.name,
-                caption3: "Joint Type",
-                modified: true
-            });
-        });
+                return BaseListItem.create<AnalysisListItem>({
+                    id: 1,
+                    icon: "fa-fire",
+                    name: AnalysisTypeEnum.Acceleration.name,
+                    nameCaption: "Analysis Type",
+                    value1: jointType === undefined ? "" : jointType.name,
+                    modified: true
+                });
+            }).concat(
+                current.speedCriteriaList.map(p => {
+                    let jointType = this._stateManager
+                        .s_JointTypeList.find(t => t.id === p.jointTypeID);
+    
+                    return BaseListItem.create<AnalysisListItem>({
+                        id: 1,
+                        icon: "fa-fire",
+                        name: AnalysisTypeEnum.Speed.name,
+                        nameCaption: "Analysis Type",
+                        value1: jointType === undefined ? "" : jointType.name,
+                        modified: true
+                    });
+                })
+            ).concat (
+                current.positionCriteriaList.map(p => {
+                    let jointType = this._stateManager
+                        .s_JointTypeList.find(t => t.id === p.jointTypeID);
+    
+                    return BaseListItem.create<AnalysisListItem>({
+                        id: 1,
+                        icon: "fa-fire",
+                        name: AnalysisTypeEnum.Position.name,
+                        nameCaption: "Analysis Type",
+                        value1: jointType === undefined ? "" : jointType.name,
+                        modified: true
+                    });
+                })
+            ).concat(
+                current.angleCriteriaList.map(p => {
+                    let jointTypeA = this._stateManager
+                        .s_JointTypeList.find(t => t.id === p.jointTypeAID);
+    
+                    let jointTypeB = this._stateManager
+                        .s_JointTypeList.find(t => t.id === p.jointTypeAID);
+    
+                    let jointTypeC = this._stateManager
+                        .s_JointTypeList.find(t => t.id === p.jointTypeAID);
+    
+                    return BaseListItem.create<AnalysisListItem>({
+                        id: 1,
+                        icon: "fa-fire",
+                        name: AnalysisTypeEnum.Angle.name,
+                        nameCaption: "Analysis Type",
+                        value1: jointTypeA === undefined ? "" : jointTypeA.name,
+                        caption1: "Joint Type",
+                        value2: jointTypeB === undefined ? "" : jointTypeB.name,
+                        caption2: "Joint Type",
+                        value3: jointTypeC === undefined ? "" : jointTypeC.name,
+                        caption3: "Joint Type",
+                        modified: true
+                    });
+                })
+            )
     }
 
     public async onShow(data: { liftProfileID: number }): Promise<void> {
@@ -66,14 +114,31 @@ export default class LiftProfileHelper extends ScreenSection<LiftEditView, State
 
     private _onSaveHandler(data: LiftProfileDialogState) {
         console.log(data);
-        this._stateManager.AddAnalysisType.trigger({
-            analysisType: {
-                analysisTypeID: data.analysisTypeID,
-                jointTypeIDA: data.jointTypeIDA,
-                jointTypeIDB: data.jointTypeIDB,
-                jointTypeIDC: data.jointTypeIDC
-            }
-        });
+        if (data.analysisTypeID === AnalysisTypeEnum.Acceleration.id) {
+            if (data.jointTypeIDA === undefined) return;
+            this._stateManager.AddAccelerationCriteria.trigger({
+                jointTypeID: data.jointTypeIDA
+            });
+        } else if (data.analysisTypeID === AnalysisTypeEnum.Angle.id) {
+            if (data.jointTypeIDA === undefined) return;
+            if (data.jointTypeIDB === undefined) return;
+            if (data.jointTypeIDC === undefined) return;
+            this._stateManager.AddAngleCriteria.trigger({
+                jointTypeAID: data.jointTypeIDA,
+                jointTypeBID: data.jointTypeIDB,
+                jointTypeCID: data.jointTypeIDC
+            });
+        } else if (data.analysisTypeID === AnalysisTypeEnum.Position.id) {
+            if (data.jointTypeIDA === undefined) return;
+            this._stateManager.AddPositionCriteria.trigger({
+                jointTypeID: data.jointTypeIDA
+            });
+        } else if (data.analysisTypeID === AnalysisTypeEnum.Speed.id) {
+            if (data.jointTypeIDA === undefined) return;
+            this._stateManager.AddSpeedCriteria.trigger({
+                jointTypeID: data.jointTypeIDA
+            });
+        }
     }
 
     public async onSave(): Promise<void> {

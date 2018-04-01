@@ -7,13 +7,13 @@ using System.Text;
 
 namespace BarNone.Shared.DataTransfer
 {
-    public class AccelerationAnalysisCriteriaDetailDTO : BaseDetailDTO<AccelerationAnalysisCriteriaDetailDTO>
+    public class PositionAnalysisCriteriaDetailDTO : BaseDetailDTO<PositionAnalysisCriteriaDetailDTO>
     {
         [JsonProperty(Order = 0, NullValueHandling = NullValueHandling.Ignore)]
         public JointTypeDTO JointType { get; set; }
     }
 
-    public class AccelerationAnalysisCriteriaDTO : BaseParentDTO<AccelerationAnalysisCriteriaDTO, AccelerationAnalysisCriteriaDetailDTO>
+    public class PositionAnalysisCriteriaDTO : BaseParentDTO<PositionAnalysisCriteriaDTO, PositionAnalysisCriteriaDetailDTO>
     {
         public override int ID { get; set; }
 
