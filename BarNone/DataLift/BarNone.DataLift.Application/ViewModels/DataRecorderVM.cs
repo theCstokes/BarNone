@@ -359,11 +359,11 @@ namespace BarNone.DataLift.UI.ViewModels
             CurrentLiftData.CurrentRecordedBodyData.Clear();
             CurrentRecordingState = RecordingState.WAITING_FOR_FIRST_COLOR_FRAME;
 
-            //_ffmpegController.StartFfmpegRecord(() =>
-            //{
-            //    CurrentRecordingState = RecordingState.WAITING_FOR_FIRST_BODY_FRAME;
-            //    ColorDataToBodyDataLatency.Restart();
-            //});
+            _ffmpegController.StartFfmpegRecord(() =>
+            {
+                CurrentRecordingState = RecordingState.WAITING_FOR_FIRST_BODY_FRAME;
+                ColorDataToBodyDataLatency.Restart();
+            });
         }
 
         /// <summary>
@@ -401,26 +401,26 @@ namespace BarNone.DataLift.UI.ViewModels
 
             // Test Code
 
-            string json = File.ReadAllText(@"Chris_Single_Squat_1.json");
-            LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
-            CurrentLiftData.CurrentRecordedBodyData =
-                new ObservableCollection<BodyDataFrame>(Converters
-                .NewConvertion()
-                .Lift.CreateDataModel(liftDTO)
-                .BodyData
-                .BodyDataFrames);
+            //string json = File.ReadAllText(@"Chris_Single_Squat_1.json");
+            //LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
+            //CurrentLiftData.CurrentRecordedBodyData =
+            //    new ObservableCollection<BodyDataFrame>(Converters
+            //    .NewConvertion()
+            //    .Lift.CreateDataModel(liftDTO)
+            //    .BodyData
+            //    .BodyDataFrames);
 
-            CurrentLiftData.LiftInformation.Add(new LiftItemVM(CurrentLiftData.CurrentUser));
+            //CurrentLiftData.LiftInformation.Add(new LiftItemVM(CurrentLiftData.CurrentUser));
 
-            //_ffmpegController.StopFfmpegRecord();
-            
-            //CurrentLiftData.LiftInformation.Add(new LiftItemVM(CurrentLiftData.CurrentUser)
-            //{
-            //    LiftStartTime = 0,
-            //    LiftEndTime = 0,
-            //    LiftName = String.Format($"Lift_0"),
-            //    LiftType = "Squat"
-            //});
+            _ffmpegController.StopFfmpegRecord();
+
+            CurrentLiftData.LiftInformation.Add(new LiftItemVM(CurrentLiftData.CurrentUser)
+            {
+                LiftStartTime = 0,
+                LiftEndTime = 0,
+                LiftName = String.Format($"Lift_0"),
+                LiftType = "Squat"
+            });
 
             try
             {

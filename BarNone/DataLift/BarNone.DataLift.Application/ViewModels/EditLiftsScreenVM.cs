@@ -177,9 +177,9 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             SelectedLift = CurrentLifts.LiftInformation[0];
 
-            //VideoUri = new Uri(Path.GetFullPath(CurrentLifts.ParentLiftVideoName));
-            //if (HasVideo)
-            //    StopRequested.Invoke(this, EventArgs.Empty);
+            VideoUri = new Uri(Path.GetFullPath(CurrentLifts.ParentLiftVideoName));
+            if (HasVideo)
+                StopRequested.Invoke(this, EventArgs.Empty);
 
             ScrubberUpperThumb = LiftEndTime;
 
