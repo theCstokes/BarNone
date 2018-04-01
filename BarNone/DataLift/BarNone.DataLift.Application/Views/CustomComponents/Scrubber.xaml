@@ -75,6 +75,8 @@
             Minimum="{Binding Path=Minimum, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
             Maximum="{Binding Path=Maximum, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
             Value="{Binding Path=CurrentValue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+            PreviewMouseLeftButtonDown="ScrubberPosition_PreviewMouseLeftButtonDown"
+            PreviewMouseLeftButtonUp="ScrubberPosition_PreviewMouseLeftButtonUp"
             Template="{DynamicResource ScrubberPosition}"/>
         <Slider x:Name="LowerSlider" VerticalAlignment="Center"
             Minimum="{Binding Path=Minimum, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
@@ -92,8 +94,10 @@
             Maximum="{Binding Path=Maximum, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
             Value="{Binding Path=UpperValue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
             Margin="10,0,0,0"
-            Template="{DynamicResource ScrubberTemplate}"
-            MouseMove="UpperSlider_MouseMove">
+            MouseMove="UpperSlider_MouseMove"
+            PreviewMouseLeftButtonDown="UpperSlider_PreviewMouseLeftButtonDown"
+            PreviewMouseLeftButtonUp="UpperSlider_PreviewMouseLeftButtonUp"
+            Template="{DynamicResource ScrubberTemplate}">
             <Slider.ToolTip>
                 <ToolTip x:Name="tt_upper" />
             </Slider.ToolTip>

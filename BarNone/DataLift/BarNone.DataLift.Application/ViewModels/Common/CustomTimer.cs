@@ -8,17 +8,20 @@ namespace BarNone.DataLift.UI.ViewModels.Common
         Stopwatch internalTimer;
         private long offset;
 
+        public long timeOffset;
+        public long startOffset;
+
         public long ElapsedMilliseconds
         {
             get
             {
-                return internalTimer.ElapsedMilliseconds + offset;
+                return internalTimer.ElapsedMilliseconds + startOffset + timeOffset;
             }
 
-            set
-            {
-                offset = value;
-            }
+            //set
+            //{
+            //    offset = value;
+            //}
         }
 
         public CustomTimer()

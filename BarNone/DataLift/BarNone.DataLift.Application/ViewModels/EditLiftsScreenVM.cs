@@ -177,9 +177,9 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             SelectedLift = CurrentLifts.LiftInformation[0];
 
-            VideoUri = new Uri(Path.GetFullPath(CurrentLifts.ParentLiftVideoName));
-            if (HasVideo)
-                StopRequested.Invoke(this, EventArgs.Empty);
+            //VideoUri = new Uri(Path.GetFullPath(CurrentLifts.ParentLiftVideoName));
+            //if (HasVideo)
+            //    StopRequested.Invoke(this, EventArgs.Empty);
 
             ScrubberUpperThumb = LiftEndTime;
 
@@ -473,6 +473,8 @@ namespace BarNone.DataLift.UI.ViewModels
             bool drawBody = false;
             if (currentMs <= ScrubberLowerThumb)
             {
+                GlobalTimer.timeOffset = 0;
+
                 GlobalTimer.Restart();
 
                 //Will only happen on loaded
@@ -545,6 +547,16 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region Scrubber Controls
+
+        public bool IsHeld
+        {
+            get => IsHeld;
+            set
+            {
+                Console.WriteLine("JEHAHHAHHSHHAHAH");
+            }
+        }
+
         public double ScrubberCurrentPosition
         {
             get => currentMs;
@@ -586,7 +598,14 @@ namespace BarNone.DataLift.UI.ViewModels
                 if (SelectedLift != null)
                     SelectedLift.LiftStartTime = value;
 
-                GlobalTimer.ElapsedMilliseconds = (long)Math.Ceiling(value);
+                GlobalTimer.startOffset = (long)Math.Ceiling(value);
+
+                if (currentMs > value)
+                    GlobalTimer.timeOffset = (long)(currentMs - Math.Ceiling(value));
+                else
+                    GlobalTimer.timeOffset = 0;
+
+                GlobalTimer.Restart();
 
                 if (ScrubberUpperThumb < value)
                 {
