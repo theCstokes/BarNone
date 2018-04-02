@@ -21,25 +21,6 @@ namespace BarNone.DataLift.UI.ViewModels
         public CurrentLiftDataVM CurrentLiftData = CurrentLiftDataVMSingleton.GetInstance();
         #endregion
 
-        #region TEMP DATA FOR TESTING
-
-        public ObservableCollection<SharableUser> Users
-        {
-            get
-            {
-                if(SelectedLift?.SharedUsers == null)
-                {
-                    return new ObservableCollection<SharableUser>();
-                }
-                else
-                {
-                    return SelectedLift.SharedUsers;
-                }
-                
-            }
-        }
-        #endregion
-
         #region Lift ListView Properties
 
         private CurrentLiftDataVM _currentLifts = CurrentLiftDataVMSingleton.GetInstance();
@@ -207,6 +188,22 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region UserSharePropeties
+        public ObservableCollection<SharableUser> Users
+        {
+            get
+            {
+                if (SelectedLift?.SharedUsers == null)
+                {
+                    return new ObservableCollection<SharableUser>();
+                }
+                else
+                {
+                    return SelectedLift.SharedUsers;
+                }
+
+            }
+        }
+
         private ObservableCollection<User> _selectedUsers;
         public ObservableCollection<User> SelectedUsers
         {
