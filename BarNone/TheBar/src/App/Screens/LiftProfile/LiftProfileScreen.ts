@@ -20,12 +20,12 @@ export default class LiftProfileScreen
     public onRenderEditScreen(data: LiftTypeItem): EditScreen<any, any> | undefined {
         if (this.subScreen === undefined) {
             return UEye.push(LiftProfileEditScreen, {
-                liftProfileID: data.id
+                liftTypeID: data.id
             }) as LiftProfileEditScreen;
         }
 
         this.subScreen.onShow({
-            liftProfileID: data.id
+            liftTypeID: data.id
         });
         return this.subScreen;
     }

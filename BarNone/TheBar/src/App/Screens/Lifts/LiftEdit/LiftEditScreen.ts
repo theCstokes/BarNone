@@ -26,7 +26,7 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 	}
 
 	public isModified(current: State, original: State) {
-		return !Utils.compare(original, current, ["comments"]);
+		return !Utils.equivalent(original, current, ["comments"]);
 	}
 
 	private _pipeLine = ScreenPipeLine.create()

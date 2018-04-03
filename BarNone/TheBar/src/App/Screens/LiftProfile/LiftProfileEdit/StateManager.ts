@@ -6,10 +6,12 @@ import AccelerationAnalysisCriteria from "App/Data/Models/Lift/Analysis/Accelera
 import SpeedAnalysisCriteria from "App/Data/Models/Lift/Analysis/SpeedAnalysisCriteria";
 import PositionAnalysisCriteria from "App/Data/Models/Lift/Analysis/PositionAnalysisCriteria";
 import AngleAnalysisCriteria from "App/Data/Models/Lift/Analysis/AngleAnalysisCriteria";
+import LiftType from "App/Data/Models/Lift/LiftType";
 
 export class State {
 	public id: number;
 	public name: string = "";
+	public liftType: LiftType;
 	public liftProfileState: LiftProfileState = new LiftProfileState();
 }
 
@@ -29,6 +31,7 @@ export class StateManager extends BaseStateManager<State> {
 
 			let liftType = await DataManager.LiftTypes.single(data.liftTypeID);
 			nextState.current.name = liftType.name;
+			nextState.current.liftType = liftType;
 
 			return nextState.initialize();
 		});
@@ -59,7 +62,8 @@ export class StateManager extends BaseStateManager<State> {
 		// this.ResetState.trigger();
 	}
 
-	public async onSave(): Promise<void> {
+	public async save(): Promise<void> {
+		console.log("save");
 		let current = this.getCurrentState();
 		let accelerationCriteriaList: AccelerationAnalysisCriteria[]
 			= current.liftProfileState.accelerationCriteriaList

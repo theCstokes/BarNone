@@ -2,9 +2,14 @@
   "name": "barnone",
   "version": "1.0.0",
   "description": "Lift helper",
-  "main": "boot.js",
+  "main": "index.html",
+  "window": {
+    "toolbar": false,
+    "width": 660,
+    "height": 500
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nw ."
   },
   "author": "cstokes",
   "license": "ISC",

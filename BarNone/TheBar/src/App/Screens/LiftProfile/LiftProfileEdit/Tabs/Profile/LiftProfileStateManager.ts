@@ -54,10 +54,35 @@ export class LiftProfileStateManager extends ChildStateManager<LiftProfileState,
             let nextState = state.empty();
 
             nextState.current.liftProfileID = data.liftProfileID;
-            // nextState.current.permissions = await DataManager
-            //     .Permission.resource
-            //     .param("liftID", data.liftID.toString())
-            //     .all();
+
+            let liftType = await DataManager.LiftAnalysisProfile.single(
+                data.liftProfileID, {
+                    includeDetails: true
+                });
+
+            if (liftType.details !== undefined
+                && liftType.details.accelerationAnalysis !== undefined) {
+                nextState.current.accelerationCriteriaList =
+                    liftType.details.accelerationAnalysis;
+            }
+
+            if (liftType.details !== undefined
+                && liftType.details.angleAnalysisCriteria !== undefined) {
+                nextState.current.angleCriteriaList =
+                    liftType.details.angleAnalysisCriteria;
+            }
+
+            if (liftType.details !== undefined
+                && liftType.details.positionAnalysisCriteria !== undefined) {
+                nextState.current.positionCriteriaList =
+                    liftType.details.positionAnalysisCriteria;
+            }
+
+            if (liftType.details !== undefined
+                && liftType.details.speedAnalysisCriteria !== undefined) {
+                nextState.current.speedCriteriaList =
+                    liftType.details.speedAnalysisCriteria;
+            }
 
             return nextState.initialize();
         });

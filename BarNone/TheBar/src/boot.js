@@ -1,4 +1,4 @@
-require.config({
+requirejs.config({
 	baseUrl: "build/release",
 	paths: {
 		data: "../../data",

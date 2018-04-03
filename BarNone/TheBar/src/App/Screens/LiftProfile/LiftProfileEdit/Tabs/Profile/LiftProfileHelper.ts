@@ -23,17 +23,23 @@ export default class LiftProfileHelper extends ScreenSection<LiftEditView, State
         console.log(original, current);
 
         let isListModified =
-            Utils.compare(current.accelerationCriteriaList, original.accelerationCriteriaList) ||
-            Utils.compare(current.angleCriteriaList, original.angleCriteriaList) ||
-            Utils.compare(current.speedCriteriaList, original.speedCriteriaList) ||
-            Utils.compare(current.positionCriteriaList, original.positionCriteriaList);
+            !Utils.equivalent(current.accelerationCriteriaList, original.accelerationCriteriaList) ||
+            !Utils.equivalent(current.angleCriteriaList, original.angleCriteriaList) ||
+            !Utils.equivalent(current.speedCriteriaList, original.speedCriteriaList) ||
+            !Utils.equivalent(current.positionCriteriaList, original.positionCriteriaList);
 
-        this.view.criteriaListInfo.visible = !isListModified;
+        this.view.criteriaListInfo.visible = (
+            current.accelerationCriteriaList.length === 0 &&
+            current.angleCriteriaList.length === 0 &&
+            current.speedCriteriaList.length === 0 &&
+            current.positionCriteriaList.length === 0
+        );
         this.view.criteriaTab.modified = isListModified;
         this.view.criteriaList.items =
             current.accelerationCriteriaList.map(p => {
                 let jointType = this._stateManager
                     .s_JointTypeList.find(t => t.id === p.jointTypeID);
+                let original_p = original.accelerationCriteriaList.find(x => x.id === p.id);
 
                 return BaseListItem.create<AnalysisListItem>({
                     id: 1,
@@ -41,12 +47,15 @@ export default class LiftProfileHelper extends ScreenSection<LiftEditView, State
                     name: AnalysisTypeEnum.Acceleration.name,
                     nameCaption: "Analysis Type",
                     value1: jointType === undefined ? "" : jointType.name,
-                    modified: true
+                    caption1: "Lift Type",
+                    modified: !Utils.equivalent(p, original_p)
                 });
             }).concat(
                 current.speedCriteriaList.map(p => {
                     let jointType = this._stateManager
                         .s_JointTypeList.find(t => t.id === p.jointTypeID);
+
+                    let original_p = original.speedCriteriaList.find(x => x.id === p.id);
     
                     return BaseListItem.create<AnalysisListItem>({
                         id: 1,
@@ -54,13 +63,16 @@ export default class LiftProfileHelper extends ScreenSection<LiftEditView, State
                         name: AnalysisTypeEnum.Speed.name,
                         nameCaption: "Analysis Type",
                         value1: jointType === undefined ? "" : jointType.name,
-                        modified: true
+                        caption1: "Lift Type",
+                        modified: !Utils.equivalent(p, original_p)
                     });
                 })
             ).concat (
                 current.positionCriteriaList.map(p => {
                     let jointType = this._stateManager
                         .s_JointTypeList.find(t => t.id === p.jointTypeID);
+
+                    let original_p = original.positionCriteriaList.find(x => x.id === p.id);
     
                     return BaseListItem.create<AnalysisListItem>({
                         id: 1,
@@ -68,7 +80,8 @@ export default class LiftProfileHelper extends ScreenSection<LiftEditView, State
                         name: AnalysisTypeEnum.Position.name,
                         nameCaption: "Analysis Type",
                         value1: jointType === undefined ? "" : jointType.name,
-                        modified: true
+                        caption1: "Lift Type",
+                        modified: !Utils.equivalent(p, original_p)
                     });
                 })
             ).concat(
@@ -81,6 +94,8 @@ export default class LiftProfileHelper extends ScreenSection<LiftEditView, State
     
                     let jointTypeC = this._stateManager
                         .s_JointTypeList.find(t => t.id === p.jointTypeAID);
+
+                    let original_p = original.angleCriteriaList.find(x => x.id === p.id);
     
                     return BaseListItem.create<AnalysisListItem>({
                         id: 1,
@@ -93,7 +108,7 @@ export default class LiftProfileHelper extends ScreenSection<LiftEditView, State
                         caption2: "Joint Type",
                         value3: jointTypeC === undefined ? "" : jointTypeC.name,
                         caption3: "Joint Type",
-                        modified: true
+                        modified: !Utils.equivalent(p, original_p)
                     });
                 })
             )

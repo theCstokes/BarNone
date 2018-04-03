@@ -52,7 +52,7 @@ export default class DialogScreen<
 			this.view.acceptButton.onClick = this._onAcceptHandler.bind(this);
 		})
 		.onRender((current: TState, original: TState) => {
-			let modified = !Utils.compare(current, original);
+			let modified = !Utils.equivalent(current, original);
 			this.view.dialogPanel.modified = modified;
 			this.view.acceptButton.enabled = modified;
 		});

@@ -76,22 +76,22 @@ export default class LiftProfileDialogScreen
 			let originalJointTypeC = this.stateManager.s_JointTypeList.find(t => t.id === original.jointTypeIDC);
 
 			this.view.accelerationJointTypeDropDown.selected = jointTypeA
-			this.view.accelerationJointTypeDropDown.modified = !Utils.compare(jointTypeA, originalJointTypeA);
+			this.view.accelerationJointTypeDropDown.modified = !Utils.equivalent(jointTypeA, originalJointTypeA);
 
 			this.view.speedJointTypeDropDown.selected = jointTypeA;
-			this.view.speedJointTypeDropDown.modified = !Utils.compare(jointTypeA, originalJointTypeA);
+			this.view.speedJointTypeDropDown.modified = !Utils.equivalent(jointTypeA, originalJointTypeA);
 
 			this.view.positionJointTypeDropDown.selected = jointTypeA;
-			this.view.positionJointTypeDropDown.modified = !Utils.compare(jointTypeA, originalJointTypeA);
+			this.view.positionJointTypeDropDown.modified = !Utils.equivalent(jointTypeA, originalJointTypeA);
 
 			this.view.angleJointTypeDropDownA.selected = jointTypeA;
-			this.view.angleJointTypeDropDownA.modified = !Utils.compare(jointTypeA, originalJointTypeA);
+			this.view.angleJointTypeDropDownA.modified = !Utils.equivalent(jointTypeA, originalJointTypeA);
 
 			this.view.angleJointTypeDropDownB.selected = jointTypeB;
-			this.view.angleJointTypeDropDownB.modified = !Utils.compare(jointTypeB, originalJointTypeB);
+			this.view.angleJointTypeDropDownB.modified = !Utils.equivalent(jointTypeB, originalJointTypeB);
 
 			this.view.angleJointTypeDropDownC.selected = jointTypeC;
-			this.view.angleJointTypeDropDownC.modified = !Utils.compare(jointTypeC, originalJointTypeC);
+			this.view.angleJointTypeDropDownC.modified = !Utils.equivalent(jointTypeC, originalJointTypeC);
 
 		});
 	//#endregion

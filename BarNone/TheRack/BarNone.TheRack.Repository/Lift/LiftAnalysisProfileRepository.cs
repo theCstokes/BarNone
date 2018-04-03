@@ -23,7 +23,7 @@ namespace BarNone.TheRack.Repository
         }
 
         protected override ConverterResolverDelegate<LiftAnalysisProfile, LiftAnalysisProfileDTO> DataConverter =>
-            Converters.NewConvertion().LiftAnalysisProfile.CreateDataModel;
+            Converters.NewConvertion(context).LiftAnalysisProfile.CreateDataModel;
 
         protected override SetResolverDelegate<LiftAnalysisProfile> SetResolver => (context) => context.LiftAnalysisProfiles;
 

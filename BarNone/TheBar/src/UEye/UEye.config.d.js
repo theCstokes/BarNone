@@ -22,7 +22,7 @@ Utils.guid = function () {
 		"-" + s4() +
 		"-" + s4() + s4() + s4();
 }
-Utils.compare = function (obj1, obj2, ignore) {
+Utils.equivalent = function (obj1, obj2, ignore) {
 	let keys1 = [];
 	let keys2 = [];
 	if (ignore === undefined) ignore = [];
