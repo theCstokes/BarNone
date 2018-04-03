@@ -66,12 +66,12 @@ namespace BarNone.TheRack.Repository
                     .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointType)
                     .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointTrackingStateType);
 
-            foreach(var l in results)
-            {
-                if (l.BodyData == null) continue;
-                if (l.BodyData.BodyDataFrames == null) continue;
-                l.BodyData.BodyDataFrames = l?.BodyData?.BodyDataFrames?.OrderBy(f => f.TimeOfFrame)?.ToList();
-            }
+            //foreach(var l in results)
+            //{
+            //    if (l.BodyData == null) continue;
+            //    if (l.BodyData.BodyDataFrames == null) continue;
+            //    l.BodyData.BodyDataFrames = l?.BodyData?.BodyDataFrames?.OrderBy(f => f.TimeOfFrame)?.ToList();
+            //}
 
             return results;
         };

@@ -44,7 +44,8 @@ export default class LiftVideoHelper extends ScreenSection<LiftEditView, StateMa
         this._stateManager.bind(this._onRender.bind(this));
 
         this._stateManager.CreateState.trigger({
-            liftID: data.liftID
+            liftID: data.liftID,
+            bodyDataID: this.parentStateManager.getCurrentState().bodyDataID
         });
     }
 

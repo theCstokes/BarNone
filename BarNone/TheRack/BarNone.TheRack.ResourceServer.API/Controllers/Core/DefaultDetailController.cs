@@ -115,7 +115,8 @@ namespace BarNone.TheRack.ResourceServer.API.Controllers.Core
             {
                 using (var repo = _builder(context))
                 {
-                    return EntityResponse.DetailResponse(repo.GetWithDetails(id));
+                    var result = repo.GetWithDetails(id);
+                    return EntityResponse.DetailResponse(result);
                 }
             }
         }

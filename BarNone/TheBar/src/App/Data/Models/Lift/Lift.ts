@@ -13,6 +13,8 @@ export default class Lift extends BaseDataModel {
 
     public liftTypeID: number;
 
+    public bodyDataID: number;
+
     public liftType: LiftType;
 
     public details: Partial<LiftDetails>;

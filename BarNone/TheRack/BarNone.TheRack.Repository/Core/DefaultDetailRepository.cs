@@ -103,9 +103,15 @@ namespace BarNone.TheRack.Repository.Core
         {
             var detailEntities = DetailEntityResolver(Entites);
 
-            return detailEntities
+            var items = detailEntities.ToList();
+
+            //var r = items.First(d => d.ID == id);
+
+            var result = items
                 .Where(b => b.ID == id)
                 .FirstOrDefault();
+
+            return result;
         }
 
         /// <summary>

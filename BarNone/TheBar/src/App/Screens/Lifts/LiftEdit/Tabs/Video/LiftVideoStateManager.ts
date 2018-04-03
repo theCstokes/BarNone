@@ -12,6 +12,7 @@ import BodyData from "App/Data/Models/BodyData/BodyData";
 
 export class LiftVideoState {
     public liftID: number;
+    public bodyDataID: number;
     public bodyData: BodyData;
 }
 
@@ -35,13 +36,15 @@ export class LiftVideoStateManager extends ChildStateManager<LiftVideoState, Sta
 
     public readonly CreateState = StateBind
         .onAsyncAction<LiftVideoState, {
-            liftID: number
+            liftID: number,
+            bodyDataID: number
         }>(this, async (state, data) => {
             let nextState = state.empty();
 
             nextState.current.liftID = data.liftID;
+            nextState.current.bodyDataID = data.bodyDataID;
             nextState.current.bodyData = await DataManager
-                .BodyData.single(data.liftID, { includeDetails: true });
+                .BodyData.single(data.bodyDataID, { includeDetails: true });
 
             return nextState.initialize();
         });

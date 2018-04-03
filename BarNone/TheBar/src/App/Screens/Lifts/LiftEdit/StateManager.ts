@@ -20,6 +20,7 @@ export class State {
 	public liftType: LiftType;
 	// public comments: Comment[];
 	public parentID: number;
+	public bodyDataID: number;
 	public bodyData: BodyData;
 	public type: ELiftType;
 	public chartState: ChartTabState = new ChartTabState();
@@ -73,6 +74,7 @@ export class StateManager extends BaseStateManager<State> {
 			nextState.current.name = lift!.name;
 			// nextState.current.liftType = lift!.details!.liftType!;
 			nextState.current.parentID = lift!.parentID;
+			nextState.current.bodyDataID = lift!.bodyDataID;
 			// nextState.current.bodyData = lift!.details!.bodyData!;
 
 			// nextState.current.liftPermissionState.liftID = lift!.id!;
