@@ -79,9 +79,9 @@ export default class Panel extends BaseContainer {
     public set dockBottom(value: any[]) {
         console.log("dock is undefined: " + (value === undefined));
         if (value !== undefined) {
-            Core.addClass(this.e_content, "Has-Bottom-Dock");
+            Core.addClass(this.element, "Has-Bottom-Dock");
         } else {
-            Core.removeClass(this.e_content, "Has-Bottom-Dock");
+            Core.removeClass(this.element, "Has-Bottom-Dock");
         }
 
         this.setComponentContainer("dockBottom", value);

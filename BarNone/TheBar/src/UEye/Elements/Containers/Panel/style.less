@@ -109,16 +109,20 @@
     padding: @DefaultContainerPadding;
 }
 
-.UEye-Panel > .Content.Has-Bottom-Dock {
-    bottom: 40px;
-}
-
 .UEye-Panel > .Bottom-Dock {
-    display: block;
+    display: none;
     position: absolute;
     left: 0;
     right: 0;
     height: 40px;
     bottom: 0;
     overflow: hidden;
+}
+
+.UEye-Panel.Has-Bottom-Dock > .Bottom-Dock {
+    display: block;
+}
+
+.UEye-Panel.Has-Bottom-Dock > .Content {
+    bottom: 40px;
 }

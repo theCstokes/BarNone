@@ -52,8 +52,8 @@ export default class Video extends BaseComponent {
     private _thumb: HTMLElement;
     /**Represents the source of content as string path*/
     private _timeStamp: HTMLElement;
-     //#endregion
-     
+    //#endregion
+
     //#region Private Fields
     private _currentIndex: number;
     private _src: string;
@@ -65,7 +65,7 @@ export default class Video extends BaseComponent {
     private _timeDuration: string;
     private _secondsDuration: number;
     private _stopFrame: boolean;
-   //#endregion
+    //#endregion
 
     /** Constructor intializes and defines the Video component as an HTMLElement tag named UEye-Video as well as the context needed for drawing skeletal data 
     * @param parent - Represents properties of the current element as an HTMLElement.
@@ -101,14 +101,14 @@ export default class Video extends BaseComponent {
 
         this.videoSetup();
 
-        this._slider.onclick = (e) => {this.seekTime(e)};
+        this._slider.onclick = (e) => { this.seekTime(e) };
 
         this._video.addEventListener('play', () => {
             this.draw(this._canvasVideo.width, this._canvasVideo.height);
-           // this.drawBodyDataOnly(this._canvasVideo.width, this._canvasVideo.height, this._currentIndex);
+            // this.drawBodyDataOnly(this._canvasVideo.width, this._canvasVideo.height, this._currentIndex);
         }, false);
 
-        this._video.addEventListener('timeupdate', () => {this.updateTime()}, false);
+        this._video.addEventListener('timeupdate', () => { this.updateTime() }, false);
 
         this._video.addEventListener("loadedmetadata", () => {
             this._secondsDuration = 0;
@@ -141,26 +141,29 @@ export default class Video extends BaseComponent {
         return this._canvasVideo.width;
     }
 
-    private seekTime(e:MouseEvent){
-        this._bar.style.width = this._thumb.style.marginLeft = e.offsetX + "px";
-            var percent = (e.offsetX / this._slider.offsetWidth);
-                var currentTime = percent * this._video.duration;
-                this._video.currentTime = (this._video.duration * percent);
-            
+    private seekTime(e: MouseEvent) {
+        var percent = (e.offsetX / this._slider.offsetWidth);
+        var currentTime = percent * this._video.duration;
+
+        this._bar.style.width = (percent * 100) + "%";
+
+        this._video.currentTime = (this._video.duration * percent);
+
     }
-    private updateTime(){
-            var percent = (this._video.currentTime / this._video.duration);
-            this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
-            this._timeCurrent=moment.unix(this._video.currentTime).format("mm:ss");;
-            // if(moment.isDate(this._timeDuration)==false){
-            //     this._timeDuration=moment.unix(0.0).format("mm:ss");
-            // }
-            this._timeCheck= moment.unix(this._video.currentTime).format("00:mm:ss.SSSSSSS");
-            this._timeDuration=moment.unix(this._video.duration).format("mm:ss");
-            this._timeStamp.innerHTML= this._timeCurrent+"/"+this._timeDuration;
-            
+    private updateTime() {
+        var percent = (this._video.currentTime / this._video.duration);
+        this._bar.style.width = (percent * 100) + "%";
+        // = (this._slider.offsetWidth * percent) + "px";
+        this._timeCurrent = moment.unix(this._video.currentTime).format("mm:ss");;
+        // if(moment.isDate(this._timeDuration)==false){
+        //     this._timeDuration=moment.unix(0.0).format("mm:ss");
+        // }
+        this._timeCheck = moment.unix(this._video.currentTime).format("00:mm:ss.SSSSSSS");
+        this._timeDuration = moment.unix(this._video.duration).format("mm:ss");
+        this._timeStamp.innerHTML = this._timeCurrent + "/" + this._timeDuration;
+
     }
-    private videoSetup(){
+    private videoSetup() {
         //this._timeStamp.innerHTML = "0:00/0:00";
         this._secondsDuration = 0;
         this._currentIndex = 0;
@@ -168,10 +171,10 @@ export default class Video extends BaseComponent {
         let c1 = this._canvasVideo.getContext('2d');
         let c2 = this._canvasFront.getContext('2d');
         let c3 = this._canvasSide.getContext('2d');
-        if (c1 !== null && c2!== null && c3!==null) {
+        if (c1 !== null && c2 !== null && c3 !== null) {
             this._contextVideo = c1;
             this._contextFront = c2;
-            this._contextSide= c3;
+            this._contextSide = c3;
         }
     }
     private drawBodyDataOnly(w: number, h: number, frameIndex: number) {
@@ -196,7 +199,7 @@ export default class Video extends BaseComponent {
             this._currentIndex = 0;
             //this.replacePlayIcon(false);
         }
-      
+
     }
 
     /** Method to draw joint and connective bone data on canvas alongside the embedded video
@@ -207,18 +210,19 @@ export default class Video extends BaseComponent {
         if (this._video.paused || this._video.ended) {
             return;
         }
-        if ( this._frameDataList != undefined) {
+        if (this._frameDataList != undefined) {
             this._totalNumber = this._frameDataList.length - 1;
-            var x=moment(this._frameDataList[this._currentIndex][0].timeStamp, "hh:mm:ss:SSSSSSS");
-            var y=moment(this._timeCheck, "hh:mm:ss:SSSSSSS");
+            var x = moment(this._frameDataList[this._currentIndex][0].timeStamp, "hh:mm:ss:SSSSSSS");
+            var y = moment(this._timeCheck, "hh:mm:ss:SSSSSSS");
             // if(moment(x).isSame(y))
             this.drawBodyDataOnly(w, h, this._currentIndex);
-                var percent = (this._video.currentTime / this._video.duration);
+            var percent = (this._video.currentTime / this._video.duration);
             this._contextVideo.drawImage(this._video, 0, 0, w, h);
-            this._bar.style.width = this._thumb.style.marginLeft = (this._slider.offsetWidth * percent) + "px";
-        setTimeout(this.draw.bind(this), 33, w, h);
-        }   
-        
+            this._bar.style.width = (percent * 100) + "%";
+            // = (this._slider.offsetWidth * percent) + "px";
+            setTimeout(this.draw.bind(this), 33, w, h);
+        }
+
     }
     /** Accessor to get source path of video.
     * @returns Returns string path
@@ -227,10 +231,10 @@ export default class Video extends BaseComponent {
         return this._src;
     }
 
-    public get canvasHeight(): number{
+    public get canvasHeight(): number {
         return this._canvasFront.offsetHeight;
     }
-    public get canvasWidth(): number{
+    public get canvasWidth(): number {
         return this._canvasFront.offsetWidth;
     }
     /** Method for setting property _src. Previous/Current playback is paused before new playback can be loaded andstreamed.
@@ -258,8 +262,8 @@ export default class Video extends BaseComponent {
             Core.addClass(this._source, "Visible");
         }
     }
- 
-  
+
+
     /** Method that toggles enable and disable state of a Video element.
      * @returns Nothing (return part of property definition).
      * */
@@ -279,8 +283,8 @@ export default class Video extends BaseComponent {
      * @returns Image data that can played back.
      * */
     private _createFrame(frame: FrameData, w: number, h: number, type: string): ImageData {
-        
-        if(type=="front"){
+
+        if (type == "front") {
             context = this._contextFront;
             context.lineWidth = 2;
 
@@ -291,12 +295,12 @@ export default class Video extends BaseComponent {
                 context.strokeStyle = "purple";
                 context.stroke();
                 context.closePath();
-      
+
             });
 
             frame.forEach(line => {
                 context.beginPath();
-                context.rect(line.x1-1, line.y1-1, 1, 1);
+                context.rect(line.x1 - 1, line.y1 - 1, 1, 1);
                 context.strokeStyle = "blue";
                 context.stroke();
                 context.fillStyle = 'blue';
@@ -304,7 +308,7 @@ export default class Video extends BaseComponent {
                 context.closePath();
 
                 context.beginPath();
-                context.rect(line.x2-1, line.y2-1, 1, 1);
+                context.rect(line.x2 - 1, line.y2 - 1, 1, 1);
                 context.strokeStyle = "blue";
                 context.stroke();
                 context.fillStyle = 'blue';
@@ -312,41 +316,41 @@ export default class Video extends BaseComponent {
                 context.closePath();
             });
             return context.getImageData(0, 0, w, h);
-        }else{
+        } else {
             var context = this._contextSide;
             context.lineWidth = 2;
-        // context.scale(0.1, 0.1);
-        frame.forEach(line => {
-            context.beginPath();
-            context.moveTo(line.z1, line.y1);
-            context.lineTo(line.z2, line.y2);
-            context.strokeStyle = "purple";
-            context.stroke();
-            context.closePath();
-           
-        });
+            // context.scale(0.1, 0.1);
+            frame.forEach(line => {
+                context.beginPath();
+                context.moveTo(line.z1, line.y1);
+                context.lineTo(line.z2, line.y2);
+                context.strokeStyle = "purple";
+                context.stroke();
+                context.closePath();
 
-        frame.forEach(line => {
+            });
 
-            context.beginPath();
-            context.rect(line.z1-1, line.y1-1, 1, 1);
-            context.strokeStyle = "blue";
-            context.stroke();
-            context.fillStyle = 'blue';
-            context.fill();
-            context.closePath();
+            frame.forEach(line => {
 
-            context.beginPath();
-            context.rect(line.z2-1, line.y2-1, 1, 1);
-            context.strokeStyle = "blue";
-            context.stroke();
-            context.fillStyle = 'blue';
-            context.fill();
-            context.closePath();
-        });
-        return context.getImageData(0, 0, w, h);
-    }
-  
+                context.beginPath();
+                context.rect(line.z1 - 1, line.y1 - 1, 1, 1);
+                context.strokeStyle = "blue";
+                context.stroke();
+                context.fillStyle = 'blue';
+                context.fill();
+                context.closePath();
+
+                context.beginPath();
+                context.rect(line.z2 - 1, line.y2 - 1, 1, 1);
+                context.strokeStyle = "blue";
+                context.stroke();
+                context.fillStyle = 'blue';
+                context.fill();
+                context.closePath();
+            });
+            return context.getImageData(0, 0, w, h);
+        }
+
     }
     /**Method handles toggling between pause and play actions */
     private _onActionHandel() {
@@ -359,15 +363,15 @@ export default class Video extends BaseComponent {
             // Play put in pause more.
             this._stopFrame = true;
             this._video.pause();
-            this._currentIndex-1;
+            this._currentIndex - 1;
             this.replacePlayIcon(false)
         }
     }
-    private replacePlayIcon(value: boolean){
-        if(value==true){
+    private replacePlayIcon(value: boolean) {
+        if (value == true) {
             Core.replaceClass(this._actionButton, "fa-play", "fa-pause");
         }
-        else if(value==false){
+        else if (value == false) {
             Core.replaceClass(this._actionButton, "fa-pause", "fa-play");
         }
     }
@@ -375,7 +379,7 @@ export default class Video extends BaseComponent {
         this._canvasVideo.height = this._canvasVideo.offsetHeight;
         this._canvasVideo.width = this._canvasVideo.offsetWidth;
         this._video.width = this._canvasVideo.width;
-        this._video.height= this._canvasVideo.height
+        this._video.height = this._canvasVideo.height
         //this._context.scale(2, 2);
     }
 }
