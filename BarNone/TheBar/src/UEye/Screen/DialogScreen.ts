@@ -14,10 +14,12 @@ export default class DialogScreen<
 	> extends Screen<TView> {
 
 	private _onAccept: OnAcceptCallback<TState>;
+	private _onCancel: OnAcceptCallback<TState>;
 	protected stateManager: TStateManager;
 
 	public constructor(ViewType: { new(): TView }) {
 		super(ViewType);
+		this._onCancel = () => UEye.pop();
 	}
 
 	public configure(): IScreenConfig {
@@ -27,9 +29,9 @@ export default class DialogScreen<
 		}
 	}
 
-	// public set onCancel(value: OnClickCallback) {
-	// 	this._onCancel = value;
-	// }
+	public set onCancel(value: OnClickCallback) {
+		this._onCancel = value;
+	}
 
 	public set onAccept(value: OnAcceptCallback<TState>) {
 		this._onAccept = value;
@@ -46,9 +48,20 @@ export default class DialogScreen<
 		}
 	}
 
+	private _onCancelHandler() {
+		if (this._onCancel !== undefined) {
+			if (this.stateManager !== undefined) {
+				this._onCancel(this.stateManager.getCurrentState());
+			} else {
+				this._onCancel();
+			}
+			UEye.pop();
+		}
+	}
+
 	private _basePipeline = ScreenPipeLine.create()
 		.onShow(() => {
-			this.view.cancelButton.onClick = () => UEye.pop();
+			this.view.cancelButton.onClick = this._onCancelHandler.bind(this);
 			this.view.acceptButton.onClick = this._onAcceptHandler.bind(this);
 		})
 		.onRender((current: TState, original: TState) => {

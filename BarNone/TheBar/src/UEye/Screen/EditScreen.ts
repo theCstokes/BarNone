@@ -81,7 +81,6 @@ export default abstract class EditScreen<
  
             dialog.onAccept = async () => {
                 await this.stateManager.Reset.trigger();
-                UEye.pop();
             }
         }
     }
