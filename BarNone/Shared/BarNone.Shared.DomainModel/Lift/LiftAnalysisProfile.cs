@@ -18,7 +18,7 @@ namespace BarNone.Shared.DomainModel
         [ForeignKey("LiftTypeID")]
         public LiftType LiftType { get; set; }
 
-        public List<AccelerationAnalysisCriteria> AccelerationAnalysis { get; set; }
+        public List<AccelerationAnalysisCriteria> AccelerationAnalysisCriteria { get; set; }
 
         public List<PositionAnalysisCriteria> PositionAnalysisCriteria { get; set; }
 

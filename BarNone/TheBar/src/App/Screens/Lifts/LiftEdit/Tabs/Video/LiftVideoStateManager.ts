@@ -9,11 +9,13 @@ import ChildStateManager from "UEye/StateManager/ChildStateManager";
 import { State } from "App/Screens/Lifts/LiftEdit/StateManager";
 import Permission from "App/Data/Models/Lift/Permission";
 import BodyData from "App/Data/Models/BodyData/BodyData";
+import LiftAnalysisProfile from "App/Data/Models/Lift/LiftAnalysisProfile";
 
 export class LiftVideoState {
     public liftID: number;
     public bodyDataID: number;
     public bodyData: BodyData;
+    public analysisProfile: LiftAnalysisProfile | undefined;
 }
 
 export class LiftVideoStateManager extends ChildStateManager<LiftVideoState, State> {
@@ -37,6 +39,7 @@ export class LiftVideoStateManager extends ChildStateManager<LiftVideoState, Sta
     public readonly CreateState = StateBind
         .onAsyncAction<LiftVideoState, {
             liftID: number,
+            liftTypeID: number,
             bodyDataID: number
         }>(this, async (state, data) => {
             let nextState = state.empty();
@@ -45,6 +48,22 @@ export class LiftVideoStateManager extends ChildStateManager<LiftVideoState, Sta
             nextState.current.bodyDataID = data.bodyDataID;
             nextState.current.bodyData = await DataManager
                 .BodyData.single(data.bodyDataID, { includeDetails: true });
+
+            let profile = (await DataManager
+                .LiftAnalysisProfile.all({
+                    filter: {
+                        property: (p) => p.liftTypeID,
+                        comparisons: "eq",
+                        value: data.liftTypeID
+                    }
+                })).first();
+
+            if (profile !== undefined && typeof(profile.id) === "number") {
+                nextState.current.analysisProfile = await DataManager
+                    .LiftAnalysisProfile.single(profile.id, {
+                        includeDetails: true
+                    });
+            }
 
             return nextState.initialize();
         });

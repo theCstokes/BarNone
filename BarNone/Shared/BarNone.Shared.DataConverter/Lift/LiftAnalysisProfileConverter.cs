@@ -30,7 +30,7 @@ namespace BarNone.Shared.DataConverter
         public override void OnCreateDetailDataModel(LiftAnalysisProfile data, LiftAnalysisProfileDetailDTO dto)
         {
             data.LiftType = converterContext.LiftType.CreateDataModel(dto.LiftType);
-            data.AccelerationAnalysis = dto.AccelerationAnalysisCriteria?.Select(a => converterContext.AccelerationAnalysisCriteria.CreateDataModel(a)).ToList();
+            data.AccelerationAnalysisCriteria = dto.AccelerationAnalysisCriteria?.Select(a => converterContext.AccelerationAnalysisCriteria.CreateDataModel(a)).ToList();
             data.PositionAnalysisCriteria = dto.PositionAnalysisCriteria?.Select(a => converterContext.PositionAnalysisCriteria.CreateDataModel(a)).ToList();
             data.SpeedAnalysisCriteria = dto.SpeedAnalysisCriteria?.Select(a => converterContext.SpeedAnalysisCriteria.CreateDataModel(a)).ToList();
             data.AngleAnalysisCriteria = dto.AngleAnalysisCriteria?.Select(a => converterContext.AngleAnalysisCriteria.CreateDataModel(a)).ToList();
@@ -41,7 +41,7 @@ namespace BarNone.Shared.DataConverter
             return new LiftAnalysisProfileDetailDTO
             {
                 LiftType = converterContext.LiftType.CreateDTO(data.LiftType),
-                AccelerationAnalysisCriteria = data.AccelerationAnalysis?.Select(a => converterContext.AccelerationAnalysisCriteria.CreateDTO(a)).ToList(),
+                AccelerationAnalysisCriteria = data.AccelerationAnalysisCriteria?.Select(a => converterContext.AccelerationAnalysisCriteria.CreateDTO(a)).ToList(),
                 PositionAnalysisCriteria = data.PositionAnalysisCriteria?.Select(a => converterContext.PositionAnalysisCriteria.CreateDTO(a)).ToList(),
                 SpeedAnalysisCriteria = data.SpeedAnalysisCriteria?.Select(a => converterContext.SpeedAnalysisCriteria.CreateDTO(a)).ToList(),
                 AngleAnalysisCriteria = data.AngleAnalysisCriteria?.Select(a => converterContext.AngleAnalysisCriteria.CreateDTO(a)).ToList()

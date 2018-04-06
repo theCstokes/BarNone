@@ -142,7 +142,7 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		this._pipeLine.onShowInvokable(data);
 		this.stateManager.bind(this._pipeLine.onRenderInvokable.bind(this));
 		await this.stateManager.ResetState.trigger(data);
-		
+
 		this.bindSections(
 			ChartTabHelper,
 			LiftPermissionHelper,
@@ -158,6 +158,9 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 		// let  = new LiftPermissionHelper(this.view, this.stateManager);
 
 
-		super.onShow({ liftID: data.id });
+		super.onShow({
+			liftID: data.id,
+			liftTypeID: this.stateManager.getCurrentState().liftType.id
+		});
 	}
 }

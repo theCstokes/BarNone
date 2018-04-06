@@ -40,6 +40,7 @@ namespace BarNone.TheRack.Repository.Core
         /// </summary>
         public DefaultDetailRepository() : base()
         {
+            DetailEntities = DetailEntityResolver(Entites);
         }
 
         /// <summary>
@@ -48,6 +49,7 @@ namespace BarNone.TheRack.Repository.Core
         /// <param name="context">The context.</param>
         public DefaultDetailRepository(DomainContext context) : base(context)
         {
+            DetailEntities = DetailEntityResolver(Entites);
             //Converter = DetailDataConverterResolver();
         }
         #endregion
@@ -143,5 +145,7 @@ namespace BarNone.TheRack.Repository.Core
             //context.SaveChanges();
             return result;
         }
+
+        public IQueryable<TDomainModel> DetailEntities { get; private set; }
     }
 }

@@ -33,7 +33,7 @@ namespace BarNone.TheRack.Repository
 
         protected override DetailResolverDelegate<LiftAnalysisProfile> DetailEntityResolver => (profile) => profile
             .Include(p => p.LiftType)
-            .Include(p => p.AccelerationAnalysis).ThenInclude(a => a.JointType)
+            .Include(p => p.AccelerationAnalysisCriteria).ThenInclude(a => a.JointType)
             .Include(p => p.PositionAnalysisCriteria).ThenInclude(a => a.JointType)
             .Include(p => p.SpeedAnalysisCriteria).ThenInclude(a => a.JointType)
             .Include(p => p.AngleAnalysisCriteria).ThenInclude(a => a.JointTypeA)

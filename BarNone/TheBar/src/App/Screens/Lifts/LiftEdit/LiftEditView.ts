@@ -5,7 +5,7 @@ import Input from "UEye/Elements/Components/Input/Input";
 import Panel from "UEye/Elements/Containers/Panel/Panel";
 import Video from "UEye/Elements/Components/Video/Video";
 import { BaseDataManager } from "UEye/Data/BaseDataManager";
-import List from "UEye/Elements/Components/List/List";
+import List, { IList } from "UEye/Elements/Components/List/List";
 import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout";
 import Messenger from "UEye/Elements/Components/Messenger/Messenger";
@@ -16,6 +16,7 @@ import { LiftVideoTab, ILiftVideoView } from "App/Screens/Lifts/LiftEdit/Tabs/Vi
 import { ILiftPermissionView, LiftPermissionTab } from "App/Screens/Lifts/LiftEdit/Tabs/Share/LiftPermissionView";
 import { IChartTabView, ChartTab } from "App/Screens/Lifts/LiftEdit/Tabs/Charts/ChartTab";
 import { LiftCommentsTab, ILiftCommentsView } from "App/Screens/Lifts/LiftEdit/Tabs/Comments/LiftCommentsView";
+import DataListItem from "UEye/Elements/Components/DataListItem/DataListItem";
 
 export default class LiftEditView extends EditView 
 	implements ILiftPermissionView, ILiftVideoView, ILiftCommentsView, IChartTabView {
@@ -29,6 +30,7 @@ export default class LiftEditView extends EditView
 	public player: Video;
 	public analyticsButton: IconButton;
 	public videoLayout: SideBarLayout;
+	public analysisList: IList<DataListItem>
 
 	public messenger: Messenger;
 

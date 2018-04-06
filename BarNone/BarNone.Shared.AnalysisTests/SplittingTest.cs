@@ -75,7 +75,7 @@ namespace BarNone.Shared.AnalysisTests
             Lift lift = Converters.NewConvertion().Lift.CreateDataModel(liftDTO);
 
             var request = new AR_Velocity();
-            request.Joint = EJointType.SpineBase;
+            request.JointType = EJointType.SpineBase;
             request.Dimension = EDimension.Y;
             request.Type = Analysis.LiftAnalysisPipeline.Core.ELiftAnalysisType.Velocity;
             var pipe = new LAP_Velocity(request, lift);

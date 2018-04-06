@@ -5,11 +5,14 @@ import DropDownInput from "UEye/Elements/Components/DropdownInput/DropdownInput"
 import SideBarLayout from "UEye/Elements/Containers/SideBarLayout/SideBarLayout";
 import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 import Video from "UEye/Elements/Components/Video/Video";
+import { IList } from "UEye/Elements/Components/List/List";
+import DataListItem from "UEye/Elements/Components/DataListItem/DataListItem";
 
 export interface ILiftVideoView {
 	player: Video;
 	analyticsButton: IconButton;
 	videoLayout: SideBarLayout;
+	analysisList: IList<DataListItem>
 }
 
 export class LiftVideoTab {
@@ -52,16 +55,16 @@ export class LiftVideoTab {
 								// },
 								{
 									instance: ControlTypes.List,
-									id: "liftList",
+									id: "analysisList",
 									style: ControlTypes.AnalysisListItem,
 									items: [
-										{
-											id: 1,
-											name: "Bar Acceleration",
-											value: "4.72m/s",
-											icon: "fa-plus",
-											onAction: () => alert(11)
-										},
+										// {
+										// 	id: 1,
+										// 	name: "Bar Acceleration",
+										// 	value: "4.72m/s",
+										// 	icon: "fa-plus",
+										// 	onAction: () => alert(11)
+										// },
 										// {
 										// 	id: 2,
 										// 	name: "Knee Angle",

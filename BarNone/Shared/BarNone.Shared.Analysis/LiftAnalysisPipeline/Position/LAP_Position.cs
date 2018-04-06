@@ -27,20 +27,20 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Position
             List<float> result;
             if (Request.Dimension == EDimension.X)
             {
-                result = new List<float>(_jtsList[(int)Request.Joint].X);
+                result = new List<float>(_jtsList[(int)Request.JointType].X);
             }
             else if (Request.Dimension == EDimension.Y)
             {
-                result = new List<float>(_jtsList[(int)Request.Joint].Y);
+                result = new List<float>(_jtsList[(int)Request.JointType].Y);
 
             }
             else
             {
-                result = new List<float>(_jtsList[(int)Request.Joint].Z);
+                result = new List<float>(_jtsList[(int)Request.JointType].Z);
 
             }
 
-            List<float> time = new List<float>(_jtsList[(int)Request.Joint].t);
+            List<float> time = new List<float>(_jtsList[(int)Request.JointType].t);
 
             return new ResultEntity
             {
