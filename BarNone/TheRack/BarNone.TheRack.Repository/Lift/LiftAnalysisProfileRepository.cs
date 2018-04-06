@@ -6,6 +6,7 @@ using BarNone.TheRack.Repository.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using static BarNone.TheRack.Repository.Core.Resolvers;
 
@@ -27,7 +28,8 @@ namespace BarNone.TheRack.Repository
 
         protected override SetResolverDelegate<LiftAnalysisProfile> SetResolver => (context) => context.LiftAnalysisProfiles;
 
-        protected override EntityResolverDelegate<LiftAnalysisProfile> EntityResolver => (set) => set;
+        protected override EntityResolverDelegate<LiftAnalysisProfile> EntityResolver => (set) => set
+            .Where(l => l.UserID == context.UserID);
 
         protected override DetailResolverDelegate<LiftAnalysisProfile> DetailEntityResolver => (profile) => profile
             .Include(p => p.LiftType)

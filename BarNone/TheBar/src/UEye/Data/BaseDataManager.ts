@@ -50,11 +50,10 @@ export abstract class BaseDataManager {
 	}
 
 	public static async fail(error: any): Promise<boolean> {
-		if (BaseDataManager._auth !== undefined) {
-			BaseDataManager._auth = undefined;
-		}
-
 		if (error === 401) {
+			if (BaseDataManager._auth !== undefined) {
+				BaseDataManager._auth = undefined;
+			}
 			this._onAuthExpire.trigger();
 		}
 
@@ -135,10 +134,12 @@ export abstract class BaseDataManager {
 		// StringUtils.format("ws://localhost:58428?access_token={0}",
 		// 	BaseDataManager.auth.access_token);
 
-		return StringUtils.format("{0}//{1}?access_token={2}",
+		return StringUtils.format(
+			"{0}//{1}?access_token={2}",
 			ProtocolEnum.WS,
 			window.location.host,
-			BaseDataManager.auth.access_token);
+			BaseDataManager.auth.access_token
+		);
 		// return window.location.origin + CREATE_URL;
 	}
 

@@ -21,7 +21,7 @@ export default class LiftProfileEditScreen extends EditScreen<LiftProfileEditVie
 		this.view.editPanel.modified = isModified;
 	}
 
-	public async onShow(data: { liftTypeID: number }): Promise<void> {
+	public async onShow(data: { liftProfileID: number, liftTypeID: number }): Promise<void> {
 		console.log("LiftProfileEditScreen Show.");
 		this.init(await StateManagerFactory.create(StateManager));
 		this.bindSections(LiftProfileHelper);
@@ -34,7 +34,7 @@ export default class LiftProfileEditScreen extends EditScreen<LiftProfileEditVie
 
 		await this.stateManager.ResetState.trigger({ liftTypeID: data.liftTypeID });
 
-		super.onShow({ liftProfileID: this.stateManager.getCurrentState().liftType.id });
+		super.onShow({ liftProfileID: data.liftProfileID });
 	}
 
 	// public save(): void {

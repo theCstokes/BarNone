@@ -69,50 +69,51 @@ export class StateManager extends BaseStateManager<State> {
 			= current.liftProfileState.accelerationCriteriaList
 				.filter(p => p.isNew)
 				.map(p => {
-					return {
+					return <AccelerationAnalysisCriteria>{
 						jointTypeID: p.jointTypeID
 					}
-				}) as AccelerationAnalysisCriteria[];
+				});
 
 		let speedCriteriaList: SpeedAnalysisCriteria[]
 			= current.liftProfileState.speedCriteriaList
 				.filter(p => p.isNew)
 				.map(p => {
-					return {
+					return <SpeedAnalysisCriteria>{
 						jointTypeID: p.jointTypeID
 					}
-				}) as SpeedAnalysisCriteria[];
+				});
 
 		let positionCriteriaList: PositionAnalysisCriteria[]
 			= current.liftProfileState.positionCriteriaList
 				.filter(p => p.isNew)
 				.map(p => {
-					return {
+					return <PositionAnalysisCriteria>{
 						jointTypeID: p.jointTypeID
 					}
-				}) as PositionAnalysisCriteria[];
+				});
 
 		let angleCriteriaList: AngleAnalysisCriteria[]
 			= current.liftProfileState.angleCriteriaList
 				.filter(p => p.isNew)
 				.map(p => {
-					return {
-						jointTypeIDA: p.jointTypeAID,
-						jointTypeIDB: p.jointTypeBID,
-						jointTypeIDC: p.jointTypeBID,
+					return <AngleAnalysisCriteria>{
+						jointTypeAID: p.jointTypeAID,
+						jointTypeBID: p.jointTypeBID,
+						jointTypeCID: p.jointTypeBID,
 					}
-				}) as AngleAnalysisCriteria[];
+				});
 
-		await DataManager.LiftAnalysisProfile.update(current.id, {
+		let updateFilter = [];
+		if (accelerationCriteriaList.length > 0) updateFilter.push("accelerationAnalysisCriteria");
+		if (positionCriteriaList.length > 0) updateFilter.push("positionAnalysisCriteria");
+		if (speedCriteriaList.length > 0) updateFilter.push("speedAnalysisCriteria");
+		if (angleCriteriaList.length > 0) updateFilter.push("angleAnalysisCriteria");
+
+		await DataManager.LiftAnalysisProfile.update(current.liftProfileState.liftProfileID, {
 			id: current.id,
-			updateFilter: [
-				"accelerationAnalysis",
-				"positionAnalysisCriteria",
-				"speedAnalysisCriteria",
-				"angleAnalysisCriteria"
-			],
+			updateFilter: updateFilter,
 			details: {
-				accelerationAnalysis: accelerationCriteriaList,
+				accelerationAnalysisCriteria: accelerationCriteriaList,
 				positionAnalysisCriteria: positionCriteriaList,
 				speedAnalysisCriteria: speedCriteriaList,
 				angleAnalysisCriteria: angleCriteriaList

@@ -20,7 +20,7 @@ export abstract class SelectionListScreen<
 
 	private _popOnSelection: boolean;
 
-	public constructor(ViewType: { new(): TView }, popOnSelection: boolean = true ) {
+	public constructor(ViewType: { new(): TView }, popOnSelection: boolean = true) {
 		super(ViewType);
 		this._popOnSelection = popOnSelection;
 	}
@@ -30,7 +30,13 @@ export abstract class SelectionListScreen<
 			this.view.selectionList.onSelect = this._onSelectionHandler.bind(this);
 		})
 		.onRender((current: TState, original: TState) => {
-			this.view.selectionList.items = current.selectionList.map(this.listTransform.bind(this));
+			this.view.selectionList.items = current.selectionList.reduce((result, x) => {
+				let item = this.listTransform.bind(this)(x);
+				if (item !== undefined) {
+					result.push(item);
+				}
+				return result;
+			}, new Array<IListItem>());
 
 			this.view.selectionListInfo.visible = (current.selectionList.length < 0);
 
@@ -60,7 +66,7 @@ export abstract class SelectionListScreen<
 
 	public abstract onRenderEditScreen(data: TListItem): EditScreen<any, any> | undefined;
 
-	public abstract listTransform(item: TListItem): IListItem;
+	public abstract listTransform(item: TListItem): IListItem | undefined;
 
 	public init(stateManager: TStateManager) {
 		this.stateManager = stateManager;

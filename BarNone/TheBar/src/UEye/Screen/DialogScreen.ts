@@ -19,7 +19,7 @@ export default class DialogScreen<
 
 	public constructor(ViewType: { new(): TView }) {
 		super(ViewType);
-		this._onCancel = () => UEye.pop();
+		// this._onCancel = () => UEye.pop();
 	}
 
 	public configure(): IScreenConfig {
@@ -55,8 +55,8 @@ export default class DialogScreen<
 			} else {
 				this._onCancel();
 			}
-			UEye.pop();
 		}
+		UEye.pop();
 	}
 
 	private _basePipeline = ScreenPipeLine.create()

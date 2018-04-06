@@ -25,7 +25,7 @@ import { IListItem } from "UEye/Elements/Core/EventCallbackTypes";
 
 export interface ISelectionState<TData extends IListItem> {
 	selectionList: TData[];
-	selectionId: number;
+	selectionId: number | string;
 }
 
 export abstract class SelectionStateManager<

@@ -6,20 +6,20 @@ import PositionAnalysisCriteria from "App/Data/Models/Lift/Analysis/PositionAnal
 import { BaseDataModel } from "App/Data/Models/Core/BaseDataModel";
 
 export default class LiftAnalysisProfile extends BaseDataModel {
-	public id: number;
+	public id: number | string;
 
-	public userID: number;
+	public userID?: number;
 
-	public liftTypeID: number;
+	public liftTypeID?: number;
 
-	public details: Partial<LiftAnalysisProfileDetails>;
+	public details?: Partial<LiftAnalysisProfileDetails>;
 
 }
 
 class LiftAnalysisProfileDetails {
 	public liftType: LiftType;
 	
-	public accelerationAnalysis: AccelerationAnalysisCriteria[];
+	public accelerationAnalysisCriteria: AccelerationAnalysisCriteria[];
 
 	public positionAnalysisCriteria: PositionAnalysisCriteria[];
 

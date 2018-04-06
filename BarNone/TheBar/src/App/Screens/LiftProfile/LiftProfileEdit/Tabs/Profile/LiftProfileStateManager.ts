@@ -56,14 +56,15 @@ export class LiftProfileStateManager extends ChildStateManager<LiftProfileState,
             nextState.current.liftProfileID = data.liftProfileID;
 
             let liftType = await DataManager.LiftAnalysisProfile.single(
-                data.liftProfileID, {
+                data.liftProfileID,
+                {
                     includeDetails: true
                 });
 
             if (liftType.details !== undefined
-                && liftType.details.accelerationAnalysis !== undefined) {
+                && liftType.details.accelerationAnalysisCriteria !== undefined) {
                 nextState.current.accelerationCriteriaList =
-                    liftType.details.accelerationAnalysis;
+                    liftType.details.accelerationAnalysisCriteria;
             }
 
             if (liftType.details !== undefined
