@@ -37,6 +37,27 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Shared viewmodel reference which holds currently recorded data consistently between VM's
         /// </summary>
+
+        public bool DoesNameExist
+        {
+            get
+            {
+                if (CurrentLiftData.LiftInformation.Count == 0)
+                {
+                    return false;
+                }
+                else if(CurrentLiftData.LiftInformation[0].LiftNameList.Where(l => l == SelectedLift.LiftName).ToList().Count > 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+        }
+
         public CurrentLiftDataVM CurrentLifts
         {
             get => _currentLifts;
@@ -44,6 +65,7 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 _currentLifts = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("CurrentLifts"));
+                OnPropertyChanged(new PropertyChangedEventArgs("DoesNameExist"));
             }
         }
 
