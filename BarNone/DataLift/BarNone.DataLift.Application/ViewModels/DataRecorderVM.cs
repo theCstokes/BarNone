@@ -458,9 +458,8 @@ namespace BarNone.DataLift.UI.ViewModels
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     DialogHost.CloseDialogCommand.Execute(null, controlHolder.currentSpinner);
-                });
-
-                controlHolder.GotoEditingState();
+                    controlHolder.GotoEditingState();
+                });     
             });
             //thread.SetApartmentState(ApartmentState.STA);
             thread.Start();

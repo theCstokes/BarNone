@@ -126,6 +126,7 @@
     <Compile Include="Navigation\INavigatable.cs" />
     <Compile Include="Models\ColorImageFrame.cs" />
     <Compile Include="Navigation\UserControlManager.cs" />
+    <Compile Include="Validation\LiftNameValidtionRule.cs" />
     <Compile Include="Validation\TimeInputRule.cs" />
     <Compile Include="ViewModels\Common\CurrentLiftDataVM.cs" />
     <Compile Include="ViewModels\Common\SharableUser.cs" />

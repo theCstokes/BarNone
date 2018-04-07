@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BarNone.DataLift.UI.Views"
              xmlns:vms="clr-namespace:BarNone.DataLift.UI.ViewModels"
+             xmlns:validation="clr-namespace:BarNone.DataLift.UI.Validation"
              xmlns:cmpnts="clr-namespace:BarNone.DataLift.UI.Views.CustomComponents"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:validation="clr-namespace:BarNone.DataLift.UI.Validation"
              mc:Ignorable="d"
              d:DesignHeight="720"
              d:DesignWidth="1080">
@@ -38,17 +38,25 @@
                         </Button>
                     </Grid>
                 </materialDesign:ColorZone>
-                <ListView ItemsSource="{Binding LiftIntervals}" SelectionMode="Single" SelectedItem="{Binding SelectedLift}" DockPanel.Dock="Left">
+                <ListView ItemsSource="{Binding LiftIntervals}" SelectionMode="Single" SelectedItem="{Binding SelectedLift}" DockPanel.Dock="Left" Name="List">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid Width="300">
+                            <Grid Width="300" Margin="0 0 0 10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="2*" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <TextBox Grid.Column="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,10,0" 
-                                    materialDesign:HintAssist.Hint="Lift Name" Text="{Binding LiftName, Mode=TwoWay}" VerticalAlignment="Bottom" />
+                                    materialDesign:HintAssist.Hint="Lift Name" VerticalAlignment="Bottom">
+                                    <TextBox.Text>
+                                        <Binding Path="LiftName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <validation:LiftNameValidtionRule ValidatesOnTargetUpdated="True" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
                                 <ComboBox Grid.Column="1" Margin="0,0,10,0" ItemsSource="{Binding LiftTypeList}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Lift Type"
                                     materialDesign:HintAssist.HintOpacity=".26"
                                     SelectedItem="{Binding LiftType}"  VerticalAlignment="Bottom" />

@@ -151,6 +151,21 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             }
         }
 
+        private static List<string> _liftNameLift = new List<string>();
+
+        public List<string> LiftNameList
+        {
+            get { return _liftNameLift; }
+
+            set
+            {
+                if (_liftNameLift == value) return;
+
+                _liftNameLift = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("LiftNameList"));
+            }
+        }
+
         public ObservableCollection<SharableUser> SharedUsers;
 
         public LiftItemVM(string currentUser)
@@ -158,6 +173,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             List<UserDTO> allUserDTOs = new List<UserDTO>();
             List<LiftTypeDTO> liftDTOs = new List<LiftTypeDTO>();
             List<LiftFolderDTO> folderDTOs = new List<LiftFolderDTO>();
+            List<LiftDTO> liftNameDTOs = new List<LiftDTO>();
 
             App.Current.Dispatcher.Invoke(async () =>
             {
@@ -176,6 +192,9 @@ namespace BarNone.DataLift.UI.ViewModels.Common
 
                 liftDTOs = await DataManager.Types.GetAll();
                 _liftTypeDictionary = liftDTOs.ToDictionary(k => k.Name, v => v.ID);
+
+                liftNameDTOs = await DataManager.Lifts.GetAll();
+                _liftNameLift = liftNameDTOs.Select(l => l.Name).ToList();
 
                 folderDTOs = await DataManager.Folders.GetAll();
                 _liftFolderList = folderDTOs.Select(u => u.Name).ToList();

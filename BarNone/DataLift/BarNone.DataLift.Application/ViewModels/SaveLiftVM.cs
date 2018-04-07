@@ -258,8 +258,8 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             controlHolder.ExecuteProgressDialog();
 
-            //Thread thread = new Thread(() =>
-            //{
+            Thread thread = new Thread(() =>
+            {
                 // TODO producer consumer this
                 var PostTasks = new List<Task>();
                 var ffmpeg = new FfmpegController();
@@ -319,15 +319,13 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 Task.WaitAll(PostTasks.ToArray());
 
-            //    Application.Current.Dispatcher.Invoke(() =>
-            //    {
-            //        DialogHost.CloseDialogCommand.Execute(null, controlHolder.currentSpinner);
-            //    });
-
-            //    controlHolder.GotoRecordingState();
-            //});
-            ////thread.SetApartmentState(ApartmentState.STA);
-            //thread.Start();
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    DialogHost.CloseDialogCommand.Execute(null, controlHolder.currentSpinner);
+                    controlHolder.GotoRecordingState();
+                });
+            });
+            thread.Start();
 
             // If we ever want to send JSON... Don't delete
             //var liftDTO = Converters.NewConvertion()
