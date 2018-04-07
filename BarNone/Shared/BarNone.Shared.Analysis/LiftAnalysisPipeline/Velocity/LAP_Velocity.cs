@@ -45,16 +45,21 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Velocity
             var time = new List<float>(_jtsList[(int)Request.JointType].t);
             var vmaList = y.Select((n) => (float)n).ToList();
 
+            var afs = new List<AnalysisFrame>();
 
+            for (int i = 0; i < vmaList.Count; i++)
+            {
+                afs.Add(new AnalysisFrame
+                {
+                    FrameID = _lift.BodyData.BodyDataFrames[i].ID,
+                    Value = vmaList[i]
+                });
+            }
 
             return new ResultEntity
             {
                 Type = ELiftAnalysisType.Velocity,
-                Value = new Dictionary<string, List<float>>()
-                {
-                    ["time"] = time,
-                    ["data"] = vmaList
-                }
+                Value = vmaList
             };
 
            

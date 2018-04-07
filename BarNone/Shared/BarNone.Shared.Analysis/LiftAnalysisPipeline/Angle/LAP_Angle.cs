@@ -27,11 +27,7 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Angle
             return new ResultEntity
             {
                 Type = ELiftAnalysisType.Angle,
-                Value = new Dictionary<string, List<float>>()
-                {
-                    ["time"] = time,
-                    ["data"] = thetas
-                }
+                Value = thetas
             };
         }
 
@@ -46,9 +42,9 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Angle
         /// Builds a list of the joint angles at each respective frame.
         /// </summary>
         /// <returns></returns>
-        private List<float> buildResponseList()
+        private List<AnalysisFrame> buildResponseList()
         {
-            List<float> thetas = new List<float>();
+            List<AnalysisFrame> thetas = new List<AnalysisFrame>();
             JointTimeSeries a = _jtsList[(int) Request.JointA];
             JointTimeSeries b = _jtsList[(int) Request.JointB];
             JointTimeSeries c = _jtsList[(int) Request.JointC];
@@ -56,7 +52,10 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Angle
             for (int i = 0; i < a.X.Length; i++)
             {
                 float t = computeAngle(a: new[] { a.X[i], a.Y[i], a.Z[i] }, b: new[] { b.X[i], b.Y[i], b.Z[i] }, c: new[] { c.X[i], c.Y[i], c.Z[i] });
-                thetas.Add(t);
+                thetas.Add(new AnalysisFrame {
+                    FrameID = _lift.BodyData.BodyDataFrames[i].ID,
+                    Value = t
+                });
             }
             return thetas;
         }
