@@ -66,7 +66,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 RedirectStandardInput = true,
-                CreateNoWindow = false
+                CreateNoWindow = true
             };
 
             _recordProcess = new Process
@@ -158,7 +158,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                CreateNoWindow = false
+                CreateNoWindow = true
 
             };
 
@@ -220,7 +220,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                     FileName = $"{Directory.GetCurrentDirectory()}/res/ffmpeg.exe",
                     Arguments = $"-i {fname} -ss {startTime} -t {length} -vcodec libx264 {cutFile}",
                     UseShellExecute = false,
-                    CreateNoWindow = false
+                    CreateNoWindow = true
                 };
 
                 var proc = new Process

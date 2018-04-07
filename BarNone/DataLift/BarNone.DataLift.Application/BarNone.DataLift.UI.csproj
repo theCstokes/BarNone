@@ -160,6 +160,9 @@
     <Compile Include="Views\LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ProgressSpinner.xaml.cs">
+      <DependentUpon>ProgressSpinner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RegisterScreen.xaml.cs">
       <DependentUpon>RegisterScreen.xaml</DependentUpon>
     </Compile>
@@ -223,6 +226,10 @@
     <Page Include="Views\LoginScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ProgressSpinner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RegisterScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
