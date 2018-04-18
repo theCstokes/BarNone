@@ -528,7 +528,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 ScrubberCurrentPosition = ScrubberLowerThumb;
                 StopRequested.Invoke(this, EventArgs.Empty);
                 PlayRequested.Invoke(this, EventArgs.Empty);
-
+                UpdatePositionEvent.Invoke(this, new PositionUpdateEventArgs(new TimeSpan(0, 0, 0, 0, (int)GlobalTimer.startOffset)));
                 GlobalTimer.Restart();
             }
             else

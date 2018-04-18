@@ -110,7 +110,7 @@
                     </ListBox>
                 </StackPanel>
                 <Button Grid.Row="1" Content="Send Lifts" Command="{Binding SendLifts}" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                        Margin="10" Padding="25 0 25 0" FontSize="12" IsEnabled="{Binding DoesNameExist}" />
+                        Margin="10" Padding="25 0 25 0" FontSize="12" />
             </Grid>
         </materialDesign:Card>
     </Grid>

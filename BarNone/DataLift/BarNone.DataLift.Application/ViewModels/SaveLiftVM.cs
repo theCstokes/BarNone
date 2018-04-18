@@ -65,7 +65,6 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 _currentLifts = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("CurrentLifts"));
-                OnPropertyChanged(new PropertyChangedEventArgs("DoesNameExist"));
             }
         }
 
@@ -81,6 +80,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 CurrentLifts.LiftInformation = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("LiftIntervals"));
+                OnPropertyChanged(new PropertyChangedEventArgs("DoesNameExist"));
             }
         }
 
