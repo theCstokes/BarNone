@@ -16,6 +16,7 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
         public Scrubber()
         {
             InitializeComponent();
+            IsHeld = false;
         }
 
         //public string CurrentStringTime
@@ -26,6 +27,15 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
         //        return $"{currentTime.Minutes:00}:{currentTime.Seconds:00}.{currentTime.Milliseconds:000}";
         //    }
         //}
+
+
+        public bool IsHeld
+        {
+            get;
+
+            set;
+        }
+
 
         public double Minimum
         {
@@ -96,6 +106,26 @@ namespace BarNone.DataLift.UI.Views.CustomComponents
 
             var temp = new TimeSpan(0, 0, 0, 0, (int)UpperValue);
             tt_upper.Content = $"{temp.Minutes:00}:{temp.Seconds:00}.{temp.Milliseconds:000}";
+        }
+
+        private void ScrubberPosition_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            IsHeld = true;
+        }
+
+        private void ScrubberPosition_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            IsHeld = false;
+        }
+
+        private void UpperSlider_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            IsHeld = true;
+        }
+
+        private void UpperSlider_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            IsHeld = false;
         }
     }
 }

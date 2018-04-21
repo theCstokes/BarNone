@@ -126,6 +126,7 @@
     <Compile Include="Navigation\INavigatable.cs" />
     <Compile Include="Models\ColorImageFrame.cs" />
     <Compile Include="Navigation\UserControlManager.cs" />
+    <Compile Include="Validation\LiftNameValidtionRule.cs" />
     <Compile Include="Validation\TimeInputRule.cs" />
     <Compile Include="ViewModels\Common\CurrentLiftDataVM.cs" />
     <Compile Include="ViewModels\Common\SharableUser.cs" />
@@ -159,6 +160,9 @@
     </Compile>
     <Compile Include="Views\LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProgressSpinner.xaml.cs">
+      <DependentUpon>ProgressSpinner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RegisterScreen.xaml.cs">
       <DependentUpon>RegisterScreen.xaml</DependentUpon>
@@ -223,6 +227,10 @@
     <Page Include="Views\LoginScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ProgressSpinner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RegisterScreen.xaml">
       <Generator>MSBuild:Compile</Generator>

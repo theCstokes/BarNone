@@ -4,6 +4,10 @@ using MaterialDesignThemes.Wpf;
 using System.ComponentModel;
 using System.Windows.Input;
 using BarNone.DataLift.UI.Views;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Threading.Tasks;
+using System.Windows;
+using System;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -37,8 +41,8 @@ namespace BarNone.DataLift.UI.ViewModels
             /// </summary>
             Disabled,
         }
-        
-        
+
+
         /// <summary>
         /// Private enumeration defininng which state DataLift is in.
         /// </summary>
@@ -93,11 +97,12 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_runDialogCommand == null)
                 {
-                    _runDialogCommand =  new RelayCommand(ExecuteRunDialog);
+                    _runDialogCommand = new RelayCommand(ExecuteRunDialog);
                 }
                 return _runDialogCommand;
             }
         }
+
         /// <summary>
         /// Field representation for the <see cref="ControlStepOneCommand"/> bindable command
         /// </summary>
@@ -128,7 +133,7 @@ namespace BarNone.DataLift.UI.ViewModels
         {
             get
             {
-                if(_controlStepTwoCommand == null)
+                if (_controlStepTwoCommand == null)
                 {
                     _controlStepTwoCommand = new RelayCommand(action => StepTwoPressed());
                 }
@@ -201,7 +206,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Field representation for the <see cref="StepTwoStyleController"/> bindable property
         /// </summary>
-        private ButtonState _stepTwoStyleController = ButtonState.CanGoTo;
+        private ButtonState _stepTwoStyleController = ButtonState.Disabled;
         /// <summary>
         /// Determines the style using data triggers of the button for step 2 of the workflow based off the screen.
         /// </summary>
@@ -231,7 +236,7 @@ namespace BarNone.DataLift.UI.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs("StepThreeStyleController"));
             }
         }
-        
+
         //TODO story board animate the progress bars
         /// <summary>
         /// Field representation for the <see cref="StepTwoProgressController"/> bindable property
@@ -282,7 +287,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
         #endregion
 
-        #region Private Functions
+        #region Public Functions
         /// <summary>
         /// Currently unused function.  Bound to a button in the UI.  May be used in the future.
         /// </summary>
@@ -299,7 +304,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private void StepOnePressed()
         {
-            if(_currentState != State.Recording)
+            if (_currentState != State.Recording)
             {
                 _stateToMoveTo = State.Recording;
 
@@ -315,7 +320,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private void StepTwoPressed()
         {
-            if(_currentState != State.Editing)
+            if (_currentState != State.Editing)
             {
                 _stateToMoveTo = State.Editing;
                 switch (_currentState)
@@ -324,7 +329,7 @@ namespace BarNone.DataLift.UI.ViewModels
                         MoveWorflowState();
                         break;
                     case State.Saving:
-                        if(RunDialogCommand.CanExecute(null))
+                        if (RunDialogCommand.CanExecute(null))
                         {
                             RunDialogCommand.Execute(null);
                         }
@@ -338,7 +343,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// </summary>
         private void StepThreePressed()
         {
-            if(_currentState != State.Saving)
+            if (_currentState != State.Saving)
             {
                 _stateToMoveTo = State.Saving;
                 MoveWorflowState();
@@ -348,7 +353,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Moves forward in the Data Lift Workflow.  Changes state to move the workflow along.
         /// </summary>
-        private void MoveWorflowState()
+        public void MoveWorflowState()
         {
             switch (_stateToMoveTo)
             {
@@ -367,13 +372,13 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Changes state to recording state.
         /// </summary>
-        private void GotoRecordingState()
+        public void GotoRecordingState()
         {
             // Change state to recording.
             _currentState = State.Recording;
 
             StepOneStyleController = ButtonState.Selected;
-            StepTwoStyleController = ButtonState.CanGoTo;
+            StepTwoStyleController = ButtonState.Disabled;
             StepThreeStyleController = ButtonState.Disabled;
 
             // Edit the progress bar accordingly.
@@ -387,7 +392,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Changes state to editing state.
         /// </summary>
-        private void GotoEditingState()
+        public void GotoEditingState()
         {
             // Change state to editing.
             _currentState = State.Editing;
@@ -407,7 +412,7 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Changes state to editing state.
         /// </summary>
-        private void GotoSavingState()
+        public void GotoSavingState()
         {
             // Change state to saving.
             _currentState = State.Saving;
@@ -415,7 +420,7 @@ namespace BarNone.DataLift.UI.ViewModels
             StepOneStyleController = ButtonState.CanGoBackTo;
             StepTwoStyleController = ButtonState.CanGoBackTo;
             StepThreeStyleController = ButtonState.Selected;
-           
+
             // Set the correct value for the progress bars.
             StepTwoProgressController = 100;
             StepThreeProgressController = 100;
@@ -424,7 +429,52 @@ namespace BarNone.DataLift.UI.ViewModels
             UserControlManager.SwitchPage(UIPages.SaveLiftView);
         }
 
-        #endregion 
+        public void ExecuteProgressDialog()
+        {
+            Application.Current.Dispatcher.Invoke( async() =>
+               {
+                   //currentSpinner = new ProgressSpinner();
+                   //  Look for RootDialog in the XAML (view) and wait until the dialog has completed execution.
+                   await DialogHost.Show(currentSpinner, "RootDialog");               
+               },
+               System.Windows.Threading.DispatcherPriority.Send);
+        }
+
+        public ProgressSpinner currentSpinner = new ProgressSpinner();
+
+        #endregion
+
+        public ControlHolderVM()
+        {
+            ControlHolderVMSingleton.vm = this;
+        }
+    }
+
+    #region Singleton Class
+    /// <summary>
+    /// Creates a singleton view model for control holder to prevent obsurd bindings
+    /// </summary>
+    public static class ControlHolderVMSingleton
+    {
+        /// <summary>
+        /// CurrentLiftDataVM singleton
+        /// </summary>
+        internal static ControlHolderVM vm;
+
+        /// <summary>
+        /// Gets the singleton instance of CurrentLiftDataVM
+        /// </summary>
+        /// <returns>Singleton instance of CurrentLiftDataVM</returns>
+        public static ControlHolderVM GetInstance()
+        {
+            if (vm == null)
+            {
+                vm = new ControlHolderVM();
+            }
+            return vm;
+        }
 
     }
+    #endregion
+
 }

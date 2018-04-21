@@ -60,13 +60,13 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             ProcessStartInfo psi = new ProcessStartInfo
             {
                 FileName = $"{Directory.GetCurrentDirectory()}/res/ffmpeg.exe",
-                Arguments = $"-loglevel verbose -f dshow -video_size 1920x1080 -framerate 30 -rtbufsize 500000k -vcodec mjpeg -i video=\"C922 Pro Stream Webcam\" {_currentVideoFile}", //Prefered Webcam
+                Arguments = $"-loglevel verbose -f dshow -video_size 1920x1080 -framerate 30 -rtbufsize 500000k -vcodec mjpeg -i video=\"C922 Pro Stream Webcam\" -vf \"vflip\" {_currentVideoFile}", //Prefered Webcam
                 //Arguments = $"-loglevel verbose -f dshow -video_size 1920x1080 -framerate 15 -vcodec mjpeg -i video=\"Microsoft LifeCam Rear\" {fname}",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 RedirectStandardInput = true,
-                CreateNoWindow = false
+                CreateNoWindow = true
             };
 
             _recordProcess = new Process
@@ -158,7 +158,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                CreateNoWindow = false
+                CreateNoWindow = true
 
             };
 
@@ -220,7 +220,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
                     FileName = $"{Directory.GetCurrentDirectory()}/res/ffmpeg.exe",
                     Arguments = $"-i {fname} -ss {startTime} -t {length} -vcodec libx264 {cutFile}",
                     UseShellExecute = false,
-                    CreateNoWindow = false
+                    CreateNoWindow = true
                 };
 
                 var proc = new Process

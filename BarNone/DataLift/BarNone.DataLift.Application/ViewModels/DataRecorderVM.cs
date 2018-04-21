@@ -3,17 +3,25 @@ using BarNone.DataLift.UI.Commands;
 using BarNone.DataLift.UI.Drawing;
 using BarNone.DataLift.UI.Nav;
 using BarNone.DataLift.UI.ViewModels.Common;
+using BarNone.Shared.DataConverters;
 using BarNone.Shared.DataTransfer;
 using BarNone.Shared.DomainModel;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Kinect;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
@@ -31,6 +39,12 @@ namespace BarNone.DataLift.UI.ViewModels
             WAITING_FOR_FIRST_BODY_FRAME = 2,
             RECORDING = 3
         }
+        #endregion
+
+        #region ControlHolderInstance
+
+        private ControlHolderVM controlHolder = ControlHolderVMSingleton.GetInstance();
+
         #endregion
 
         #region Bound Properties
@@ -380,9 +394,23 @@ namespace BarNone.DataLift.UI.ViewModels
             {
                 if (_EndRecording == null)
                 {
-                    _EndRecording = new RelayCommand(async action => await EndCurrentRecording(), pred => CurrentRecordingState != RecordingState.NOT_RECORDING);
+                    _EndRecording = new RelayCommand(action => EndCurrentRecording(), pred => CurrentRecordingState != RecordingState.NOT_RECORDING);
                 }
                 return _EndRecording;
+
+                //if (_EndRecording == null)
+                //{
+                //    _EndRecording = new RelayCommand(async action =>
+                //    {
+                //        //var m = controlHolder.ExecuteProgressDialog();
+                //        await EndCurrentRecording();
+                //        //await m;
+                //        DialogHost.CloseDialogCommand.Execute(null, controlHolder.currentSpinner);
+                //        DialogHost.CloseDialogCommand.Execute(null, controlHolder.currentSpinner);
+
+                //    }, pred => CurrentRecordingState != RecordingState.NOT_RECORDING);
+                //}
+                //return _EndRecording;
             }
         }
 
@@ -390,25 +418,53 @@ namespace BarNone.DataLift.UI.ViewModels
         /// Posts the recorded lift to the server when the user denotes a lift has been completed.
         /// </summary>
         /// <returns></returns>
-        private async Task EndCurrentRecording()
+        private void EndCurrentRecording()
         {
-            CurrentRecordingState = RecordingState.NOT_RECORDING;
-            IsRecording = false;
+            controlHolder.ExecuteProgressDialog();
 
-            // Test Code
+            Thread thread = new Thread(() =>
+            {
+                CurrentRecordingState = RecordingState.NOT_RECORDING;
+                IsRecording = false;
 
-            //string json = File.ReadAllText(@"Chris_Single_Squat_1.json");
-            //LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
-            //CurrentLiftData.CurrentRecordedBodyData =
-            //    new ObservableCollection<BodyDataFrame>(Converters
-            //    .NewConvertion()
-            //    .Lift.CreateDataModel(liftDTO)
-            //    .BodyData
-            //    .BodyDataFrames);
+                // Test Code
 
-            //CurrentLiftData.LiftInformation.Add(new LiftItemVM(CurrentLiftData.CurrentUser)
-            _ffmpegController.StopFfmpegRecord();
-            
+                //string json = File.ReadAllText(@"Chris_Single_Squat_1.json");
+                //LiftDTO liftDTO = JsonConvert.DeserializeObject<LiftDTO>(json);
+                //CurrentLiftData.CurrentRecordedBodyData =
+                //    new ObservableCollection<BodyDataFrame>(Converters
+                //    .NewConvertion()
+                //    .Lift.CreateDataModel(liftDTO)
+                //    .BodyData
+                //    .BodyDataFrames);
+
+                //CurrentLiftData.LiftInformation.Add(new LiftItemVM(CurrentLiftData.CurrentUser));
+
+                var ffmpegStopper = Task.Run(async () => await Task.Run(() => _ffmpegController.StopFfmpegRecord()));
+
+                try
+                {
+                    CurrentLiftData.NormalizeTimes();
+                    //UserControlManager.SwitchPage(UIPages.EditLiftView);
+                    //TODO Notify To Switch Page
+                }
+                catch (ArgumentException)
+                {
+                    //Argument exception if the data cannot be normalized for processing
+                    //TODO do not enable moving to edit and print an error in red
+                }
+                ffmpegStopper.Wait();
+                
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    DialogHost.CloseDialogCommand.Execute(null, controlHolder.currentSpinner);
+                    controlHolder.GotoEditingState();
+                });     
+            });
+            //thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            //OnPropertyChanged(new PropertyChangedEventArgs("controlHolder"));
+
             CurrentLiftData.LiftInformation.Add(new LiftItemVM(CurrentLiftData.CurrentUser)
             {
                 LiftStartTime = 0,
@@ -416,18 +472,6 @@ namespace BarNone.DataLift.UI.ViewModels
                 LiftName = String.Format($"Lift_0"),
                 LiftType = "Squat"
             });
-
-            try
-            {
-                CurrentLiftData.NormalizeTimes();
-                //UserControlManager.SwitchPage(UIPages.EditLiftView);
-                //TODO Notify To Switch Page
-            }
-            catch (ArgumentException)
-            {
-                //Argument exception if the data cannot be normalized for processing
-                //TODO do not enable moving to edit and print an error in red
-            }
         }
 
         #endregion

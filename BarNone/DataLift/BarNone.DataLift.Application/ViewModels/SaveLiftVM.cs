@@ -4,40 +4,31 @@ using BarNone.DataLift.UI.ViewModels.Common;
 using BarNone.Shared.DataConverters;
 using BarNone.Shared.DataTransfer.Flex;
 using BarNone.Shared.DomainModel;
+using MaterialDesignThemes.Wpf;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace BarNone.DataLift.UI.ViewModels
 {
     class SaveLiftVM : ViewModelBase
     {
-        #region Common Data
-        public CurrentLiftDataVM CurrentLiftData = CurrentLiftDataVMSingleton.GetInstance();
+        #region ControlHolderInstance
+
+        private ControlHolderVM controlHolder = ControlHolderVMSingleton.GetInstance();
+
         #endregion
 
-        #region TEMP DATA FOR TESTING
-
-        public ObservableCollection<SharableUser> Users
-        {
-            get
-            {
-                if(SelectedLift?.SharedUsers == null)
-                {
-                    return new ObservableCollection<SharableUser>();
-                }
-                else
-                {
-                    return SelectedLift.SharedUsers;
-                }
-                
-            }
-        }
+        #region Common Data
+        public CurrentLiftDataVM CurrentLiftData = CurrentLiftDataVMSingleton.GetInstance();
         #endregion
 
         #region Lift ListView Properties
@@ -46,6 +37,27 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Shared viewmodel reference which holds currently recorded data consistently between VM's
         /// </summary>
+
+        public bool DoesNameExist
+        {
+            get
+            {
+                if (CurrentLiftData.LiftInformation.Count == 0)
+                {
+                    return false;
+                }
+                else if(CurrentLiftData.LiftInformation[0].LiftNameList.Where(l => l == SelectedLift.LiftName).ToList().Count > 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+        }
+
         public CurrentLiftDataVM CurrentLifts
         {
             get => _currentLifts;
@@ -68,6 +80,7 @@ namespace BarNone.DataLift.UI.ViewModels
 
                 CurrentLifts.LiftInformation = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("LiftIntervals"));
+                OnPropertyChanged(new PropertyChangedEventArgs("DoesNameExist"));
             }
         }
 
@@ -207,6 +220,22 @@ namespace BarNone.DataLift.UI.ViewModels
         #endregion
 
         #region UserSharePropeties
+        public ObservableCollection<SharableUser> Users
+        {
+            get
+            {
+                if (SelectedLift?.SharedUsers == null)
+                {
+                    return new ObservableCollection<SharableUser>();
+                }
+                else
+                {
+                    return SelectedLift.SharedUsers;
+                }
+
+            }
+        }
+
         private ObservableCollection<User> _selectedUsers;
         public ObservableCollection<User> SelectedUsers
         {
@@ -247,63 +276,106 @@ namespace BarNone.DataLift.UI.ViewModels
         /// <summary>
         /// Private function that handles sending lifts to The Rack
         /// </summary>
-        private async void SendLiftCommand()
+        private void SendLiftCommand()
         {
-            //TODO producer consumer this
-            var PostTasks = new List<Task>();
-            var ffmpeg = new FfmpegController();
-            foreach(var lift in CurrentLiftData.LiftInformation)
+            controlHolder.ExecuteProgressDialog();
+
+            Thread thread = new Thread(() =>
             {
-                var firstFrame = CurrentLiftData.CurrentRecordedBodyData.FirstOrDefault(f => f.TimeOfFrame.TotalMilliseconds >= lift.LiftStartTime);
-                if (firstFrame == null)
-                    continue;
+                // TODO producer consumer this
+                var PostTasks = new List<Task>();
+                var ffmpeg = new FfmpegController();
+                foreach (var lift in CurrentLiftData.LiftInformation)
+                {
+                    var firstFrame = CurrentLiftData.CurrentRecordedBodyData.FirstOrDefault(f => f.TimeOfFrame.TotalMilliseconds >= lift.LiftStartTime);
+                    if (firstFrame == null)
+                        continue;
 
-                PostTasks.Add(Task.Run(async () => {
-                    var liftDTO = Converters.NewConvertion()
-                    .Lift
-                    .CreateDTO(new Lift()
+                    PostTasks.Add(Task.Run(async () =>
                     {
-                        LiftTypeID = lift.LiftID,
-                        BodyData = new BodyData
+                        var liftDTO = Converters.NewConvertion()
+                        .Lift
+                        .CreateDTO(new Lift()
                         {
-                            BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData
-                                .Where(f => f.TimeOfFrame.TotalMilliseconds >= lift.LiftStartTime && f.TimeOfFrame.TotalMilliseconds<= lift.LiftEndTime)
-                                //Clone the frame to normalize start times!
-                                .Select(f => new BodyDataFrame()
-                                {
-                                    UserID = lift.UserID,
-                                    Joints = f.Joints,
-                                    TimeOfFrame = f.TimeOfFrame - firstFrame.TimeOfFrame
-                                })
-                                .OrderBy(f => f.TimeOfFrame.TotalMilliseconds)
-                                .ToList(),
-                            UserID = lift.UserID,
-                            RecordDate = DateTime.Now
-                        },
-                        Name = lift.LiftName, // TODO. Not make this a hardcoded 0.
-                        UserID = lift.UserID,
-                        Video = new VideoRecord
-                        {
-                            Data = File.ReadAllBytes(await ffmpeg.SplitVideo(CurrentLiftData.ParentLiftVideoName, lift.LiftStartTime/1000, (lift.LiftEndTime-lift.LiftStartTime)/1000)),
-                            UserID = lift.UserID
-                        }
-                    });
-
-                    var temp = await DataManager.Flex.Post(new FlexDTO
-                    {
-                        Entities = new List<FlexEntityDTO>
-                        {
-                            new FlexEntityDTO
+                            LiftTypeID = lift.LiftID,
+                            BodyData = new BodyData
                             {
-                                Resource = "LIFT",
-                                Entity = liftDTO
-                            }
-                        }
-                    });
-                }));
-            }
+                                BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData
+                                    .Where(f => f.TimeOfFrame.TotalMilliseconds >= lift.LiftStartTime && f.TimeOfFrame.TotalMilliseconds <= lift.LiftEndTime)
+                                    //Clone the frame to normalize start times!
+                                    .Select(f => new BodyDataFrame()
+                                    {
+                                        UserID = lift.UserID,
+                                        Joints = f.Joints,
+                                        TimeOfFrame = f.TimeOfFrame - firstFrame.TimeOfFrame
+                                    })
+                                    .OrderBy(f => f.TimeOfFrame.TotalMilliseconds)
+                                    .ToList(),
+                                UserID = lift.UserID,
+                                RecordDate = DateTime.Now
+                            },
+                            Name = lift.LiftName, // TODO. Not make this a hardcoded 0.
+                            UserID = lift.UserID,
+                            Video = new VideoRecord
+                            {
+                                Data = File.ReadAllBytes(await ffmpeg.SplitVideo(CurrentLiftData.ParentLiftVideoName, lift.LiftStartTime / 1000, (lift.LiftEndTime - lift.LiftStartTime) / 1000)),
+                                UserID = lift.UserID
+                            },
+                            Permissions = (Users.Where(su => (su.IsSeletcted == true)).ToList())
+                                .Select(su => (new LiftPermission() { UserID = su.ID })).ToList()
+                        });
 
-            Task.WaitAll(PostTasks.ToArray());
+                        var temp = await DataManager.Flex.Post(new FlexDTO
+                        {
+                            Entities = new List<FlexEntityDTO>
+                            {
+                                new FlexEntityDTO
+                                {
+                                    Resource = "LIFT",
+                                    Entity = liftDTO
+                                }
+                            }
+                        });
+                    }));
+                }
+
+                Task.WaitAll(PostTasks.ToArray());
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    DialogHost.CloseDialogCommand.Execute(null, controlHolder.currentSpinner);
+                    controlHolder.GotoRecordingState();
+                });
+            });
+            thread.Start();
+
+            // If we ever want to send JSON... Don't delete
+            //var liftDTO = Converters.NewConvertion()
+            //.Lift
+            //.CreateDTO(new Lift()
+            //{
+            //    BodyData = new BodyData
+            //    {
+            //        BodyDataFrames = CurrentLiftData.CurrentRecordedBodyData.ToList(),
+            //        RecordDate = DateTime.Now
+            //    },
+            //    Name = CurrentLiftData.LiftInformation[0].LiftName // TODO.  Not make this a hardcoded 0.
+            //});
+
+            //var toSend = JsonConvert.SerializeObject(liftDTO, Formatting.Indented,
+            //    new JsonSerializerSettings()
+            //    {
+            //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            //    }
+            //);
+
+            //string fname = string.Format("{0}.json", liftDTO.Name);
+            //if (File.Exists(fname))
+            //    File.Delete(fname);
+            //File.WriteAllText(fname, toSend);
+
+            //controlHolder.GotoRecordingState();
+
         }
         #endregion
 

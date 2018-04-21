@@ -12,28 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using BarNone.DataLift.UI.Nav;
 
 namespace BarNone.DataLift.UI.Views
 {
     /// <summary>
-    /// Interaction logic for ControlViewHolderScreen.xaml
+    /// Interaction logic for ProgressSpinner.xaml
     /// </summary>
-    public partial class ControlScreen : UserControl, INavigatable
+    public partial class ProgressSpinner : UserControl
     {
-        public ControlScreen()
+        public ProgressSpinner()
         {
             InitializeComponent();
-            UserControlManager.ControlledView = this;
-            
-        }
-
-        public void Navigate(UIPages nextPage)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                Content = nextPage.Page;
-            });
         }
     }
 }
