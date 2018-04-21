@@ -60,7 +60,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             ProcessStartInfo psi = new ProcessStartInfo
             {
                 FileName = $"{Directory.GetCurrentDirectory()}/res/ffmpeg.exe",
-                Arguments = $"-loglevel verbose -f dshow -video_size 1920x1080 -framerate 30 -rtbufsize 500000k -vcodec mjpeg -i video=\"C922 Pro Stream Webcam\" -vf \"vflip\" {_currentVideoFile}", //Prefered Webcam
+                Arguments = $"-loglevel verbose -y -f dshow -video_size 1920x1080 -framerate 30 -rtbufsize 500000k -vcodec mjpeg -i video=\"C922 Pro Stream Webcam\" -vf \"vflip\" -vcodec h264_qsv -threads 0 {_currentVideoFile}", //Prefered Webcam
                 //Arguments = $"-loglevel verbose -f dshow -video_size 1920x1080 -framerate 15 -vcodec mjpeg -i video=\"Microsoft LifeCam Rear\" {fname}",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -173,6 +173,7 @@ namespace BarNone.DataLift.UI.ViewModels.Common
             {
                 if (e.Data == null)
                     return;
+                Debug.WriteLine(e.Data);
                 if (NewVideoFrameTimeRegex.IsMatch(e.Data))
                 {
                     curTime = 1000d * double.Parse(NewVideoFrameTimeRegex.Match(e.Data).Groups[1].Value);
