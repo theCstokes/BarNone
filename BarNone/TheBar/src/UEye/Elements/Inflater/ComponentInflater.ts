@@ -12,7 +12,7 @@ export default class ComponentType implements IControlType<BaseComponent> {
 
 	public constructor(builder: ComponentBuilder) {
 		this._builder = builder;
-	}
+	}	
 
 	public inflate(parent: HTMLElement, config: ComponentConfig, view: BaseView,
 		data?: InflaterData): BaseComponent {
