@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Lift\Analysis\AccelerationAnalysisProfileConverter.cs" />
+    <Compile Remove="Lift\Analysis\SpeedAnalysisProfileConverter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BarNone.Shared.Core\BarNone.Shared.Core.csproj" />
     <ProjectReference Include="..\BarNone.Shared.DataTransfer\BarNone.Shared.DataTransfer.csproj" />
     <ProjectReference Include="..\BarNone.Shared.DomainModel\BarNone.Shared.DomainModel.csproj" />

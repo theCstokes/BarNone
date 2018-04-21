@@ -7,23 +7,26 @@ import StringUtils from "UEye/Core/StringUtils";
 import NotificationManager from "UEye/NotificationManager";
 import DataManager from "App/Data/DataManager";
 import NotificationRequestDTO from "App/Data/Models/NotificationRequestDTO";
-import Comment from "App/Data/Models/Comment/Comment";
 import StateManagerFactory from "UEye/StateManager/StateManagerFactory";
 import ScreenPipeLine from "UEye/Screen/ScreenPipeLineStage";
 import { LiftFolderHelp } from "App/Help/Lifts/LiftFolderEdit/helpDemo";
 import { ELiftType } from "App/Screens/Lifts/StateManagers/BaseLiftStateManager";
 import BodyExample from "App/Data/DataOverride/api/v1/Joints"
-import ChartTabHelper from "App/Screens/Lifts/ChartTab/ChartTabHelper";
+import LiftPermissionHelper from "App/Screens/Lifts/LiftEdit/Tabs/Share/LiftPermissionHelper";
+import LiftVideoHelper from "App/Screens/Lifts/LiftEdit/Tabs/Video/LiftVideoHelper";
+import ChartTabHelper from "App/Screens/Lifts/LiftEdit/Tabs/Charts/ChartTabHelper";
+import LiftCommentsHelper from "App/Screens/Lifts/LiftEdit/Tabs/Comments/LiftCommentsHelper";
 
 export default class LiftEditScreen extends EditScreen<LiftEditView, StateManager> {
-	private _chartTabHelper : ChartTabHelper;
+	private _chartTabHelper: ChartTabHelper;
+	private _liftpermissionHelper: LiftPermissionHelper;
 
 	public constructor() {
 		super(LiftEditView, LiftFolderHelp);
 	}
 
 	public isModified(current: State, original: State) {
-		return !Utils.compare(original, current, ["comments"]);
+		return !Utils.equivalent(original, current, ["comments"]);
 	}
 
 	private _pipeLine = ScreenPipeLine.create()
@@ -74,72 +77,90 @@ export default class LiftEditScreen extends EditScreen<LiftEditView, StateManage
 			this.view.parentDropDown.modified =
 				(JSON.stringify(currentParent) !== JSON.stringify(originalParent));
 		})
-		//#endregion
-
-		//#region Video
-		.onShow(() => {
-			this.view.analyticsButton.onClick = () => this.view.videoLayout.toggleSideBar();
-		})
-		.onRender((current: State, original: State) => {
-			let bd = new BodyExample();
-
-			var data = SkeletonBuilder.build(
-				current.bodyData, 
-				this.view.player.canvasHeight, 
-				this.view.player.canvasWidth
-			);
-			this.view.player.frameData = data;
-
-			this.view.player.src = StringUtils.format("{0}Lift/{1}/Video?access_token={2}", //https://www.rmp-streaming.com/media/bbb-360p.mp4",
-				BaseDataManager.resourceAddress,
-				current.id,
-				BaseDataManager.auth.access_token);
-			console.log(this.view.player.src);
-		})
-		//#endregion
-
-		//#region Massager
-		.onShow((data: { id: number, name: string, type: ELiftType }) => {
-			NotificationManager.addListener<Comment>(new NotificationRequestDTO<Comment>({
-				type: "Comment",
-				filter: {
-					property: (comment) => comment.liftID,
-					comparisons: "eq",
-					value: data.id
-				}
-			}), async () => {
-				console.log("GoT");
-				await this.stateManager.RefreshComments.trigger();
-			});
-
-			this.view.messenger.onSend = (msg: string) => {
-				DataManager.Comments.create({
-					liftID: this.stateManager.getCurrentState().id,
-					text: msg,
-					timeSent: "2018-02-04"
-				});
-			};
-		})
-		.onRender((current: State, original: State) => {
-			this.view.messenger.messages = current.comments.map(comment => {
-				return {
-					id: comment.id,
-					value: comment.text,
-					userName: (comment.sentUserID === BaseDataManager.auth.userID) ? "You" : "Other",
-					date: comment.timeSent,
-					isCurrentUser: (comment.sentUserID === BaseDataManager.auth.userID)
-				}
-			});
-		})
 	//#endregion
 
+	// //#region Video
+	// .onShow(() => {
+	// 	this.view.analyticsButton.onClick = () => this.view.videoLayout.toggleSideBar();
+	// })
+	// .onRender((current: State, original: State) => {
+	// 	let bd = new BodyExample();
+
+	// 	var data = SkeletonBuilder.build(
+	// 		current.bodyData,
+	// 		this.view.player.canvasHeight,
+	// 		this.view.player.canvasWidth
+	// 	);
+	// 	this.view.player.frameData = data;
+
+	// 	this.view.player.src = StringUtils.format("{0}Lift/{1}/Video?access_token={2}", //https://www.rmp-streaming.com/media/bbb-360p.mp4",
+	// 		BaseDataManager.resourceAddress,
+	// 		current.id,
+	// 		BaseDataManager.auth.access_token);
+	// 	console.log(this.view.player.src);
+	// })
+	// //#endregion
+
+	// //#region Massager
+	// .onShow((data: { id: number, name: string, type: ELiftType }) => {
+	// 	NotificationManager.addListener<Comment>(new NotificationRequestDTO<Comment>({
+	// 		type: "Comment",
+	// 		filter: {
+	// 			property: (comment) => comment.liftID,
+	// 			comparisons: "eq",
+	// 			value: data.id
+	// 		}
+	// 	}), async () => {
+	// 		console.log("GoT");
+	// 		await this.stateManager.RefreshComments.trigger();
+	// 	});
+
+	// 	this.view.messenger.onSend = (msg: string) => {
+	// 		DataManager.Comments.create({
+	// 			liftID: this.stateManager.getCurrentState().id,
+	// 			text: msg,
+	// 			timeSent: "2018-02-04"
+	// 		});
+	// 	};
+	// })
+	// .onRender((current: State, original: State) => {
+	// 	this.view.messenger.messages = current.comments.map(comment => {
+	// 		return {
+	// 			id: comment.id,
+	// 			value: comment.text,
+	// 			userName: (comment.sentUserID === BaseDataManager.auth.userID) ? "You" : "Other",
+	// 			date: comment.timeSent,
+	// 			isCurrentUser: (comment.sentUserID === BaseDataManager.auth.userID)
+	// 		}
+	// 	});
+	// })
+	////#endregion
+
 	public async onShow(data: { id: number, name: string, type: ELiftType }): Promise<void> {
-		super.onShow(data);
+
 		this.init(await StateManagerFactory.create(StateManager));
-		this._chartTabHelper = new ChartTabHelper(this.view,data.id);
-		this._chartTabHelper.onShow();
 		this._pipeLine.onShowInvokable(data);
 		this.stateManager.bind(this._pipeLine.onRenderInvokable.bind(this));
 		await this.stateManager.ResetState.trigger(data);
+
+		this.bindSections(
+			ChartTabHelper,
+			LiftPermissionHelper,
+			LiftVideoHelper,
+			LiftCommentsHelper
+		);
+
+		// this._chartTabHelper = new ChartTabHelper(this.view, data.id);
+		// this._liftpermissionHelper = new LiftPermissionHelper(this.view, this.stateManager);
+		// this._liftpermissionHelper.onShow();
+		// this._chartTabHelper.onShow();
+
+		// let  = new LiftPermissionHelper(this.view, this.stateManager);
+
+
+		super.onShow({
+			liftID: data.id,
+			liftTypeID: this.stateManager.getCurrentState().liftType.id
+		});
 	}
 }

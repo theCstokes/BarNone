@@ -1,36 +1,37 @@
 import { BaseStateManager } from "UEye/StateManager/BaseStateManager";
 import StateBind from "UEye/StateManager/StateBind";
 import DataManager from "App/Data/DataManager";
-import LiftAnalysisProfile from "App/Data/Models/LiftAnalysisProfile/LiftAnalysisProfile"
-
-
+import { LiftProfileState } from "App/Screens/LiftProfile/LiftProfileEdit/Tabs/Profile/LiftProfileStateManager";
+import AccelerationAnalysisCriteria from "App/Data/Models/Lift/Analysis/AccelerationAnalysisCriteria";
+import SpeedAnalysisCriteria from "App/Data/Models/Lift/Analysis/SpeedAnalysisCriteria";
+import PositionAnalysisCriteria from "App/Data/Models/Lift/Analysis/PositionAnalysisCriteria";
+import AngleAnalysisCriteria from "App/Data/Models/Lift/Analysis/AngleAnalysisCriteria";
+import LiftType from "App/Data/Models/Lift/LiftType";
 
 export class State {
 	public id: number;
 	public name: string = "";
-	public age: number;
-	public liftProfile: LiftAnalysisProfile;
+	public liftType: LiftType;
+	public liftProfileState: LiftProfileState = new LiftProfileState();
 }
 
 export class StateManager extends BaseStateManager<State> {
-	
+
 	public constructor() {
 		super(State);
 	}
 
 	public readonly ResetState = StateBind
 		.onAsyncAction<State, {
-			id: number,
-			name: string
+			liftTypeID: number
 		}>(this, async (state, data) => {
 			var nextState = state.empty();
 
-			//var liftProfile = await DataManager.LiftAnalysisProfile(data.id, { includeDetails: true });
-			//console.log(liftProfile);
-			//nextState.current.liftProfile = liftProfile;
+			nextState.current.id = data.liftTypeID;
 
-			nextState.current.id = data.id;
-			nextState.current.name = data.name;
+			let liftType = await DataManager.LiftTypes.single(data.liftTypeID);
+			nextState.current.name = liftType.name;
+			nextState.current.liftType = liftType;
 
 			return nextState.initialize();
 		});
@@ -61,13 +62,69 @@ export class StateManager extends BaseStateManager<State> {
 		// this.ResetState.trigger();
 	}
 
-	public async onSave(): Promise<void> {
-		var currentState = this.getCurrentState();
-		await DataManager.Users.update(currentState.id, {
-			id: currentState.id,
-			name: currentState.name,
-			userName: currentState.name,
-			password: ""
+	public async save(): Promise<void> {
+		console.log("save");
+		let current = this.getCurrentState();
+		let accelerationCriteriaList: AccelerationAnalysisCriteria[]
+			= current.liftProfileState.accelerationCriteriaList
+				.filter(p => p.isNew)
+				.map(p => {
+					return <AccelerationAnalysisCriteria>{
+						jointTypeID: p.jointTypeID
+					}
+				});
+
+		let speedCriteriaList: SpeedAnalysisCriteria[]
+			= current.liftProfileState.speedCriteriaList
+				.filter(p => p.isNew)
+				.map(p => {
+					return <SpeedAnalysisCriteria>{
+						jointTypeID: p.jointTypeID
+					}
+				});
+
+		let positionCriteriaList: PositionAnalysisCriteria[]
+			= current.liftProfileState.positionCriteriaList
+				.filter(p => p.isNew)
+				.map(p => {
+					return <PositionAnalysisCriteria>{
+						jointTypeID: p.jointTypeID
+					}
+				});
+
+		let angleCriteriaList: AngleAnalysisCriteria[]
+			= current.liftProfileState.angleCriteriaList
+				.filter(p => p.isNew)
+				.map(p => {
+					return <AngleAnalysisCriteria>{
+						jointTypeAID: p.jointTypeAID,
+						jointTypeBID: p.jointTypeBID,
+						jointTypeCID: p.jointTypeBID,
+					}
+				});
+
+		let updateFilter = [];
+		if (accelerationCriteriaList.length > 0) updateFilter.push("accelerationAnalysisCriteria");
+		if (positionCriteriaList.length > 0) updateFilter.push("positionAnalysisCriteria");
+		if (speedCriteriaList.length > 0) updateFilter.push("speedAnalysisCriteria");
+		if (angleCriteriaList.length > 0) updateFilter.push("angleAnalysisCriteria");
+
+		await DataManager.LiftAnalysisProfile.update(current.liftProfileState.liftProfileID, {
+			id: current.id,
+			updateFilter: updateFilter,
+			details: {
+				accelerationAnalysisCriteria: accelerationCriteriaList,
+				positionAnalysisCriteria: positionCriteriaList,
+				speedAnalysisCriteria: speedCriteriaList,
+				angleAnalysisCriteria: angleCriteriaList
+			}
 		});
+
+		// await DataManager.Users.update(currentState.id, {
+		// 	id: currentState.id,
+		// 	name: currentState.name,
+		// 	userName: currentState.name,
+		// 	password: ""
+		// });
 	}
 }

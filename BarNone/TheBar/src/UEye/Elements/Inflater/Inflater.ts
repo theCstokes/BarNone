@@ -50,10 +50,10 @@ export default class Inflater {
 	}
 
 	public static validateComponentProperty(component: any, id: string, type: string): boolean {
-		if (!(id in component)) {
-			console.warn("Component does not have a property named: " + id);
-			return false;
-		}
+		// if (!(id in component)) {
+		// 	console.warn("Component does not have a property named: " + id);
+		// 	return false;
+		// }
 		// if (typeof (component[id]) !== type) {
 		// 	console.warn("Component property " + id + " is not of type " + type);
 		// 	return false;

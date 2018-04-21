@@ -19,6 +19,7 @@ using BarNone.TheRack.DataAccess;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using static BarNone.Shared.DataTransfer.Core.FilterDTO;
 
 namespace TheRack.ResourceServer.API.Controllers
 {
@@ -36,6 +37,18 @@ namespace TheRack.ResourceServer.API.Controllers
         public LiftController() : base((context) => new LiftRepository(context))
         {
 
+        }
+
+        [HttpGet("{id}/Permission")]
+        public IActionResult GetPermissions(int id)
+        {
+            using (var context = new DomainContext(UserID))
+            {
+                using (var repo = new LiftPermissionRepository(context))
+                {
+                    return EntityResponse.Response(repo.Get().Where(p => p.LiftID == id));
+                }
+            }
         }
 
         /// <summary>

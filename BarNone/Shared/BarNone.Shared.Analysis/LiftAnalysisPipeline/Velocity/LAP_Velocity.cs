@@ -26,13 +26,13 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Velocity
             //This is a little ugly, might clean it up later. We should discuss the default behaviour, currently returns Z.
             List<float> position;
             if (Request.Dimension == EDimension.X)
-                position = new List<float>(_jtsList[(int)Request.Joint].X);
+                position = new List<float>(_jtsList[(int)Request.JointType].X);
             else if (Request.Dimension == EDimension.Y)
-                position = new List<float>(_jtsList[(int)Request.Joint].Y);
+                position = new List<float>(_jtsList[(int)Request.JointType].Y);
             else
-                position = new List<float>(_jtsList[(int)Request.Joint].Z);
+                position = new List<float>(_jtsList[(int)Request.JointType].Z);
 
-            double[] x = _jtsList[(int)Request.Joint].t.Select((n) => (double)n).ToArray(); //array of times in seconds
+            double[] x = _jtsList[(int)Request.JointType].t.Select((n) => (double)n).ToArray(); //array of times in seconds
             double[] y = position.Select((n) => (double)n).ToArray(); //position at joints at the times stored in x
 
 
@@ -42,19 +42,24 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Velocity
             //foreach (var item in velocity)
             //    Console.Write("{0}", item);
 
-            var time = new List<float>(_jtsList[(int)Request.Joint].t);
+            var time = new List<float>(_jtsList[(int)Request.JointType].t);
             var vmaList = y.Select((n) => (float)n).ToList();
 
+            var afs = new List<AnalysisFrame>();
 
+            for (int i = 0; i < vmaList.Count; i++)
+            {
+                afs.Add(new AnalysisFrame
+                {
+                    FrameID = _lift.BodyData.BodyDataFrames[i].ID,
+                    Value = vmaList[i]
+                });
+            }
 
             return new ResultEntity
             {
                 Type = ELiftAnalysisType.Velocity,
-                Value = new Dictionary<string, List<float>>()
-                {
-                    ["time"] = time,
-                    ["data"] = vmaList
-                }
+                Value = vmaList
             };
 
            

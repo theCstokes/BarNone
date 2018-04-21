@@ -22,19 +22,19 @@ namespace BarNone.UnitTest.TheRack.Repository
         [TestInitialize]
         public void Init()
         {
-            var data = new List<User>
-            {
-                new User { ID = 1, Name = "Test", UserName = "test", Password = "123" }
-            }.AsQueryable();
+            //var data = new List<User>
+            //{
+            //    new User { ID = 1, Name = "Test", UserName = "test", Password = "123" }
+            //}.AsQueryable();
 
-            var mockSet = new Mock<DbSet<User>>();
-            mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(data.Provider);
-            mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(data.Expression);
-            mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(data.ElementType);
-            mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
+            //var mockSet = new Mock<DbSet<User>>();
+            //mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(data.Provider);
+            //mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(data.Expression);
+            //mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            //mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
 
-            context = new Mock<DomainContext>();
-            context.Setup(c => c.Users).Returns(mockSet.Object);
+            //context = new Mock<DomainContext>();
+            //context.Setup(c => c.Users).Returns(mockSet.Object);
         }
         #endregion
 
@@ -51,12 +51,12 @@ namespace BarNone.UnitTest.TheRack.Repository
         {
             using(var repository = new UserRepository(context.Object))
             {
-                var r = repository.Login("test", "123");
-                Assert.IsNotNull(r);
-                Assert.AreEqual(r.ID, 1);
-                Assert.AreEqual(r.Name, "Test");
-                Assert.AreEqual(r.UserName, "test");
-                Assert.AreEqual(r.Password, "123");
+                //var r = repository.Login("test", "123");
+                //Assert.IsNotNull(r);
+                //Assert.AreEqual(r.ID, 1);
+                //Assert.AreEqual(r.Name, "Test");
+                //Assert.AreEqual(r.UserName, "test");
+                //Assert.AreEqual(r.Password, "123");
             }
         }
     }

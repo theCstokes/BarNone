@@ -2,6 +2,7 @@
  * Auth create url string.
  */
 import CallableEvent, { ICallableEvent } from "UEye/CallableEvent/CallableEvent";
+import StringUtils from "UEye/Core/StringUtils";
 
 const CREATE_URL = "/api/v1/Authorization/Create";
 
@@ -14,6 +15,11 @@ const AUTH_URL = "/api/v1/Authorization/Login";
  * Resource url string.
  */
 const RESOURCE_URL = "/api/v1/";
+
+enum ProtocolEnum {
+	HTTP = "http:",
+	WS = "ws:"
+}
 
 /**
  * Base data manager.
@@ -44,11 +50,10 @@ export abstract class BaseDataManager {
 	}
 
 	public static async fail(error: any): Promise<boolean> {
-		if (BaseDataManager._auth !== undefined) {
-			BaseDataManager._auth = undefined;
-		}
-
 		if (error === 401) {
+			if (BaseDataManager._auth !== undefined) {
+				BaseDataManager._auth = undefined;
+			}
 			this._onAuthExpire.trigger();
 		}
 
@@ -120,6 +125,22 @@ export abstract class BaseDataManager {
 	 */
 	public static get creationAddress(): string {
 		return window.location.origin + CREATE_URL;
+	}
+
+	/**
+	 * Notification url string.
+	 */
+	public static get notificationAddress(): string {
+		// StringUtils.format("ws://localhost:58428?access_token={0}",
+		// 	BaseDataManager.auth.access_token);
+
+		return StringUtils.format(
+			"{0}//{1}?access_token={2}",
+			ProtocolEnum.WS,
+			window.location.host,
+			BaseDataManager.auth.access_token
+		);
+		// return window.location.origin + CREATE_URL;
 	}
 
 	/**

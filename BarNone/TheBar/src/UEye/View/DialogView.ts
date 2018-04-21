@@ -53,7 +53,8 @@ export abstract class DialogView extends View {
                                         id: "acceptButton",
                                         instance: ControlTypes.Button,
                                         icon: this.acceptButtonIcon,
-                                        text: this.acceptButtonText
+                                        text: this.acceptButtonText,
+                                        enabled: false
                                     }
                                 ]
                             }

@@ -60,7 +60,31 @@ namespace BarNone.Shared.DataConverters
         /// <value>
         /// The lift analysis profile.
         /// </value>
-        public AccelerationAnalysisProfileConverter AccelerationAnalysisProfile { get; private set; }
+        public AccelerationAnalysisCriteriaConverter AccelerationAnalysisCriteria { get; private set; }
+
+        /// <summary>
+        /// Speed Analysis Criteria Converter.
+        /// </summary>
+        /// <value>
+        /// The lift analysis profile.
+        /// </value>
+        public SpeedAnalysisCriteriaConverter SpeedAnalysisCriteria { get; private set; }
+
+        /// <summary>
+        /// Position Analysis Criteria Converter.
+        /// </summary>
+        /// <value>
+        /// The lift analysis profile.
+        /// </value>
+        public PositionAnalysisCriteriaConverter PositionAnalysisCriteria { get; private set; }
+
+        /// <summary>
+        /// Angle Analysis Criteria Converter.
+        /// </summary>
+        /// <value>
+        /// The lift analysis profile.
+        /// </value>
+        public AngleAnalysisCriteriaConverter AngleAnalysisCriteria { get; private set; }
 
         /// <summary>
         /// Lift Converter.
@@ -142,7 +166,12 @@ namespace BarNone.Shared.DataConverters
             LiftPermission =            Register<LiftPermission, LiftPermissionDTO, LiftPermissionConverter>(new LiftPermissionConverter(this, context));
             LiftType =                  Register<LiftType, LiftTypeDTO, LiftTypeConverter>(new LiftTypeConverter(this, context));
             LiftAnalysisProfile =       Register<LiftAnalysisProfile, LiftAnalysisProfileDTO, LiftAnalysisProfileConverter>(new LiftAnalysisProfileConverter(this, context));
-            AccelerationAnalysisProfile = Register<AccelerationAnalysisProfile, AccelerationAnalysisProfileDTO, AccelerationAnalysisProfileConverter>(new AccelerationAnalysisProfileConverter(this, context));
+            AccelerationAnalysisCriteria = Register<AccelerationAnalysisCriteria, AccelerationAnalysisCriteriaDTO, AccelerationAnalysisCriteriaConverter>(new AccelerationAnalysisCriteriaConverter(this, context));
+
+            PositionAnalysisCriteria = Register<PositionAnalysisCriteria, PositionAnalysisCriteriaDTO, PositionAnalysisCriteriaConverter>(new PositionAnalysisCriteriaConverter(this, context));
+            SpeedAnalysisCriteria = Register<SpeedAnalysisCriteria, SpeedAnalysisCriteriaDTO, SpeedAnalysisCriteriaConverter>(new SpeedAnalysisCriteriaConverter(this, context));
+            AngleAnalysisCriteria = Register<AngleAnalysisCriteria, AngleAnalysisCriteriaDTO, AngleAnalysisCriteriaConverter>(new AngleAnalysisCriteriaConverter(this, context));
+
             Lift =                      Register<Lift,          LiftDTO, LiftConverter>(new LiftConverter(this, context));
             LiftFolder =                Register<LiftFolder,    LiftFolderDTO, LiftFolderConverter>(new LiftFolderConverter(this, context));
             BodyData =                  Register<BodyData,      BodyDataDTO, BodyDataConverter>(new BodyDataConverter(this, context));

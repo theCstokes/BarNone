@@ -4,13 +4,15 @@ import DataManager from "App/Data/DataManager";
 import UEye from "UEye/UEye";
 import LoginScreen from "App/Screens/Login/LoginScreen";
 
-export default class RefreshTokenScreen extends DialogScreen<RefreshTokenView> {
+export default class RefreshTokenScreen extends DialogScreen<RefreshTokenView, any, any> {
 	public constructor() {
 		super(RefreshTokenView);
 	}
 
 	public onShow(): void {
 		super.onShow();
+		this.view.acceptButton.enabled = true;
+		
 		// TODO - remove hard code login.
 		this.view.usernameInput.text = "admin";
 		this.view.passwordInput.text = "admin";

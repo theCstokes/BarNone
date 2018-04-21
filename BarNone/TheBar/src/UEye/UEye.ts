@@ -4,6 +4,11 @@ import CallableEvent, { ICallableEvent } from 'UEye/CallableEvent/CallableEvent'
 
 declare global {
 	const Utils: IUtils
+	interface Array<T> {
+		first(): T | undefined;
+		first(predicate: (this: void, value: T, index: number, obj: Array<T>) => boolean): T | undefined;
+    first(predicate: (this: void, value: T, index: number, obj: Array<T>) => boolean, thisArg: undefined): T | undefined;
+	}
 }
 
 /**

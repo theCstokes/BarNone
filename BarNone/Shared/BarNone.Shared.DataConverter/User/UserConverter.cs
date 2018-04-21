@@ -35,7 +35,7 @@ namespace BarNone.Shared.DataConverters
             {
                 ID = dto.ID,
                 Name = dto.Name,
-                Password = dto.Password,
+                //Password = dto.Password,
                 UserName = dto.UserName
             };
         }
@@ -52,7 +52,7 @@ namespace BarNone.Shared.DataConverters
             {
                 ID = data.ID,
                 Name = data.Name,
-                Password = data.Password,
+                //Password = data.Password,
                 UserName = data.UserName
             };
         }

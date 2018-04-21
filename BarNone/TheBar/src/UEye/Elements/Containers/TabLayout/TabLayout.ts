@@ -80,7 +80,7 @@ export default class TabLayout extends BaseContainer {
         return this._tabElements;
 
     }
-    public set view(value: View){
+    public set view(value: View) {
         this.onBindView.on(value => {
 
             // window.addEventListener('resize', () => {
@@ -115,6 +115,10 @@ export default class TabLayout extends BaseContainer {
             var ueyeTab = ControlTypes.Tab.inflate(this.e_content, tabManager as any, this._view, data) as Tab;
             ueyeTab.selected = tabManager.selected;
             button.onclick = this.onClickHandler.bind(this);
+
+            ueyeTab.onModified = (modified) => {
+                this.modified = modified;
+            }
 
             var newTab = new TabButtonContentBind();
             newTab.button = button;
@@ -155,5 +159,13 @@ export default class TabLayout extends BaseContainer {
     }
     public set onClick(value: OnClickCallback) {
         this._onClickCallback = value;
+    }
+
+    public onModifiedChange() {
+        if (this.modified) {
+            Core.addClass(this.element, "Modified");
+        } else {
+            Core.removeClass(this.element, "Modified");
+        }
     }
 }

@@ -58,7 +58,7 @@ namespace BarNone.TheRack.Repository.Core
         #region Protected Virtual Member(s).
         protected virtual void OnCreate(TDomainModel entity) { }
         protected virtual void OnUpdate(TDomainModel entity) { }
-        protected virtual void OnRemove(TDomainModel entity) { } 
+        protected virtual void OnRemove(TDomainModel entity) { }
         #endregion
 
         #region Private Field(s).        

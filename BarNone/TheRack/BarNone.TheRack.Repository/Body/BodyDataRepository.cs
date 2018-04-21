@@ -46,9 +46,20 @@ namespace BarNone.TheRack.Repository
         /// <value>
         /// The detail entity resolver.
         /// </value>
-        protected override DetailResolverDelegate<BodyData> DetailEntityResolver => (s) => s
+        protected override DetailResolverDelegate<BodyData> DetailEntityResolver => (bodyData) =>
+        {
+            var results = bodyData
                 .Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointType)
                 .Include(b => b.BodyDataFrames).ThenInclude(l => l.Joints).ThenInclude(j => j.JointTrackingStateType);
+
+            foreach(var d in results)
+            {
+                if (d.BodyDataFrames == null) continue;
+                d.BodyDataFrames = d.BodyDataFrames.OrderBy(f => f.TimeOfFrame).ToList();
+            }
+
+            return results;
+        };
 
         /// <summary>
         /// Gets the set resolver.

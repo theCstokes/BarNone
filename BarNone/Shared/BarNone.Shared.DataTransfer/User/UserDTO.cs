@@ -1,4 +1,5 @@
-﻿using BarNone.Shared.DataTransfer.Core;
+﻿using BarNone.Shared.Core;
+using BarNone.Shared.DataTransfer.Core;
 
 namespace BarNone.Shared.DataTransfer
 {
@@ -38,6 +39,7 @@ namespace BarNone.Shared.DataTransfer
         /// <value>
         /// The password.
         /// </value>
+        [JsonIgnoreDeserialize]
         public string Password { get; set; }
     }
 }

@@ -14,12 +14,15 @@ export abstract class SelectionListScreen<
 	TState extends ISelectionState<TListItem>
 	> extends Screen<TView> {
 
-	private subScreen: EditScreen<any, any> | undefined
+	protected subScreen: EditScreen<any, any> | undefined
 
 	protected stateManager: TStateManager;
 
-	public constructor(ViewType: { new(): TView }, ) {
+	private _popOnSelection: boolean;
+
+	public constructor(ViewType: { new(): TView }, popOnSelection: boolean = true) {
 		super(ViewType);
+		this._popOnSelection = popOnSelection;
 	}
 
 	private _basePipeLine = ScreenPipeLine.create()
@@ -27,7 +30,13 @@ export abstract class SelectionListScreen<
 			this.view.selectionList.onSelect = this._onSelectionHandler.bind(this);
 		})
 		.onRender((current: TState, original: TState) => {
-			this.view.selectionList.items = current.selectionList.map(this.listTransform.bind(this));
+			this.view.selectionList.items = current.selectionList.reduce((result, x) => {
+				let item = this.listTransform.bind(this)(x);
+				if (item !== undefined) {
+					result.push(item);
+				}
+				return result;
+			}, new Array<IListItem>());
 
 			this.view.selectionListInfo.visible = (current.selectionList.length < 0);
 
@@ -36,18 +45,28 @@ export abstract class SelectionListScreen<
 			});
 
 			if (userData !== undefined) {
-				if (this.subScreen !== undefined) {
+				if (this._popOnSelection && this.subScreen !== undefined) {
 					UEye.popTo(this);
 				}
 
 				var sub = this.onRenderEditScreen(userData);
-				if (sub !== undefined) this.subScreen = sub;
+				if (sub !== undefined) {
+					this.subScreen = sub
+					this.subScreen.onSave.register(() => {
+						let selected = this.view.selectionList.selected;
+						if (selected === undefined) return;
+
+						this.stateManager.SelectionChange.trigger({
+							id: selected.id
+						});
+					})
+				}
 			}
 		});
 
 	public abstract onRenderEditScreen(data: TListItem): EditScreen<any, any> | undefined;
 
-	public abstract listTransform(item: TListItem): IListItem;
+	public abstract listTransform(item: TListItem): IListItem | undefined;
 
 	public init(stateManager: TStateManager) {
 		this.stateManager = stateManager;

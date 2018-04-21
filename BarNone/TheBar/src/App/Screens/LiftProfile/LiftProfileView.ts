@@ -9,29 +9,4 @@ export default class LiftProfileView extends SelectionListView {
 	public caption: string = "Lift Profiles";
 	public listType: ComponentType = ControlTypes.LiftFolderListItem;
 	public errorMessage: string = "No available Lift Profiles.";
-	
-	// public typeList: List;
-	// public mainPanel: Panel;
-  //   public get content(): any[] {
-	// 	return [
-	// 		{
-	// 			instance: ControlTypes.PartitionLayout,
-	// 			leftSide: [
-	// 				{
-	// 					instance: ControlTypes.Panel,
-	// 					id: "mainPanel",
-	// 					caption: "Lift Types",
-	// 					content: [
-	// 						{
-	// 							instance: ControlTypes.List,
-	// 							id: "typeList",
-	// 							isSelectionList: true,
-	// 							style: ControlTypes.LiftFolderListItem
-	// 						}
-	// 					]
-	// 				}
-	// 			]
-	// 		}
-	// 	];
-	// }
 }

@@ -4,20 +4,20 @@ import JointType from "App/Data/Models/Joint/JointType";
 import DataManager from "App/Data/DataManager";
 import AnalysisType from "App/Data/Models/Analysis/AnalysisType";
 
-export class State {
+export class LiftProfileDialogState {
 	public analysisTypeID: number;
 	public jointTypeIDA?: number
 	public jointTypeIDB?: number
 	public jointTypeIDC?: number
 }
 
-export class LiftProfileDialogStateManager extends BaseStateManager<State> {
+export class LiftProfileDialogStateManager extends BaseStateManager<LiftProfileDialogState> {
 
 	public s_JointTypeList: JointType[];
 	public s_AnalysisTypeList: AnalysisType[];
 
 	public constructor() {
-		super(State);
+		super(LiftProfileDialogState);
 	}
 
 	public async onInitialize(): Promise<void> {
@@ -26,12 +26,12 @@ export class LiftProfileDialogStateManager extends BaseStateManager<State> {
 	}
 
 	public readonly CreateState = StateBind
-		.onCallable<State>(this, (state) => {
+		.onCallable<LiftProfileDialogState>(this, (state) => {
 			return Utils.clone(state);
 		});
 
 	public readonly AnalysisTypeChange = StateBind
-		.onAction<State, {
+		.onAction<LiftProfileDialogState, {
 			id: number
 		}>(this, (state, data) => {
 			var next_state = Utils.clone(state);
@@ -40,7 +40,7 @@ export class LiftProfileDialogStateManager extends BaseStateManager<State> {
 		});
 
 	public readonly JointTypeChange = StateBind
-		.onAction<State, {
+		.onAction<LiftProfileDialogState, {
 			jointTypeIDA?: number,
 			jointTypeIDB?: number,
 			jointTypeIDC?: number

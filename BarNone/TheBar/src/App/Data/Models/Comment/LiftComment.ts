@@ -1,6 +1,6 @@
 import Lift from "App/Data/Models/Lift/Lift";
 
-export default class Comment {
+export default class LiftComment {
 	public id: number;
 
 	public sentUserID: number;
@@ -11,9 +11,9 @@ export default class Comment {
 
 	public text: string;
 
-	public details?: CommentDetails;
+	public details?: LiftCommentDetails;
 }
 
-class CommentDetails {
+class LiftCommentDetails {
 	public lift: Lift;
 }

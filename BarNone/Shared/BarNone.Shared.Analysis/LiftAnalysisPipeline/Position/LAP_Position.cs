@@ -23,32 +23,52 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Position
 
         public override ResultEntity Execute()
         {
+
+            List<AnalysisFrame> afs = new List<AnalysisFrame>();
+
+           
+
             //This is a little ugly, might clean it up later. We should discuss the default behaviour, currently returns Z.
             List<float> result;
             if (Request.Dimension == EDimension.X)
             {
-                result = new List<float>(_jtsList[(int)Request.Joint].X);
+                _lift.BodyData.BodyDataFrames.ForEach((a) =>
+                {
+                    afs.Add(new AnalysisFrame
+                    {
+                        FrameID = a.ID,
+                        Value = a.Joints[(int)Request.JointType].X
+                    });
+                });
             }
             else if (Request.Dimension == EDimension.Y)
             {
-                result = new List<float>(_jtsList[(int)Request.Joint].Y);
+                _lift.BodyData.BodyDataFrames.ForEach((a) =>
+                {
+                    afs.Add(new AnalysisFrame
+                    {
+                        FrameID = a.ID,
+                        Value = a.Joints[(int)Request.JointType].Y
+                    });
+                });
 
             }
             else
             {
-                result = new List<float>(_jtsList[(int)Request.Joint].Z);
+                _lift.BodyData.BodyDataFrames.ForEach((a) =>
+                {
+                    afs.Add(new AnalysisFrame
+                    {
+                        FrameID = a.ID,
+                        Value = a.Joints[(int)Request.JointType].Z
+                    });
+                });
 
             }
-
-            List<float> time = new List<float>(_jtsList[(int)Request.Joint].t);
-
             return new ResultEntity
             {
                 Type = ELiftAnalysisType.Position,
-                Value = new Dictionary<string, List<float>>() {
-                    ["time"]= time,
-                    ["data"]= result
-                }
+                Value = afs
             };
         }
 

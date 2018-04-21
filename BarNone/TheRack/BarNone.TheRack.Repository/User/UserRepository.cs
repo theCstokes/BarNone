@@ -35,23 +35,5 @@ namespace BarNone.TheRack.Repository
         public UserRepository(DomainContext context) : base(context)
         {
         }
-
-        /// <summary>
-        /// Logins the specified user name.
-        /// </summary>
-        /// <param name="userName">Name of the user.</param>
-        /// <param name="password">The password.</param>
-        /// <returns></returns>
-        public User Login(string userName, string password)
-        {
-            var result = Entites.Where(c => c.UserName == userName);
-            if (!result.Any()) return null;
-
-            var user = result.FirstOrDefault();
-
-            if (user.Password == password) return user;
-
-            return null;
-        }
     }
 }

@@ -44,10 +44,14 @@ namespace BarNone.TheRack.Repository
         /// <value>
         /// The detail entity resolver.
         /// </value>
-        protected override DetailResolverDelegate<BodyDataFrame> DetailEntityResolver =>
-            (s) => s.Include(f => f.BodyData)
+        protected override DetailResolverDelegate<BodyDataFrame> DetailEntityResolver => (frame) =>
+        {
+            var results = frame.Include(f => f.BodyData)
                 .Include(l => l.Joints).ThenInclude(j => j.JointType)
                 .Include(l => l.Joints).ThenInclude(j => j.JointTrackingStateType);
+
+            return results.OrderBy(f => f.TimeOfFrame);
+        };
 
         /// <summary>
         /// Gets the set resolver.

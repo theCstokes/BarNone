@@ -55,14 +55,26 @@ namespace BarNone.TheRack.Repository
         /// <value>
         /// The detail entity resolver.
         /// </value>
-        protected override DetailResolverDelegate<Lift> DetailEntityResolver => (lifts) => lifts
-                .Include(u => u.Parent)
-                .Include(u => u.Video)
-                .Include(u => u.Permissions)
-                .Include(u => u.LiftType)
-                .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints)
-                .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointType)
-                .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointTrackingStateType);
+        protected override DetailResolverDelegate<Lift> DetailEntityResolver => (lifts) =>
+        {
+            var results = lifts
+                    .Include(u => u.Parent)
+                    .Include(u => u.Video)
+                    .Include(u => u.Permissions)
+                    .Include(u => u.LiftType)
+                    .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints)
+                    .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointType)
+                    .Include(u => u.BodyData).ThenInclude(d => d.BodyDataFrames).ThenInclude(f => f.Joints).ThenInclude(j => j.JointTrackingStateType);
+
+            //foreach(var l in results)
+            //{
+            //    if (l.BodyData == null) continue;
+            //    if (l.BodyData.BodyDataFrames == null) continue;
+            //    l.BodyData.BodyDataFrames = l?.BodyData?.BodyDataFrames?.OrderBy(f => f.TimeOfFrame)?.ToList();
+            //}
+
+            return results;
+        };
 
         /// <summary>
         /// Gets the entity resolver.

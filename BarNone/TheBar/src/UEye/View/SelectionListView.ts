@@ -6,6 +6,7 @@ import Info from "UEye/Elements/Components/Info/Info";
 import { BaseListItem } from "UEye/Elements/Core/BaseListItem/BaseListItem";
 import StringUtils from "UEye/Core/StringUtils";
 import ComponentType from "UEye/Elements/Inflater/ComponentInflater";
+import IconButton from "UEye/Elements/Components/IconButton/IconButton";
 
 export abstract class SelectionListView extends View {
 	public listPanel: Panel;
@@ -13,6 +14,8 @@ export abstract class SelectionListView extends View {
 	public selectionList: List;
 	
 	public selectionListInfo: Info;
+
+	public addButton: IconButton;
 	
 	public abstract get caption(): string;
 
@@ -29,6 +32,13 @@ export abstract class SelectionListView extends View {
 						instance: ControlTypes.Panel,
 						id: "listPanel",
 						caption: this.caption,
+						actions: [
+							{
+								id: "addButton",
+								text: "New",
+								icon: "fa-plus",
+							}
+						],
 						content: [
 							{
 								instance: ControlTypes.List,

@@ -2,52 +2,64 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     text-decoration: none;
     padding: 10px;
+    > .Icon {
+        // background: @DefaultElementAccent;
+        // padding: 2px 3px 2px 3px;
+        // color: @DefaultElementAccent;
+        // border-radius: 2px;
+        // margin-left: 5%;
+        margin-right: 5px;
+    }
     >.Content {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         width: 100%;
         text-align: center;
-        >.Type-Icon {
-            margin-right: 5px;
-        }
-        > .Name-Holder {
-            > .Name {
-                text-decoration: none;
-                font-weight: bold;
-            }
-            > .Name-Caption {
-                text-decoration: none;
-            }
-        }
-        > .Value-Holder {
+        padding-left: 5%;
+        // >.Type-Icon {
+        //     margin-right: 5px;
+        // }
+        > .Data {
+            display: none;
+            width: 25%;
             > .Value {
                 text-decoration: none;
                 font-weight: bold;
             }
-            > .Value-Caption {
+            > .Caption {
                 text-decoration: none;
+                font-size: 10px;
             }
         }
+        > .Data.Has-Value {
+            display: block;
+        }
     }
-    > .Action {
-        background: @DefaultElementAccent;
-        padding: 2px 3px 2px 3px;
-        color: white;
-        border-radius: 2px;
-        margin-left: 5%;
-    }
-    > .Action:hover {
-        background-color: #286090;
-        border-color: #204d74;
-        text-decoration: none;
-    }
-    > .Action.disabled {
-        background-color: #B2B4B6;
-        color: #333333;
-        text-decoration: none;
-    }
+    
+    // > .Icon:hover {
+    //     background-color: #286090;
+    //     border-color: #204d74;
+    //     text-decoration: none;
+    // }
+    // > .Icon.disabled {
+    //     background-color: #B2B4B6;
+    //     color: #333333;
+    //     text-decoration: none;
+    // }
+}
+
+.Analysis-List-Item.Modified > .Icon {
+    color: @ModifiedElementAccent;
+}
+
+.Analysis-List-Item.Modified > .Content > .Data > .Value {
+    color: @ModifiedElementAccent;
+}
+
+.Analysis-List-Item.Modified > .Content > .Data > .Caption {
+    color: @ModifiedElementAccent;
 }

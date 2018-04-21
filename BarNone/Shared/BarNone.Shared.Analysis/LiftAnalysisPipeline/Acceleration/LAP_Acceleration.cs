@@ -20,7 +20,6 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration
     {
         #region Private Field(s).
         private Lift _lift;
-        private AR_Acceleration _request;
         #endregion
 
         #region Public Constructor(s).
@@ -37,23 +36,23 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration
 
             return new ResultEntity
             {
-                Type = _request.Type,
+                Type = Request.Type,
                 Value = acclerationList
             };
         }
 
         public override bool Validate()
         {
-            if (_request.Type != ELiftAnalysisType.Acceleration) return false;
-            if (_request.JointType == default(EJointType)) return false;
+            if (Request.Type != ELiftAnalysisType.Acceleration) return false;
+            if (Request.JointType == default(EJointType)) return false;
             return true;
         }
         #endregion
 
         #region Private Member(s).
-        private List<double> GetAcclerationList()
+        private List<AnalysisFrame> GetAcclerationList()
         {
-            List<double> accelerationList = new List<double>();
+            List<AnalysisFrame> accelerationList = new List<AnalysisFrame>();
 
             var r = _lift.BodyData.BodyDataFrames.Aggregate((last, frame) =>
             {
@@ -70,7 +69,11 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration
                     Math.Sqrt(Math.Pow(lastPosition.X, 2) + Math.Pow(lastPosition.Y, 2) + Math.Pow(lastPosition.Z, 2))
                     );
 
-                accelerationList.Add((distance / timeDelta) / timeDelta);
+                accelerationList.Add(new AnalysisFrame
+                {
+                    FrameID = frame.ID,
+                    Value = (distance / timeDelta) / timeDelta
+                });
 
                 return frame;
             });
@@ -80,7 +83,7 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration
 
         private TrackingPosition GetTrackingPosition(BodyDataFrame frame)
         {
-            if (_request.JointType == EJointType.BarCenter)
+            if (Request.JointType == EJointType.BarCenter)
             {
                 var leftHand = frame.Joints.Find(j => j.JointType == EJointType.HandLeft);
                 var rightHand = frame.Joints.Find(j => j.JointType == EJointType.HandRight);
@@ -94,7 +97,7 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Acceleration
 
             }
 
-            var joint = frame.Joints.Find(j => j.JointType == _request.JointType);
+            var joint = frame.Joints.Find(j => j.JointType == Request.JointType);
 
             return new TrackingPosition
             {

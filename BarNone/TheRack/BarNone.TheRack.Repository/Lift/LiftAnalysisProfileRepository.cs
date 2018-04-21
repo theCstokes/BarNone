@@ -6,12 +6,13 @@ using BarNone.TheRack.Repository.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using static BarNone.TheRack.Repository.Core.Resolvers;
 
 namespace BarNone.TheRack.Repository
 {
-    public class LiftAnalysisProfileRepository 
+    public class LiftAnalysisProfileRepository
         : DefaultDetailRepository<LiftAnalysisProfile, LiftAnalysisProfileDTO, LiftAnalysisProfileDetailDTO>
     {
         public LiftAnalysisProfileRepository() : base()
@@ -22,15 +23,21 @@ namespace BarNone.TheRack.Repository
         {
         }
 
-        protected override ConverterResolverDelegate<LiftAnalysisProfile, LiftAnalysisProfileDTO> DataConverter => 
-            Converters.NewConvertion().LiftAnalysisProfile.CreateDataModel;
+        protected override ConverterResolverDelegate<LiftAnalysisProfile, LiftAnalysisProfileDTO> DataConverter =>
+            Converters.NewConvertion(context).LiftAnalysisProfile.CreateDataModel;
 
         protected override SetResolverDelegate<LiftAnalysisProfile> SetResolver => (context) => context.LiftAnalysisProfiles;
 
-        protected override EntityResolverDelegate<LiftAnalysisProfile> EntityResolver => (set) => set;
+        protected override EntityResolverDelegate<LiftAnalysisProfile> EntityResolver => (set) => set
+            .Where(l => l.UserID == context.UserID);
 
         protected override DetailResolverDelegate<LiftAnalysisProfile> DetailEntityResolver => (profile) => profile
             .Include(p => p.LiftType)
-            .Include(p => p.AccelerationAnalysis).ThenInclude(a => a.JointType);
+            .Include(p => p.AccelerationAnalysisCriteria).ThenInclude(a => a.JointType)
+            .Include(p => p.PositionAnalysisCriteria).ThenInclude(a => a.JointType)
+            .Include(p => p.SpeedAnalysisCriteria).ThenInclude(a => a.JointType)
+            .Include(p => p.AngleAnalysisCriteria).ThenInclude(a => a.JointTypeA)
+            .Include(p => p.AngleAnalysisCriteria).ThenInclude(a => a.JointTypeB)
+            .Include(p => p.AngleAnalysisCriteria).ThenInclude(a => a.JointTypeC);
     }
 }

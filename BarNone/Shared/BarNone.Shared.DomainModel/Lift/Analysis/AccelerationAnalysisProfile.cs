@@ -7,7 +7,7 @@ using System.Text;
 namespace BarNone.Shared.DomainModel
 {
     [Table("AccelerationAnalysisProfile", Schema = "public")]
-    public class AccelerationAnalysisProfile : IDomainModel<AccelerationAnalysisProfile>, IOwnedDomainModel
+    public class AccelerationAnalysisCriteria : IDomainModel<AccelerationAnalysisCriteria>, IOwnedDomainModel
     {
         public int ID { get; set; }
 

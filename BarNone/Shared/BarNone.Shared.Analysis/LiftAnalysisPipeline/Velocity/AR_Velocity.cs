@@ -11,7 +11,7 @@ namespace BarNone.Shared.Analysis.LiftAnalysisPipeline.Velocity
     public class AR_Velocity : RequestEntity
     {
         [JsonConverter(typeof(StringEnumConverter))]
-        public EJointType Joint { get; set; }
+        public EJointType JointType { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public EDimension Dimension { get; set; }

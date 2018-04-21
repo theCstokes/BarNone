@@ -19,6 +19,6 @@ export interface IUtils {
 
 	guid(): string;
 
-	compare(source: any, target: any, ignore?: string[]): boolean;
+	equivalent(source: any, target: any, ignore?: string[]): boolean;
 }
 

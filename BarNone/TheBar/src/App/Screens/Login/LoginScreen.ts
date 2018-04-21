@@ -62,8 +62,10 @@ export default class LoginScreen extends Screen<LoginView> {
 				UEye.pop();
 				await UEye.push(NavScreen);
 				// await UEye.push(UserScreen);
+			} else {
+				this.view.statusLabel.text = "Password or Username incorrect.";
+				this.view.loginButton.enabled = true;
 			}
-			this.view.statusLabel.text = "Password or Username incorrect.";
 		};
 	}
 

@@ -115,15 +115,21 @@ namespace TheRack.ResourceServer.API.Controllers
 
             ClaimsIdentity identity = null;
 
-            using (var dc = new DomainContext())
-            {
-                var repo = new UserRepository(dc);
-                var user = repo.Create(applicationUser);
-                dc.SaveChanges();
+            //using (var dc = new DomainContext())
+            //{
+            //var repo = new UserRepository(dc);
+            //var user = repo.Create(applicationUser);
+            //dc.SaveChanges();
 
-                Converters.NewConvertion(dc).User.CreateDTO(user);
-                identity = await GetClaimsIdentity(applicationUser);
-            }
+
+            var user = DataAccessAuthenticator.Create(
+                Converters.NewConvertion().User.CreateDataModel(applicationUser),
+                "salt",
+                applicationUser.Password);
+
+            Converters.NewConvertion().User.CreateDTO(user);
+            identity = await GetClaimsIdentity(applicationUser);
+            //}
 
             if (identity == null)
             {
@@ -198,8 +204,7 @@ namespace TheRack.ResourceServer.API.Controllers
         /// </summary>
         private static Task<ClaimsIdentity> GetClaimsIdentity(UserDTO user)
         {
-            var repo = new UserRepository();
-            var entity = repo.Login(user.UserName, user.Password);
+            var entity = DataAccessAuthenticator.Login(user.UserName, user.Password);
 
             if (entity == null)
             {
